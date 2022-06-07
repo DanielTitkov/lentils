@@ -1,0 +1,49 @@
+[
+    {
+        "userEmail": "test1@foo.bar",
+        "challengeContent": "Россия нападёт на Украину",
+        "prognosis": true
+    },
+    {
+        "userEmail": "test2@foo.bar",
+        "challengeContent": "Россия нападёт на Украину",
+        "prognosis": true
+    },
+    {
+        "userEmail": "test3@foo.bar",
+        "challengeContent": "Россия нападёт на Украину",
+        "prognosis": false
+    },
+
+    {
+        "userEmail": "test1@foo.bar",
+        "challengeContent": "Доживёт ли Путин до 2024 года?",
+        "prognosis": true
+    },
+    {
+        "userEmail": "test2@foo.bar",
+        "challengeContent": "Доживёт ли Путин до 2024 года?",
+        "prognosis": false
+    },
+    {
+        "userEmail": "test3@foo.bar",
+        "challengeContent": "Доживёт ли Путин до 2024 года?",
+        "prognosis": false
+    },
+
+    {
+        "userEmail": "test1@foo.bar",
+        "challengeContent": "Победит ли Украина Россию?",
+        "prognosis": false
+    },
+    {
+        "userEmail": "test2@foo.bar",
+        "challengeContent": "Победит ли Украина Россию?",
+        "prognosis": true
+    },
+    {
+        "userEmail": "test3@foo.bar",
+        "challengeContent": "Победит ли Украина Россию?",
+        "prognosis": true
+    }
+]

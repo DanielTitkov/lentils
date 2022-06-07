@@ -1,0 +1,375 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>{{ template "title" . }}</title>
+
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
+</head>
+
+<body has-navbar-fixed-bottom>
+  <!-- debug start -->
+  <!-- {{ if .Env }}
+  {{ if eq .Env "dev" }}
+  <div class="box">
+    <p class="heading">Debug info</p>
+    <p><b>Session: </b>{{ .Session }}</p>
+    <p><b>Error: </b>{{ .Error }}</p>
+    <p><b>User: </b>{{ .User }}</p>
+  </div>
+  {{ end }}
+  {{ end }} -->
+  <!-- debug end -->
+  {{ template "navigation" . }}
+  {{ template "navigation-mobile" . }}
+  <section class="section">
+    {{ if .Error }}
+    {{ template "alert-warning" .Error }}
+    {{ end }}
+    {{ if .Message }}
+    {{ template "alert-success" .Message }}
+    {{ end }}
+    <div id="main-view-content" class="container">
+      {{ template "view" . }}
+      <script type="text/javascript" src="/live.js"></script>
+    </div>
+    {{ if not .User }}
+    <div class="container box">
+      <h3 class="title is-3 is-size-5-mobile has-text-centered">Войдите, чтобы оставлять прогнозы</h3>
+      {{ template "login-block" }}
+    </div>
+    {{ end }}
+  </section>
+  {{ template "footer" . }}
+  {{ if .ShowLoginModal }}
+  {{ template "login-modal" . }}
+  {{ end }}
+  {{ if .ShowLogoutModal }}
+  {{ template "logout-modal" . }}
+  {{ end }}
+</body>
+
+<script>
+  window.getChartsData = function () {
+    return JSON.parse(document.querySelector("#chartsData").innerHTML);
+  }
+</script>
+
+<script>
+  window.Hooks = {
+    "addTermHook": {
+      mounted: function () {
+        this.el.addEventListener("submit", () => {
+          this.el.querySelector("input").value = "";
+        });
+      }
+    },
+  };
+</script>
+
+<script>
+  // this code provides go-back-link logic
+  var element = document.getElementById('go-back-link');
+  element.setAttribute('href', document.referrer);
+  element.onclick = function () {
+    history.back();
+    return false;
+  }
+</script>
+
+</html>
+
+{{ define "footer" }}
+<footer class="footer">
+  <div class="is-size-5 is-hidden-mobile">
+    {{ template "navigation-text" . }}
+    <hr>
+    <div class="has-text-centered is-size-6">
+      <p>
+        <span class="has-text-grey mx-3">Lentils</span>
+        <a class="has-text-grey-light is-underlined mx-3" href="/terms" target="_blank">Terms and conditions</a>
+        <a class="has-text-grey-light is-underlined mx-3" href="/privacy" target="_blank">Privacy policy</a>
+        <span class="has-text-grey mx-3">{{ .Version }}</span>
+      </p>
+    </div>
+  </div>
+  </div>
+</footer>
+{{ end }}
+
+{{ define "login-block" }}
+<div class="block has-text-centered">
+  <p class="heading">Вход или регистрация</p>
+  <div class="buttons are-medium are-rounded is-centered">
+    <!-- Google -->
+    <a href="/auth/google" class="button is-danger">
+      <i class="bi bi-google"></i>
+      <span class="is-hidden-mobile">&nbsp;Google</span>
+    </a>
+    <!-- Github -->
+    <a href="/auth/github" class="button is-dark">
+      <i class="bi bi-github"></i>
+      <span class="is-hidden-mobile">&nbsp;GitHub</span>
+    </a>
+    <!-- Twitter -->
+    <!-- <a href="/auth/twitter" class="button is-link">
+      <i class="bi bi-twitter"></i>
+      <span class="is-hidden-mobile">&nbsp;Twitter</span>
+    </a> -->
+  </div>
+  <p class="heading has-text-centered">
+    Регистрация нужна чтобы сократить возможности накрутки.<br>
+    Ваше имя и email не будут опубликованы<br>
+    и не будут доступны другим пользователям. 
+  </p>
+</div>
+{{ end }}
+
+{{ define "logout-modal" }}
+<div class="modal is-active">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title has-text-centered">Подтверждение</p>
+      <button live-click="close-auth-modals" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body has-text-centered">
+      <p class="title is-4 is-size-5-mobile">Выход:</p>
+      <p class="title is-3 is-size-4-mobile">Действительно хотите выйти?</p>
+      <div class="columns">
+        <div class="column">
+          <a href="/auth/logout" class="button is-large is-danger is-fullwidth is-hidden-mobile">Выйти</a>
+          <a href="/auth/logout" class="button is-danger is-fullwidth is-hidden-tablet">Выйти</a>
+        </div>
+        <div class="column">
+          <button live-click="close-auth-modals" class="button is-large is-fullwidth is-hidden-mobile">Отмена</button>
+          <button live-click="close-auth-modals" class="button is-fullwidth is-hidden-tablet">Отмена</button>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+    </footer>
+  </div>
+</div>
+{{ end }}
+
+{{ define "login-modal" }}
+<div class="modal is-active">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title has-text-centered">Войти</p>
+      <button live-click="close-auth-modals" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body has-text-centered">
+      {{ template "login-block" }}
+    </section>
+    <footer class="modal-card-foot">
+    </footer>
+  </div>
+</div>
+{{ end }}
+
+{{ define "navigation" }}
+<nav class="level is-mobile is-centered p-5 is-size-3-mobile is-size-2-tablet is-hidden-mobile">
+  <div class="level-item">
+    <div class="mx-5">
+      <a href="/" class='{{ if eq .CurrentView "home"}}has-text-dark{{ end }}' title="Home">
+        <i class="bi bi-house-fill"></i>
+      </a>
+    </div>
+
+    <div class="mx-5" title="About">
+      <a href="/about" class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}'>
+        <i class="bi bi-question"></i>
+      </a>
+    </div>
+
+    {{ if .User }}
+    <div class="mx-5">
+      <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' href="/profile" title="Profile">
+        <i class="bi bi-person-fill"></i>
+      </a>
+    </div>
+    {{ end }}
+
+    {{ if .User }}
+    {{ if .User.Admin }}
+    <div class="mx-5">
+      <a href="/admin" class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel">
+        <i class="bi bi-radioactive"></i>
+      </a>
+    </div>
+    {{ end }}
+    {{ end }}
+
+    <div class="mx-5">
+      <!-- enter or exit -->
+      {{ if .User }}
+      <a live-click="open-logout-modal" title="Logout">
+        <i class="bi bi-box-arrow-right"></i>
+      </a>
+      {{ else }}
+      <a live-click="open-login-modal" title="Login">
+        <i class="bi bi-box-arrow-in-right"></i>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</nav>
+{{ end }}
+
+
+{{ define "navigation-mobile" }}
+<nav class="navbar is-mobile is-centered px-2 py-4 is-size-3-mobile is-size-2-tablet is-hidden-tablet is-fixed-bottom">
+  <div class="level is-mobile">
+    <div class="level-item">
+      <a class='{{ if eq .CurrentView "home"}}has-text-dark{{ end }}' href="/" title="Home">
+        <i class="bi bi-house-fill"></i>
+      </a>
+    </div>
+
+    <div class="level-item">
+      <a class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}' title="About" href="/about">
+        <i class="bi bi-question"></i>
+      </a>
+    </div>
+
+    {{ if .User }}
+    <div class="level-item">
+      <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' title="Profile" href="/profile">
+        <i class="bi bi-person-fill"></i>
+      </a>
+    </div>
+    {{ end }}
+
+    {{ if .User }}
+    {{ if .User.Admin }}
+    <div class="level-item">
+      <a class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel" href="/admin">
+        <i class="bi bi-radioactive"></i>
+      </a>
+    </div>
+    {{ end }}
+    {{ end }}
+
+    <div class="level-item">
+      <!-- enter or exit -->
+      {{ if .User }}
+      <a live-click="open-logout-modal" title="Logout">
+        <i class="bi bi-box-arrow-right"></i>
+      </a>
+      {{ else }}
+      <a live-click="open-login-modal" title="Login">
+        <i class="bi bi-box-arrow-in-right"></i>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</nav>
+{{ end }}
+
+{{ define "navigation-text" }}
+<nav class="level is-centered">
+  <div class="level-item">
+    <div class="mx-3">
+      <a href="/" class='{{ if eq .CurrentView "home"}}has-text-dark{{ end }}' title="Home">
+        Главная
+      </a>
+    </div>
+  </div>
+
+  <div class="level-item">
+    <div class="mx-3" title="About">
+      <a class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}' href="/about">
+        О проекте
+      </a>
+    </div>
+  </div>
+
+  {{ if .User }}
+  <div class="level-item">
+    <div class="mx-3">
+      <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' href="/profile" title="Profile">
+        Профиль
+      </a>
+    </div>
+  </div>
+  {{ end }}
+
+  {{ if .User }}
+  {{ if .User.Admin }}
+  <div class="level-item">
+    <div class="mx-3">
+      <!-- Admin panel -->
+      <a href="/admin" class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel">
+        Управление
+      </a>
+    </div>
+  </div>
+  {{ end }}
+  {{ end }}
+
+  <div class="level-item">
+    <div class="mx-3">
+      <!-- enter or exit -->
+      {{ if .User }}
+      <a live-click="open-logout-modal" title="Logout">
+        Выход
+      </a>
+      {{ else }}
+      <a live-click="open-login-modal" title="Login">
+        Вход
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</nav>
+{{ end }}
+
+{{define "alert-warning"}}
+<div class="container">
+  <div class="notification is-warning">
+    <button live-click="close-error-notification" class="delete"></button>
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <i class="bi-exclamation-triangle-fill" style="font-size: 1.5rem;"></i>
+        </div>
+        <div class="level-item">
+          <span><strong>{{.}}</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{define "alert-success"}}
+<div class="container">
+  <div class="notification is-success">
+    <button live-click="close-message-notification" class="delete"></button>
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <i class="bi-exclamation-triangle-fill" style="font-size: 1.5rem;"></i>
+        </div>
+        <div class="level-item">
+          <span><strong>{{.}}</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{ define "back-to-home" }}
+<h3 class="title is-3 mb-6 is-hidden-mobile">
+  <a id="go-back-link" href="/"><i class="bi-arrow-left"></i> Назад</a>
+</h3>
+{{ end }}

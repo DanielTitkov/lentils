@@ -1,0 +1,38 @@
+{{ define "title" }} Crowdsourced predictions {{ end }}
+{{ define "view" }}
+<main>
+  {{ template "back-to-home" }}
+  {{ if .User }}
+  <div class="section">
+    <div class="columns">
+      <div class="column is-4">
+        <div class="block">
+          <figure class="image is-128x128">
+            <img class="is-rounded" src="{{ .User.Picture }}" alt="userpic">
+          </figure>
+        </div>
+        <div class="block has-text-left">
+          <p>
+            <b>Имя: </b>
+            <span>{{ .User.Name }}</span>
+          </p>
+          <p>
+            <b>Email: </b>
+            <span>{{ .User.Email }}</span>
+          </p>
+          <p>
+            <b>Язык: </b>
+            <span>{{ .User.Locale }}</span>
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box notification has-background-white">
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ end }}
+  <!-- end if user -->
+</main>
+{{ end }}

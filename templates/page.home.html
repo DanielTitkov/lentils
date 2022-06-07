@@ -1,0 +1,16 @@
+{{ define "title" }} Crowdsourced predictions {{ end }}
+{{ define "view" }}
+
+<main>
+  <div class="section">
+    Лентилс
+    Тесты
+  </div>
+  {{ if .Summary }}
+  <div class="section">
+    {{ template "system-summary" .Summary }}
+  </div>
+  {{ end }}
+</main>
+
+{{ end }}

@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  lentils_db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: test
+      POSTGRES_DB: lentils
+    volumes:
+      - lentils-database-data:/var/lib/postgresql/data/
+    ports:
+      - "6432:5432"
+
+volumes:
+  lentils-database-data:

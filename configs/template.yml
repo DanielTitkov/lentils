@@ -1,0 +1,48 @@
+# template to substitute with actual values
+env: deploy
+db:
+  uri: "host={{db_host}} port={{db_port}} user={{db_user}} dbname={{db_name}} password={{db_password}} sslmode=require"
+  driver: postgres
+server:
+  port: 80
+  host: "0.0.0.0"
+app:
+  defaultChallengePageLimit: 10
+  homeChallengePageLimit: 4
+  systemSummaryInterval: 15 # minutes
+  systemSummaryTimeout: 1500 # milliseconds
+  defaultTimeLayout: "2006-01-02"
+  minProofCount: 3
+  version: {{version}}
+debug:
+  logDBQueries: false
+auth:
+  exp: 259200 # seconds
+  secret: {{secret_key}}
+  google:
+    client: {{google_auth_client}}
+    secret: {{google_auth_secret}}
+    callback: {{google_auth_callback}}
+  github:
+    client: {{github_auth_client}}
+    secret: {{github_auth_secret}}
+    callback: {{github_auth_callback}}
+  twitter:
+    client: {{twitter_auth_client}}
+    secret: {{twitter_auth_secret}}
+    callback: {{twitter_auth_callback}}
+data:
+  presets:
+    challengePresetsPaths: 
+      # - ./data/presets/challenges.json
+      # - ./data/presets/challenges_auto.json
+    userPresetsPaths:
+      # - ./data/presets/users.json
+      # - ./data/presets/users_auto.json
+    predictionPresetsPaths: 
+      # - ./data/presets/predictions.json
+      # - ./data/presets/predictions_auto.json
+external:
+  telegram:
+    telegramTo: {{telegram_to}}
+    telegramToken: {{telegram_token}}

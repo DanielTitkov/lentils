@@ -1,0 +1,27 @@
+env: dev
+db:
+  uri: "host=localhost port=6432 user=test dbname=lentils password=pass sslmode=disable"
+  driver: postgres
+server:
+  port: 8000
+  host: "0.0.0.0"
+app:
+  defaultChallengePageLimit: 5
+  systemSummaryInterval: 10 # minutes
+  systemSummaryTimeout: 100 # milliseconds
+  defaultTimeLayout: "2006-01-02"
+auth:
+  exp: 2592000 # sec
+  secret: secret-key
+  google:
+    client: google-client-id
+    secret: google-oauth-secret
+    callback: "http://localhost:8000/auth/google/callback"
+data:
+  presets:
+    challengePresetsPaths: 
+      - ./data/presets/challenges.json
+external:
+  telegram:
+    telegramTo: 99999
+    telegramToken: "9999:AAAAAAAAA"

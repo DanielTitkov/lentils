@@ -1,0 +1,12 @@
+{{ define "title" }} Admin {{ end }}
+{{ define "view" }}
+<main>
+  {{ template "back-to-home" }}
+  {{ if .User }}
+  <div class="section">
+  Админка
+  </div>
+  {{ end }}
+  <!-- end if user -->
+</main>
+{{ end }}
