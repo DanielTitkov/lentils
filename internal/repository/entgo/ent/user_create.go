@@ -10,10 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/badge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/challenge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/prediction"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/usersession"
 	"github.com/google/uuid"
@@ -134,21 +131,6 @@ func (uc *UserCreate) SetNillableID(u *uuid.UUID) *UserCreate {
 	return uc
 }
 
-// AddPredictionIDs adds the "predictions" edge to the Prediction entity by IDs.
-func (uc *UserCreate) AddPredictionIDs(ids ...uuid.UUID) *UserCreate {
-	uc.mutation.AddPredictionIDs(ids...)
-	return uc
-}
-
-// AddPredictions adds the "predictions" edges to the Prediction entity.
-func (uc *UserCreate) AddPredictions(p ...*Prediction) *UserCreate {
-	ids := make([]uuid.UUID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return uc.AddPredictionIDs(ids...)
-}
-
 // AddSessionIDs adds the "sessions" edge to the UserSession entity by IDs.
 func (uc *UserCreate) AddSessionIDs(ids ...int) *UserCreate {
 	uc.mutation.AddSessionIDs(ids...)
@@ -164,49 +146,19 @@ func (uc *UserCreate) AddSessions(u ...*UserSession) *UserCreate {
 	return uc.AddSessionIDs(ids...)
 }
 
-// AddBadgeIDs adds the "badges" edge to the Badge entity by IDs.
-func (uc *UserCreate) AddBadgeIDs(ids ...int) *UserCreate {
-	uc.mutation.AddBadgeIDs(ids...)
+// AddTakeIDs adds the "takes" edge to the Take entity by IDs.
+func (uc *UserCreate) AddTakeIDs(ids ...uuid.UUID) *UserCreate {
+	uc.mutation.AddTakeIDs(ids...)
 	return uc
 }
 
-// AddBadges adds the "badges" edges to the Badge entity.
-func (uc *UserCreate) AddBadges(b ...*Badge) *UserCreate {
-	ids := make([]int, len(b))
-	for i := range b {
-		ids[i] = b[i].ID
-	}
-	return uc.AddBadgeIDs(ids...)
-}
-
-// AddChallengeIDs adds the "challenges" edge to the Challenge entity by IDs.
-func (uc *UserCreate) AddChallengeIDs(ids ...uuid.UUID) *UserCreate {
-	uc.mutation.AddChallengeIDs(ids...)
-	return uc
-}
-
-// AddChallenges adds the "challenges" edges to the Challenge entity.
-func (uc *UserCreate) AddChallenges(c ...*Challenge) *UserCreate {
-	ids := make([]uuid.UUID, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return uc.AddChallengeIDs(ids...)
-}
-
-// AddTestIDs adds the "tests" edge to the Test entity by IDs.
-func (uc *UserCreate) AddTestIDs(ids ...uuid.UUID) *UserCreate {
-	uc.mutation.AddTestIDs(ids...)
-	return uc
-}
-
-// AddTests adds the "tests" edges to the Test entity.
-func (uc *UserCreate) AddTests(t ...*Test) *UserCreate {
+// AddTakes adds the "takes" edges to the Take entity.
+func (uc *UserCreate) AddTakes(t ...*Take) *UserCreate {
 	ids := make([]uuid.UUID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return uc.AddTestIDs(ids...)
+	return uc.AddTakeIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -452,25 +404,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		})
 		_node.Meta = value
 	}
-	if nodes := uc.mutation.PredictionsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.PredictionsTable,
-			Columns: []string{user.PredictionsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: prediction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
 	if nodes := uc.mutation.SessionsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -490,55 +423,17 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := uc.mutation.BadgesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   user.BadgesTable,
-			Columns: user.BadgesPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: badge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := uc.mutation.ChallengesIDs(); len(nodes) > 0 {
+	if nodes := uc.mutation.TakesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.ChallengesTable,
-			Columns: []string{user.ChallengesColumn},
+			Table:   user.TakesTable,
+			Columns: []string{user.TakesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: challenge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := uc.mutation.TestsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TestsTable,
-			Columns: []string{user.TestsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: test.FieldID,
+					Column: take.FieldID,
 				},
 			},
 		}

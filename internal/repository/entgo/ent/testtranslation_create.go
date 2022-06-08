@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -22,31 +21,9 @@ type TestTranslationCreate struct {
 	hooks    []Hook
 }
 
-// SetCreateTime sets the "create_time" field.
-func (ttc *TestTranslationCreate) SetCreateTime(t time.Time) *TestTranslationCreate {
-	ttc.mutation.SetCreateTime(t)
-	return ttc
-}
-
-// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
-func (ttc *TestTranslationCreate) SetNillableCreateTime(t *time.Time) *TestTranslationCreate {
-	if t != nil {
-		ttc.SetCreateTime(*t)
-	}
-	return ttc
-}
-
-// SetUpdateTime sets the "update_time" field.
-func (ttc *TestTranslationCreate) SetUpdateTime(t time.Time) *TestTranslationCreate {
-	ttc.mutation.SetUpdateTime(t)
-	return ttc
-}
-
-// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
-func (ttc *TestTranslationCreate) SetNillableUpdateTime(t *time.Time) *TestTranslationCreate {
-	if t != nil {
-		ttc.SetUpdateTime(*t)
-	}
+// SetLocale sets the "locale" field.
+func (ttc *TestTranslationCreate) SetLocale(t testtranslation.Locale) *TestTranslationCreate {
+	ttc.mutation.SetLocale(t)
 	return ttc
 }
 
@@ -81,12 +58,6 @@ func (ttc *TestTranslationCreate) SetNillableInstruction(s *string) *TestTransla
 	if s != nil {
 		ttc.SetInstruction(*s)
 	}
-	return ttc
-}
-
-// SetLocale sets the "locale" field.
-func (ttc *TestTranslationCreate) SetLocale(t testtranslation.Locale) *TestTranslationCreate {
-	ttc.mutation.SetLocale(t)
 	return ttc
 }
 
@@ -194,14 +165,6 @@ func (ttc *TestTranslationCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (ttc *TestTranslationCreate) defaults() {
-	if _, ok := ttc.mutation.CreateTime(); !ok {
-		v := testtranslation.DefaultCreateTime()
-		ttc.mutation.SetCreateTime(v)
-	}
-	if _, ok := ttc.mutation.UpdateTime(); !ok {
-		v := testtranslation.DefaultUpdateTime()
-		ttc.mutation.SetUpdateTime(v)
-	}
 	if _, ok := ttc.mutation.ID(); !ok {
 		v := testtranslation.DefaultID()
 		ttc.mutation.SetID(v)
@@ -210,11 +173,13 @@ func (ttc *TestTranslationCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (ttc *TestTranslationCreate) check() error {
-	if _, ok := ttc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "TestTranslation.create_time"`)}
+	if _, ok := ttc.mutation.Locale(); !ok {
+		return &ValidationError{Name: "locale", err: errors.New(`ent: missing required field "TestTranslation.locale"`)}
 	}
-	if _, ok := ttc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "TestTranslation.update_time"`)}
+	if v, ok := ttc.mutation.Locale(); ok {
+		if err := testtranslation.LocaleValidator(v); err != nil {
+			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "TestTranslation.locale": %w`, err)}
+		}
 	}
 	if _, ok := ttc.mutation.Title(); !ok {
 		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "TestTranslation.title"`)}
@@ -222,14 +187,6 @@ func (ttc *TestTranslationCreate) check() error {
 	if v, ok := ttc.mutation.Title(); ok {
 		if err := testtranslation.TitleValidator(v); err != nil {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "TestTranslation.title": %w`, err)}
-		}
-	}
-	if _, ok := ttc.mutation.Locale(); !ok {
-		return &ValidationError{Name: "locale", err: errors.New(`ent: missing required field "TestTranslation.locale"`)}
-	}
-	if v, ok := ttc.mutation.Locale(); ok {
-		if err := testtranslation.LocaleValidator(v); err != nil {
-			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "TestTranslation.locale": %w`, err)}
 		}
 	}
 	return nil
@@ -268,21 +225,13 @@ func (ttc *TestTranslationCreate) createSpec() (*TestTranslation, *sqlgraph.Crea
 		_node.ID = id
 		_spec.ID.Value = &id
 	}
-	if value, ok := ttc.mutation.CreateTime(); ok {
+	if value, ok := ttc.mutation.Locale(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
+			Type:   field.TypeEnum,
 			Value:  value,
-			Column: testtranslation.FieldCreateTime,
+			Column: testtranslation.FieldLocale,
 		})
-		_node.CreateTime = value
-	}
-	if value, ok := ttc.mutation.UpdateTime(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: testtranslation.FieldUpdateTime,
-		})
-		_node.UpdateTime = value
+		_node.Locale = value
 	}
 	if value, ok := ttc.mutation.Title(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -307,14 +256,6 @@ func (ttc *TestTranslationCreate) createSpec() (*TestTranslation, *sqlgraph.Crea
 			Column: testtranslation.FieldInstruction,
 		})
 		_node.Instruction = value
-	}
-	if value, ok := ttc.mutation.Locale(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
-			Value:  value,
-			Column: testtranslation.FieldLocale,
-		})
-		_node.Locale = value
 	}
 	if nodes := ttc.mutation.TestIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

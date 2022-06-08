@@ -2,12 +2,9 @@ package handler
 
 import (
 	"context"
-	"errors"
 	"html/template"
 	"log"
-	"math"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/google/uuid"
 
 	"github.com/jfyne/live"
@@ -33,16 +30,9 @@ const (
 type (
 	AdminInstance struct {
 		*CommonInstance
-		Challenges          []*domain.Challenge
-		ChallengeCount      int
-		FilterArgs          domain.FilterChallengesArgs
-		CreateArgs          domain.CreateChallengeArgs
-		Page                int
-		MaxPage             int
-		CreateChallengeForm bool
-		CreatedChallenge    *domain.Challenge
-		FormError           error
-		TimeLayout          string
+		Page       int
+		MaxPage    int
+		TimeLayout string
 	}
 )
 
@@ -65,40 +55,13 @@ func (ins *AdminInstance) PrevPage() int {
 	return ins.Page - 1
 }
 
-func (ins *AdminInstance) updateChallenges(ctx context.Context, h *Handler) error {
-	ins.FilterArgs.Limit = h.app.Cfg.App.DefaultChallengePageLimit
-	ins.FilterArgs.UserID = ins.UserID
-	if ins.Page > 0 {
-		ins.FilterArgs.Offset = (ins.Page - 1) * h.app.Cfg.App.DefaultChallengePageLimit
-	} else {
-		ins.FilterArgs.Offset = 0
-	}
-
-	chs, count, err := h.app.FilterChallenges(ctx, &ins.FilterArgs)
-	if err != nil {
-		return err
-	}
-	ins.Challenges = chs
-	ins.ChallengeCount = count
-	ins.MaxPage = int(math.Ceil(float64(count) / float64(h.app.Cfg.App.DefaultChallengePageLimit)))
-
-	return nil
-}
-
 func (h *Handler) NewAdminInstance(s live.Socket) *AdminInstance {
 	m, ok := s.Assigns().(*AdminInstance)
 	if !ok {
 		return &AdminInstance{
 			CommonInstance: h.NewCommon(s, viewAdmin),
 			Page:           1,
-			FilterArgs: domain.FilterChallengesArgs{
-				Pending:     true,
-				Unpublished: false,
-			},
-			CreateChallengeForm: false,
-			FormError:           errors.New("provide challenge details"),
-			CreatedChallenge:    nil,
-			TimeLayout:          h.app.Cfg.App.DefaultTimeLayout,
+			TimeLayout:     h.app.Cfg.App.DefaultTimeLayout,
 		}
 	}
 
@@ -162,10 +125,6 @@ func (h *Handler) Admin() live.Handler {
 			return nil, nil
 		}
 
-		if err := instance.updateChallenges(ctx, h); err != nil {
-			return instance.withError(err), nil
-		}
-
 		return instance, nil
 	})
 
@@ -173,100 +132,9 @@ func (h *Handler) Admin() live.Handler {
 		page := p.Int(paramAdminPage)
 		instance := h.NewAdminInstance(s)
 		instance.Page = page
-		err := instance.updateChallenges(ctx, h)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-		return instance, nil
-	})
-
-	lvh.HandleEvent(eventAdminSelectPending, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
-		instance := h.NewAdminInstance(s)
-		if instance.FilterArgs.Pending {
-			return instance, nil
-		}
-
-		instance.Page = 1
-		instance.FilterArgs.Pending = true
-		instance.FilterArgs.Unpublished = false
-		instance.CreateChallengeForm = false
-		instance.CreatedChallenge = nil
-		instance.FormError = nil
-
-		err := instance.updateChallenges(ctx, h)
-		return instance.withError(err), nil
-	})
-
-	lvh.HandleEvent(eventAdminSelectUnpublished, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
-		instance := h.NewAdminInstance(s)
-		if instance.FilterArgs.Unpublished {
-			return instance, nil
-		}
-
-		instance.Page = 1
-		instance.FilterArgs.Pending = false
-		instance.FilterArgs.Unpublished = true
-		instance.CreateChallengeForm = false
-		instance.CreatedChallenge = nil
-		instance.FormError = nil
-
-		err := instance.updateChallenges(ctx, h)
-		return instance.withError(err), nil
-	})
-
-	lvh.HandleEvent(eventAdminCreateNew, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
-		instance := h.NewAdminInstance(s)
-
-		instance.FilterArgs.Pending = false
-		instance.FilterArgs.Unpublished = false
-		instance.CreateChallengeForm = true
-		instance.FormError = errors.New("provide challenge details")
-
-		return instance, nil
-	})
-
-	lvh.HandleEvent(eventAdminCreateNewSubmit, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
-		instance := h.NewAdminInstance(s)
-
-		instance.CreateArgs = adminCreateArgsFromParams(p, h.app.Cfg.App.DefaultTimeLayout, instance.UserID)
-		instance.FormError = instance.CreateArgs.Validate()
-		if instance.FormError != nil {
-			return instance, nil
-		}
-
-		challenge, err := h.app.CreateChallengeFromArgs(ctx, instance.CreateArgs, true)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-
-		instance.CreatedChallenge = challenge
-		instance.CreateArgs = domain.CreateChallengeArgs{}
-
-		return instance, nil
-	})
-
-	lvh.HandleEvent(eventAdminCreateNewValidate, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
-		instance := h.NewAdminInstance(s)
-
-		instance.CreateArgs = adminCreateArgsFromParams(p, h.app.Cfg.App.DefaultTimeLayout, instance.UserID)
-		instance.FormError = instance.CreateArgs.Validate()
 
 		return instance, nil
 	})
 
 	return lvh
-}
-
-func adminCreateArgsFromParams(p live.Params, layout string, userID uuid.UUID) domain.CreateChallengeArgs {
-	return domain.CreateChallengeArgs{
-		Type:        domain.ChallengeTypeBool,
-		Outcome:     nil,
-		Content:     p.String(paramAdminCreateNewContent),
-		Description: p.String(paramAdminCreateNewDescription),
-		StartTime:   p.String(paramAdminCreateNewStartTime),
-		EndTime:     p.String(paramAdminCreateNewEndTime),
-		Published:   p.Checkbox(paramAdminCreateNewPublished),
-		TimeLayout:  layout,
-		AuthorID:    userID,
-	}
 }

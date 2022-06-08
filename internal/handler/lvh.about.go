@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/google/uuid"
 
 	"github.com/jfyne/live"
 )
@@ -14,10 +13,7 @@ import (
 type (
 	AboutInstance struct {
 		*CommonInstance
-		Summary                 *domain.SystemSymmary
-		TrueChallengeExample    *domain.Challenge
-		FalseChallengeExample   *domain.Challenge
-		OngoingChallengeExample *domain.Challenge
+		Summary *domain.SystemSymmary
 	}
 )
 
@@ -95,30 +91,6 @@ func (h *Handler) About() live.Handler {
 			return instance.withError(err), nil
 		}
 		instance.Summary = summary
-
-		trueExample, err := h.app.GetRandomTrueChallenges(ctx, 1)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-		if len(trueExample) == 1 {
-			instance.TrueChallengeExample = trueExample[0]
-		}
-
-		falseExample, err := h.app.GetRandomFalseChallenges(ctx, 1)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-		if len(falseExample) == 1 {
-			instance.FalseChallengeExample = falseExample[0]
-		}
-
-		ongoingExample, err := h.app.GetRandomOngoingChallenges(ctx, uuid.Nil, 1)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-		if len(ongoingExample) == 1 {
-			instance.OngoingChallengeExample = ongoingExample[0]
-		}
 
 		return instance, nil
 	})

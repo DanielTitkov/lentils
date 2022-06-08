@@ -4,7 +4,6 @@ package testtranslation
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -14,18 +13,14 @@ const (
 	Label = "test_translation"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreateTime holds the string denoting the create_time field in the database.
-	FieldCreateTime = "create_time"
-	// FieldUpdateTime holds the string denoting the update_time field in the database.
-	FieldUpdateTime = "update_time"
+	// FieldLocale holds the string denoting the locale field in the database.
+	FieldLocale = "locale"
 	// FieldTitle holds the string denoting the title field in the database.
 	FieldTitle = "title"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
 	// FieldInstruction holds the string denoting the instruction field in the database.
 	FieldInstruction = "instruction"
-	// FieldLocale holds the string denoting the locale field in the database.
-	FieldLocale = "locale"
 	// EdgeTest holds the string denoting the test edge name in mutations.
 	EdgeTest = "test"
 	// Table holds the table name of the testtranslation in the database.
@@ -42,12 +37,10 @@ const (
 // Columns holds all SQL columns for testtranslation fields.
 var Columns = []string{
 	FieldID,
-	FieldCreateTime,
-	FieldUpdateTime,
+	FieldLocale,
 	FieldTitle,
 	FieldDescription,
 	FieldInstruction,
-	FieldLocale,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "test_translations"
@@ -72,12 +65,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreateTime holds the default value on creation for the "create_time" field.
-	DefaultCreateTime func() time.Time
-	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
-	DefaultUpdateTime func() time.Time
-	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
-	UpdateDefaultUpdateTime func() time.Time
 	// TitleValidator is a validator for the "title" field. It is called by the builders before save.
 	TitleValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.

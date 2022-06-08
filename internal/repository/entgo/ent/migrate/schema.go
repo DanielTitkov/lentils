@@ -8,106 +8,250 @@ import (
 )
 
 var (
-	// BadgesColumns holds the columns for the "badges" table.
-	BadgesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "type", Type: field.TypeString, Unique: true},
-		{Name: "active", Type: field.TypeBool, Default: true},
-		{Name: "meta", Type: field.TypeJSON, Nullable: true},
-	}
-	// BadgesTable holds the schema information for the "badges" table.
-	BadgesTable = &schema.Table{
-		Name:       "badges",
-		Columns:    BadgesColumns,
-		PrimaryKey: []*schema.Column{BadgesColumns[0]},
-	}
-	// ChallengesColumns holds the columns for the "challenges" table.
-	ChallengesColumns = []*schema.Column{
+	// InterpretationsColumns holds the columns for the "interpretations" table.
+	InterpretationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "content", Type: field.TypeString, Unique: true, Size: 140},
-		{Name: "description", Type: field.TypeString, Nullable: true, Size: 280},
-		{Name: "outcome", Type: field.TypeBool, Nullable: true},
-		{Name: "published", Type: field.TypeBool, Default: true},
-		{Name: "start_time", Type: field.TypeTime},
-		{Name: "end_time", Type: field.TypeTime},
-		{Name: "type", Type: field.TypeEnum, Enums: []string{"bool"}, Default: "bool"},
-		{Name: "user_challenges", Type: field.TypeUUID, Nullable: true},
+		{Name: "range", Type: field.TypeJSON},
+		{Name: "scale_interpretations", Type: field.TypeUUID, Nullable: true},
 	}
-	// ChallengesTable holds the schema information for the "challenges" table.
-	ChallengesTable = &schema.Table{
-		Name:       "challenges",
-		Columns:    ChallengesColumns,
-		PrimaryKey: []*schema.Column{ChallengesColumns[0]},
+	// InterpretationsTable holds the schema information for the "interpretations" table.
+	InterpretationsTable = &schema.Table{
+		Name:       "interpretations",
+		Columns:    InterpretationsColumns,
+		PrimaryKey: []*schema.Column{InterpretationsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "challenges_users_challenges",
-				Columns:    []*schema.Column{ChallengesColumns[10]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
+				Symbol:     "interpretations_scales_interpretations",
+				Columns:    []*schema.Column{InterpretationsColumns[4]},
+				RefColumns: []*schema.Column{ScalesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// PredictionsColumns holds the columns for the "predictions" table.
-	PredictionsColumns = []*schema.Column{
+	// InterpretationTranslationsColumns holds the columns for the "interpretation_translations" table.
+	InterpretationTranslationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
+		{Name: "content", Type: field.TypeString},
+		{Name: "interpretation_translations", Type: field.TypeUUID, Nullable: true},
+	}
+	// InterpretationTranslationsTable holds the schema information for the "interpretation_translations" table.
+	InterpretationTranslationsTable = &schema.Table{
+		Name:       "interpretation_translations",
+		Columns:    InterpretationTranslationsColumns,
+		PrimaryKey: []*schema.Column{InterpretationTranslationsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "interpretation_translations_interpretations_translations",
+				Columns:    []*schema.Column{InterpretationTranslationsColumns[3]},
+				RefColumns: []*schema.Column{InterpretationsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "interpretationtranslation_locale_interpretation_translations",
+				Unique:  true,
+				Columns: []*schema.Column{InterpretationTranslationsColumns[1], InterpretationTranslationsColumns[3]},
+			},
+		},
+	}
+	// ItemsColumns holds the columns for the "items" table.
+	ItemsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "prognosis", Type: field.TypeBool},
-		{Name: "meta", Type: field.TypeJSON, Nullable: true},
-		{Name: "challenge_predictions", Type: field.TypeUUID},
-		{Name: "user_predictions", Type: field.TypeUUID},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "type", Type: field.TypeString},
+		{Name: "steps", Type: field.TypeInt, Default: 2},
 	}
-	// PredictionsTable holds the schema information for the "predictions" table.
-	PredictionsTable = &schema.Table{
-		Name:       "predictions",
-		Columns:    PredictionsColumns,
-		PrimaryKey: []*schema.Column{PredictionsColumns[0]},
+	// ItemsTable holds the schema information for the "items" table.
+	ItemsTable = &schema.Table{
+		Name:       "items",
+		Columns:    ItemsColumns,
+		PrimaryKey: []*schema.Column{ItemsColumns[0]},
+	}
+	// ItemTranslationsColumns holds the columns for the "item_translations" table.
+	ItemTranslationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
+		{Name: "content", Type: field.TypeString},
+		{Name: "item_translations", Type: field.TypeUUID, Nullable: true},
+	}
+	// ItemTranslationsTable holds the schema information for the "item_translations" table.
+	ItemTranslationsTable = &schema.Table{
+		Name:       "item_translations",
+		Columns:    ItemTranslationsColumns,
+		PrimaryKey: []*schema.Column{ItemTranslationsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "predictions_challenges_predictions",
-				Columns:    []*schema.Column{PredictionsColumns[5]},
-				RefColumns: []*schema.Column{ChallengesColumns[0]},
+				Symbol:     "item_translations_items_translations",
+				Columns:    []*schema.Column{ItemTranslationsColumns[3]},
+				RefColumns: []*schema.Column{ItemsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "itemtranslation_locale_item_translations",
+				Unique:  true,
+				Columns: []*schema.Column{ItemTranslationsColumns[1], ItemTranslationsColumns[3]},
+			},
+		},
+	}
+	// QuestionsColumns holds the columns for the "questions" table.
+	QuestionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "type", Type: field.TypeString},
+	}
+	// QuestionsTable holds the schema information for the "questions" table.
+	QuestionsTable = &schema.Table{
+		Name:       "questions",
+		Columns:    QuestionsColumns,
+		PrimaryKey: []*schema.Column{QuestionsColumns[0]},
+	}
+	// QuestionTranslationsColumns holds the columns for the "question_translations" table.
+	QuestionTranslationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
+		{Name: "content", Type: field.TypeString, Nullable: true},
+		{Name: "header_content", Type: field.TypeString, Nullable: true},
+		{Name: "footer_content", Type: field.TypeString, Nullable: true},
+		{Name: "question_translations", Type: field.TypeUUID, Nullable: true},
+	}
+	// QuestionTranslationsTable holds the schema information for the "question_translations" table.
+	QuestionTranslationsTable = &schema.Table{
+		Name:       "question_translations",
+		Columns:    QuestionTranslationsColumns,
+		PrimaryKey: []*schema.Column{QuestionTranslationsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "question_translations_questions_translations",
+				Columns:    []*schema.Column{QuestionTranslationsColumns[5]},
+				RefColumns: []*schema.Column{QuestionsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "questiontranslation_locale_question_translations",
+				Unique:  true,
+				Columns: []*schema.Column{QuestionTranslationsColumns[1], QuestionTranslationsColumns[5]},
+			},
+		},
+	}
+	// ResponsesColumns holds the columns for the "responses" table.
+	ResponsesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "value", Type: field.TypeInt, Default: 0},
+		{Name: "meta", Type: field.TypeJSON, Nullable: true},
+		{Name: "item_responses", Type: field.TypeUUID},
+		{Name: "take_responses", Type: field.TypeUUID},
+	}
+	// ResponsesTable holds the schema information for the "responses" table.
+	ResponsesTable = &schema.Table{
+		Name:       "responses",
+		Columns:    ResponsesColumns,
+		PrimaryKey: []*schema.Column{ResponsesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "responses_items_responses",
+				Columns:    []*schema.Column{ResponsesColumns[5]},
+				RefColumns: []*schema.Column{ItemsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
-				Symbol:     "predictions_users_predictions",
-				Columns:    []*schema.Column{PredictionsColumns[6]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
+				Symbol:     "responses_takes_responses",
+				Columns:    []*schema.Column{ResponsesColumns[6]},
+				RefColumns: []*schema.Column{TakesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 		},
 		Indexes: []*schema.Index{
 			{
-				Name:    "prediction_challenge_predictions_user_predictions",
+				Name:    "response_item_responses_take_responses",
 				Unique:  true,
-				Columns: []*schema.Column{PredictionsColumns[5], PredictionsColumns[6]},
+				Columns: []*schema.Column{ResponsesColumns[5], ResponsesColumns[6]},
 			},
 		},
 	}
-	// ProofsColumns holds the columns for the "proofs" table.
-	ProofsColumns = []*schema.Column{
+	// ScalesColumns holds the columns for the "scales" table.
+	ScalesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "content", Type: field.TypeString, Size: 280},
-		{Name: "link", Type: field.TypeString},
-		{Name: "meta", Type: field.TypeJSON, Nullable: true},
-		{Name: "challenge_proofs", Type: field.TypeUUID},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "global", Type: field.TypeBool, Default: false},
+		{Name: "type", Type: field.TypeEnum, Enums: []string{"sten"}, Default: "sten"},
 	}
-	// ProofsTable holds the schema information for the "proofs" table.
-	ProofsTable = &schema.Table{
-		Name:       "proofs",
-		Columns:    ProofsColumns,
-		PrimaryKey: []*schema.Column{ProofsColumns[0]},
+	// ScalesTable holds the schema information for the "scales" table.
+	ScalesTable = &schema.Table{
+		Name:       "scales",
+		Columns:    ScalesColumns,
+		PrimaryKey: []*schema.Column{ScalesColumns[0]},
+	}
+	// ScaleTranslationsColumns holds the columns for the "scale_translations" table.
+	ScaleTranslationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
+		{Name: "title", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "scale_translations", Type: field.TypeUUID, Nullable: true},
+	}
+	// ScaleTranslationsTable holds the schema information for the "scale_translations" table.
+	ScaleTranslationsTable = &schema.Table{
+		Name:       "scale_translations",
+		Columns:    ScaleTranslationsColumns,
+		PrimaryKey: []*schema.Column{ScaleTranslationsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "proofs_challenges_proofs",
-				Columns:    []*schema.Column{ProofsColumns[6]},
-				RefColumns: []*schema.Column{ChallengesColumns[0]},
+				Symbol:     "scale_translations_scales_translations",
+				Columns:    []*schema.Column{ScaleTranslationsColumns[4]},
+				RefColumns: []*schema.Column{ScalesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "scaletranslation_locale_scale_translations",
+				Unique:  true,
+				Columns: []*schema.Column{ScaleTranslationsColumns[1], ScaleTranslationsColumns[4]},
+			},
+		},
+	}
+	// TakesColumns holds the columns for the "takes" table.
+	TakesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "seed", Type: field.TypeInt64, Default: 1654724209},
+		{Name: "meta", Type: field.TypeJSON, Nullable: true},
+		{Name: "test_takes", Type: field.TypeUUID},
+		{Name: "user_takes", Type: field.TypeUUID},
+	}
+	// TakesTable holds the schema information for the "takes" table.
+	TakesTable = &schema.Table{
+		Name:       "takes",
+		Columns:    TakesColumns,
+		PrimaryKey: []*schema.Column{TakesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "takes_tests_takes",
+				Columns:    []*schema.Column{TakesColumns[5]},
+				RefColumns: []*schema.Column{TestsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "takes_users_takes",
+				Columns:    []*schema.Column{TakesColumns[6]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 		},
@@ -118,34 +262,21 @@ var (
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 100},
-		{Name: "content", Type: field.TypeString, Unique: true, Size: 140},
-		{Name: "description", Type: field.TypeString, Nullable: true, Size: 280},
 		{Name: "published", Type: field.TypeBool, Default: true},
-		{Name: "user_tests", Type: field.TypeUUID, Nullable: true},
 	}
 	// TestsTable holds the schema information for the "tests" table.
 	TestsTable = &schema.Table{
 		Name:       "tests",
 		Columns:    TestsColumns,
 		PrimaryKey: []*schema.Column{TestsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "tests_users_tests",
-				Columns:    []*schema.Column{TestsColumns[7]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
 	}
 	// TestTranslationsColumns holds the columns for the "test_translations" table.
 	TestTranslationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
+		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
 		{Name: "title", Type: field.TypeString, Size: 140},
 		{Name: "description", Type: field.TypeString, Nullable: true},
 		{Name: "instruction", Type: field.TypeString, Nullable: true},
-		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
 		{Name: "test_translations", Type: field.TypeUUID, Nullable: true},
 	}
 	// TestTranslationsTable holds the schema information for the "test_translations" table.
@@ -156,7 +287,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "test_translations_tests_translations",
-				Columns:    []*schema.Column{TestTranslationsColumns[7]},
+				Columns:    []*schema.Column{TestTranslationsColumns[5]},
 				RefColumns: []*schema.Column{TestsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -165,7 +296,7 @@ var (
 			{
 				Name:    "testtranslation_locale_test_translations",
 				Unique:  true,
-				Columns: []*schema.Column{TestTranslationsColumns[6], TestTranslationsColumns[7]},
+				Columns: []*schema.Column{TestTranslationsColumns[1], TestTranslationsColumns[5]},
 			},
 		},
 	}
@@ -222,53 +353,147 @@ var (
 			},
 		},
 	}
-	// UserBadgesColumns holds the columns for the "user_badges" table.
-	UserBadgesColumns = []*schema.Column{
-		{Name: "user_id", Type: field.TypeUUID},
-		{Name: "badge_id", Type: field.TypeInt},
+	// QuestionItemsColumns holds the columns for the "question_items" table.
+	QuestionItemsColumns = []*schema.Column{
+		{Name: "question_id", Type: field.TypeUUID},
+		{Name: "item_id", Type: field.TypeUUID},
 	}
-	// UserBadgesTable holds the schema information for the "user_badges" table.
-	UserBadgesTable = &schema.Table{
-		Name:       "user_badges",
-		Columns:    UserBadgesColumns,
-		PrimaryKey: []*schema.Column{UserBadgesColumns[0], UserBadgesColumns[1]},
+	// QuestionItemsTable holds the schema information for the "question_items" table.
+	QuestionItemsTable = &schema.Table{
+		Name:       "question_items",
+		Columns:    QuestionItemsColumns,
+		PrimaryKey: []*schema.Column{QuestionItemsColumns[0], QuestionItemsColumns[1]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "user_badges_user_id",
-				Columns:    []*schema.Column{UserBadgesColumns[0]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
+				Symbol:     "question_items_question_id",
+				Columns:    []*schema.Column{QuestionItemsColumns[0]},
+				RefColumns: []*schema.Column{QuestionsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "user_badges_badge_id",
-				Columns:    []*schema.Column{UserBadgesColumns[1]},
-				RefColumns: []*schema.Column{BadgesColumns[0]},
+				Symbol:     "question_items_item_id",
+				Columns:    []*schema.Column{QuestionItemsColumns[1]},
+				RefColumns: []*schema.Column{ItemsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// ScaleItemsColumns holds the columns for the "scale_items" table.
+	ScaleItemsColumns = []*schema.Column{
+		{Name: "scale_id", Type: field.TypeUUID},
+		{Name: "item_id", Type: field.TypeUUID},
+	}
+	// ScaleItemsTable holds the schema information for the "scale_items" table.
+	ScaleItemsTable = &schema.Table{
+		Name:       "scale_items",
+		Columns:    ScaleItemsColumns,
+		PrimaryKey: []*schema.Column{ScaleItemsColumns[0], ScaleItemsColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "scale_items_scale_id",
+				Columns:    []*schema.Column{ScaleItemsColumns[0]},
+				RefColumns: []*schema.Column{ScalesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "scale_items_item_id",
+				Columns:    []*schema.Column{ScaleItemsColumns[1]},
+				RefColumns: []*schema.Column{ItemsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// TestQuestionsColumns holds the columns for the "test_questions" table.
+	TestQuestionsColumns = []*schema.Column{
+		{Name: "test_id", Type: field.TypeUUID},
+		{Name: "question_id", Type: field.TypeUUID},
+	}
+	// TestQuestionsTable holds the schema information for the "test_questions" table.
+	TestQuestionsTable = &schema.Table{
+		Name:       "test_questions",
+		Columns:    TestQuestionsColumns,
+		PrimaryKey: []*schema.Column{TestQuestionsColumns[0], TestQuestionsColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "test_questions_test_id",
+				Columns:    []*schema.Column{TestQuestionsColumns[0]},
+				RefColumns: []*schema.Column{TestsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "test_questions_question_id",
+				Columns:    []*schema.Column{TestQuestionsColumns[1]},
+				RefColumns: []*schema.Column{QuestionsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// TestScalesColumns holds the columns for the "test_scales" table.
+	TestScalesColumns = []*schema.Column{
+		{Name: "test_id", Type: field.TypeUUID},
+		{Name: "scale_id", Type: field.TypeUUID},
+	}
+	// TestScalesTable holds the schema information for the "test_scales" table.
+	TestScalesTable = &schema.Table{
+		Name:       "test_scales",
+		Columns:    TestScalesColumns,
+		PrimaryKey: []*schema.Column{TestScalesColumns[0], TestScalesColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "test_scales_test_id",
+				Columns:    []*schema.Column{TestScalesColumns[0]},
+				RefColumns: []*schema.Column{TestsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "test_scales_scale_id",
+				Columns:    []*schema.Column{TestScalesColumns[1]},
+				RefColumns: []*schema.Column{ScalesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		BadgesTable,
-		ChallengesTable,
-		PredictionsTable,
-		ProofsTable,
+		InterpretationsTable,
+		InterpretationTranslationsTable,
+		ItemsTable,
+		ItemTranslationsTable,
+		QuestionsTable,
+		QuestionTranslationsTable,
+		ResponsesTable,
+		ScalesTable,
+		ScaleTranslationsTable,
+		TakesTable,
 		TestsTable,
 		TestTranslationsTable,
 		UsersTable,
 		UserSessionsTable,
-		UserBadgesTable,
+		QuestionItemsTable,
+		ScaleItemsTable,
+		TestQuestionsTable,
+		TestScalesTable,
 	}
 )
 
 func init() {
-	ChallengesTable.ForeignKeys[0].RefTable = UsersTable
-	PredictionsTable.ForeignKeys[0].RefTable = ChallengesTable
-	PredictionsTable.ForeignKeys[1].RefTable = UsersTable
-	ProofsTable.ForeignKeys[0].RefTable = ChallengesTable
-	TestsTable.ForeignKeys[0].RefTable = UsersTable
+	InterpretationsTable.ForeignKeys[0].RefTable = ScalesTable
+	InterpretationTranslationsTable.ForeignKeys[0].RefTable = InterpretationsTable
+	ItemTranslationsTable.ForeignKeys[0].RefTable = ItemsTable
+	QuestionTranslationsTable.ForeignKeys[0].RefTable = QuestionsTable
+	ResponsesTable.ForeignKeys[0].RefTable = ItemsTable
+	ResponsesTable.ForeignKeys[1].RefTable = TakesTable
+	ScaleTranslationsTable.ForeignKeys[0].RefTable = ScalesTable
+	TakesTable.ForeignKeys[0].RefTable = TestsTable
+	TakesTable.ForeignKeys[1].RefTable = UsersTable
 	TestTranslationsTable.ForeignKeys[0].RefTable = TestsTable
 	UserSessionsTable.ForeignKeys[0].RefTable = UsersTable
-	UserBadgesTable.ForeignKeys[0].RefTable = UsersTable
-	UserBadgesTable.ForeignKeys[1].RefTable = BadgesTable
+	QuestionItemsTable.ForeignKeys[0].RefTable = QuestionsTable
+	QuestionItemsTable.ForeignKeys[1].RefTable = ItemsTable
+	ScaleItemsTable.ForeignKeys[0].RefTable = ScalesTable
+	ScaleItemsTable.ForeignKeys[1].RefTable = ItemsTable
+	TestQuestionsTable.ForeignKeys[0].RefTable = TestsTable
+	TestQuestionsTable.ForeignKeys[1].RefTable = QuestionsTable
+	TestScalesTable.ForeignKeys[0].RefTable = TestsTable
+	TestScalesTable.ForeignKeys[1].RefTable = ScalesTable
 }

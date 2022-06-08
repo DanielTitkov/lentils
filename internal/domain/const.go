@@ -1,8 +1,12 @@
 package domain
 
 const (
-	ChallengeTypeBool   = "bool"
-	ChallengeTimeFormat = "2006-01-02"
-	LocaleRu            = "ru"
-	LocaleEn            = "en"
+	// locales
+	LocaleRu = "ru"
+	LocaleEn = "en"
+	// generate questions methods
+	GenerateQuestionsNone     = "none"
+	GenerateQuestionsEachItem = "each-item"
+	// scale types
+	ScaleTypeSten = "sten"
 )

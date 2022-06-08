@@ -32,25 +32,12 @@ const (
 	FieldLocale = "locale"
 	// FieldMeta holds the string denoting the meta field in the database.
 	FieldMeta = "meta"
-	// EdgePredictions holds the string denoting the predictions edge name in mutations.
-	EdgePredictions = "predictions"
 	// EdgeSessions holds the string denoting the sessions edge name in mutations.
 	EdgeSessions = "sessions"
-	// EdgeBadges holds the string denoting the badges edge name in mutations.
-	EdgeBadges = "badges"
-	// EdgeChallenges holds the string denoting the challenges edge name in mutations.
-	EdgeChallenges = "challenges"
-	// EdgeTests holds the string denoting the tests edge name in mutations.
-	EdgeTests = "tests"
+	// EdgeTakes holds the string denoting the takes edge name in mutations.
+	EdgeTakes = "takes"
 	// Table holds the table name of the user in the database.
 	Table = "users"
-	// PredictionsTable is the table that holds the predictions relation/edge.
-	PredictionsTable = "predictions"
-	// PredictionsInverseTable is the table name for the Prediction entity.
-	// It exists in this package in order to avoid circular dependency with the "prediction" package.
-	PredictionsInverseTable = "predictions"
-	// PredictionsColumn is the table column denoting the predictions relation/edge.
-	PredictionsColumn = "user_predictions"
 	// SessionsTable is the table that holds the sessions relation/edge.
 	SessionsTable = "user_sessions"
 	// SessionsInverseTable is the table name for the UserSession entity.
@@ -58,25 +45,13 @@ const (
 	SessionsInverseTable = "user_sessions"
 	// SessionsColumn is the table column denoting the sessions relation/edge.
 	SessionsColumn = "user_sessions"
-	// BadgesTable is the table that holds the badges relation/edge. The primary key declared below.
-	BadgesTable = "user_badges"
-	// BadgesInverseTable is the table name for the Badge entity.
-	// It exists in this package in order to avoid circular dependency with the "badge" package.
-	BadgesInverseTable = "badges"
-	// ChallengesTable is the table that holds the challenges relation/edge.
-	ChallengesTable = "challenges"
-	// ChallengesInverseTable is the table name for the Challenge entity.
-	// It exists in this package in order to avoid circular dependency with the "challenge" package.
-	ChallengesInverseTable = "challenges"
-	// ChallengesColumn is the table column denoting the challenges relation/edge.
-	ChallengesColumn = "user_challenges"
-	// TestsTable is the table that holds the tests relation/edge.
-	TestsTable = "tests"
-	// TestsInverseTable is the table name for the Test entity.
-	// It exists in this package in order to avoid circular dependency with the "test" package.
-	TestsInverseTable = "tests"
-	// TestsColumn is the table column denoting the tests relation/edge.
-	TestsColumn = "user_tests"
+	// TakesTable is the table that holds the takes relation/edge.
+	TakesTable = "takes"
+	// TakesInverseTable is the table name for the Take entity.
+	// It exists in this package in order to avoid circular dependency with the "take" package.
+	TakesInverseTable = "takes"
+	// TakesColumn is the table column denoting the takes relation/edge.
+	TakesColumn = "user_takes"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -92,12 +67,6 @@ var Columns = []string{
 	FieldLocale,
 	FieldMeta,
 }
-
-var (
-	// BadgesPrimaryKey and BadgesColumn2 are the table columns denoting the
-	// primary key for the badges relation (M2M).
-	BadgesPrimaryKey = []string{"user_id", "badge_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {

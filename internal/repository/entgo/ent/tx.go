@@ -12,14 +12,26 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
-	// Badge is the client for interacting with the Badge builders.
-	Badge *BadgeClient
-	// Challenge is the client for interacting with the Challenge builders.
-	Challenge *ChallengeClient
-	// Prediction is the client for interacting with the Prediction builders.
-	Prediction *PredictionClient
-	// Proof is the client for interacting with the Proof builders.
-	Proof *ProofClient
+	// Interpretation is the client for interacting with the Interpretation builders.
+	Interpretation *InterpretationClient
+	// InterpretationTranslation is the client for interacting with the InterpretationTranslation builders.
+	InterpretationTranslation *InterpretationTranslationClient
+	// Item is the client for interacting with the Item builders.
+	Item *ItemClient
+	// ItemTranslation is the client for interacting with the ItemTranslation builders.
+	ItemTranslation *ItemTranslationClient
+	// Question is the client for interacting with the Question builders.
+	Question *QuestionClient
+	// QuestionTranslation is the client for interacting with the QuestionTranslation builders.
+	QuestionTranslation *QuestionTranslationClient
+	// Response is the client for interacting with the Response builders.
+	Response *ResponseClient
+	// Scale is the client for interacting with the Scale builders.
+	Scale *ScaleClient
+	// ScaleTranslation is the client for interacting with the ScaleTranslation builders.
+	ScaleTranslation *ScaleTranslationClient
+	// Take is the client for interacting with the Take builders.
+	Take *TakeClient
 	// Test is the client for interacting with the Test builders.
 	Test *TestClient
 	// TestTranslation is the client for interacting with the TestTranslation builders.
@@ -163,10 +175,16 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
-	tx.Badge = NewBadgeClient(tx.config)
-	tx.Challenge = NewChallengeClient(tx.config)
-	tx.Prediction = NewPredictionClient(tx.config)
-	tx.Proof = NewProofClient(tx.config)
+	tx.Interpretation = NewInterpretationClient(tx.config)
+	tx.InterpretationTranslation = NewInterpretationTranslationClient(tx.config)
+	tx.Item = NewItemClient(tx.config)
+	tx.ItemTranslation = NewItemTranslationClient(tx.config)
+	tx.Question = NewQuestionClient(tx.config)
+	tx.QuestionTranslation = NewQuestionTranslationClient(tx.config)
+	tx.Response = NewResponseClient(tx.config)
+	tx.Scale = NewScaleClient(tx.config)
+	tx.ScaleTranslation = NewScaleTranslationClient(tx.config)
+	tx.Take = NewTakeClient(tx.config)
 	tx.Test = NewTestClient(tx.config)
 	tx.TestTranslation = NewTestTranslationClient(tx.config)
 	tx.User = NewUserClient(tx.config)
@@ -180,7 +198,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Badge.QueryXXX(), the query will be executed
+// applies a query, for example: Interpretation.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

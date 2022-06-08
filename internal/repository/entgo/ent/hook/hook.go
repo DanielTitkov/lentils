@@ -9,54 +9,132 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 )
 
-// The BadgeFunc type is an adapter to allow the use of ordinary
-// function as Badge mutator.
-type BadgeFunc func(context.Context, *ent.BadgeMutation) (ent.Value, error)
+// The InterpretationFunc type is an adapter to allow the use of ordinary
+// function as Interpretation mutator.
+type InterpretationFunc func(context.Context, *ent.InterpretationMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f BadgeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.BadgeMutation)
+func (f InterpretationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.InterpretationMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BadgeMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.InterpretationMutation", m)
 	}
 	return f(ctx, mv)
 }
 
-// The ChallengeFunc type is an adapter to allow the use of ordinary
-// function as Challenge mutator.
-type ChallengeFunc func(context.Context, *ent.ChallengeMutation) (ent.Value, error)
+// The InterpretationTranslationFunc type is an adapter to allow the use of ordinary
+// function as InterpretationTranslation mutator.
+type InterpretationTranslationFunc func(context.Context, *ent.InterpretationTranslationMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f ChallengeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.ChallengeMutation)
+func (f InterpretationTranslationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.InterpretationTranslationMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ChallengeMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.InterpretationTranslationMutation", m)
 	}
 	return f(ctx, mv)
 }
 
-// The PredictionFunc type is an adapter to allow the use of ordinary
-// function as Prediction mutator.
-type PredictionFunc func(context.Context, *ent.PredictionMutation) (ent.Value, error)
+// The ItemFunc type is an adapter to allow the use of ordinary
+// function as Item mutator.
+type ItemFunc func(context.Context, *ent.ItemMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f PredictionFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.PredictionMutation)
+func (f ItemFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ItemMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PredictionMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ItemMutation", m)
 	}
 	return f(ctx, mv)
 }
 
-// The ProofFunc type is an adapter to allow the use of ordinary
-// function as Proof mutator.
-type ProofFunc func(context.Context, *ent.ProofMutation) (ent.Value, error)
+// The ItemTranslationFunc type is an adapter to allow the use of ordinary
+// function as ItemTranslation mutator.
+type ItemTranslationFunc func(context.Context, *ent.ItemTranslationMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f ProofFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.ProofMutation)
+func (f ItemTranslationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ItemTranslationMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ProofMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ItemTranslationMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The QuestionFunc type is an adapter to allow the use of ordinary
+// function as Question mutator.
+type QuestionFunc func(context.Context, *ent.QuestionMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f QuestionFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.QuestionMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.QuestionMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The QuestionTranslationFunc type is an adapter to allow the use of ordinary
+// function as QuestionTranslation mutator.
+type QuestionTranslationFunc func(context.Context, *ent.QuestionTranslationMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f QuestionTranslationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.QuestionTranslationMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.QuestionTranslationMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The ResponseFunc type is an adapter to allow the use of ordinary
+// function as Response mutator.
+type ResponseFunc func(context.Context, *ent.ResponseMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ResponseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ResponseMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ResponseMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The ScaleFunc type is an adapter to allow the use of ordinary
+// function as Scale mutator.
+type ScaleFunc func(context.Context, *ent.ScaleMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ScaleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ScaleMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ScaleMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The ScaleTranslationFunc type is an adapter to allow the use of ordinary
+// function as ScaleTranslation mutator.
+type ScaleTranslationFunc func(context.Context, *ent.ScaleTranslationMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ScaleTranslationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ScaleTranslationMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ScaleTranslationMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The TakeFunc type is an adapter to allow the use of ordinary
+// function as Take mutator.
+type TakeFunc func(context.Context, *ent.TakeMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TakeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.TakeMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TakeMutation", m)
 	}
 	return f(ctx, mv)
 }

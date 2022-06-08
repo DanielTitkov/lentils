@@ -8,10 +8,16 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/badge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/challenge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/prediction"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/proof"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
@@ -36,14 +42,20 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		badge.Table:           badge.ValidColumn,
-		challenge.Table:       challenge.ValidColumn,
-		prediction.Table:      prediction.ValidColumn,
-		proof.Table:           proof.ValidColumn,
-		test.Table:            test.ValidColumn,
-		testtranslation.Table: testtranslation.ValidColumn,
-		user.Table:            user.ValidColumn,
-		usersession.Table:     usersession.ValidColumn,
+		interpretation.Table:            interpretation.ValidColumn,
+		interpretationtranslation.Table: interpretationtranslation.ValidColumn,
+		item.Table:                      item.ValidColumn,
+		itemtranslation.Table:           itemtranslation.ValidColumn,
+		question.Table:                  question.ValidColumn,
+		questiontranslation.Table:       questiontranslation.ValidColumn,
+		response.Table:                  response.ValidColumn,
+		scale.Table:                     scale.ValidColumn,
+		scaletranslation.Table:          scaletranslation.ValidColumn,
+		take.Table:                      take.ValidColumn,
+		test.Table:                      test.ValidColumn,
+		testtranslation.Table:           testtranslation.ValidColumn,
+		user.Table:                      user.ValidColumn,
+		usersession.Table:               usersession.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

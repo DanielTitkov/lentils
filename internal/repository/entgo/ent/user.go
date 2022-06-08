@@ -43,64 +43,31 @@ type User struct {
 
 // UserEdges holds the relations/edges for other nodes in the graph.
 type UserEdges struct {
-	// Predictions holds the value of the predictions edge.
-	Predictions []*Prediction `json:"predictions,omitempty"`
 	// Sessions holds the value of the sessions edge.
 	Sessions []*UserSession `json:"sessions,omitempty"`
-	// Badges holds the value of the badges edge.
-	Badges []*Badge `json:"badges,omitempty"`
-	// Challenges holds the value of the challenges edge.
-	Challenges []*Challenge `json:"challenges,omitempty"`
-	// Tests holds the value of the tests edge.
-	Tests []*Test `json:"tests,omitempty"`
+	// Takes holds the value of the takes edge.
+	Takes []*Take `json:"takes,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [5]bool
-}
-
-// PredictionsOrErr returns the Predictions value or an error if the edge
-// was not loaded in eager-loading.
-func (e UserEdges) PredictionsOrErr() ([]*Prediction, error) {
-	if e.loadedTypes[0] {
-		return e.Predictions, nil
-	}
-	return nil, &NotLoadedError{edge: "predictions"}
+	loadedTypes [2]bool
 }
 
 // SessionsOrErr returns the Sessions value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) SessionsOrErr() ([]*UserSession, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[0] {
 		return e.Sessions, nil
 	}
 	return nil, &NotLoadedError{edge: "sessions"}
 }
 
-// BadgesOrErr returns the Badges value or an error if the edge
+// TakesOrErr returns the Takes value or an error if the edge
 // was not loaded in eager-loading.
-func (e UserEdges) BadgesOrErr() ([]*Badge, error) {
-	if e.loadedTypes[2] {
-		return e.Badges, nil
+func (e UserEdges) TakesOrErr() ([]*Take, error) {
+	if e.loadedTypes[1] {
+		return e.Takes, nil
 	}
-	return nil, &NotLoadedError{edge: "badges"}
-}
-
-// ChallengesOrErr returns the Challenges value or an error if the edge
-// was not loaded in eager-loading.
-func (e UserEdges) ChallengesOrErr() ([]*Challenge, error) {
-	if e.loadedTypes[3] {
-		return e.Challenges, nil
-	}
-	return nil, &NotLoadedError{edge: "challenges"}
-}
-
-// TestsOrErr returns the Tests value or an error if the edge
-// was not loaded in eager-loading.
-func (e UserEdges) TestsOrErr() ([]*Test, error) {
-	if e.loadedTypes[4] {
-		return e.Tests, nil
-	}
-	return nil, &NotLoadedError{edge: "tests"}
+	return nil, &NotLoadedError{edge: "takes"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -200,29 +167,14 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 	return nil
 }
 
-// QueryPredictions queries the "predictions" edge of the User entity.
-func (u *User) QueryPredictions() *PredictionQuery {
-	return (&UserClient{config: u.config}).QueryPredictions(u)
-}
-
 // QuerySessions queries the "sessions" edge of the User entity.
 func (u *User) QuerySessions() *UserSessionQuery {
 	return (&UserClient{config: u.config}).QuerySessions(u)
 }
 
-// QueryBadges queries the "badges" edge of the User entity.
-func (u *User) QueryBadges() *BadgeQuery {
-	return (&UserClient{config: u.config}).QueryBadges(u)
-}
-
-// QueryChallenges queries the "challenges" edge of the User entity.
-func (u *User) QueryChallenges() *ChallengeQuery {
-	return (&UserClient{config: u.config}).QueryChallenges(u)
-}
-
-// QueryTests queries the "tests" edge of the User entity.
-func (u *User) QueryTests() *TestQuery {
-	return (&UserClient{config: u.config}).QueryTests(u)
+// QueryTakes queries the "takes" edge of the User entity.
+func (u *User) QueryTakes() *TakeQuery {
+	return (&UserClient{config: u.config}).QueryTakes(u)
 }
 
 // Update returns a builder for updating this User.

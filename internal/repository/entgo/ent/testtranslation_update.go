@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -27,12 +26,6 @@ type TestTranslationUpdate struct {
 // Where appends a list predicates to the TestTranslationUpdate builder.
 func (ttu *TestTranslationUpdate) Where(ps ...predicate.TestTranslation) *TestTranslationUpdate {
 	ttu.mutation.Where(ps...)
-	return ttu
-}
-
-// SetUpdateTime sets the "update_time" field.
-func (ttu *TestTranslationUpdate) SetUpdateTime(t time.Time) *TestTranslationUpdate {
-	ttu.mutation.SetUpdateTime(t)
 	return ttu
 }
 
@@ -82,12 +75,6 @@ func (ttu *TestTranslationUpdate) ClearInstruction() *TestTranslationUpdate {
 	return ttu
 }
 
-// SetLocale sets the "locale" field.
-func (ttu *TestTranslationUpdate) SetLocale(t testtranslation.Locale) *TestTranslationUpdate {
-	ttu.mutation.SetLocale(t)
-	return ttu
-}
-
 // SetTestID sets the "test" edge to the Test entity by ID.
 func (ttu *TestTranslationUpdate) SetTestID(id uuid.UUID) *TestTranslationUpdate {
 	ttu.mutation.SetTestID(id)
@@ -124,7 +111,6 @@ func (ttu *TestTranslationUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
-	ttu.defaults()
 	if len(ttu.hooks) == 0 {
 		if err = ttu.check(); err != nil {
 			return 0, err
@@ -179,24 +165,11 @@ func (ttu *TestTranslationUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ttu *TestTranslationUpdate) defaults() {
-	if _, ok := ttu.mutation.UpdateTime(); !ok {
-		v := testtranslation.UpdateDefaultUpdateTime()
-		ttu.mutation.SetUpdateTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ttu *TestTranslationUpdate) check() error {
 	if v, ok := ttu.mutation.Title(); ok {
 		if err := testtranslation.TitleValidator(v); err != nil {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "TestTranslation.title": %w`, err)}
-		}
-	}
-	if v, ok := ttu.mutation.Locale(); ok {
-		if err := testtranslation.LocaleValidator(v); err != nil {
-			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "TestTranslation.locale": %w`, err)}
 		}
 	}
 	return nil
@@ -219,13 +192,6 @@ func (ttu *TestTranslationUpdate) sqlSave(ctx context.Context) (n int, err error
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := ttu.mutation.UpdateTime(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: testtranslation.FieldUpdateTime,
-		})
 	}
 	if value, ok := ttu.mutation.Title(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -258,13 +224,6 @@ func (ttu *TestTranslationUpdate) sqlSave(ctx context.Context) (n int, err error
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: testtranslation.FieldInstruction,
-		})
-	}
-	if value, ok := ttu.mutation.Locale(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
-			Value:  value,
-			Column: testtranslation.FieldLocale,
 		})
 	}
 	if ttu.mutation.TestCleared() {
@@ -321,12 +280,6 @@ type TestTranslationUpdateOne struct {
 	mutation *TestTranslationMutation
 }
 
-// SetUpdateTime sets the "update_time" field.
-func (ttuo *TestTranslationUpdateOne) SetUpdateTime(t time.Time) *TestTranslationUpdateOne {
-	ttuo.mutation.SetUpdateTime(t)
-	return ttuo
-}
-
 // SetTitle sets the "title" field.
 func (ttuo *TestTranslationUpdateOne) SetTitle(s string) *TestTranslationUpdateOne {
 	ttuo.mutation.SetTitle(s)
@@ -373,12 +326,6 @@ func (ttuo *TestTranslationUpdateOne) ClearInstruction() *TestTranslationUpdateO
 	return ttuo
 }
 
-// SetLocale sets the "locale" field.
-func (ttuo *TestTranslationUpdateOne) SetLocale(t testtranslation.Locale) *TestTranslationUpdateOne {
-	ttuo.mutation.SetLocale(t)
-	return ttuo
-}
-
 // SetTestID sets the "test" edge to the Test entity by ID.
 func (ttuo *TestTranslationUpdateOne) SetTestID(id uuid.UUID) *TestTranslationUpdateOne {
 	ttuo.mutation.SetTestID(id)
@@ -422,7 +369,6 @@ func (ttuo *TestTranslationUpdateOne) Save(ctx context.Context) (*TestTranslatio
 		err  error
 		node *TestTranslation
 	)
-	ttuo.defaults()
 	if len(ttuo.hooks) == 0 {
 		if err = ttuo.check(); err != nil {
 			return nil, err
@@ -477,24 +423,11 @@ func (ttuo *TestTranslationUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ttuo *TestTranslationUpdateOne) defaults() {
-	if _, ok := ttuo.mutation.UpdateTime(); !ok {
-		v := testtranslation.UpdateDefaultUpdateTime()
-		ttuo.mutation.SetUpdateTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ttuo *TestTranslationUpdateOne) check() error {
 	if v, ok := ttuo.mutation.Title(); ok {
 		if err := testtranslation.TitleValidator(v); err != nil {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "TestTranslation.title": %w`, err)}
-		}
-	}
-	if v, ok := ttuo.mutation.Locale(); ok {
-		if err := testtranslation.LocaleValidator(v); err != nil {
-			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "TestTranslation.locale": %w`, err)}
 		}
 	}
 	return nil
@@ -535,13 +468,6 @@ func (ttuo *TestTranslationUpdateOne) sqlSave(ctx context.Context) (_node *TestT
 			}
 		}
 	}
-	if value, ok := ttuo.mutation.UpdateTime(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: testtranslation.FieldUpdateTime,
-		})
-	}
 	if value, ok := ttuo.mutation.Title(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -573,13 +499,6 @@ func (ttuo *TestTranslationUpdateOne) sqlSave(ctx context.Context) (_node *TestT
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: testtranslation.FieldInstruction,
-		})
-	}
-	if value, ok := ttuo.mutation.Locale(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
-			Value:  value,
-			Column: testtranslation.FieldLocale,
 		})
 	}
 	if ttuo.mutation.TestCleared() {

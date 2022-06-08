@@ -1,35 +1,61 @@
 package domain
 
-import (
-	"github.com/google/uuid"
-)
-
 type (
-	CreateChallengeArgs struct {
-		Type        string    `json:"type"`
-		Content     string    `json:"content"`
-		Description string    `json:"description"`
-		StartTime   string    `json:"startTime"`
-		EndTime     string    `json:"endTime"`
-		Published   bool      `json:"published"`
-		TimeLayout  string    `json:"timeLayout"`
-		Outcome     *bool     `json:"outcome"`
-		AuthorID    uuid.UUID `json:"authorID"`
+	CreateTestArgs struct {
+		Code         string
+		Published    bool
+		Generate     GenerateQuestionsArgs
+		Translations []TestTranslation
+		Questions    []CreateQuestionArgs
+		Scales       []CreateScaleArgs
 	}
-	CreatePredictionFromPresetArgs struct {
-		UserEmail        string `json:"userEmail"`
-		ChallengeContent string `json:"challengeContent"`
-		Prognosis        bool   `json:"prognosis"`
+
+	GenerateQuestionsArgs struct {
+		Method   string
+		Template CreateQuestionArgs
 	}
-	FilterChallengesArgs struct {
-		UserID      uuid.UUID
-		AuthorID    uuid.UUID
-		Unvoted     bool
-		Ongoing     bool
-		Pending     bool
-		Unpublished bool
-		Finished    bool
-		Limit       int
-		Offset      int
+
+	TestTranslation struct {
+		Locale      string
+		Title       string
+		Description string
+		Instruction string
+	}
+
+	CreateQuestionArgs struct {
+		Type         string
+		Translations []QuestionTranslation
+	}
+
+	QuestionTranslation struct {
+		Locale        string
+		Content       string
+		HeaderContent string
+		FooterConent  string
+	}
+
+	CreateScaleArgs struct {
+		Type         string
+		Code         string
+		Translations []ScaleTranslation
+		Items        []CreateItemArgs
+	}
+
+	ScaleTranslation struct {
+		Locale      string
+		Title       string
+		Description string
+	}
+
+	CreateItemArgs struct {
+		Code         string
+		Steps        int
+		Reverse      bool
+		Translations []ItemTranslation
+	}
+
+	ItemTranslation struct {
+		Locale  string
+		Content string
 	}
 )

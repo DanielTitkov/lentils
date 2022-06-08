@@ -5,7 +5,6 @@ package ent
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
@@ -18,18 +17,14 @@ type TestTranslation struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
-	// CreateTime holds the value of the "create_time" field.
-	CreateTime time.Time `json:"create_time,omitempty"`
-	// UpdateTime holds the value of the "update_time" field.
-	UpdateTime time.Time `json:"update_time,omitempty"`
+	// Locale holds the value of the "locale" field.
+	Locale testtranslation.Locale `json:"locale,omitempty"`
 	// Title holds the value of the "title" field.
 	Title string `json:"title,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
 	// Instruction holds the value of the "instruction" field.
 	Instruction string `json:"instruction,omitempty"`
-	// Locale holds the value of the "locale" field.
-	Locale testtranslation.Locale `json:"locale,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TestTranslationQuery when eager-loading is set.
 	Edges             TestTranslationEdges `json:"edges"`
@@ -64,10 +59,8 @@ func (*TestTranslation) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case testtranslation.FieldTitle, testtranslation.FieldDescription, testtranslation.FieldInstruction, testtranslation.FieldLocale:
+		case testtranslation.FieldLocale, testtranslation.FieldTitle, testtranslation.FieldDescription, testtranslation.FieldInstruction:
 			values[i] = new(sql.NullString)
-		case testtranslation.FieldCreateTime, testtranslation.FieldUpdateTime:
-			values[i] = new(sql.NullTime)
 		case testtranslation.FieldID:
 			values[i] = new(uuid.UUID)
 		case testtranslation.ForeignKeys[0]: // test_translations
@@ -93,17 +86,11 @@ func (tt *TestTranslation) assignValues(columns []string, values []interface{}) 
 			} else if value != nil {
 				tt.ID = *value
 			}
-		case testtranslation.FieldCreateTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field create_time", values[i])
+		case testtranslation.FieldLocale:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field locale", values[i])
 			} else if value.Valid {
-				tt.CreateTime = value.Time
-			}
-		case testtranslation.FieldUpdateTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field update_time", values[i])
-			} else if value.Valid {
-				tt.UpdateTime = value.Time
+				tt.Locale = testtranslation.Locale(value.String)
 			}
 		case testtranslation.FieldTitle:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -122,12 +109,6 @@ func (tt *TestTranslation) assignValues(columns []string, values []interface{}) 
 				return fmt.Errorf("unexpected type %T for field instruction", values[i])
 			} else if value.Valid {
 				tt.Instruction = value.String
-			}
-		case testtranslation.FieldLocale:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field locale", values[i])
-			} else if value.Valid {
-				tt.Locale = testtranslation.Locale(value.String)
 			}
 		case testtranslation.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -169,18 +150,14 @@ func (tt *TestTranslation) String() string {
 	var builder strings.Builder
 	builder.WriteString("TestTranslation(")
 	builder.WriteString(fmt.Sprintf("id=%v", tt.ID))
-	builder.WriteString(", create_time=")
-	builder.WriteString(tt.CreateTime.Format(time.ANSIC))
-	builder.WriteString(", update_time=")
-	builder.WriteString(tt.UpdateTime.Format(time.ANSIC))
+	builder.WriteString(", locale=")
+	builder.WriteString(fmt.Sprintf("%v", tt.Locale))
 	builder.WriteString(", title=")
 	builder.WriteString(tt.Title)
 	builder.WriteString(", description=")
 	builder.WriteString(tt.Description)
 	builder.WriteString(", instruction=")
 	builder.WriteString(tt.Instruction)
-	builder.WriteString(", locale=")
-	builder.WriteString(fmt.Sprintf("%v", tt.Locale))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -32,11 +32,9 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		// has
-		edge.To("predictions", Prediction.Type),
+		// edge.To("tests", Test.Type), // not needed for now
 		edge.To("sessions", UserSession.Type),
-		edge.To("badges", Badge.Type),
-		edge.To("challenges", Challenge.Type),
-		edge.To("tests", Test.Type),
+		edge.To("takes", Take.Type),
 	}
 }
 

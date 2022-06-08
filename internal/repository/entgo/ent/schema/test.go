@@ -6,7 +6,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
-	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/google/uuid"
 )
 
@@ -20,8 +19,6 @@ func (Test) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.String("code").NotEmpty().MaxLen(100).Unique(),
-		field.String("content").NotEmpty().MaxLen(140).Unique(),
-		field.String("description").Optional().MaxLen(280),
 		field.Bool("published").Default(true),
 	}
 }
@@ -30,9 +27,12 @@ func (Test) Fields() []ent.Field {
 func (Test) Edges() []ent.Edge {
 	return []ent.Edge{
 		// has
+		edge.To("takes", Take.Type),
+		edge.To("questions", Question.Type),
 		edge.To("translations", TestTranslation.Type),
+		edge.To("scales", Scale.Type),
 		// belongs to
-		edge.From("author", User.Type).Ref("tests").Unique(),
+		// edge.From("author", User.Type).Ref("tests").Unique(), // not needed for now
 	}
 }
 
@@ -56,10 +56,6 @@ func (TestTranslation) Fields() []ent.Field {
 		field.String("title").NotEmpty().MaxLen(140),
 		field.String("description").Optional(),
 		field.String("instruction").Optional(),
-		field.Enum("locale").Values(
-			domain.LocaleEn,
-			domain.LocaleRu,
-		),
 	}
 }
 
@@ -80,6 +76,6 @@ func (TestTranslation) Indexes() []ent.Index {
 
 func (TestTranslation) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.Time{},
+		LocaleMixin{}, // holds locale names
 	}
 }

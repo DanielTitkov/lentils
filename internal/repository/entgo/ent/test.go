@@ -9,7 +9,6 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/google/uuid"
 )
 
@@ -24,50 +23,62 @@ type Test struct {
 	UpdateTime time.Time `json:"update_time,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
-	// Content holds the value of the "content" field.
-	Content string `json:"content,omitempty"`
-	// Description holds the value of the "description" field.
-	Description string `json:"description,omitempty"`
 	// Published holds the value of the "published" field.
 	Published bool `json:"published,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TestQuery when eager-loading is set.
-	Edges      TestEdges `json:"edges"`
-	user_tests *uuid.UUID
+	Edges TestEdges `json:"edges"`
 }
 
 // TestEdges holds the relations/edges for other nodes in the graph.
 type TestEdges struct {
+	// Takes holds the value of the takes edge.
+	Takes []*Take `json:"takes,omitempty"`
+	// Questions holds the value of the questions edge.
+	Questions []*Question `json:"questions,omitempty"`
 	// Translations holds the value of the translations edge.
 	Translations []*TestTranslation `json:"translations,omitempty"`
-	// Author holds the value of the author edge.
-	Author *User `json:"author,omitempty"`
+	// Scales holds the value of the scales edge.
+	Scales []*Scale `json:"scales,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [4]bool
+}
+
+// TakesOrErr returns the Takes value or an error if the edge
+// was not loaded in eager-loading.
+func (e TestEdges) TakesOrErr() ([]*Take, error) {
+	if e.loadedTypes[0] {
+		return e.Takes, nil
+	}
+	return nil, &NotLoadedError{edge: "takes"}
+}
+
+// QuestionsOrErr returns the Questions value or an error if the edge
+// was not loaded in eager-loading.
+func (e TestEdges) QuestionsOrErr() ([]*Question, error) {
+	if e.loadedTypes[1] {
+		return e.Questions, nil
+	}
+	return nil, &NotLoadedError{edge: "questions"}
 }
 
 // TranslationsOrErr returns the Translations value or an error if the edge
 // was not loaded in eager-loading.
 func (e TestEdges) TranslationsOrErr() ([]*TestTranslation, error) {
-	if e.loadedTypes[0] {
+	if e.loadedTypes[2] {
 		return e.Translations, nil
 	}
 	return nil, &NotLoadedError{edge: "translations"}
 }
 
-// AuthorOrErr returns the Author value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e TestEdges) AuthorOrErr() (*User, error) {
-	if e.loadedTypes[1] {
-		if e.Author == nil {
-			// The edge author was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: user.Label}
-		}
-		return e.Author, nil
+// ScalesOrErr returns the Scales value or an error if the edge
+// was not loaded in eager-loading.
+func (e TestEdges) ScalesOrErr() ([]*Scale, error) {
+	if e.loadedTypes[3] {
+		return e.Scales, nil
 	}
-	return nil, &NotLoadedError{edge: "author"}
+	return nil, &NotLoadedError{edge: "scales"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -77,14 +88,12 @@ func (*Test) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case test.FieldPublished:
 			values[i] = new(sql.NullBool)
-		case test.FieldCode, test.FieldContent, test.FieldDescription:
+		case test.FieldCode:
 			values[i] = new(sql.NullString)
 		case test.FieldCreateTime, test.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
 		case test.FieldID:
 			values[i] = new(uuid.UUID)
-		case test.ForeignKeys[0]: // user_tests
-			values[i] = &sql.NullScanner{S: new(uuid.UUID)}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Test", columns[i])
 		}
@@ -124,34 +133,25 @@ func (t *Test) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				t.Code = value.String
 			}
-		case test.FieldContent:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field content", values[i])
-			} else if value.Valid {
-				t.Content = value.String
-			}
-		case test.FieldDescription:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field description", values[i])
-			} else if value.Valid {
-				t.Description = value.String
-			}
 		case test.FieldPublished:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field published", values[i])
 			} else if value.Valid {
 				t.Published = value.Bool
 			}
-		case test.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullScanner); !ok {
-				return fmt.Errorf("unexpected type %T for field user_tests", values[i])
-			} else if value.Valid {
-				t.user_tests = new(uuid.UUID)
-				*t.user_tests = *value.S.(*uuid.UUID)
-			}
 		}
 	}
 	return nil
+}
+
+// QueryTakes queries the "takes" edge of the Test entity.
+func (t *Test) QueryTakes() *TakeQuery {
+	return (&TestClient{config: t.config}).QueryTakes(t)
+}
+
+// QueryQuestions queries the "questions" edge of the Test entity.
+func (t *Test) QueryQuestions() *QuestionQuery {
+	return (&TestClient{config: t.config}).QueryQuestions(t)
 }
 
 // QueryTranslations queries the "translations" edge of the Test entity.
@@ -159,9 +159,9 @@ func (t *Test) QueryTranslations() *TestTranslationQuery {
 	return (&TestClient{config: t.config}).QueryTranslations(t)
 }
 
-// QueryAuthor queries the "author" edge of the Test entity.
-func (t *Test) QueryAuthor() *UserQuery {
-	return (&TestClient{config: t.config}).QueryAuthor(t)
+// QueryScales queries the "scales" edge of the Test entity.
+func (t *Test) QueryScales() *ScaleQuery {
+	return (&TestClient{config: t.config}).QueryScales(t)
 }
 
 // Update returns a builder for updating this Test.
@@ -193,10 +193,6 @@ func (t *Test) String() string {
 	builder.WriteString(t.UpdateTime.Format(time.ANSIC))
 	builder.WriteString(", code=")
 	builder.WriteString(t.Code)
-	builder.WriteString(", content=")
-	builder.WriteString(t.Content)
-	builder.WriteString(", description=")
-	builder.WriteString(t.Description)
 	builder.WriteString(", published=")
 	builder.WriteString(fmt.Sprintf("%v", t.Published))
 	builder.WriteByte(')')

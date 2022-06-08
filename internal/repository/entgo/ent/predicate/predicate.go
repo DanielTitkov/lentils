@@ -6,17 +6,35 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// Badge is the predicate function for badge builders.
-type Badge func(*sql.Selector)
+// Interpretation is the predicate function for interpretation builders.
+type Interpretation func(*sql.Selector)
 
-// Challenge is the predicate function for challenge builders.
-type Challenge func(*sql.Selector)
+// InterpretationTranslation is the predicate function for interpretationtranslation builders.
+type InterpretationTranslation func(*sql.Selector)
 
-// Prediction is the predicate function for prediction builders.
-type Prediction func(*sql.Selector)
+// Item is the predicate function for item builders.
+type Item func(*sql.Selector)
 
-// Proof is the predicate function for proof builders.
-type Proof func(*sql.Selector)
+// ItemTranslation is the predicate function for itemtranslation builders.
+type ItemTranslation func(*sql.Selector)
+
+// Question is the predicate function for question builders.
+type Question func(*sql.Selector)
+
+// QuestionTranslation is the predicate function for questiontranslation builders.
+type QuestionTranslation func(*sql.Selector)
+
+// Response is the predicate function for response builders.
+type Response func(*sql.Selector)
+
+// Scale is the predicate function for scale builders.
+type Scale func(*sql.Selector)
+
+// ScaleTranslation is the predicate function for scaletranslation builders.
+type ScaleTranslation func(*sql.Selector)
+
+// Take is the predicate function for take builders.
+type Take func(*sql.Selector)
 
 // Test is the predicate function for test builders.
 type Test func(*sql.Selector)

@@ -115,20 +115,6 @@ func Code(v string) predicate.Test {
 	})
 }
 
-// Content applies equality check predicate on the "content" field. It's identical to ContentEQ.
-func Content(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldContent), v))
-	})
-}
-
-// Description applies equality check predicate on the "description" field. It's identical to DescriptionEQ.
-func Description(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldDescription), v))
-	})
-}
-
 // Published applies equality check predicate on the "published" field. It's identical to PublishedEQ.
 func Published(v bool) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
@@ -399,242 +385,6 @@ func CodeContainsFold(v string) predicate.Test {
 	})
 }
 
-// ContentEQ applies the EQ predicate on the "content" field.
-func ContentEQ(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldContent), v))
-	})
-}
-
-// ContentNEQ applies the NEQ predicate on the "content" field.
-func ContentNEQ(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldContent), v))
-	})
-}
-
-// ContentIn applies the In predicate on the "content" field.
-func ContentIn(vs ...string) predicate.Test {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Test(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldContent), v...))
-	})
-}
-
-// ContentNotIn applies the NotIn predicate on the "content" field.
-func ContentNotIn(vs ...string) predicate.Test {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Test(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldContent), v...))
-	})
-}
-
-// ContentGT applies the GT predicate on the "content" field.
-func ContentGT(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldContent), v))
-	})
-}
-
-// ContentGTE applies the GTE predicate on the "content" field.
-func ContentGTE(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldContent), v))
-	})
-}
-
-// ContentLT applies the LT predicate on the "content" field.
-func ContentLT(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldContent), v))
-	})
-}
-
-// ContentLTE applies the LTE predicate on the "content" field.
-func ContentLTE(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldContent), v))
-	})
-}
-
-// ContentContains applies the Contains predicate on the "content" field.
-func ContentContains(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldContent), v))
-	})
-}
-
-// ContentHasPrefix applies the HasPrefix predicate on the "content" field.
-func ContentHasPrefix(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldContent), v))
-	})
-}
-
-// ContentHasSuffix applies the HasSuffix predicate on the "content" field.
-func ContentHasSuffix(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldContent), v))
-	})
-}
-
-// ContentEqualFold applies the EqualFold predicate on the "content" field.
-func ContentEqualFold(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldContent), v))
-	})
-}
-
-// ContentContainsFold applies the ContainsFold predicate on the "content" field.
-func ContentContainsFold(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldContent), v))
-	})
-}
-
-// DescriptionEQ applies the EQ predicate on the "description" field.
-func DescriptionEQ(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionNEQ applies the NEQ predicate on the "description" field.
-func DescriptionNEQ(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionIn applies the In predicate on the "description" field.
-func DescriptionIn(vs ...string) predicate.Test {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Test(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldDescription), v...))
-	})
-}
-
-// DescriptionNotIn applies the NotIn predicate on the "description" field.
-func DescriptionNotIn(vs ...string) predicate.Test {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Test(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldDescription), v...))
-	})
-}
-
-// DescriptionGT applies the GT predicate on the "description" field.
-func DescriptionGT(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionGTE applies the GTE predicate on the "description" field.
-func DescriptionGTE(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionLT applies the LT predicate on the "description" field.
-func DescriptionLT(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionLTE applies the LTE predicate on the "description" field.
-func DescriptionLTE(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionContains applies the Contains predicate on the "description" field.
-func DescriptionContains(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionHasPrefix applies the HasPrefix predicate on the "description" field.
-func DescriptionHasPrefix(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionHasSuffix applies the HasSuffix predicate on the "description" field.
-func DescriptionHasSuffix(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionIsNil applies the IsNil predicate on the "description" field.
-func DescriptionIsNil() predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldDescription)))
-	})
-}
-
-// DescriptionNotNil applies the NotNil predicate on the "description" field.
-func DescriptionNotNil() predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldDescription)))
-	})
-}
-
-// DescriptionEqualFold applies the EqualFold predicate on the "description" field.
-func DescriptionEqualFold(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldDescription), v))
-	})
-}
-
-// DescriptionContainsFold applies the ContainsFold predicate on the "description" field.
-func DescriptionContainsFold(v string) predicate.Test {
-	return predicate.Test(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldDescription), v))
-	})
-}
-
 // PublishedEQ applies the EQ predicate on the "published" field.
 func PublishedEQ(v bool) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
@@ -646,6 +396,62 @@ func PublishedEQ(v bool) predicate.Test {
 func PublishedNEQ(v bool) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldPublished), v))
+	})
+}
+
+// HasTakes applies the HasEdge predicate on the "takes" edge.
+func HasTakes() predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(TakesTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TakesTable, TakesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTakesWith applies the HasEdge predicate on the "takes" edge with a given conditions (other predicates).
+func HasTakesWith(preds ...predicate.Take) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(TakesInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TakesTable, TakesColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasQuestions applies the HasEdge predicate on the "questions" edge.
+func HasQuestions() predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(QuestionsTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, QuestionsTable, QuestionsPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasQuestionsWith applies the HasEdge predicate on the "questions" edge with a given conditions (other predicates).
+func HasQuestionsWith(preds ...predicate.Question) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(QuestionsInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, QuestionsTable, QuestionsPrimaryKey...),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
 	})
 }
 
@@ -677,25 +483,25 @@ func HasTranslationsWith(preds ...predicate.TestTranslation) predicate.Test {
 	})
 }
 
-// HasAuthor applies the HasEdge predicate on the "author" edge.
-func HasAuthor() predicate.Test {
+// HasScales applies the HasEdge predicate on the "scales" edge.
+func HasScales() predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(AuthorTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, AuthorTable, AuthorColumn),
+			sqlgraph.To(ScalesTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, ScalesTable, ScalesPrimaryKey...),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasAuthorWith applies the HasEdge predicate on the "author" edge with a given conditions (other predicates).
-func HasAuthorWith(preds ...predicate.User) predicate.Test {
+// HasScalesWith applies the HasEdge predicate on the "scales" edge with a given conditions (other predicates).
+func HasScalesWith(preds ...predicate.Scale) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(AuthorInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, AuthorTable, AuthorColumn),
+			sqlgraph.To(ScalesInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, ScalesTable, ScalesPrimaryKey...),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

@@ -12,9 +12,11 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/google/uuid"
 )
 
@@ -43,32 +45,6 @@ func (tu *TestUpdate) SetCode(s string) *TestUpdate {
 	return tu
 }
 
-// SetContent sets the "content" field.
-func (tu *TestUpdate) SetContent(s string) *TestUpdate {
-	tu.mutation.SetContent(s)
-	return tu
-}
-
-// SetDescription sets the "description" field.
-func (tu *TestUpdate) SetDescription(s string) *TestUpdate {
-	tu.mutation.SetDescription(s)
-	return tu
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (tu *TestUpdate) SetNillableDescription(s *string) *TestUpdate {
-	if s != nil {
-		tu.SetDescription(*s)
-	}
-	return tu
-}
-
-// ClearDescription clears the value of the "description" field.
-func (tu *TestUpdate) ClearDescription() *TestUpdate {
-	tu.mutation.ClearDescription()
-	return tu
-}
-
 // SetPublished sets the "published" field.
 func (tu *TestUpdate) SetPublished(b bool) *TestUpdate {
 	tu.mutation.SetPublished(b)
@@ -81,6 +57,36 @@ func (tu *TestUpdate) SetNillablePublished(b *bool) *TestUpdate {
 		tu.SetPublished(*b)
 	}
 	return tu
+}
+
+// AddTakeIDs adds the "takes" edge to the Take entity by IDs.
+func (tu *TestUpdate) AddTakeIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.AddTakeIDs(ids...)
+	return tu
+}
+
+// AddTakes adds the "takes" edges to the Take entity.
+func (tu *TestUpdate) AddTakes(t ...*Take) *TestUpdate {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.AddTakeIDs(ids...)
+}
+
+// AddQuestionIDs adds the "questions" edge to the Question entity by IDs.
+func (tu *TestUpdate) AddQuestionIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.AddQuestionIDs(ids...)
+	return tu
+}
+
+// AddQuestions adds the "questions" edges to the Question entity.
+func (tu *TestUpdate) AddQuestions(q ...*Question) *TestUpdate {
+	ids := make([]uuid.UUID, len(q))
+	for i := range q {
+		ids[i] = q[i].ID
+	}
+	return tu.AddQuestionIDs(ids...)
 }
 
 // AddTranslationIDs adds the "translations" edge to the TestTranslation entity by IDs.
@@ -98,28 +104,66 @@ func (tu *TestUpdate) AddTranslations(t ...*TestTranslation) *TestUpdate {
 	return tu.AddTranslationIDs(ids...)
 }
 
-// SetAuthorID sets the "author" edge to the User entity by ID.
-func (tu *TestUpdate) SetAuthorID(id uuid.UUID) *TestUpdate {
-	tu.mutation.SetAuthorID(id)
+// AddScaleIDs adds the "scales" edge to the Scale entity by IDs.
+func (tu *TestUpdate) AddScaleIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.AddScaleIDs(ids...)
 	return tu
 }
 
-// SetNillableAuthorID sets the "author" edge to the User entity by ID if the given value is not nil.
-func (tu *TestUpdate) SetNillableAuthorID(id *uuid.UUID) *TestUpdate {
-	if id != nil {
-		tu = tu.SetAuthorID(*id)
+// AddScales adds the "scales" edges to the Scale entity.
+func (tu *TestUpdate) AddScales(s ...*Scale) *TestUpdate {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return tu
-}
-
-// SetAuthor sets the "author" edge to the User entity.
-func (tu *TestUpdate) SetAuthor(u *User) *TestUpdate {
-	return tu.SetAuthorID(u.ID)
+	return tu.AddScaleIDs(ids...)
 }
 
 // Mutation returns the TestMutation object of the builder.
 func (tu *TestUpdate) Mutation() *TestMutation {
 	return tu.mutation
+}
+
+// ClearTakes clears all "takes" edges to the Take entity.
+func (tu *TestUpdate) ClearTakes() *TestUpdate {
+	tu.mutation.ClearTakes()
+	return tu
+}
+
+// RemoveTakeIDs removes the "takes" edge to Take entities by IDs.
+func (tu *TestUpdate) RemoveTakeIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.RemoveTakeIDs(ids...)
+	return tu
+}
+
+// RemoveTakes removes "takes" edges to Take entities.
+func (tu *TestUpdate) RemoveTakes(t ...*Take) *TestUpdate {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.RemoveTakeIDs(ids...)
+}
+
+// ClearQuestions clears all "questions" edges to the Question entity.
+func (tu *TestUpdate) ClearQuestions() *TestUpdate {
+	tu.mutation.ClearQuestions()
+	return tu
+}
+
+// RemoveQuestionIDs removes the "questions" edge to Question entities by IDs.
+func (tu *TestUpdate) RemoveQuestionIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.RemoveQuestionIDs(ids...)
+	return tu
+}
+
+// RemoveQuestions removes "questions" edges to Question entities.
+func (tu *TestUpdate) RemoveQuestions(q ...*Question) *TestUpdate {
+	ids := make([]uuid.UUID, len(q))
+	for i := range q {
+		ids[i] = q[i].ID
+	}
+	return tu.RemoveQuestionIDs(ids...)
 }
 
 // ClearTranslations clears all "translations" edges to the TestTranslation entity.
@@ -143,10 +187,25 @@ func (tu *TestUpdate) RemoveTranslations(t ...*TestTranslation) *TestUpdate {
 	return tu.RemoveTranslationIDs(ids...)
 }
 
-// ClearAuthor clears the "author" edge to the User entity.
-func (tu *TestUpdate) ClearAuthor() *TestUpdate {
-	tu.mutation.ClearAuthor()
+// ClearScales clears all "scales" edges to the Scale entity.
+func (tu *TestUpdate) ClearScales() *TestUpdate {
+	tu.mutation.ClearScales()
 	return tu
+}
+
+// RemoveScaleIDs removes the "scales" edge to Scale entities by IDs.
+func (tu *TestUpdate) RemoveScaleIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.RemoveScaleIDs(ids...)
+	return tu
+}
+
+// RemoveScales removes "scales" edges to Scale entities.
+func (tu *TestUpdate) RemoveScales(s ...*Scale) *TestUpdate {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return tu.RemoveScaleIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -225,16 +284,6 @@ func (tu *TestUpdate) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Test.code": %w`, err)}
 		}
 	}
-	if v, ok := tu.mutation.Content(); ok {
-		if err := test.ContentValidator(v); err != nil {
-			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Test.content": %w`, err)}
-		}
-	}
-	if v, ok := tu.mutation.Description(); ok {
-		if err := test.DescriptionValidator(v); err != nil {
-			return &ValidationError{Name: "description", err: fmt.Errorf(`ent: validator failed for field "Test.description": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -270,32 +319,120 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: test.FieldCode,
 		})
 	}
-	if value, ok := tu.mutation.Content(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldContent,
-		})
-	}
-	if value, ok := tu.mutation.Description(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldDescription,
-		})
-	}
-	if tu.mutation.DescriptionCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: test.FieldDescription,
-		})
-	}
 	if value, ok := tu.mutation.Published(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
 			Column: test.FieldPublished,
 		})
+	}
+	if tu.mutation.TakesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   test.TakesTable,
+			Columns: []string{test.TakesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedTakesIDs(); len(nodes) > 0 && !tu.mutation.TakesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   test.TakesTable,
+			Columns: []string{test.TakesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.TakesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   test.TakesTable,
+			Columns: []string{test.TakesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.QuestionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.QuestionsTable,
+			Columns: test.QuestionsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: question.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedQuestionsIDs(); len(nodes) > 0 && !tu.mutation.QuestionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.QuestionsTable,
+			Columns: test.QuestionsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: question.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.QuestionsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.QuestionsTable,
+			Columns: test.QuestionsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: question.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if tu.mutation.TranslationsCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -351,33 +488,52 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tu.mutation.AuthorCleared() {
+	if tu.mutation.ScalesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   test.AuthorTable,
-			Columns: []string{test.AuthorColumn},
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.ScalesTable,
+			Columns: test.ScalesPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: user.FieldID,
+					Column: scale.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tu.mutation.AuthorIDs(); len(nodes) > 0 {
+	if nodes := tu.mutation.RemovedScalesIDs(); len(nodes) > 0 && !tu.mutation.ScalesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   test.AuthorTable,
-			Columns: []string{test.AuthorColumn},
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.ScalesTable,
+			Columns: test.ScalesPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: user.FieldID,
+					Column: scale.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.ScalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.ScalesTable,
+			Columns: test.ScalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: scale.FieldID,
 				},
 			},
 		}
@@ -417,32 +573,6 @@ func (tuo *TestUpdateOne) SetCode(s string) *TestUpdateOne {
 	return tuo
 }
 
-// SetContent sets the "content" field.
-func (tuo *TestUpdateOne) SetContent(s string) *TestUpdateOne {
-	tuo.mutation.SetContent(s)
-	return tuo
-}
-
-// SetDescription sets the "description" field.
-func (tuo *TestUpdateOne) SetDescription(s string) *TestUpdateOne {
-	tuo.mutation.SetDescription(s)
-	return tuo
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (tuo *TestUpdateOne) SetNillableDescription(s *string) *TestUpdateOne {
-	if s != nil {
-		tuo.SetDescription(*s)
-	}
-	return tuo
-}
-
-// ClearDescription clears the value of the "description" field.
-func (tuo *TestUpdateOne) ClearDescription() *TestUpdateOne {
-	tuo.mutation.ClearDescription()
-	return tuo
-}
-
 // SetPublished sets the "published" field.
 func (tuo *TestUpdateOne) SetPublished(b bool) *TestUpdateOne {
 	tuo.mutation.SetPublished(b)
@@ -455,6 +585,36 @@ func (tuo *TestUpdateOne) SetNillablePublished(b *bool) *TestUpdateOne {
 		tuo.SetPublished(*b)
 	}
 	return tuo
+}
+
+// AddTakeIDs adds the "takes" edge to the Take entity by IDs.
+func (tuo *TestUpdateOne) AddTakeIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.AddTakeIDs(ids...)
+	return tuo
+}
+
+// AddTakes adds the "takes" edges to the Take entity.
+func (tuo *TestUpdateOne) AddTakes(t ...*Take) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.AddTakeIDs(ids...)
+}
+
+// AddQuestionIDs adds the "questions" edge to the Question entity by IDs.
+func (tuo *TestUpdateOne) AddQuestionIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.AddQuestionIDs(ids...)
+	return tuo
+}
+
+// AddQuestions adds the "questions" edges to the Question entity.
+func (tuo *TestUpdateOne) AddQuestions(q ...*Question) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(q))
+	for i := range q {
+		ids[i] = q[i].ID
+	}
+	return tuo.AddQuestionIDs(ids...)
 }
 
 // AddTranslationIDs adds the "translations" edge to the TestTranslation entity by IDs.
@@ -472,28 +632,66 @@ func (tuo *TestUpdateOne) AddTranslations(t ...*TestTranslation) *TestUpdateOne 
 	return tuo.AddTranslationIDs(ids...)
 }
 
-// SetAuthorID sets the "author" edge to the User entity by ID.
-func (tuo *TestUpdateOne) SetAuthorID(id uuid.UUID) *TestUpdateOne {
-	tuo.mutation.SetAuthorID(id)
+// AddScaleIDs adds the "scales" edge to the Scale entity by IDs.
+func (tuo *TestUpdateOne) AddScaleIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.AddScaleIDs(ids...)
 	return tuo
 }
 
-// SetNillableAuthorID sets the "author" edge to the User entity by ID if the given value is not nil.
-func (tuo *TestUpdateOne) SetNillableAuthorID(id *uuid.UUID) *TestUpdateOne {
-	if id != nil {
-		tuo = tuo.SetAuthorID(*id)
+// AddScales adds the "scales" edges to the Scale entity.
+func (tuo *TestUpdateOne) AddScales(s ...*Scale) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return tuo
-}
-
-// SetAuthor sets the "author" edge to the User entity.
-func (tuo *TestUpdateOne) SetAuthor(u *User) *TestUpdateOne {
-	return tuo.SetAuthorID(u.ID)
+	return tuo.AddScaleIDs(ids...)
 }
 
 // Mutation returns the TestMutation object of the builder.
 func (tuo *TestUpdateOne) Mutation() *TestMutation {
 	return tuo.mutation
+}
+
+// ClearTakes clears all "takes" edges to the Take entity.
+func (tuo *TestUpdateOne) ClearTakes() *TestUpdateOne {
+	tuo.mutation.ClearTakes()
+	return tuo
+}
+
+// RemoveTakeIDs removes the "takes" edge to Take entities by IDs.
+func (tuo *TestUpdateOne) RemoveTakeIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.RemoveTakeIDs(ids...)
+	return tuo
+}
+
+// RemoveTakes removes "takes" edges to Take entities.
+func (tuo *TestUpdateOne) RemoveTakes(t ...*Take) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.RemoveTakeIDs(ids...)
+}
+
+// ClearQuestions clears all "questions" edges to the Question entity.
+func (tuo *TestUpdateOne) ClearQuestions() *TestUpdateOne {
+	tuo.mutation.ClearQuestions()
+	return tuo
+}
+
+// RemoveQuestionIDs removes the "questions" edge to Question entities by IDs.
+func (tuo *TestUpdateOne) RemoveQuestionIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.RemoveQuestionIDs(ids...)
+	return tuo
+}
+
+// RemoveQuestions removes "questions" edges to Question entities.
+func (tuo *TestUpdateOne) RemoveQuestions(q ...*Question) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(q))
+	for i := range q {
+		ids[i] = q[i].ID
+	}
+	return tuo.RemoveQuestionIDs(ids...)
 }
 
 // ClearTranslations clears all "translations" edges to the TestTranslation entity.
@@ -517,10 +715,25 @@ func (tuo *TestUpdateOne) RemoveTranslations(t ...*TestTranslation) *TestUpdateO
 	return tuo.RemoveTranslationIDs(ids...)
 }
 
-// ClearAuthor clears the "author" edge to the User entity.
-func (tuo *TestUpdateOne) ClearAuthor() *TestUpdateOne {
-	tuo.mutation.ClearAuthor()
+// ClearScales clears all "scales" edges to the Scale entity.
+func (tuo *TestUpdateOne) ClearScales() *TestUpdateOne {
+	tuo.mutation.ClearScales()
 	return tuo
+}
+
+// RemoveScaleIDs removes the "scales" edge to Scale entities by IDs.
+func (tuo *TestUpdateOne) RemoveScaleIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.RemoveScaleIDs(ids...)
+	return tuo
+}
+
+// RemoveScales removes "scales" edges to Scale entities.
+func (tuo *TestUpdateOne) RemoveScales(s ...*Scale) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return tuo.RemoveScaleIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -606,16 +819,6 @@ func (tuo *TestUpdateOne) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Test.code": %w`, err)}
 		}
 	}
-	if v, ok := tuo.mutation.Content(); ok {
-		if err := test.ContentValidator(v); err != nil {
-			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Test.content": %w`, err)}
-		}
-	}
-	if v, ok := tuo.mutation.Description(); ok {
-		if err := test.DescriptionValidator(v); err != nil {
-			return &ValidationError{Name: "description", err: fmt.Errorf(`ent: validator failed for field "Test.description": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -668,32 +871,120 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 			Column: test.FieldCode,
 		})
 	}
-	if value, ok := tuo.mutation.Content(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldContent,
-		})
-	}
-	if value, ok := tuo.mutation.Description(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldDescription,
-		})
-	}
-	if tuo.mutation.DescriptionCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: test.FieldDescription,
-		})
-	}
 	if value, ok := tuo.mutation.Published(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
 			Column: test.FieldPublished,
 		})
+	}
+	if tuo.mutation.TakesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   test.TakesTable,
+			Columns: []string{test.TakesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedTakesIDs(); len(nodes) > 0 && !tuo.mutation.TakesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   test.TakesTable,
+			Columns: []string{test.TakesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.TakesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   test.TakesTable,
+			Columns: []string{test.TakesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.QuestionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.QuestionsTable,
+			Columns: test.QuestionsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: question.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedQuestionsIDs(); len(nodes) > 0 && !tuo.mutation.QuestionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.QuestionsTable,
+			Columns: test.QuestionsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: question.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.QuestionsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.QuestionsTable,
+			Columns: test.QuestionsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: question.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if tuo.mutation.TranslationsCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -749,33 +1040,52 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tuo.mutation.AuthorCleared() {
+	if tuo.mutation.ScalesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   test.AuthorTable,
-			Columns: []string{test.AuthorColumn},
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.ScalesTable,
+			Columns: test.ScalesPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: user.FieldID,
+					Column: scale.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tuo.mutation.AuthorIDs(); len(nodes) > 0 {
+	if nodes := tuo.mutation.RemovedScalesIDs(); len(nodes) > 0 && !tuo.mutation.ScalesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   test.AuthorTable,
-			Columns: []string{test.AuthorColumn},
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.ScalesTable,
+			Columns: test.ScalesPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: user.FieldID,
+					Column: scale.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.ScalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.ScalesTable,
+			Columns: test.ScalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: scale.FieldID,
 				},
 			},
 		}

@@ -1,0 +1,152 @@
+code: tipi
+published: true
+translations:
+  - locale: en
+    title: TIPI
+    description: Ten-Item Personality Inventory by Gosling, Rentfrow and Swan (2003)
+    instruction: Answer all the questions (there's only 10 of them!)
+  - locale: ru
+    title: ТИПИ
+    description: Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
+    instruction: Ответьте на все вопросы (их всего 10!)
+scales: 
+  - code: tipi-scale-1-extraversion
+    type: sten
+    translations:
+      - locale: en
+        title: TIPI-Extraversion
+        description: Extraversion scale
+      - locale: ru
+        title: ТИПИ-Экстраверсия
+        description: Шкала экстраверсии
+    items:
+      - code: tipi-item-ex-1
+        steps: 7
+        reverse: false
+        translations: 
+          - locale: en
+            content: Extraverted, enthusiastic.
+          - locale: ru
+            content: Экстраверт, полный энтузиазма.
+      - code: tipi-item-ex-2
+        steps: 7
+        reverse: true
+        translations: 
+          - locale: en
+            content: Reserved, quiet.
+          - locale: ru
+            content: Сдержанный, тихий.
+  - code: tipi-scale-2-agreeableness
+    type: sten
+    translations:
+      - locale: en
+        title: TIPI-Agreeableness
+        description: Agreeableness scale
+      - locale: ru
+        title: ТИПИ-Доброжелательность
+        description: Шкала доброжелательности
+    items:
+      - code: tipi-item-agr-1
+        steps: 7
+        reverse: true
+        translations: 
+          - locale: en
+            content: Critical, quarrelsome.
+          - locale: ru
+            content: Критичный, придирчивый.
+      - code: tipi-item-arg-2
+        steps: 7
+        reverse: false
+        translations: 
+          - locale: en
+            content: Sympathetic, warm.
+          - locale: ru
+            content: Сочувствующий, сердечный.
+  - code: tipi-scale-3-conscientiousness
+    type: sten
+    translations:
+      - locale: en
+        title: TIPI-Conscientiousness
+        description: Conscientiousness scale
+      - locale: ru
+        title: ТИПИ-Сознательность
+        description: Шкала сознательнольсти
+    items:
+      - code: tipi-item-cons-1
+        steps: 7
+        reverse: false
+        translations: 
+          - locale: en
+            content: Dependable, self-disciplined.
+          - locale: ru
+            content: Надежный, дисциплинированный.
+      - code: tipi-item-cons-2
+        steps: 7
+        reverse: true
+        translations: 
+          - locale: en
+            content: Disorganized, careless.
+          - locale: ru
+            content: Неорганизованный, беззаботный.
+  - code: tipi-scale-4-stability
+    type: sten
+    translations:
+      - locale: en
+        title: TIPI-Emotional Stability
+        description: Emotional Stability scale
+      - locale: ru
+        title: ТИПИ-Эмоциональная стабильность
+        description: Шкала эмоциональной стабильности
+    items:
+      - code: tipi-item-stab-1
+        steps: 7
+        reverse: true
+        translations: 
+          - locale: en
+            content: Anxious, easily upset.
+          - locale: ru
+            content: Тревожный, легко расстраиваемый.
+      - code: tipi-item-stab-2
+        steps: 7
+        reverse: false
+        translations: 
+          - locale: en
+            content: Calm, emotionally stable.
+          - locale: ru
+            content: Спокойный, эмоционально стабильный.
+  - code: tipi-scale-5-openness
+    type: sten
+    translations:
+      - locale: en
+        title: TIPI-Openness to Experience
+        description: Openness to Experience scale
+      - locale: ru
+        title: ТИПИ-Открытость новому опыту
+        description: Шкала открытости новому опыту
+    items:
+      - code: tipi-item-op-1
+        steps: 7
+        reverse: true
+        translations: 
+          - locale: en
+            content: Open to new experiences, complex.
+          - locale: ru
+            content: Открытый опыту, многоуровневый.
+      - code: tipi-item-op-2
+        steps: 7
+        reverse: true
+        translations: 
+          - locale: en
+            content: Conventional, uncreative.
+          - locale: ru
+            content: Консервативный, далекий от творчества.
+generate: 
+  method: each-item
+  template:
+    type: simple
+    code: tipi-question
+    translations: 
+      - locale: en
+        content: "How this is about you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"

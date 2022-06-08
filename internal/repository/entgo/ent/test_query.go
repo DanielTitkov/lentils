@@ -13,9 +13,11 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/google/uuid"
 )
 
@@ -29,9 +31,10 @@ type TestQuery struct {
 	fields     []string
 	predicates []predicate.Test
 	// eager-loading edges.
+	withTakes        *TakeQuery
+	withQuestions    *QuestionQuery
 	withTranslations *TestTranslationQuery
-	withAuthor       *UserQuery
-	withFKs          bool
+	withScales       *ScaleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -68,6 +71,50 @@ func (tq *TestQuery) Order(o ...OrderFunc) *TestQuery {
 	return tq
 }
 
+// QueryTakes chains the current query on the "takes" edge.
+func (tq *TestQuery) QueryTakes() *TakeQuery {
+	query := &TakeQuery{config: tq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, selector),
+			sqlgraph.To(take.Table, take.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, test.TakesTable, test.TakesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryQuestions chains the current query on the "questions" edge.
+func (tq *TestQuery) QueryQuestions() *QuestionQuery {
+	query := &QuestionQuery{config: tq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, selector),
+			sqlgraph.To(question.Table, question.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, test.QuestionsTable, test.QuestionsPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // QueryTranslations chains the current query on the "translations" edge.
 func (tq *TestQuery) QueryTranslations() *TestTranslationQuery {
 	query := &TestTranslationQuery{config: tq.config}
@@ -90,9 +137,9 @@ func (tq *TestQuery) QueryTranslations() *TestTranslationQuery {
 	return query
 }
 
-// QueryAuthor chains the current query on the "author" edge.
-func (tq *TestQuery) QueryAuthor() *UserQuery {
-	query := &UserQuery{config: tq.config}
+// QueryScales chains the current query on the "scales" edge.
+func (tq *TestQuery) QueryScales() *ScaleQuery {
+	query := &ScaleQuery{config: tq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := tq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -103,8 +150,8 @@ func (tq *TestQuery) QueryAuthor() *UserQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(test.Table, test.FieldID, selector),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, test.AuthorTable, test.AuthorColumn),
+			sqlgraph.To(scale.Table, scale.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, test.ScalesTable, test.ScalesPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,13 +340,37 @@ func (tq *TestQuery) Clone() *TestQuery {
 		offset:           tq.offset,
 		order:            append([]OrderFunc{}, tq.order...),
 		predicates:       append([]predicate.Test{}, tq.predicates...),
+		withTakes:        tq.withTakes.Clone(),
+		withQuestions:    tq.withQuestions.Clone(),
 		withTranslations: tq.withTranslations.Clone(),
-		withAuthor:       tq.withAuthor.Clone(),
+		withScales:       tq.withScales.Clone(),
 		// clone intermediate query.
 		sql:    tq.sql.Clone(),
 		path:   tq.path,
 		unique: tq.unique,
 	}
+}
+
+// WithTakes tells the query-builder to eager-load the nodes that are connected to
+// the "takes" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TestQuery) WithTakes(opts ...func(*TakeQuery)) *TestQuery {
+	query := &TakeQuery{config: tq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withTakes = query
+	return tq
+}
+
+// WithQuestions tells the query-builder to eager-load the nodes that are connected to
+// the "questions" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TestQuery) WithQuestions(opts ...func(*QuestionQuery)) *TestQuery {
+	query := &QuestionQuery{config: tq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withQuestions = query
+	return tq
 }
 
 // WithTranslations tells the query-builder to eager-load the nodes that are connected to
@@ -313,14 +384,14 @@ func (tq *TestQuery) WithTranslations(opts ...func(*TestTranslationQuery)) *Test
 	return tq
 }
 
-// WithAuthor tells the query-builder to eager-load the nodes that are connected to
-// the "author" edge. The optional arguments are used to configure the query builder of the edge.
-func (tq *TestQuery) WithAuthor(opts ...func(*UserQuery)) *TestQuery {
-	query := &UserQuery{config: tq.config}
+// WithScales tells the query-builder to eager-load the nodes that are connected to
+// the "scales" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TestQuery) WithScales(opts ...func(*ScaleQuery)) *TestQuery {
+	query := &ScaleQuery{config: tq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	tq.withAuthor = query
+	tq.withScales = query
 	return tq
 }
 
@@ -388,19 +459,14 @@ func (tq *TestQuery) prepareQuery(ctx context.Context) error {
 func (tq *TestQuery) sqlAll(ctx context.Context) ([]*Test, error) {
 	var (
 		nodes       = []*Test{}
-		withFKs     = tq.withFKs
 		_spec       = tq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [4]bool{
+			tq.withTakes != nil,
+			tq.withQuestions != nil,
 			tq.withTranslations != nil,
-			tq.withAuthor != nil,
+			tq.withScales != nil,
 		}
 	)
-	if tq.withAuthor != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, test.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Test{config: tq.config}
 		nodes = append(nodes, node)
@@ -419,6 +485,100 @@ func (tq *TestQuery) sqlAll(ctx context.Context) ([]*Test, error) {
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
+	}
+
+	if query := tq.withTakes; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[uuid.UUID]*Test)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Takes = []*Take{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Take(func(s *sql.Selector) {
+			s.Where(sql.InValues(test.TakesColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.test_takes
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "test_takes" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "test_takes" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Takes = append(node.Edges.Takes, n)
+		}
+	}
+
+	if query := tq.withQuestions; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		ids := make(map[uuid.UUID]*Test, len(nodes))
+		for _, node := range nodes {
+			ids[node.ID] = node
+			fks = append(fks, node.ID)
+			node.Edges.Questions = []*Question{}
+		}
+		var (
+			edgeids []uuid.UUID
+			edges   = make(map[uuid.UUID][]*Test)
+		)
+		_spec := &sqlgraph.EdgeQuerySpec{
+			Edge: &sqlgraph.EdgeSpec{
+				Inverse: false,
+				Table:   test.QuestionsTable,
+				Columns: test.QuestionsPrimaryKey,
+			},
+			Predicate: func(s *sql.Selector) {
+				s.Where(sql.InValues(test.QuestionsPrimaryKey[0], fks...))
+			},
+			ScanValues: func() [2]interface{} {
+				return [2]interface{}{new(uuid.UUID), new(uuid.UUID)}
+			},
+			Assign: func(out, in interface{}) error {
+				eout, ok := out.(*uuid.UUID)
+				if !ok || eout == nil {
+					return fmt.Errorf("unexpected id value for edge-out")
+				}
+				ein, ok := in.(*uuid.UUID)
+				if !ok || ein == nil {
+					return fmt.Errorf("unexpected id value for edge-in")
+				}
+				outValue := *eout
+				inValue := *ein
+				node, ok := ids[outValue]
+				if !ok {
+					return fmt.Errorf("unexpected node id in edges: %v", outValue)
+				}
+				if _, ok := edges[inValue]; !ok {
+					edgeids = append(edgeids, inValue)
+				}
+				edges[inValue] = append(edges[inValue], node)
+				return nil
+			},
+		}
+		if err := sqlgraph.QueryEdges(ctx, tq.driver, _spec); err != nil {
+			return nil, fmt.Errorf(`query edges "questions": %w`, err)
+		}
+		query.Where(question.IDIn(edgeids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := edges[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected "questions" node returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Questions = append(nodes[i].Edges.Questions, n)
+			}
+		}
 	}
 
 	if query := tq.withTranslations; query != nil {
@@ -450,31 +610,67 @@ func (tq *TestQuery) sqlAll(ctx context.Context) ([]*Test, error) {
 		}
 	}
 
-	if query := tq.withAuthor; query != nil {
-		ids := make([]uuid.UUID, 0, len(nodes))
-		nodeids := make(map[uuid.UUID][]*Test)
-		for i := range nodes {
-			if nodes[i].user_tests == nil {
-				continue
-			}
-			fk := *nodes[i].user_tests
-			if _, ok := nodeids[fk]; !ok {
-				ids = append(ids, fk)
-			}
-			nodeids[fk] = append(nodeids[fk], nodes[i])
+	if query := tq.withScales; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		ids := make(map[uuid.UUID]*Test, len(nodes))
+		for _, node := range nodes {
+			ids[node.ID] = node
+			fks = append(fks, node.ID)
+			node.Edges.Scales = []*Scale{}
 		}
-		query.Where(user.IDIn(ids...))
+		var (
+			edgeids []uuid.UUID
+			edges   = make(map[uuid.UUID][]*Test)
+		)
+		_spec := &sqlgraph.EdgeQuerySpec{
+			Edge: &sqlgraph.EdgeSpec{
+				Inverse: false,
+				Table:   test.ScalesTable,
+				Columns: test.ScalesPrimaryKey,
+			},
+			Predicate: func(s *sql.Selector) {
+				s.Where(sql.InValues(test.ScalesPrimaryKey[0], fks...))
+			},
+			ScanValues: func() [2]interface{} {
+				return [2]interface{}{new(uuid.UUID), new(uuid.UUID)}
+			},
+			Assign: func(out, in interface{}) error {
+				eout, ok := out.(*uuid.UUID)
+				if !ok || eout == nil {
+					return fmt.Errorf("unexpected id value for edge-out")
+				}
+				ein, ok := in.(*uuid.UUID)
+				if !ok || ein == nil {
+					return fmt.Errorf("unexpected id value for edge-in")
+				}
+				outValue := *eout
+				inValue := *ein
+				node, ok := ids[outValue]
+				if !ok {
+					return fmt.Errorf("unexpected node id in edges: %v", outValue)
+				}
+				if _, ok := edges[inValue]; !ok {
+					edgeids = append(edgeids, inValue)
+				}
+				edges[inValue] = append(edges[inValue], node)
+				return nil
+			},
+		}
+		if err := sqlgraph.QueryEdges(ctx, tq.driver, _spec); err != nil {
+			return nil, fmt.Errorf(`query edges "scales": %w`, err)
+		}
+		query.Where(scale.IDIn(edgeids...))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			nodes, ok := nodeids[n.ID]
+			nodes, ok := edges[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_tests" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected "scales" node returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Author = n
+				nodes[i].Edges.Scales = append(nodes[i].Edges.Scales, n)
 			}
 		}
 	}

@@ -11,11 +11,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/badge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/challenge"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/prediction"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/usersession"
 	"github.com/google/uuid"
@@ -118,21 +115,6 @@ func (uu *UserUpdate) ClearMeta() *UserUpdate {
 	return uu
 }
 
-// AddPredictionIDs adds the "predictions" edge to the Prediction entity by IDs.
-func (uu *UserUpdate) AddPredictionIDs(ids ...uuid.UUID) *UserUpdate {
-	uu.mutation.AddPredictionIDs(ids...)
-	return uu
-}
-
-// AddPredictions adds the "predictions" edges to the Prediction entity.
-func (uu *UserUpdate) AddPredictions(p ...*Prediction) *UserUpdate {
-	ids := make([]uuid.UUID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return uu.AddPredictionIDs(ids...)
-}
-
 // AddSessionIDs adds the "sessions" edge to the UserSession entity by IDs.
 func (uu *UserUpdate) AddSessionIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddSessionIDs(ids...)
@@ -148,75 +130,24 @@ func (uu *UserUpdate) AddSessions(u ...*UserSession) *UserUpdate {
 	return uu.AddSessionIDs(ids...)
 }
 
-// AddBadgeIDs adds the "badges" edge to the Badge entity by IDs.
-func (uu *UserUpdate) AddBadgeIDs(ids ...int) *UserUpdate {
-	uu.mutation.AddBadgeIDs(ids...)
+// AddTakeIDs adds the "takes" edge to the Take entity by IDs.
+func (uu *UserUpdate) AddTakeIDs(ids ...uuid.UUID) *UserUpdate {
+	uu.mutation.AddTakeIDs(ids...)
 	return uu
 }
 
-// AddBadges adds the "badges" edges to the Badge entity.
-func (uu *UserUpdate) AddBadges(b ...*Badge) *UserUpdate {
-	ids := make([]int, len(b))
-	for i := range b {
-		ids[i] = b[i].ID
-	}
-	return uu.AddBadgeIDs(ids...)
-}
-
-// AddChallengeIDs adds the "challenges" edge to the Challenge entity by IDs.
-func (uu *UserUpdate) AddChallengeIDs(ids ...uuid.UUID) *UserUpdate {
-	uu.mutation.AddChallengeIDs(ids...)
-	return uu
-}
-
-// AddChallenges adds the "challenges" edges to the Challenge entity.
-func (uu *UserUpdate) AddChallenges(c ...*Challenge) *UserUpdate {
-	ids := make([]uuid.UUID, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return uu.AddChallengeIDs(ids...)
-}
-
-// AddTestIDs adds the "tests" edge to the Test entity by IDs.
-func (uu *UserUpdate) AddTestIDs(ids ...uuid.UUID) *UserUpdate {
-	uu.mutation.AddTestIDs(ids...)
-	return uu
-}
-
-// AddTests adds the "tests" edges to the Test entity.
-func (uu *UserUpdate) AddTests(t ...*Test) *UserUpdate {
+// AddTakes adds the "takes" edges to the Take entity.
+func (uu *UserUpdate) AddTakes(t ...*Take) *UserUpdate {
 	ids := make([]uuid.UUID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return uu.AddTestIDs(ids...)
+	return uu.AddTakeIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
-}
-
-// ClearPredictions clears all "predictions" edges to the Prediction entity.
-func (uu *UserUpdate) ClearPredictions() *UserUpdate {
-	uu.mutation.ClearPredictions()
-	return uu
-}
-
-// RemovePredictionIDs removes the "predictions" edge to Prediction entities by IDs.
-func (uu *UserUpdate) RemovePredictionIDs(ids ...uuid.UUID) *UserUpdate {
-	uu.mutation.RemovePredictionIDs(ids...)
-	return uu
-}
-
-// RemovePredictions removes "predictions" edges to Prediction entities.
-func (uu *UserUpdate) RemovePredictions(p ...*Prediction) *UserUpdate {
-	ids := make([]uuid.UUID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return uu.RemovePredictionIDs(ids...)
 }
 
 // ClearSessions clears all "sessions" edges to the UserSession entity.
@@ -240,67 +171,25 @@ func (uu *UserUpdate) RemoveSessions(u ...*UserSession) *UserUpdate {
 	return uu.RemoveSessionIDs(ids...)
 }
 
-// ClearBadges clears all "badges" edges to the Badge entity.
-func (uu *UserUpdate) ClearBadges() *UserUpdate {
-	uu.mutation.ClearBadges()
+// ClearTakes clears all "takes" edges to the Take entity.
+func (uu *UserUpdate) ClearTakes() *UserUpdate {
+	uu.mutation.ClearTakes()
 	return uu
 }
 
-// RemoveBadgeIDs removes the "badges" edge to Badge entities by IDs.
-func (uu *UserUpdate) RemoveBadgeIDs(ids ...int) *UserUpdate {
-	uu.mutation.RemoveBadgeIDs(ids...)
+// RemoveTakeIDs removes the "takes" edge to Take entities by IDs.
+func (uu *UserUpdate) RemoveTakeIDs(ids ...uuid.UUID) *UserUpdate {
+	uu.mutation.RemoveTakeIDs(ids...)
 	return uu
 }
 
-// RemoveBadges removes "badges" edges to Badge entities.
-func (uu *UserUpdate) RemoveBadges(b ...*Badge) *UserUpdate {
-	ids := make([]int, len(b))
-	for i := range b {
-		ids[i] = b[i].ID
-	}
-	return uu.RemoveBadgeIDs(ids...)
-}
-
-// ClearChallenges clears all "challenges" edges to the Challenge entity.
-func (uu *UserUpdate) ClearChallenges() *UserUpdate {
-	uu.mutation.ClearChallenges()
-	return uu
-}
-
-// RemoveChallengeIDs removes the "challenges" edge to Challenge entities by IDs.
-func (uu *UserUpdate) RemoveChallengeIDs(ids ...uuid.UUID) *UserUpdate {
-	uu.mutation.RemoveChallengeIDs(ids...)
-	return uu
-}
-
-// RemoveChallenges removes "challenges" edges to Challenge entities.
-func (uu *UserUpdate) RemoveChallenges(c ...*Challenge) *UserUpdate {
-	ids := make([]uuid.UUID, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return uu.RemoveChallengeIDs(ids...)
-}
-
-// ClearTests clears all "tests" edges to the Test entity.
-func (uu *UserUpdate) ClearTests() *UserUpdate {
-	uu.mutation.ClearTests()
-	return uu
-}
-
-// RemoveTestIDs removes the "tests" edge to Test entities by IDs.
-func (uu *UserUpdate) RemoveTestIDs(ids ...uuid.UUID) *UserUpdate {
-	uu.mutation.RemoveTestIDs(ids...)
-	return uu
-}
-
-// RemoveTests removes "tests" edges to Test entities.
-func (uu *UserUpdate) RemoveTests(t ...*Test) *UserUpdate {
+// RemoveTakes removes "takes" edges to Take entities.
+func (uu *UserUpdate) RemoveTakes(t ...*Take) *UserUpdate {
 	ids := make([]uuid.UUID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return uu.RemoveTestIDs(ids...)
+	return uu.RemoveTakeIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -478,60 +367,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldMeta,
 		})
 	}
-	if uu.mutation.PredictionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.PredictionsTable,
-			Columns: []string{user.PredictionsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: prediction.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.RemovedPredictionsIDs(); len(nodes) > 0 && !uu.mutation.PredictionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.PredictionsTable,
-			Columns: []string{user.PredictionsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: prediction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.PredictionsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.PredictionsTable,
-			Columns: []string{user.PredictionsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: prediction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if uu.mutation.SessionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -586,33 +421,33 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if uu.mutation.BadgesCleared() {
+	if uu.mutation.TakesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.BadgesTable,
-			Columns: user.BadgesPrimaryKey,
+			Table:   user.TakesTable,
+			Columns: []string{user.TakesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: badge.FieldID,
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uu.mutation.RemovedBadgesIDs(); len(nodes) > 0 && !uu.mutation.BadgesCleared() {
+	if nodes := uu.mutation.RemovedTakesIDs(); len(nodes) > 0 && !uu.mutation.TakesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.BadgesTable,
-			Columns: user.BadgesPrimaryKey,
+			Table:   user.TakesTable,
+			Columns: []string{user.TakesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: badge.FieldID,
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
 				},
 			},
 		}
@@ -621,125 +456,17 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uu.mutation.BadgesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   user.BadgesTable,
-			Columns: user.BadgesPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: badge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if uu.mutation.ChallengesCleared() {
+	if nodes := uu.mutation.TakesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.ChallengesTable,
-			Columns: []string{user.ChallengesColumn},
+			Table:   user.TakesTable,
+			Columns: []string{user.TakesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: challenge.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.RemovedChallengesIDs(); len(nodes) > 0 && !uu.mutation.ChallengesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.ChallengesTable,
-			Columns: []string{user.ChallengesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: challenge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.ChallengesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.ChallengesTable,
-			Columns: []string{user.ChallengesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: challenge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if uu.mutation.TestsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TestsTable,
-			Columns: []string{user.TestsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: test.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.RemovedTestsIDs(); len(nodes) > 0 && !uu.mutation.TestsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TestsTable,
-			Columns: []string{user.TestsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: test.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.TestsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TestsTable,
-			Columns: []string{user.TestsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: test.FieldID,
+					Column: take.FieldID,
 				},
 			},
 		}
@@ -851,21 +578,6 @@ func (uuo *UserUpdateOne) ClearMeta() *UserUpdateOne {
 	return uuo
 }
 
-// AddPredictionIDs adds the "predictions" edge to the Prediction entity by IDs.
-func (uuo *UserUpdateOne) AddPredictionIDs(ids ...uuid.UUID) *UserUpdateOne {
-	uuo.mutation.AddPredictionIDs(ids...)
-	return uuo
-}
-
-// AddPredictions adds the "predictions" edges to the Prediction entity.
-func (uuo *UserUpdateOne) AddPredictions(p ...*Prediction) *UserUpdateOne {
-	ids := make([]uuid.UUID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return uuo.AddPredictionIDs(ids...)
-}
-
 // AddSessionIDs adds the "sessions" edge to the UserSession entity by IDs.
 func (uuo *UserUpdateOne) AddSessionIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddSessionIDs(ids...)
@@ -881,75 +593,24 @@ func (uuo *UserUpdateOne) AddSessions(u ...*UserSession) *UserUpdateOne {
 	return uuo.AddSessionIDs(ids...)
 }
 
-// AddBadgeIDs adds the "badges" edge to the Badge entity by IDs.
-func (uuo *UserUpdateOne) AddBadgeIDs(ids ...int) *UserUpdateOne {
-	uuo.mutation.AddBadgeIDs(ids...)
+// AddTakeIDs adds the "takes" edge to the Take entity by IDs.
+func (uuo *UserUpdateOne) AddTakeIDs(ids ...uuid.UUID) *UserUpdateOne {
+	uuo.mutation.AddTakeIDs(ids...)
 	return uuo
 }
 
-// AddBadges adds the "badges" edges to the Badge entity.
-func (uuo *UserUpdateOne) AddBadges(b ...*Badge) *UserUpdateOne {
-	ids := make([]int, len(b))
-	for i := range b {
-		ids[i] = b[i].ID
-	}
-	return uuo.AddBadgeIDs(ids...)
-}
-
-// AddChallengeIDs adds the "challenges" edge to the Challenge entity by IDs.
-func (uuo *UserUpdateOne) AddChallengeIDs(ids ...uuid.UUID) *UserUpdateOne {
-	uuo.mutation.AddChallengeIDs(ids...)
-	return uuo
-}
-
-// AddChallenges adds the "challenges" edges to the Challenge entity.
-func (uuo *UserUpdateOne) AddChallenges(c ...*Challenge) *UserUpdateOne {
-	ids := make([]uuid.UUID, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return uuo.AddChallengeIDs(ids...)
-}
-
-// AddTestIDs adds the "tests" edge to the Test entity by IDs.
-func (uuo *UserUpdateOne) AddTestIDs(ids ...uuid.UUID) *UserUpdateOne {
-	uuo.mutation.AddTestIDs(ids...)
-	return uuo
-}
-
-// AddTests adds the "tests" edges to the Test entity.
-func (uuo *UserUpdateOne) AddTests(t ...*Test) *UserUpdateOne {
+// AddTakes adds the "takes" edges to the Take entity.
+func (uuo *UserUpdateOne) AddTakes(t ...*Take) *UserUpdateOne {
 	ids := make([]uuid.UUID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return uuo.AddTestIDs(ids...)
+	return uuo.AddTakeIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
-}
-
-// ClearPredictions clears all "predictions" edges to the Prediction entity.
-func (uuo *UserUpdateOne) ClearPredictions() *UserUpdateOne {
-	uuo.mutation.ClearPredictions()
-	return uuo
-}
-
-// RemovePredictionIDs removes the "predictions" edge to Prediction entities by IDs.
-func (uuo *UserUpdateOne) RemovePredictionIDs(ids ...uuid.UUID) *UserUpdateOne {
-	uuo.mutation.RemovePredictionIDs(ids...)
-	return uuo
-}
-
-// RemovePredictions removes "predictions" edges to Prediction entities.
-func (uuo *UserUpdateOne) RemovePredictions(p ...*Prediction) *UserUpdateOne {
-	ids := make([]uuid.UUID, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return uuo.RemovePredictionIDs(ids...)
 }
 
 // ClearSessions clears all "sessions" edges to the UserSession entity.
@@ -973,67 +634,25 @@ func (uuo *UserUpdateOne) RemoveSessions(u ...*UserSession) *UserUpdateOne {
 	return uuo.RemoveSessionIDs(ids...)
 }
 
-// ClearBadges clears all "badges" edges to the Badge entity.
-func (uuo *UserUpdateOne) ClearBadges() *UserUpdateOne {
-	uuo.mutation.ClearBadges()
+// ClearTakes clears all "takes" edges to the Take entity.
+func (uuo *UserUpdateOne) ClearTakes() *UserUpdateOne {
+	uuo.mutation.ClearTakes()
 	return uuo
 }
 
-// RemoveBadgeIDs removes the "badges" edge to Badge entities by IDs.
-func (uuo *UserUpdateOne) RemoveBadgeIDs(ids ...int) *UserUpdateOne {
-	uuo.mutation.RemoveBadgeIDs(ids...)
+// RemoveTakeIDs removes the "takes" edge to Take entities by IDs.
+func (uuo *UserUpdateOne) RemoveTakeIDs(ids ...uuid.UUID) *UserUpdateOne {
+	uuo.mutation.RemoveTakeIDs(ids...)
 	return uuo
 }
 
-// RemoveBadges removes "badges" edges to Badge entities.
-func (uuo *UserUpdateOne) RemoveBadges(b ...*Badge) *UserUpdateOne {
-	ids := make([]int, len(b))
-	for i := range b {
-		ids[i] = b[i].ID
-	}
-	return uuo.RemoveBadgeIDs(ids...)
-}
-
-// ClearChallenges clears all "challenges" edges to the Challenge entity.
-func (uuo *UserUpdateOne) ClearChallenges() *UserUpdateOne {
-	uuo.mutation.ClearChallenges()
-	return uuo
-}
-
-// RemoveChallengeIDs removes the "challenges" edge to Challenge entities by IDs.
-func (uuo *UserUpdateOne) RemoveChallengeIDs(ids ...uuid.UUID) *UserUpdateOne {
-	uuo.mutation.RemoveChallengeIDs(ids...)
-	return uuo
-}
-
-// RemoveChallenges removes "challenges" edges to Challenge entities.
-func (uuo *UserUpdateOne) RemoveChallenges(c ...*Challenge) *UserUpdateOne {
-	ids := make([]uuid.UUID, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return uuo.RemoveChallengeIDs(ids...)
-}
-
-// ClearTests clears all "tests" edges to the Test entity.
-func (uuo *UserUpdateOne) ClearTests() *UserUpdateOne {
-	uuo.mutation.ClearTests()
-	return uuo
-}
-
-// RemoveTestIDs removes the "tests" edge to Test entities by IDs.
-func (uuo *UserUpdateOne) RemoveTestIDs(ids ...uuid.UUID) *UserUpdateOne {
-	uuo.mutation.RemoveTestIDs(ids...)
-	return uuo
-}
-
-// RemoveTests removes "tests" edges to Test entities.
-func (uuo *UserUpdateOne) RemoveTests(t ...*Test) *UserUpdateOne {
+// RemoveTakes removes "takes" edges to Take entities.
+func (uuo *UserUpdateOne) RemoveTakes(t ...*Take) *UserUpdateOne {
 	ids := make([]uuid.UUID, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return uuo.RemoveTestIDs(ids...)
+	return uuo.RemoveTakeIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -1235,60 +854,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Column: user.FieldMeta,
 		})
 	}
-	if uuo.mutation.PredictionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.PredictionsTable,
-			Columns: []string{user.PredictionsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: prediction.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.RemovedPredictionsIDs(); len(nodes) > 0 && !uuo.mutation.PredictionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.PredictionsTable,
-			Columns: []string{user.PredictionsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: prediction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.PredictionsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.PredictionsTable,
-			Columns: []string{user.PredictionsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: prediction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if uuo.mutation.SessionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -1343,33 +908,33 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if uuo.mutation.BadgesCleared() {
+	if uuo.mutation.TakesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.BadgesTable,
-			Columns: user.BadgesPrimaryKey,
+			Table:   user.TakesTable,
+			Columns: []string{user.TakesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: badge.FieldID,
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uuo.mutation.RemovedBadgesIDs(); len(nodes) > 0 && !uuo.mutation.BadgesCleared() {
+	if nodes := uuo.mutation.RemovedTakesIDs(); len(nodes) > 0 && !uuo.mutation.TakesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.BadgesTable,
-			Columns: user.BadgesPrimaryKey,
+			Table:   user.TakesTable,
+			Columns: []string{user.TakesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: badge.FieldID,
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
 				},
 			},
 		}
@@ -1378,125 +943,17 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uuo.mutation.BadgesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   user.BadgesTable,
-			Columns: user.BadgesPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: badge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if uuo.mutation.ChallengesCleared() {
+	if nodes := uuo.mutation.TakesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.ChallengesTable,
-			Columns: []string{user.ChallengesColumn},
+			Table:   user.TakesTable,
+			Columns: []string{user.TakesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: challenge.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.RemovedChallengesIDs(); len(nodes) > 0 && !uuo.mutation.ChallengesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.ChallengesTable,
-			Columns: []string{user.ChallengesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: challenge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.ChallengesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.ChallengesTable,
-			Columns: []string{user.ChallengesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: challenge.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if uuo.mutation.TestsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TestsTable,
-			Columns: []string{user.TestsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: test.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.RemovedTestsIDs(); len(nodes) > 0 && !uuo.mutation.TestsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TestsTable,
-			Columns: []string{user.TestsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: test.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.TestsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TestsTable,
-			Columns: []string{user.TestsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
-					Column: test.FieldID,
+					Column: take.FieldID,
 				},
 			},
 		}

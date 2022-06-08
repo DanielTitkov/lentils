@@ -293,12 +293,12 @@ func (ttq *TestTranslationQuery) WithTest(opts ...func(*TestQuery)) *TestTransla
 // Example:
 //
 //	var v []struct {
-//		CreateTime time.Time `json:"create_time,omitempty"`
+//		Locale testtranslation.Locale `json:"locale,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.TestTranslation.Query().
-//		GroupBy(testtranslation.FieldCreateTime).
+//		GroupBy(testtranslation.FieldLocale).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -320,11 +320,11 @@ func (ttq *TestTranslationQuery) GroupBy(field string, fields ...string) *TestTr
 // Example:
 //
 //	var v []struct {
-//		CreateTime time.Time `json:"create_time,omitempty"`
+//		Locale testtranslation.Locale `json:"locale,omitempty"`
 //	}
 //
 //	client.TestTranslation.Query().
-//		Select(testtranslation.FieldCreateTime).
+//		Select(testtranslation.FieldLocale).
 //		Scan(ctx, &v)
 //
 func (ttq *TestTranslationQuery) Select(fields ...string) *TestTranslationSelect {

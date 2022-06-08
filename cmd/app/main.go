@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"os"
 
@@ -13,14 +12,12 @@ import (
 	"github.com/DanielTitkov/lentils/internal/handler"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/lentils/internal/service/email"
 	"github.com/DanielTitkov/lentils/logger"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/github"
 	"github.com/markbates/goth/providers/google"
 	"github.com/markbates/goth/providers/twitter"
-	sendinblue "github.com/sendinblue/APIv3-go-library/lib"
 
 	_ "github.com/lib/pq"
 )
@@ -73,30 +70,30 @@ func main() {
 	}
 
 	// email service
-	es, err := email.New(cfg.External.Sendinblue.Key)
-	if err != nil {
-		logger.Fatal("failed to init email service", err)
-	}
-
-	// body := sendinblue.CreateDoiContact{
-	// 	Email: "catie19924343@gmail.com",
-	// 	// Attributes:     attr,
-	// 	IncludeListIds: []int64{3},
-	// 	// TemplateId:     int64(1),
-	// 	RedirectionUrl: "https://lentils.live",
+	// es, err := email.New(cfg.External.Sendinblue.Key)
+	// if err != nil {
+	// 	logger.Fatal("failed to init email service", err)
 	// }
 
-	body := sendinblue.CreateContact{
-		Email:   "catie19924343@gmail.com",
-		ListIds: []int64{3},
-	}
+	// // body := sendinblue.CreateDoiContact{
+	// // 	Email: "catie19924343@gmail.com",
+	// // 	// Attributes:     attr,
+	// // 	IncludeListIds: []int64{3},
+	// // 	// TemplateId:     int64(1),
+	// // 	RedirectionUrl: "https://lentils.live",
+	// // }
 
-	model, resp, err := es.Client.ContactsApi.CreateContact(context.Background(), body)
-	// resp, err := es.Client.ContactsApi.CreateDoiContact(context.Background(), body)
-	if err != nil {
-		fmt.Println("Error in ContactsApi->CreateDoiContact ", err.Error())
-	}
-	fmt.Println("CreateDoiContact response:", resp, model)
+	// body := sendinblue.CreateContact{
+	// 	Email:   "catie19924343@gmail.com",
+	// 	ListIds: []int64{3},
+	// }
+
+	// model, resp, err := es.Client.ContactsApi.CreateContact(context.Background(), body)
+	// // resp, err := es.Client.ContactsApi.CreateDoiContact(context.Background(), body)
+	// if err != nil {
+	// 	fmt.Println("Error in ContactsApi->CreateDoiContact ", err.Error())
+	// }
+	// fmt.Println("CreateDoiContact response:", resp, model)
 	// email end
 
 	gothic.Store = store.Store

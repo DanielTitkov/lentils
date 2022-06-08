@@ -10,10 +10,16 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/migrate"
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/badge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/challenge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/prediction"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/proof"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
@@ -29,14 +35,26 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// Badge is the client for interacting with the Badge builders.
-	Badge *BadgeClient
-	// Challenge is the client for interacting with the Challenge builders.
-	Challenge *ChallengeClient
-	// Prediction is the client for interacting with the Prediction builders.
-	Prediction *PredictionClient
-	// Proof is the client for interacting with the Proof builders.
-	Proof *ProofClient
+	// Interpretation is the client for interacting with the Interpretation builders.
+	Interpretation *InterpretationClient
+	// InterpretationTranslation is the client for interacting with the InterpretationTranslation builders.
+	InterpretationTranslation *InterpretationTranslationClient
+	// Item is the client for interacting with the Item builders.
+	Item *ItemClient
+	// ItemTranslation is the client for interacting with the ItemTranslation builders.
+	ItemTranslation *ItemTranslationClient
+	// Question is the client for interacting with the Question builders.
+	Question *QuestionClient
+	// QuestionTranslation is the client for interacting with the QuestionTranslation builders.
+	QuestionTranslation *QuestionTranslationClient
+	// Response is the client for interacting with the Response builders.
+	Response *ResponseClient
+	// Scale is the client for interacting with the Scale builders.
+	Scale *ScaleClient
+	// ScaleTranslation is the client for interacting with the ScaleTranslation builders.
+	ScaleTranslation *ScaleTranslationClient
+	// Take is the client for interacting with the Take builders.
+	Take *TakeClient
 	// Test is the client for interacting with the Test builders.
 	Test *TestClient
 	// TestTranslation is the client for interacting with the TestTranslation builders.
@@ -58,10 +76,16 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.Badge = NewBadgeClient(c.config)
-	c.Challenge = NewChallengeClient(c.config)
-	c.Prediction = NewPredictionClient(c.config)
-	c.Proof = NewProofClient(c.config)
+	c.Interpretation = NewInterpretationClient(c.config)
+	c.InterpretationTranslation = NewInterpretationTranslationClient(c.config)
+	c.Item = NewItemClient(c.config)
+	c.ItemTranslation = NewItemTranslationClient(c.config)
+	c.Question = NewQuestionClient(c.config)
+	c.QuestionTranslation = NewQuestionTranslationClient(c.config)
+	c.Response = NewResponseClient(c.config)
+	c.Scale = NewScaleClient(c.config)
+	c.ScaleTranslation = NewScaleTranslationClient(c.config)
+	c.Take = NewTakeClient(c.config)
 	c.Test = NewTestClient(c.config)
 	c.TestTranslation = NewTestTranslationClient(c.config)
 	c.User = NewUserClient(c.config)
@@ -97,16 +121,22 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:             ctx,
-		config:          cfg,
-		Badge:           NewBadgeClient(cfg),
-		Challenge:       NewChallengeClient(cfg),
-		Prediction:      NewPredictionClient(cfg),
-		Proof:           NewProofClient(cfg),
-		Test:            NewTestClient(cfg),
-		TestTranslation: NewTestTranslationClient(cfg),
-		User:            NewUserClient(cfg),
-		UserSession:     NewUserSessionClient(cfg),
+		ctx:                       ctx,
+		config:                    cfg,
+		Interpretation:            NewInterpretationClient(cfg),
+		InterpretationTranslation: NewInterpretationTranslationClient(cfg),
+		Item:                      NewItemClient(cfg),
+		ItemTranslation:           NewItemTranslationClient(cfg),
+		Question:                  NewQuestionClient(cfg),
+		QuestionTranslation:       NewQuestionTranslationClient(cfg),
+		Response:                  NewResponseClient(cfg),
+		Scale:                     NewScaleClient(cfg),
+		ScaleTranslation:          NewScaleTranslationClient(cfg),
+		Take:                      NewTakeClient(cfg),
+		Test:                      NewTestClient(cfg),
+		TestTranslation:           NewTestTranslationClient(cfg),
+		User:                      NewUserClient(cfg),
+		UserSession:               NewUserSessionClient(cfg),
 	}, nil
 }
 
@@ -124,23 +154,29 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:             ctx,
-		config:          cfg,
-		Badge:           NewBadgeClient(cfg),
-		Challenge:       NewChallengeClient(cfg),
-		Prediction:      NewPredictionClient(cfg),
-		Proof:           NewProofClient(cfg),
-		Test:            NewTestClient(cfg),
-		TestTranslation: NewTestTranslationClient(cfg),
-		User:            NewUserClient(cfg),
-		UserSession:     NewUserSessionClient(cfg),
+		ctx:                       ctx,
+		config:                    cfg,
+		Interpretation:            NewInterpretationClient(cfg),
+		InterpretationTranslation: NewInterpretationTranslationClient(cfg),
+		Item:                      NewItemClient(cfg),
+		ItemTranslation:           NewItemTranslationClient(cfg),
+		Question:                  NewQuestionClient(cfg),
+		QuestionTranslation:       NewQuestionTranslationClient(cfg),
+		Response:                  NewResponseClient(cfg),
+		Scale:                     NewScaleClient(cfg),
+		ScaleTranslation:          NewScaleTranslationClient(cfg),
+		Take:                      NewTakeClient(cfg),
+		Test:                      NewTestClient(cfg),
+		TestTranslation:           NewTestTranslationClient(cfg),
+		User:                      NewUserClient(cfg),
+		UserSession:               NewUserSessionClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Badge.
+//		Interpretation.
 //		Query().
 //		Count(ctx)
 //
@@ -163,94 +199,100 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Badge.Use(hooks...)
-	c.Challenge.Use(hooks...)
-	c.Prediction.Use(hooks...)
-	c.Proof.Use(hooks...)
+	c.Interpretation.Use(hooks...)
+	c.InterpretationTranslation.Use(hooks...)
+	c.Item.Use(hooks...)
+	c.ItemTranslation.Use(hooks...)
+	c.Question.Use(hooks...)
+	c.QuestionTranslation.Use(hooks...)
+	c.Response.Use(hooks...)
+	c.Scale.Use(hooks...)
+	c.ScaleTranslation.Use(hooks...)
+	c.Take.Use(hooks...)
 	c.Test.Use(hooks...)
 	c.TestTranslation.Use(hooks...)
 	c.User.Use(hooks...)
 	c.UserSession.Use(hooks...)
 }
 
-// BadgeClient is a client for the Badge schema.
-type BadgeClient struct {
+// InterpretationClient is a client for the Interpretation schema.
+type InterpretationClient struct {
 	config
 }
 
-// NewBadgeClient returns a client for the Badge from the given config.
-func NewBadgeClient(c config) *BadgeClient {
-	return &BadgeClient{config: c}
+// NewInterpretationClient returns a client for the Interpretation from the given config.
+func NewInterpretationClient(c config) *InterpretationClient {
+	return &InterpretationClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `badge.Hooks(f(g(h())))`.
-func (c *BadgeClient) Use(hooks ...Hook) {
-	c.hooks.Badge = append(c.hooks.Badge, hooks...)
+// A call to `Use(f, g, h)` equals to `interpretation.Hooks(f(g(h())))`.
+func (c *InterpretationClient) Use(hooks ...Hook) {
+	c.hooks.Interpretation = append(c.hooks.Interpretation, hooks...)
 }
 
-// Create returns a create builder for Badge.
-func (c *BadgeClient) Create() *BadgeCreate {
-	mutation := newBadgeMutation(c.config, OpCreate)
-	return &BadgeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a create builder for Interpretation.
+func (c *InterpretationClient) Create() *InterpretationCreate {
+	mutation := newInterpretationMutation(c.config, OpCreate)
+	return &InterpretationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Badge entities.
-func (c *BadgeClient) CreateBulk(builders ...*BadgeCreate) *BadgeCreateBulk {
-	return &BadgeCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Interpretation entities.
+func (c *InterpretationClient) CreateBulk(builders ...*InterpretationCreate) *InterpretationCreateBulk {
+	return &InterpretationCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Badge.
-func (c *BadgeClient) Update() *BadgeUpdate {
-	mutation := newBadgeMutation(c.config, OpUpdate)
-	return &BadgeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Interpretation.
+func (c *InterpretationClient) Update() *InterpretationUpdate {
+	mutation := newInterpretationMutation(c.config, OpUpdate)
+	return &InterpretationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *BadgeClient) UpdateOne(b *Badge) *BadgeUpdateOne {
-	mutation := newBadgeMutation(c.config, OpUpdateOne, withBadge(b))
-	return &BadgeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *InterpretationClient) UpdateOne(i *Interpretation) *InterpretationUpdateOne {
+	mutation := newInterpretationMutation(c.config, OpUpdateOne, withInterpretation(i))
+	return &InterpretationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *BadgeClient) UpdateOneID(id int) *BadgeUpdateOne {
-	mutation := newBadgeMutation(c.config, OpUpdateOne, withBadgeID(id))
-	return &BadgeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *InterpretationClient) UpdateOneID(id uuid.UUID) *InterpretationUpdateOne {
+	mutation := newInterpretationMutation(c.config, OpUpdateOne, withInterpretationID(id))
+	return &InterpretationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Badge.
-func (c *BadgeClient) Delete() *BadgeDelete {
-	mutation := newBadgeMutation(c.config, OpDelete)
-	return &BadgeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Interpretation.
+func (c *InterpretationClient) Delete() *InterpretationDelete {
+	mutation := newInterpretationMutation(c.config, OpDelete)
+	return &InterpretationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a delete builder for the given entity.
-func (c *BadgeClient) DeleteOne(b *Badge) *BadgeDeleteOne {
-	return c.DeleteOneID(b.ID)
+func (c *InterpretationClient) DeleteOne(i *Interpretation) *InterpretationDeleteOne {
+	return c.DeleteOneID(i.ID)
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *BadgeClient) DeleteOneID(id int) *BadgeDeleteOne {
-	builder := c.Delete().Where(badge.ID(id))
+func (c *InterpretationClient) DeleteOneID(id uuid.UUID) *InterpretationDeleteOne {
+	builder := c.Delete().Where(interpretation.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &BadgeDeleteOne{builder}
+	return &InterpretationDeleteOne{builder}
 }
 
-// Query returns a query builder for Badge.
-func (c *BadgeClient) Query() *BadgeQuery {
-	return &BadgeQuery{
+// Query returns a query builder for Interpretation.
+func (c *InterpretationClient) Query() *InterpretationQuery {
+	return &InterpretationQuery{
 		config: c.config,
 	}
 }
 
-// Get returns a Badge entity by its id.
-func (c *BadgeClient) Get(ctx context.Context, id int) (*Badge, error) {
-	return c.Query().Where(badge.ID(id)).Only(ctx)
+// Get returns a Interpretation entity by its id.
+func (c *InterpretationClient) Get(ctx context.Context, id uuid.UUID) (*Interpretation, error) {
+	return c.Query().Where(interpretation.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *BadgeClient) GetX(ctx context.Context, id int) *Badge {
+func (c *InterpretationClient) GetX(ctx context.Context, id uuid.UUID) *Interpretation {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -258,391 +300,1171 @@ func (c *BadgeClient) GetX(ctx context.Context, id int) *Badge {
 	return obj
 }
 
-// QueryUsers queries the users edge of a Badge.
-func (c *BadgeClient) QueryUsers(b *Badge) *UserQuery {
+// QueryTranslations queries the translations edge of a Interpretation.
+func (c *InterpretationClient) QueryTranslations(i *Interpretation) *InterpretationTranslationQuery {
+	query := &InterpretationTranslationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(interpretation.Table, interpretation.FieldID, id),
+			sqlgraph.To(interpretationtranslation.Table, interpretationtranslation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, interpretation.TranslationsTable, interpretation.TranslationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryScale queries the scale edge of a Interpretation.
+func (c *InterpretationClient) QueryScale(i *Interpretation) *ScaleQuery {
+	query := &ScaleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(interpretation.Table, interpretation.FieldID, id),
+			sqlgraph.To(scale.Table, scale.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, interpretation.ScaleTable, interpretation.ScaleColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *InterpretationClient) Hooks() []Hook {
+	return c.hooks.Interpretation
+}
+
+// InterpretationTranslationClient is a client for the InterpretationTranslation schema.
+type InterpretationTranslationClient struct {
+	config
+}
+
+// NewInterpretationTranslationClient returns a client for the InterpretationTranslation from the given config.
+func NewInterpretationTranslationClient(c config) *InterpretationTranslationClient {
+	return &InterpretationTranslationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `interpretationtranslation.Hooks(f(g(h())))`.
+func (c *InterpretationTranslationClient) Use(hooks ...Hook) {
+	c.hooks.InterpretationTranslation = append(c.hooks.InterpretationTranslation, hooks...)
+}
+
+// Create returns a create builder for InterpretationTranslation.
+func (c *InterpretationTranslationClient) Create() *InterpretationTranslationCreate {
+	mutation := newInterpretationTranslationMutation(c.config, OpCreate)
+	return &InterpretationTranslationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of InterpretationTranslation entities.
+func (c *InterpretationTranslationClient) CreateBulk(builders ...*InterpretationTranslationCreate) *InterpretationTranslationCreateBulk {
+	return &InterpretationTranslationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for InterpretationTranslation.
+func (c *InterpretationTranslationClient) Update() *InterpretationTranslationUpdate {
+	mutation := newInterpretationTranslationMutation(c.config, OpUpdate)
+	return &InterpretationTranslationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *InterpretationTranslationClient) UpdateOne(it *InterpretationTranslation) *InterpretationTranslationUpdateOne {
+	mutation := newInterpretationTranslationMutation(c.config, OpUpdateOne, withInterpretationTranslation(it))
+	return &InterpretationTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *InterpretationTranslationClient) UpdateOneID(id uuid.UUID) *InterpretationTranslationUpdateOne {
+	mutation := newInterpretationTranslationMutation(c.config, OpUpdateOne, withInterpretationTranslationID(id))
+	return &InterpretationTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for InterpretationTranslation.
+func (c *InterpretationTranslationClient) Delete() *InterpretationTranslationDelete {
+	mutation := newInterpretationTranslationMutation(c.config, OpDelete)
+	return &InterpretationTranslationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *InterpretationTranslationClient) DeleteOne(it *InterpretationTranslation) *InterpretationTranslationDeleteOne {
+	return c.DeleteOneID(it.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *InterpretationTranslationClient) DeleteOneID(id uuid.UUID) *InterpretationTranslationDeleteOne {
+	builder := c.Delete().Where(interpretationtranslation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &InterpretationTranslationDeleteOne{builder}
+}
+
+// Query returns a query builder for InterpretationTranslation.
+func (c *InterpretationTranslationClient) Query() *InterpretationTranslationQuery {
+	return &InterpretationTranslationQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a InterpretationTranslation entity by its id.
+func (c *InterpretationTranslationClient) Get(ctx context.Context, id uuid.UUID) (*InterpretationTranslation, error) {
+	return c.Query().Where(interpretationtranslation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *InterpretationTranslationClient) GetX(ctx context.Context, id uuid.UUID) *InterpretationTranslation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryInterpretation queries the interpretation edge of a InterpretationTranslation.
+func (c *InterpretationTranslationClient) QueryInterpretation(it *InterpretationTranslation) *InterpretationQuery {
+	query := &InterpretationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := it.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(interpretationtranslation.Table, interpretationtranslation.FieldID, id),
+			sqlgraph.To(interpretation.Table, interpretation.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, interpretationtranslation.InterpretationTable, interpretationtranslation.InterpretationColumn),
+		)
+		fromV = sqlgraph.Neighbors(it.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *InterpretationTranslationClient) Hooks() []Hook {
+	return c.hooks.InterpretationTranslation
+}
+
+// ItemClient is a client for the Item schema.
+type ItemClient struct {
+	config
+}
+
+// NewItemClient returns a client for the Item from the given config.
+func NewItemClient(c config) *ItemClient {
+	return &ItemClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `item.Hooks(f(g(h())))`.
+func (c *ItemClient) Use(hooks ...Hook) {
+	c.hooks.Item = append(c.hooks.Item, hooks...)
+}
+
+// Create returns a create builder for Item.
+func (c *ItemClient) Create() *ItemCreate {
+	mutation := newItemMutation(c.config, OpCreate)
+	return &ItemCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Item entities.
+func (c *ItemClient) CreateBulk(builders ...*ItemCreate) *ItemCreateBulk {
+	return &ItemCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Item.
+func (c *ItemClient) Update() *ItemUpdate {
+	mutation := newItemMutation(c.config, OpUpdate)
+	return &ItemUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ItemClient) UpdateOne(i *Item) *ItemUpdateOne {
+	mutation := newItemMutation(c.config, OpUpdateOne, withItem(i))
+	return &ItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ItemClient) UpdateOneID(id uuid.UUID) *ItemUpdateOne {
+	mutation := newItemMutation(c.config, OpUpdateOne, withItemID(id))
+	return &ItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Item.
+func (c *ItemClient) Delete() *ItemDelete {
+	mutation := newItemMutation(c.config, OpDelete)
+	return &ItemDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *ItemClient) DeleteOne(i *Item) *ItemDeleteOne {
+	return c.DeleteOneID(i.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *ItemClient) DeleteOneID(id uuid.UUID) *ItemDeleteOne {
+	builder := c.Delete().Where(item.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ItemDeleteOne{builder}
+}
+
+// Query returns a query builder for Item.
+func (c *ItemClient) Query() *ItemQuery {
+	return &ItemQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Item entity by its id.
+func (c *ItemClient) Get(ctx context.Context, id uuid.UUID) (*Item, error) {
+	return c.Query().Where(item.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ItemClient) GetX(ctx context.Context, id uuid.UUID) *Item {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryResponses queries the responses edge of a Item.
+func (c *ItemClient) QueryResponses(i *Item) *ResponseQuery {
+	query := &ResponseQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(item.Table, item.FieldID, id),
+			sqlgraph.To(response.Table, response.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, item.ResponsesTable, item.ResponsesColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTranslations queries the translations edge of a Item.
+func (c *ItemClient) QueryTranslations(i *Item) *ItemTranslationQuery {
+	query := &ItemTranslationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(item.Table, item.FieldID, id),
+			sqlgraph.To(itemtranslation.Table, itemtranslation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, item.TranslationsTable, item.TranslationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryScale queries the scale edge of a Item.
+func (c *ItemClient) QueryScale(i *Item) *ScaleQuery {
+	query := &ScaleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(item.Table, item.FieldID, id),
+			sqlgraph.To(scale.Table, scale.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, item.ScaleTable, item.ScalePrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryQuestion queries the question edge of a Item.
+func (c *ItemClient) QueryQuestion(i *Item) *QuestionQuery {
+	query := &QuestionQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(item.Table, item.FieldID, id),
+			sqlgraph.To(question.Table, question.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, item.QuestionTable, item.QuestionPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ItemClient) Hooks() []Hook {
+	return c.hooks.Item
+}
+
+// ItemTranslationClient is a client for the ItemTranslation schema.
+type ItemTranslationClient struct {
+	config
+}
+
+// NewItemTranslationClient returns a client for the ItemTranslation from the given config.
+func NewItemTranslationClient(c config) *ItemTranslationClient {
+	return &ItemTranslationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `itemtranslation.Hooks(f(g(h())))`.
+func (c *ItemTranslationClient) Use(hooks ...Hook) {
+	c.hooks.ItemTranslation = append(c.hooks.ItemTranslation, hooks...)
+}
+
+// Create returns a create builder for ItemTranslation.
+func (c *ItemTranslationClient) Create() *ItemTranslationCreate {
+	mutation := newItemTranslationMutation(c.config, OpCreate)
+	return &ItemTranslationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ItemTranslation entities.
+func (c *ItemTranslationClient) CreateBulk(builders ...*ItemTranslationCreate) *ItemTranslationCreateBulk {
+	return &ItemTranslationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ItemTranslation.
+func (c *ItemTranslationClient) Update() *ItemTranslationUpdate {
+	mutation := newItemTranslationMutation(c.config, OpUpdate)
+	return &ItemTranslationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ItemTranslationClient) UpdateOne(it *ItemTranslation) *ItemTranslationUpdateOne {
+	mutation := newItemTranslationMutation(c.config, OpUpdateOne, withItemTranslation(it))
+	return &ItemTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ItemTranslationClient) UpdateOneID(id uuid.UUID) *ItemTranslationUpdateOne {
+	mutation := newItemTranslationMutation(c.config, OpUpdateOne, withItemTranslationID(id))
+	return &ItemTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ItemTranslation.
+func (c *ItemTranslationClient) Delete() *ItemTranslationDelete {
+	mutation := newItemTranslationMutation(c.config, OpDelete)
+	return &ItemTranslationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *ItemTranslationClient) DeleteOne(it *ItemTranslation) *ItemTranslationDeleteOne {
+	return c.DeleteOneID(it.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *ItemTranslationClient) DeleteOneID(id uuid.UUID) *ItemTranslationDeleteOne {
+	builder := c.Delete().Where(itemtranslation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ItemTranslationDeleteOne{builder}
+}
+
+// Query returns a query builder for ItemTranslation.
+func (c *ItemTranslationClient) Query() *ItemTranslationQuery {
+	return &ItemTranslationQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a ItemTranslation entity by its id.
+func (c *ItemTranslationClient) Get(ctx context.Context, id uuid.UUID) (*ItemTranslation, error) {
+	return c.Query().Where(itemtranslation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ItemTranslationClient) GetX(ctx context.Context, id uuid.UUID) *ItemTranslation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryItem queries the item edge of a ItemTranslation.
+func (c *ItemTranslationClient) QueryItem(it *ItemTranslation) *ItemQuery {
+	query := &ItemQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := it.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(itemtranslation.Table, itemtranslation.FieldID, id),
+			sqlgraph.To(item.Table, item.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, itemtranslation.ItemTable, itemtranslation.ItemColumn),
+		)
+		fromV = sqlgraph.Neighbors(it.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ItemTranslationClient) Hooks() []Hook {
+	return c.hooks.ItemTranslation
+}
+
+// QuestionClient is a client for the Question schema.
+type QuestionClient struct {
+	config
+}
+
+// NewQuestionClient returns a client for the Question from the given config.
+func NewQuestionClient(c config) *QuestionClient {
+	return &QuestionClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `question.Hooks(f(g(h())))`.
+func (c *QuestionClient) Use(hooks ...Hook) {
+	c.hooks.Question = append(c.hooks.Question, hooks...)
+}
+
+// Create returns a create builder for Question.
+func (c *QuestionClient) Create() *QuestionCreate {
+	mutation := newQuestionMutation(c.config, OpCreate)
+	return &QuestionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Question entities.
+func (c *QuestionClient) CreateBulk(builders ...*QuestionCreate) *QuestionCreateBulk {
+	return &QuestionCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Question.
+func (c *QuestionClient) Update() *QuestionUpdate {
+	mutation := newQuestionMutation(c.config, OpUpdate)
+	return &QuestionUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *QuestionClient) UpdateOne(q *Question) *QuestionUpdateOne {
+	mutation := newQuestionMutation(c.config, OpUpdateOne, withQuestion(q))
+	return &QuestionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *QuestionClient) UpdateOneID(id uuid.UUID) *QuestionUpdateOne {
+	mutation := newQuestionMutation(c.config, OpUpdateOne, withQuestionID(id))
+	return &QuestionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Question.
+func (c *QuestionClient) Delete() *QuestionDelete {
+	mutation := newQuestionMutation(c.config, OpDelete)
+	return &QuestionDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *QuestionClient) DeleteOne(q *Question) *QuestionDeleteOne {
+	return c.DeleteOneID(q.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *QuestionClient) DeleteOneID(id uuid.UUID) *QuestionDeleteOne {
+	builder := c.Delete().Where(question.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &QuestionDeleteOne{builder}
+}
+
+// Query returns a query builder for Question.
+func (c *QuestionClient) Query() *QuestionQuery {
+	return &QuestionQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Question entity by its id.
+func (c *QuestionClient) Get(ctx context.Context, id uuid.UUID) (*Question, error) {
+	return c.Query().Where(question.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *QuestionClient) GetX(ctx context.Context, id uuid.UUID) *Question {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryItems queries the items edge of a Question.
+func (c *QuestionClient) QueryItems(q *Question) *ItemQuery {
+	query := &ItemQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := q.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(question.Table, question.FieldID, id),
+			sqlgraph.To(item.Table, item.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, question.ItemsTable, question.ItemsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(q.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTranslations queries the translations edge of a Question.
+func (c *QuestionClient) QueryTranslations(q *Question) *QuestionTranslationQuery {
+	query := &QuestionTranslationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := q.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(question.Table, question.FieldID, id),
+			sqlgraph.To(questiontranslation.Table, questiontranslation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, question.TranslationsTable, question.TranslationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(q.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTest queries the test edge of a Question.
+func (c *QuestionClient) QueryTest(q *Question) *TestQuery {
+	query := &TestQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := q.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(question.Table, question.FieldID, id),
+			sqlgraph.To(test.Table, test.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, question.TestTable, question.TestPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(q.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *QuestionClient) Hooks() []Hook {
+	return c.hooks.Question
+}
+
+// QuestionTranslationClient is a client for the QuestionTranslation schema.
+type QuestionTranslationClient struct {
+	config
+}
+
+// NewQuestionTranslationClient returns a client for the QuestionTranslation from the given config.
+func NewQuestionTranslationClient(c config) *QuestionTranslationClient {
+	return &QuestionTranslationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `questiontranslation.Hooks(f(g(h())))`.
+func (c *QuestionTranslationClient) Use(hooks ...Hook) {
+	c.hooks.QuestionTranslation = append(c.hooks.QuestionTranslation, hooks...)
+}
+
+// Create returns a create builder for QuestionTranslation.
+func (c *QuestionTranslationClient) Create() *QuestionTranslationCreate {
+	mutation := newQuestionTranslationMutation(c.config, OpCreate)
+	return &QuestionTranslationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of QuestionTranslation entities.
+func (c *QuestionTranslationClient) CreateBulk(builders ...*QuestionTranslationCreate) *QuestionTranslationCreateBulk {
+	return &QuestionTranslationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for QuestionTranslation.
+func (c *QuestionTranslationClient) Update() *QuestionTranslationUpdate {
+	mutation := newQuestionTranslationMutation(c.config, OpUpdate)
+	return &QuestionTranslationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *QuestionTranslationClient) UpdateOne(qt *QuestionTranslation) *QuestionTranslationUpdateOne {
+	mutation := newQuestionTranslationMutation(c.config, OpUpdateOne, withQuestionTranslation(qt))
+	return &QuestionTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *QuestionTranslationClient) UpdateOneID(id uuid.UUID) *QuestionTranslationUpdateOne {
+	mutation := newQuestionTranslationMutation(c.config, OpUpdateOne, withQuestionTranslationID(id))
+	return &QuestionTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for QuestionTranslation.
+func (c *QuestionTranslationClient) Delete() *QuestionTranslationDelete {
+	mutation := newQuestionTranslationMutation(c.config, OpDelete)
+	return &QuestionTranslationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *QuestionTranslationClient) DeleteOne(qt *QuestionTranslation) *QuestionTranslationDeleteOne {
+	return c.DeleteOneID(qt.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *QuestionTranslationClient) DeleteOneID(id uuid.UUID) *QuestionTranslationDeleteOne {
+	builder := c.Delete().Where(questiontranslation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &QuestionTranslationDeleteOne{builder}
+}
+
+// Query returns a query builder for QuestionTranslation.
+func (c *QuestionTranslationClient) Query() *QuestionTranslationQuery {
+	return &QuestionTranslationQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a QuestionTranslation entity by its id.
+func (c *QuestionTranslationClient) Get(ctx context.Context, id uuid.UUID) (*QuestionTranslation, error) {
+	return c.Query().Where(questiontranslation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *QuestionTranslationClient) GetX(ctx context.Context, id uuid.UUID) *QuestionTranslation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryQuestion queries the question edge of a QuestionTranslation.
+func (c *QuestionTranslationClient) QueryQuestion(qt *QuestionTranslation) *QuestionQuery {
+	query := &QuestionQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := qt.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(questiontranslation.Table, questiontranslation.FieldID, id),
+			sqlgraph.To(question.Table, question.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, questiontranslation.QuestionTable, questiontranslation.QuestionColumn),
+		)
+		fromV = sqlgraph.Neighbors(qt.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *QuestionTranslationClient) Hooks() []Hook {
+	return c.hooks.QuestionTranslation
+}
+
+// ResponseClient is a client for the Response schema.
+type ResponseClient struct {
+	config
+}
+
+// NewResponseClient returns a client for the Response from the given config.
+func NewResponseClient(c config) *ResponseClient {
+	return &ResponseClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `response.Hooks(f(g(h())))`.
+func (c *ResponseClient) Use(hooks ...Hook) {
+	c.hooks.Response = append(c.hooks.Response, hooks...)
+}
+
+// Create returns a create builder for Response.
+func (c *ResponseClient) Create() *ResponseCreate {
+	mutation := newResponseMutation(c.config, OpCreate)
+	return &ResponseCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Response entities.
+func (c *ResponseClient) CreateBulk(builders ...*ResponseCreate) *ResponseCreateBulk {
+	return &ResponseCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Response.
+func (c *ResponseClient) Update() *ResponseUpdate {
+	mutation := newResponseMutation(c.config, OpUpdate)
+	return &ResponseUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ResponseClient) UpdateOne(r *Response) *ResponseUpdateOne {
+	mutation := newResponseMutation(c.config, OpUpdateOne, withResponse(r))
+	return &ResponseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ResponseClient) UpdateOneID(id uuid.UUID) *ResponseUpdateOne {
+	mutation := newResponseMutation(c.config, OpUpdateOne, withResponseID(id))
+	return &ResponseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Response.
+func (c *ResponseClient) Delete() *ResponseDelete {
+	mutation := newResponseMutation(c.config, OpDelete)
+	return &ResponseDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *ResponseClient) DeleteOne(r *Response) *ResponseDeleteOne {
+	return c.DeleteOneID(r.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *ResponseClient) DeleteOneID(id uuid.UUID) *ResponseDeleteOne {
+	builder := c.Delete().Where(response.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ResponseDeleteOne{builder}
+}
+
+// Query returns a query builder for Response.
+func (c *ResponseClient) Query() *ResponseQuery {
+	return &ResponseQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Response entity by its id.
+func (c *ResponseClient) Get(ctx context.Context, id uuid.UUID) (*Response, error) {
+	return c.Query().Where(response.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ResponseClient) GetX(ctx context.Context, id uuid.UUID) *Response {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryItem queries the item edge of a Response.
+func (c *ResponseClient) QueryItem(r *Response) *ItemQuery {
+	query := &ItemQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(response.Table, response.FieldID, id),
+			sqlgraph.To(item.Table, item.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, response.ItemTable, response.ItemColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTake queries the take edge of a Response.
+func (c *ResponseClient) QueryTake(r *Response) *TakeQuery {
+	query := &TakeQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(response.Table, response.FieldID, id),
+			sqlgraph.To(take.Table, take.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, response.TakeTable, response.TakeColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ResponseClient) Hooks() []Hook {
+	return c.hooks.Response
+}
+
+// ScaleClient is a client for the Scale schema.
+type ScaleClient struct {
+	config
+}
+
+// NewScaleClient returns a client for the Scale from the given config.
+func NewScaleClient(c config) *ScaleClient {
+	return &ScaleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `scale.Hooks(f(g(h())))`.
+func (c *ScaleClient) Use(hooks ...Hook) {
+	c.hooks.Scale = append(c.hooks.Scale, hooks...)
+}
+
+// Create returns a create builder for Scale.
+func (c *ScaleClient) Create() *ScaleCreate {
+	mutation := newScaleMutation(c.config, OpCreate)
+	return &ScaleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Scale entities.
+func (c *ScaleClient) CreateBulk(builders ...*ScaleCreate) *ScaleCreateBulk {
+	return &ScaleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Scale.
+func (c *ScaleClient) Update() *ScaleUpdate {
+	mutation := newScaleMutation(c.config, OpUpdate)
+	return &ScaleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ScaleClient) UpdateOne(s *Scale) *ScaleUpdateOne {
+	mutation := newScaleMutation(c.config, OpUpdateOne, withScale(s))
+	return &ScaleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ScaleClient) UpdateOneID(id uuid.UUID) *ScaleUpdateOne {
+	mutation := newScaleMutation(c.config, OpUpdateOne, withScaleID(id))
+	return &ScaleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Scale.
+func (c *ScaleClient) Delete() *ScaleDelete {
+	mutation := newScaleMutation(c.config, OpDelete)
+	return &ScaleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *ScaleClient) DeleteOne(s *Scale) *ScaleDeleteOne {
+	return c.DeleteOneID(s.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *ScaleClient) DeleteOneID(id uuid.UUID) *ScaleDeleteOne {
+	builder := c.Delete().Where(scale.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ScaleDeleteOne{builder}
+}
+
+// Query returns a query builder for Scale.
+func (c *ScaleClient) Query() *ScaleQuery {
+	return &ScaleQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Scale entity by its id.
+func (c *ScaleClient) Get(ctx context.Context, id uuid.UUID) (*Scale, error) {
+	return c.Query().Where(scale.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ScaleClient) GetX(ctx context.Context, id uuid.UUID) *Scale {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryItems queries the items edge of a Scale.
+func (c *ScaleClient) QueryItems(s *Scale) *ItemQuery {
+	query := &ItemQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, id),
+			sqlgraph.To(item.Table, item.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, scale.ItemsTable, scale.ItemsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryInterpretations queries the interpretations edge of a Scale.
+func (c *ScaleClient) QueryInterpretations(s *Scale) *InterpretationQuery {
+	query := &InterpretationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, id),
+			sqlgraph.To(interpretation.Table, interpretation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, scale.InterpretationsTable, scale.InterpretationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTranslations queries the translations edge of a Scale.
+func (c *ScaleClient) QueryTranslations(s *Scale) *ScaleTranslationQuery {
+	query := &ScaleTranslationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, id),
+			sqlgraph.To(scaletranslation.Table, scaletranslation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, scale.TranslationsTable, scale.TranslationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTest queries the test edge of a Scale.
+func (c *ScaleClient) QueryTest(s *Scale) *TestQuery {
+	query := &TestQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, id),
+			sqlgraph.To(test.Table, test.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, scale.TestTable, scale.TestPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ScaleClient) Hooks() []Hook {
+	return c.hooks.Scale
+}
+
+// ScaleTranslationClient is a client for the ScaleTranslation schema.
+type ScaleTranslationClient struct {
+	config
+}
+
+// NewScaleTranslationClient returns a client for the ScaleTranslation from the given config.
+func NewScaleTranslationClient(c config) *ScaleTranslationClient {
+	return &ScaleTranslationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `scaletranslation.Hooks(f(g(h())))`.
+func (c *ScaleTranslationClient) Use(hooks ...Hook) {
+	c.hooks.ScaleTranslation = append(c.hooks.ScaleTranslation, hooks...)
+}
+
+// Create returns a create builder for ScaleTranslation.
+func (c *ScaleTranslationClient) Create() *ScaleTranslationCreate {
+	mutation := newScaleTranslationMutation(c.config, OpCreate)
+	return &ScaleTranslationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ScaleTranslation entities.
+func (c *ScaleTranslationClient) CreateBulk(builders ...*ScaleTranslationCreate) *ScaleTranslationCreateBulk {
+	return &ScaleTranslationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ScaleTranslation.
+func (c *ScaleTranslationClient) Update() *ScaleTranslationUpdate {
+	mutation := newScaleTranslationMutation(c.config, OpUpdate)
+	return &ScaleTranslationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ScaleTranslationClient) UpdateOne(st *ScaleTranslation) *ScaleTranslationUpdateOne {
+	mutation := newScaleTranslationMutation(c.config, OpUpdateOne, withScaleTranslation(st))
+	return &ScaleTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ScaleTranslationClient) UpdateOneID(id uuid.UUID) *ScaleTranslationUpdateOne {
+	mutation := newScaleTranslationMutation(c.config, OpUpdateOne, withScaleTranslationID(id))
+	return &ScaleTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ScaleTranslation.
+func (c *ScaleTranslationClient) Delete() *ScaleTranslationDelete {
+	mutation := newScaleTranslationMutation(c.config, OpDelete)
+	return &ScaleTranslationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *ScaleTranslationClient) DeleteOne(st *ScaleTranslation) *ScaleTranslationDeleteOne {
+	return c.DeleteOneID(st.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *ScaleTranslationClient) DeleteOneID(id uuid.UUID) *ScaleTranslationDeleteOne {
+	builder := c.Delete().Where(scaletranslation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ScaleTranslationDeleteOne{builder}
+}
+
+// Query returns a query builder for ScaleTranslation.
+func (c *ScaleTranslationClient) Query() *ScaleTranslationQuery {
+	return &ScaleTranslationQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a ScaleTranslation entity by its id.
+func (c *ScaleTranslationClient) Get(ctx context.Context, id uuid.UUID) (*ScaleTranslation, error) {
+	return c.Query().Where(scaletranslation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ScaleTranslationClient) GetX(ctx context.Context, id uuid.UUID) *ScaleTranslation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryScale queries the scale edge of a ScaleTranslation.
+func (c *ScaleTranslationClient) QueryScale(st *ScaleTranslation) *ScaleQuery {
+	query := &ScaleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := st.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scaletranslation.Table, scaletranslation.FieldID, id),
+			sqlgraph.To(scale.Table, scale.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, scaletranslation.ScaleTable, scaletranslation.ScaleColumn),
+		)
+		fromV = sqlgraph.Neighbors(st.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ScaleTranslationClient) Hooks() []Hook {
+	return c.hooks.ScaleTranslation
+}
+
+// TakeClient is a client for the Take schema.
+type TakeClient struct {
+	config
+}
+
+// NewTakeClient returns a client for the Take from the given config.
+func NewTakeClient(c config) *TakeClient {
+	return &TakeClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `take.Hooks(f(g(h())))`.
+func (c *TakeClient) Use(hooks ...Hook) {
+	c.hooks.Take = append(c.hooks.Take, hooks...)
+}
+
+// Create returns a create builder for Take.
+func (c *TakeClient) Create() *TakeCreate {
+	mutation := newTakeMutation(c.config, OpCreate)
+	return &TakeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Take entities.
+func (c *TakeClient) CreateBulk(builders ...*TakeCreate) *TakeCreateBulk {
+	return &TakeCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Take.
+func (c *TakeClient) Update() *TakeUpdate {
+	mutation := newTakeMutation(c.config, OpUpdate)
+	return &TakeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TakeClient) UpdateOne(t *Take) *TakeUpdateOne {
+	mutation := newTakeMutation(c.config, OpUpdateOne, withTake(t))
+	return &TakeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TakeClient) UpdateOneID(id uuid.UUID) *TakeUpdateOne {
+	mutation := newTakeMutation(c.config, OpUpdateOne, withTakeID(id))
+	return &TakeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Take.
+func (c *TakeClient) Delete() *TakeDelete {
+	mutation := newTakeMutation(c.config, OpDelete)
+	return &TakeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *TakeClient) DeleteOne(t *Take) *TakeDeleteOne {
+	return c.DeleteOneID(t.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *TakeClient) DeleteOneID(id uuid.UUID) *TakeDeleteOne {
+	builder := c.Delete().Where(take.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TakeDeleteOne{builder}
+}
+
+// Query returns a query builder for Take.
+func (c *TakeClient) Query() *TakeQuery {
+	return &TakeQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Take entity by its id.
+func (c *TakeClient) Get(ctx context.Context, id uuid.UUID) (*Take, error) {
+	return c.Query().Where(take.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TakeClient) GetX(ctx context.Context, id uuid.UUID) *Take {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryResponses queries the responses edge of a Take.
+func (c *TakeClient) QueryResponses(t *Take) *ResponseQuery {
+	query := &ResponseQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(take.Table, take.FieldID, id),
+			sqlgraph.To(response.Table, response.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, take.ResponsesTable, take.ResponsesColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTest queries the test edge of a Take.
+func (c *TakeClient) QueryTest(t *Take) *TestQuery {
+	query := &TestQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(take.Table, take.FieldID, id),
+			sqlgraph.To(test.Table, test.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, take.TestTable, take.TestColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryUser queries the user edge of a Take.
+func (c *TakeClient) QueryUser(t *Take) *UserQuery {
 	query := &UserQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := b.ID
+		id := t.ID
 		step := sqlgraph.NewStep(
-			sqlgraph.From(badge.Table, badge.FieldID, id),
+			sqlgraph.From(take.Table, take.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, badge.UsersTable, badge.UsersPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2O, true, take.UserTable, take.UserColumn),
 		)
-		fromV = sqlgraph.Neighbors(b.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // Hooks returns the client hooks.
-func (c *BadgeClient) Hooks() []Hook {
-	return c.hooks.Badge
-}
-
-// ChallengeClient is a client for the Challenge schema.
-type ChallengeClient struct {
-	config
-}
-
-// NewChallengeClient returns a client for the Challenge from the given config.
-func NewChallengeClient(c config) *ChallengeClient {
-	return &ChallengeClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `challenge.Hooks(f(g(h())))`.
-func (c *ChallengeClient) Use(hooks ...Hook) {
-	c.hooks.Challenge = append(c.hooks.Challenge, hooks...)
-}
-
-// Create returns a create builder for Challenge.
-func (c *ChallengeClient) Create() *ChallengeCreate {
-	mutation := newChallengeMutation(c.config, OpCreate)
-	return &ChallengeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of Challenge entities.
-func (c *ChallengeClient) CreateBulk(builders ...*ChallengeCreate) *ChallengeCreateBulk {
-	return &ChallengeCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for Challenge.
-func (c *ChallengeClient) Update() *ChallengeUpdate {
-	mutation := newChallengeMutation(c.config, OpUpdate)
-	return &ChallengeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *ChallengeClient) UpdateOne(ch *Challenge) *ChallengeUpdateOne {
-	mutation := newChallengeMutation(c.config, OpUpdateOne, withChallenge(ch))
-	return &ChallengeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *ChallengeClient) UpdateOneID(id uuid.UUID) *ChallengeUpdateOne {
-	mutation := newChallengeMutation(c.config, OpUpdateOne, withChallengeID(id))
-	return &ChallengeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for Challenge.
-func (c *ChallengeClient) Delete() *ChallengeDelete {
-	mutation := newChallengeMutation(c.config, OpDelete)
-	return &ChallengeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *ChallengeClient) DeleteOne(ch *Challenge) *ChallengeDeleteOne {
-	return c.DeleteOneID(ch.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *ChallengeClient) DeleteOneID(id uuid.UUID) *ChallengeDeleteOne {
-	builder := c.Delete().Where(challenge.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &ChallengeDeleteOne{builder}
-}
-
-// Query returns a query builder for Challenge.
-func (c *ChallengeClient) Query() *ChallengeQuery {
-	return &ChallengeQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a Challenge entity by its id.
-func (c *ChallengeClient) Get(ctx context.Context, id uuid.UUID) (*Challenge, error) {
-	return c.Query().Where(challenge.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *ChallengeClient) GetX(ctx context.Context, id uuid.UUID) *Challenge {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryPredictions queries the predictions edge of a Challenge.
-func (c *ChallengeClient) QueryPredictions(ch *Challenge) *PredictionQuery {
-	query := &PredictionQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := ch.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(challenge.Table, challenge.FieldID, id),
-			sqlgraph.To(prediction.Table, prediction.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, challenge.PredictionsTable, challenge.PredictionsColumn),
-		)
-		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryProofs queries the proofs edge of a Challenge.
-func (c *ChallengeClient) QueryProofs(ch *Challenge) *ProofQuery {
-	query := &ProofQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := ch.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(challenge.Table, challenge.FieldID, id),
-			sqlgraph.To(proof.Table, proof.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, challenge.ProofsTable, challenge.ProofsColumn),
-		)
-		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryAuthor queries the author edge of a Challenge.
-func (c *ChallengeClient) QueryAuthor(ch *Challenge) *UserQuery {
-	query := &UserQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := ch.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(challenge.Table, challenge.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, challenge.AuthorTable, challenge.AuthorColumn),
-		)
-		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *ChallengeClient) Hooks() []Hook {
-	return c.hooks.Challenge
-}
-
-// PredictionClient is a client for the Prediction schema.
-type PredictionClient struct {
-	config
-}
-
-// NewPredictionClient returns a client for the Prediction from the given config.
-func NewPredictionClient(c config) *PredictionClient {
-	return &PredictionClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `prediction.Hooks(f(g(h())))`.
-func (c *PredictionClient) Use(hooks ...Hook) {
-	c.hooks.Prediction = append(c.hooks.Prediction, hooks...)
-}
-
-// Create returns a create builder for Prediction.
-func (c *PredictionClient) Create() *PredictionCreate {
-	mutation := newPredictionMutation(c.config, OpCreate)
-	return &PredictionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of Prediction entities.
-func (c *PredictionClient) CreateBulk(builders ...*PredictionCreate) *PredictionCreateBulk {
-	return &PredictionCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for Prediction.
-func (c *PredictionClient) Update() *PredictionUpdate {
-	mutation := newPredictionMutation(c.config, OpUpdate)
-	return &PredictionUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *PredictionClient) UpdateOne(pr *Prediction) *PredictionUpdateOne {
-	mutation := newPredictionMutation(c.config, OpUpdateOne, withPrediction(pr))
-	return &PredictionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *PredictionClient) UpdateOneID(id uuid.UUID) *PredictionUpdateOne {
-	mutation := newPredictionMutation(c.config, OpUpdateOne, withPredictionID(id))
-	return &PredictionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for Prediction.
-func (c *PredictionClient) Delete() *PredictionDelete {
-	mutation := newPredictionMutation(c.config, OpDelete)
-	return &PredictionDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *PredictionClient) DeleteOne(pr *Prediction) *PredictionDeleteOne {
-	return c.DeleteOneID(pr.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *PredictionClient) DeleteOneID(id uuid.UUID) *PredictionDeleteOne {
-	builder := c.Delete().Where(prediction.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &PredictionDeleteOne{builder}
-}
-
-// Query returns a query builder for Prediction.
-func (c *PredictionClient) Query() *PredictionQuery {
-	return &PredictionQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a Prediction entity by its id.
-func (c *PredictionClient) Get(ctx context.Context, id uuid.UUID) (*Prediction, error) {
-	return c.Query().Where(prediction.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *PredictionClient) GetX(ctx context.Context, id uuid.UUID) *Prediction {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryChallenge queries the challenge edge of a Prediction.
-func (c *PredictionClient) QueryChallenge(pr *Prediction) *ChallengeQuery {
-	query := &ChallengeQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := pr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(prediction.Table, prediction.FieldID, id),
-			sqlgraph.To(challenge.Table, challenge.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, prediction.ChallengeTable, prediction.ChallengeColumn),
-		)
-		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryUser queries the user edge of a Prediction.
-func (c *PredictionClient) QueryUser(pr *Prediction) *UserQuery {
-	query := &UserQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := pr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(prediction.Table, prediction.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, prediction.UserTable, prediction.UserColumn),
-		)
-		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *PredictionClient) Hooks() []Hook {
-	return c.hooks.Prediction
-}
-
-// ProofClient is a client for the Proof schema.
-type ProofClient struct {
-	config
-}
-
-// NewProofClient returns a client for the Proof from the given config.
-func NewProofClient(c config) *ProofClient {
-	return &ProofClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `proof.Hooks(f(g(h())))`.
-func (c *ProofClient) Use(hooks ...Hook) {
-	c.hooks.Proof = append(c.hooks.Proof, hooks...)
-}
-
-// Create returns a create builder for Proof.
-func (c *ProofClient) Create() *ProofCreate {
-	mutation := newProofMutation(c.config, OpCreate)
-	return &ProofCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of Proof entities.
-func (c *ProofClient) CreateBulk(builders ...*ProofCreate) *ProofCreateBulk {
-	return &ProofCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for Proof.
-func (c *ProofClient) Update() *ProofUpdate {
-	mutation := newProofMutation(c.config, OpUpdate)
-	return &ProofUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *ProofClient) UpdateOne(pr *Proof) *ProofUpdateOne {
-	mutation := newProofMutation(c.config, OpUpdateOne, withProof(pr))
-	return &ProofUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *ProofClient) UpdateOneID(id uuid.UUID) *ProofUpdateOne {
-	mutation := newProofMutation(c.config, OpUpdateOne, withProofID(id))
-	return &ProofUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for Proof.
-func (c *ProofClient) Delete() *ProofDelete {
-	mutation := newProofMutation(c.config, OpDelete)
-	return &ProofDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *ProofClient) DeleteOne(pr *Proof) *ProofDeleteOne {
-	return c.DeleteOneID(pr.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *ProofClient) DeleteOneID(id uuid.UUID) *ProofDeleteOne {
-	builder := c.Delete().Where(proof.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &ProofDeleteOne{builder}
-}
-
-// Query returns a query builder for Proof.
-func (c *ProofClient) Query() *ProofQuery {
-	return &ProofQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a Proof entity by its id.
-func (c *ProofClient) Get(ctx context.Context, id uuid.UUID) (*Proof, error) {
-	return c.Query().Where(proof.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *ProofClient) GetX(ctx context.Context, id uuid.UUID) *Proof {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryChallenge queries the challenge edge of a Proof.
-func (c *ProofClient) QueryChallenge(pr *Proof) *ChallengeQuery {
-	query := &ChallengeQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := pr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(proof.Table, proof.FieldID, id),
-			sqlgraph.To(challenge.Table, challenge.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, proof.ChallengeTable, proof.ChallengeColumn),
-		)
-		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *ProofClient) Hooks() []Hook {
-	return c.hooks.Proof
+func (c *TakeClient) Hooks() []Hook {
+	return c.hooks.Take
 }
 
 // TestClient is a client for the Test schema.
@@ -730,6 +1552,38 @@ func (c *TestClient) GetX(ctx context.Context, id uuid.UUID) *Test {
 	return obj
 }
 
+// QueryTakes queries the takes edge of a Test.
+func (c *TestClient) QueryTakes(t *Test) *TakeQuery {
+	query := &TakeQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, id),
+			sqlgraph.To(take.Table, take.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, test.TakesTable, test.TakesColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryQuestions queries the questions edge of a Test.
+func (c *TestClient) QueryQuestions(t *Test) *QuestionQuery {
+	query := &QuestionQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, id),
+			sqlgraph.To(question.Table, question.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, test.QuestionsTable, test.QuestionsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryTranslations queries the translations edge of a Test.
 func (c *TestClient) QueryTranslations(t *Test) *TestTranslationQuery {
 	query := &TestTranslationQuery{config: c.config}
@@ -746,15 +1600,15 @@ func (c *TestClient) QueryTranslations(t *Test) *TestTranslationQuery {
 	return query
 }
 
-// QueryAuthor queries the author edge of a Test.
-func (c *TestClient) QueryAuthor(t *Test) *UserQuery {
-	query := &UserQuery{config: c.config}
+// QueryScales queries the scales edge of a Test.
+func (c *TestClient) QueryScales(t *Test) *ScaleQuery {
+	query := &ScaleQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := t.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(test.Table, test.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, test.AuthorTable, test.AuthorColumn),
+			sqlgraph.To(scale.Table, scale.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, test.ScalesTable, test.ScalesPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil
@@ -958,22 +1812,6 @@ func (c *UserClient) GetX(ctx context.Context, id uuid.UUID) *User {
 	return obj
 }
 
-// QueryPredictions queries the predictions edge of a User.
-func (c *UserClient) QueryPredictions(u *User) *PredictionQuery {
-	query := &PredictionQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(prediction.Table, prediction.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.PredictionsTable, user.PredictionsColumn),
-		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // QuerySessions queries the sessions edge of a User.
 func (c *UserClient) QuerySessions(u *User) *UserSessionQuery {
 	query := &UserSessionQuery{config: c.config}
@@ -990,47 +1828,15 @@ func (c *UserClient) QuerySessions(u *User) *UserSessionQuery {
 	return query
 }
 
-// QueryBadges queries the badges edge of a User.
-func (c *UserClient) QueryBadges(u *User) *BadgeQuery {
-	query := &BadgeQuery{config: c.config}
+// QueryTakes queries the takes edge of a User.
+func (c *UserClient) QueryTakes(u *User) *TakeQuery {
+	query := &TakeQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := u.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(badge.Table, badge.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, user.BadgesTable, user.BadgesPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryChallenges queries the challenges edge of a User.
-func (c *UserClient) QueryChallenges(u *User) *ChallengeQuery {
-	query := &ChallengeQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(challenge.Table, challenge.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.ChallengesTable, user.ChallengesColumn),
-		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryTests queries the tests edge of a User.
-func (c *UserClient) QueryTests(u *User) *TestQuery {
-	query := &TestQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(test.Table, test.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.TestsTable, user.TestsColumn),
+			sqlgraph.To(take.Table, take.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.TakesTable, user.TakesColumn),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil

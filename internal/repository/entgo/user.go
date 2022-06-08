@@ -3,81 +3,15 @@ package entgo
 import (
 	"context"
 
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/challenge"
-
-	"entgo.io/ent/dialect/sql"
 	"github.com/google/uuid"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/prediction"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 )
 
 func (r *EntgoRepository) GetUserCount(ctx context.Context) (int, error) {
 	return r.client.User.Query().Count(ctx)
-}
-
-func (r *EntgoRepository) GetUserSummary(ctx context.Context, userID uuid.UUID) (*domain.UserSummary, error) {
-	correct, err := r.client.Challenge.
-		Query().
-		Where(challenge.OutcomeNotNil()).
-		Where(func(s *sql.Selector) {
-			p := sql.Table(prediction.Table)
-			s.Join(p).On(s.C(challenge.FieldID), p.C(prediction.ChallengeColumn))
-			s.Where(
-				sql.And(
-					sql.EQ(p.C(prediction.UserColumn), userID),
-					sql.ColumnsEQ(s.C(challenge.FieldOutcome), p.C(prediction.FieldPrognosis)),
-				),
-			)
-		}).
-		Count(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	incorrect, err := r.client.Challenge.
-		Query().
-		Where(challenge.OutcomeNotNil()).
-		Where(func(s *sql.Selector) {
-			p := sql.Table(prediction.Table)
-			s.Join(p).On(s.C(challenge.FieldID), p.C(prediction.ChallengeColumn))
-			s.Where(
-				sql.And(
-					sql.EQ(p.C(prediction.UserColumn), userID),
-					sql.ColumnsNEQ(s.C(challenge.FieldOutcome), p.C(prediction.FieldPrognosis)),
-				),
-			)
-		}).
-		Count(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	unknown, err := r.client.Challenge.
-		Query().
-		Where(
-			challenge.And(
-				challenge.OutcomeIsNil(),
-				challenge.HasPredictionsWith(
-					prediction.HasUserWith(
-						user.IDEQ(userID),
-					),
-				),
-			),
-		).
-		Count(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &domain.UserSummary{
-		UserID:               userID,
-		CorrectPredictions:   correct,
-		IncorrectPredictions: incorrect,
-		UnknownPredictions: unknown,
-	}, nil
 }
 
 func (r *EntgoRepository) IfEmailRegistered(ctx context.Context, email string) (bool, error) {

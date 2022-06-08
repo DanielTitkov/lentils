@@ -10,9 +10,11 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/google/uuid"
 )
 
@@ -57,26 +59,6 @@ func (tc *TestCreate) SetCode(s string) *TestCreate {
 	return tc
 }
 
-// SetContent sets the "content" field.
-func (tc *TestCreate) SetContent(s string) *TestCreate {
-	tc.mutation.SetContent(s)
-	return tc
-}
-
-// SetDescription sets the "description" field.
-func (tc *TestCreate) SetDescription(s string) *TestCreate {
-	tc.mutation.SetDescription(s)
-	return tc
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (tc *TestCreate) SetNillableDescription(s *string) *TestCreate {
-	if s != nil {
-		tc.SetDescription(*s)
-	}
-	return tc
-}
-
 // SetPublished sets the "published" field.
 func (tc *TestCreate) SetPublished(b bool) *TestCreate {
 	tc.mutation.SetPublished(b)
@@ -105,6 +87,36 @@ func (tc *TestCreate) SetNillableID(u *uuid.UUID) *TestCreate {
 	return tc
 }
 
+// AddTakeIDs adds the "takes" edge to the Take entity by IDs.
+func (tc *TestCreate) AddTakeIDs(ids ...uuid.UUID) *TestCreate {
+	tc.mutation.AddTakeIDs(ids...)
+	return tc
+}
+
+// AddTakes adds the "takes" edges to the Take entity.
+func (tc *TestCreate) AddTakes(t ...*Take) *TestCreate {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tc.AddTakeIDs(ids...)
+}
+
+// AddQuestionIDs adds the "questions" edge to the Question entity by IDs.
+func (tc *TestCreate) AddQuestionIDs(ids ...uuid.UUID) *TestCreate {
+	tc.mutation.AddQuestionIDs(ids...)
+	return tc
+}
+
+// AddQuestions adds the "questions" edges to the Question entity.
+func (tc *TestCreate) AddQuestions(q ...*Question) *TestCreate {
+	ids := make([]uuid.UUID, len(q))
+	for i := range q {
+		ids[i] = q[i].ID
+	}
+	return tc.AddQuestionIDs(ids...)
+}
+
 // AddTranslationIDs adds the "translations" edge to the TestTranslation entity by IDs.
 func (tc *TestCreate) AddTranslationIDs(ids ...uuid.UUID) *TestCreate {
 	tc.mutation.AddTranslationIDs(ids...)
@@ -120,23 +132,19 @@ func (tc *TestCreate) AddTranslations(t ...*TestTranslation) *TestCreate {
 	return tc.AddTranslationIDs(ids...)
 }
 
-// SetAuthorID sets the "author" edge to the User entity by ID.
-func (tc *TestCreate) SetAuthorID(id uuid.UUID) *TestCreate {
-	tc.mutation.SetAuthorID(id)
+// AddScaleIDs adds the "scales" edge to the Scale entity by IDs.
+func (tc *TestCreate) AddScaleIDs(ids ...uuid.UUID) *TestCreate {
+	tc.mutation.AddScaleIDs(ids...)
 	return tc
 }
 
-// SetNillableAuthorID sets the "author" edge to the User entity by ID if the given value is not nil.
-func (tc *TestCreate) SetNillableAuthorID(id *uuid.UUID) *TestCreate {
-	if id != nil {
-		tc = tc.SetAuthorID(*id)
+// AddScales adds the "scales" edges to the Scale entity.
+func (tc *TestCreate) AddScales(s ...*Scale) *TestCreate {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return tc
-}
-
-// SetAuthor sets the "author" edge to the User entity.
-func (tc *TestCreate) SetAuthor(u *User) *TestCreate {
-	return tc.SetAuthorID(u.ID)
+	return tc.AddScaleIDs(ids...)
 }
 
 // Mutation returns the TestMutation object of the builder.
@@ -244,19 +252,6 @@ func (tc *TestCreate) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Test.code": %w`, err)}
 		}
 	}
-	if _, ok := tc.mutation.Content(); !ok {
-		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "Test.content"`)}
-	}
-	if v, ok := tc.mutation.Content(); ok {
-		if err := test.ContentValidator(v); err != nil {
-			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Test.content": %w`, err)}
-		}
-	}
-	if v, ok := tc.mutation.Description(); ok {
-		if err := test.DescriptionValidator(v); err != nil {
-			return &ValidationError{Name: "description", err: fmt.Errorf(`ent: validator failed for field "Test.description": %w`, err)}
-		}
-	}
 	if _, ok := tc.mutation.Published(); !ok {
 		return &ValidationError{Name: "published", err: errors.New(`ent: missing required field "Test.published"`)}
 	}
@@ -320,22 +315,6 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 		})
 		_node.Code = value
 	}
-	if value, ok := tc.mutation.Content(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldContent,
-		})
-		_node.Content = value
-	}
-	if value, ok := tc.mutation.Description(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldDescription,
-		})
-		_node.Description = value
-	}
 	if value, ok := tc.mutation.Published(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
@@ -343,6 +322,44 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 			Column: test.FieldPublished,
 		})
 		_node.Published = value
+	}
+	if nodes := tc.mutation.TakesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   test.TakesTable,
+			Columns: []string{test.TakesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: take.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.QuestionsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.QuestionsTable,
+			Columns: test.QuestionsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: question.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := tc.mutation.TranslationsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -363,24 +380,23 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := tc.mutation.AuthorIDs(); len(nodes) > 0 {
+	if nodes := tc.mutation.ScalesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   test.AuthorTable,
-			Columns: []string{test.AuthorColumn},
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.ScalesTable,
+			Columns: test.ScalesPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
-					Column: user.FieldID,
+					Column: scale.FieldID,
 				},
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.user_tests = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

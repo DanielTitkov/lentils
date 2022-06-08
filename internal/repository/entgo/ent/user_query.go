@@ -12,11 +12,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/badge"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/challenge"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/prediction"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/usersession"
 	"github.com/google/uuid"
@@ -32,11 +29,8 @@ type UserQuery struct {
 	fields     []string
 	predicates []predicate.User
 	// eager-loading edges.
-	withPredictions *PredictionQuery
-	withSessions    *UserSessionQuery
-	withBadges      *BadgeQuery
-	withChallenges  *ChallengeQuery
-	withTests       *TestQuery
+	withSessions *UserSessionQuery
+	withTakes    *TakeQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -73,28 +67,6 @@ func (uq *UserQuery) Order(o ...OrderFunc) *UserQuery {
 	return uq
 }
 
-// QueryPredictions chains the current query on the "predictions" edge.
-func (uq *UserQuery) QueryPredictions() *PredictionQuery {
-	query := &PredictionQuery{config: uq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := uq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := uq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, selector),
-			sqlgraph.To(prediction.Table, prediction.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.PredictionsTable, user.PredictionsColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
 // QuerySessions chains the current query on the "sessions" edge.
 func (uq *UserQuery) QuerySessions() *UserSessionQuery {
 	query := &UserSessionQuery{config: uq.config}
@@ -117,9 +89,9 @@ func (uq *UserQuery) QuerySessions() *UserSessionQuery {
 	return query
 }
 
-// QueryBadges chains the current query on the "badges" edge.
-func (uq *UserQuery) QueryBadges() *BadgeQuery {
-	query := &BadgeQuery{config: uq.config}
+// QueryTakes chains the current query on the "takes" edge.
+func (uq *UserQuery) QueryTakes() *TakeQuery {
+	query := &TakeQuery{config: uq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := uq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -130,52 +102,8 @@ func (uq *UserQuery) QueryBadges() *BadgeQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, selector),
-			sqlgraph.To(badge.Table, badge.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, user.BadgesTable, user.BadgesPrimaryKey...),
-		)
-		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryChallenges chains the current query on the "challenges" edge.
-func (uq *UserQuery) QueryChallenges() *ChallengeQuery {
-	query := &ChallengeQuery{config: uq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := uq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := uq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, selector),
-			sqlgraph.To(challenge.Table, challenge.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.ChallengesTable, user.ChallengesColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryTests chains the current query on the "tests" edge.
-func (uq *UserQuery) QueryTests() *TestQuery {
-	query := &TestQuery{config: uq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := uq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := uq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, selector),
-			sqlgraph.To(test.Table, test.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.TestsTable, user.TestsColumn),
+			sqlgraph.To(take.Table, take.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.TakesTable, user.TakesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -359,32 +287,18 @@ func (uq *UserQuery) Clone() *UserQuery {
 		return nil
 	}
 	return &UserQuery{
-		config:          uq.config,
-		limit:           uq.limit,
-		offset:          uq.offset,
-		order:           append([]OrderFunc{}, uq.order...),
-		predicates:      append([]predicate.User{}, uq.predicates...),
-		withPredictions: uq.withPredictions.Clone(),
-		withSessions:    uq.withSessions.Clone(),
-		withBadges:      uq.withBadges.Clone(),
-		withChallenges:  uq.withChallenges.Clone(),
-		withTests:       uq.withTests.Clone(),
+		config:       uq.config,
+		limit:        uq.limit,
+		offset:       uq.offset,
+		order:        append([]OrderFunc{}, uq.order...),
+		predicates:   append([]predicate.User{}, uq.predicates...),
+		withSessions: uq.withSessions.Clone(),
+		withTakes:    uq.withTakes.Clone(),
 		// clone intermediate query.
 		sql:    uq.sql.Clone(),
 		path:   uq.path,
 		unique: uq.unique,
 	}
-}
-
-// WithPredictions tells the query-builder to eager-load the nodes that are connected to
-// the "predictions" edge. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithPredictions(opts ...func(*PredictionQuery)) *UserQuery {
-	query := &PredictionQuery{config: uq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	uq.withPredictions = query
-	return uq
 }
 
 // WithSessions tells the query-builder to eager-load the nodes that are connected to
@@ -398,36 +312,14 @@ func (uq *UserQuery) WithSessions(opts ...func(*UserSessionQuery)) *UserQuery {
 	return uq
 }
 
-// WithBadges tells the query-builder to eager-load the nodes that are connected to
-// the "badges" edge. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithBadges(opts ...func(*BadgeQuery)) *UserQuery {
-	query := &BadgeQuery{config: uq.config}
+// WithTakes tells the query-builder to eager-load the nodes that are connected to
+// the "takes" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithTakes(opts ...func(*TakeQuery)) *UserQuery {
+	query := &TakeQuery{config: uq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	uq.withBadges = query
-	return uq
-}
-
-// WithChallenges tells the query-builder to eager-load the nodes that are connected to
-// the "challenges" edge. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithChallenges(opts ...func(*ChallengeQuery)) *UserQuery {
-	query := &ChallengeQuery{config: uq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	uq.withChallenges = query
-	return uq
-}
-
-// WithTests tells the query-builder to eager-load the nodes that are connected to
-// the "tests" edge. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithTests(opts ...func(*TestQuery)) *UserQuery {
-	query := &TestQuery{config: uq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	uq.withTests = query
+	uq.withTakes = query
 	return uq
 }
 
@@ -496,12 +388,9 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [5]bool{
-			uq.withPredictions != nil,
+		loadedTypes = [2]bool{
 			uq.withSessions != nil,
-			uq.withBadges != nil,
-			uq.withChallenges != nil,
-			uq.withTests != nil,
+			uq.withTakes != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -522,35 +411,6 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
-	}
-
-	if query := uq.withPredictions; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[uuid.UUID]*User)
-		for i := range nodes {
-			fks = append(fks, nodes[i].ID)
-			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Predictions = []*Prediction{}
-		}
-		query.withFKs = true
-		query.Where(predicate.Prediction(func(s *sql.Selector) {
-			s.Where(sql.InValues(user.PredictionsColumn, fks...))
-		}))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			fk := n.user_predictions
-			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "user_predictions" is nil for node %v`, n.ID)
-			}
-			node, ok := nodeids[*fk]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_predictions" returned %v for node %v`, *fk, n.ID)
-			}
-			node.Edges.Predictions = append(node.Edges.Predictions, n)
-		}
 	}
 
 	if query := uq.withSessions; query != nil {
@@ -582,126 +442,32 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 		}
 	}
 
-	if query := uq.withBadges; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		ids := make(map[uuid.UUID]*User, len(nodes))
-		for _, node := range nodes {
-			ids[node.ID] = node
-			fks = append(fks, node.ID)
-			node.Edges.Badges = []*Badge{}
-		}
-		var (
-			edgeids []int
-			edges   = make(map[int][]*User)
-		)
-		_spec := &sqlgraph.EdgeQuerySpec{
-			Edge: &sqlgraph.EdgeSpec{
-				Inverse: false,
-				Table:   user.BadgesTable,
-				Columns: user.BadgesPrimaryKey,
-			},
-			Predicate: func(s *sql.Selector) {
-				s.Where(sql.InValues(user.BadgesPrimaryKey[0], fks...))
-			},
-			ScanValues: func() [2]interface{} {
-				return [2]interface{}{new(uuid.UUID), new(sql.NullInt64)}
-			},
-			Assign: func(out, in interface{}) error {
-				eout, ok := out.(*uuid.UUID)
-				if !ok || eout == nil {
-					return fmt.Errorf("unexpected id value for edge-out")
-				}
-				ein, ok := in.(*sql.NullInt64)
-				if !ok || ein == nil {
-					return fmt.Errorf("unexpected id value for edge-in")
-				}
-				outValue := *eout
-				inValue := int(ein.Int64)
-				node, ok := ids[outValue]
-				if !ok {
-					return fmt.Errorf("unexpected node id in edges: %v", outValue)
-				}
-				if _, ok := edges[inValue]; !ok {
-					edgeids = append(edgeids, inValue)
-				}
-				edges[inValue] = append(edges[inValue], node)
-				return nil
-			},
-		}
-		if err := sqlgraph.QueryEdges(ctx, uq.driver, _spec); err != nil {
-			return nil, fmt.Errorf(`query edges "badges": %w`, err)
-		}
-		query.Where(badge.IDIn(edgeids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := edges[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected "badges" node returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.Badges = append(nodes[i].Edges.Badges, n)
-			}
-		}
-	}
-
-	if query := uq.withChallenges; query != nil {
+	if query := uq.withTakes; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[uuid.UUID]*User)
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Challenges = []*Challenge{}
+			nodes[i].Edges.Takes = []*Take{}
 		}
 		query.withFKs = true
-		query.Where(predicate.Challenge(func(s *sql.Selector) {
-			s.Where(sql.InValues(user.ChallengesColumn, fks...))
+		query.Where(predicate.Take(func(s *sql.Selector) {
+			s.Where(sql.InValues(user.TakesColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n.user_challenges
+			fk := n.user_takes
 			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "user_challenges" is nil for node %v`, n.ID)
+				return nil, fmt.Errorf(`foreign-key "user_takes" is nil for node %v`, n.ID)
 			}
 			node, ok := nodeids[*fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_challenges" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "user_takes" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Challenges = append(node.Edges.Challenges, n)
-		}
-	}
-
-	if query := uq.withTests; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[uuid.UUID]*User)
-		for i := range nodes {
-			fks = append(fks, nodes[i].ID)
-			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Tests = []*Test{}
-		}
-		query.withFKs = true
-		query.Where(predicate.Test(func(s *sql.Selector) {
-			s.Where(sql.InValues(user.TestsColumn, fks...))
-		}))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			fk := n.user_tests
-			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "user_tests" is nil for node %v`, n.ID)
-			}
-			node, ok := nodeids[*fk]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_tests" returned %v for node %v`, *fk, n.ID)
-			}
-			node.Edges.Tests = append(node.Edges.Tests, n)
+			node.Edges.Takes = append(node.Edges.Takes, n)
 		}
 	}
 

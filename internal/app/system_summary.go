@@ -52,33 +52,9 @@ func (a *App) updateSystemSummary(ctx context.Context) error {
 		return err
 	}
 
-	challengeCount, err := a.repo.GetChallengeCount(ctx)
-	if err != nil {
-		return err
-	}
-
-	ongoingChallengeCount, err := a.repo.GetOngoingChallengeCount(ctx)
-	if err != nil {
-		return err
-	}
-
-	finishedChallengeCount, err := a.repo.GetFinishedChallengeCount(ctx)
-	if err != nil {
-		return err
-	}
-
-	predictionCount, err := a.repo.GetPredictionCount(ctx)
-	if err != nil {
-		return err
-	}
-
 	a.systemSummary = &domain.SystemSymmary{
-		Users:              userCount,
-		Predictions:        predictionCount,
-		Challenges:         challengeCount,
-		OngoingChallenges:  ongoingChallengeCount,
-		FinishedChallenges: finishedChallengeCount,
-		CreateTime:         time.Now(),
+		Users:      userCount,
+		CreateTime: time.Now(),
 	}
 
 	a.log.Debug("system summary updated", fmt.Sprintf("%+v", a.systemSummary))
