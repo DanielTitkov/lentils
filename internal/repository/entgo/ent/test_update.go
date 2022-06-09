@@ -39,12 +39,6 @@ func (tu *TestUpdate) SetUpdateTime(t time.Time) *TestUpdate {
 	return tu
 }
 
-// SetCode sets the "code" field.
-func (tu *TestUpdate) SetCode(s string) *TestUpdate {
-	tu.mutation.SetCode(s)
-	return tu
-}
-
 // SetPublished sets the "published" field.
 func (tu *TestUpdate) SetPublished(b bool) *TestUpdate {
 	tu.mutation.SetPublished(b)
@@ -216,18 +210,12 @@ func (tu *TestUpdate) Save(ctx context.Context) (int, error) {
 	)
 	tu.defaults()
 	if len(tu.hooks) == 0 {
-		if err = tu.check(); err != nil {
-			return 0, err
-		}
 		affected, err = tu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*TestMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			if err = tu.check(); err != nil {
-				return 0, err
 			}
 			tu.mutation = mutation
 			affected, err = tu.sqlSave(ctx)
@@ -277,16 +265,6 @@ func (tu *TestUpdate) defaults() {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (tu *TestUpdate) check() error {
-	if v, ok := tu.mutation.Code(); ok {
-		if err := test.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Test.code": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -310,13 +288,6 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: test.FieldUpdateTime,
-		})
-	}
-	if value, ok := tu.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldCode,
 		})
 	}
 	if value, ok := tu.mutation.Published(); ok {
@@ -567,12 +538,6 @@ func (tuo *TestUpdateOne) SetUpdateTime(t time.Time) *TestUpdateOne {
 	return tuo
 }
 
-// SetCode sets the "code" field.
-func (tuo *TestUpdateOne) SetCode(s string) *TestUpdateOne {
-	tuo.mutation.SetCode(s)
-	return tuo
-}
-
 // SetPublished sets the "published" field.
 func (tuo *TestUpdateOne) SetPublished(b bool) *TestUpdateOne {
 	tuo.mutation.SetPublished(b)
@@ -751,18 +716,12 @@ func (tuo *TestUpdateOne) Save(ctx context.Context) (*Test, error) {
 	)
 	tuo.defaults()
 	if len(tuo.hooks) == 0 {
-		if err = tuo.check(); err != nil {
-			return nil, err
-		}
 		node, err = tuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*TestMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			if err = tuo.check(); err != nil {
-				return nil, err
 			}
 			tuo.mutation = mutation
 			node, err = tuo.sqlSave(ctx)
@@ -818,16 +777,6 @@ func (tuo *TestUpdateOne) defaults() {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (tuo *TestUpdateOne) check() error {
-	if v, ok := tuo.mutation.Code(); ok {
-		if err := test.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Test.code": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -868,13 +817,6 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: test.FieldUpdateTime,
-		})
-	}
-	if value, ok := tuo.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: test.FieldCode,
 		})
 	}
 	if value, ok := tuo.mutation.Published(); ok {

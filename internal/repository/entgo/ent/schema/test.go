@@ -18,7 +18,7 @@ type Test struct {
 func (Test) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
-		field.String("code").NotEmpty().MaxLen(100).Unique(),
+		field.String("code").NotEmpty().MaxLen(100).Unique().Immutable(),
 		field.Bool("published").Default(true),
 	}
 }

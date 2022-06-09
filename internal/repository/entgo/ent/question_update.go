@@ -38,12 +38,6 @@ func (qu *QuestionUpdate) SetUpdateTime(t time.Time) *QuestionUpdate {
 	return qu
 }
 
-// SetCode sets the "code" field.
-func (qu *QuestionUpdate) SetCode(s string) *QuestionUpdate {
-	qu.mutation.SetCode(s)
-	return qu
-}
-
 // SetType sets the "type" field.
 func (qu *QuestionUpdate) SetType(s string) *QuestionUpdate {
 	qu.mutation.SetType(s)
@@ -234,11 +228,6 @@ func (qu *QuestionUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (qu *QuestionUpdate) check() error {
-	if v, ok := qu.mutation.Code(); ok {
-		if err := question.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Question.code": %w`, err)}
-		}
-	}
 	if v, ok := qu.mutation.GetType(); ok {
 		if err := question.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "Question.type": %w`, err)}
@@ -270,13 +259,6 @@ func (qu *QuestionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: question.FieldUpdateTime,
-		})
-	}
-	if value, ok := qu.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: question.FieldCode,
 		})
 	}
 	if value, ok := qu.mutation.GetType(); ok {
@@ -470,12 +452,6 @@ type QuestionUpdateOne struct {
 // SetUpdateTime sets the "update_time" field.
 func (quo *QuestionUpdateOne) SetUpdateTime(t time.Time) *QuestionUpdateOne {
 	quo.mutation.SetUpdateTime(t)
-	return quo
-}
-
-// SetCode sets the "code" field.
-func (quo *QuestionUpdateOne) SetCode(s string) *QuestionUpdateOne {
-	quo.mutation.SetCode(s)
 	return quo
 }
 
@@ -682,11 +658,6 @@ func (quo *QuestionUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (quo *QuestionUpdateOne) check() error {
-	if v, ok := quo.mutation.Code(); ok {
-		if err := question.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Question.code": %w`, err)}
-		}
-	}
 	if v, ok := quo.mutation.GetType(); ok {
 		if err := question.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "Question.type": %w`, err)}
@@ -735,13 +706,6 @@ func (quo *QuestionUpdateOne) sqlSave(ctx context.Context) (_node *Question, err
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: question.FieldUpdateTime,
-		})
-	}
-	if value, ok := quo.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: question.FieldCode,
 		})
 	}
 	if value, ok := quo.mutation.GetType(); ok {

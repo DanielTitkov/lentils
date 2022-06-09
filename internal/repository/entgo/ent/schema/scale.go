@@ -19,7 +19,7 @@ type Scale struct {
 func (Scale) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
-		field.String("code").NotEmpty().Unique(),
+		field.String("code").NotEmpty().Unique().Immutable(),
 		field.Bool("global").Default(false),
 		field.Enum("type").Values(
 			domain.ScaleTypeSten,

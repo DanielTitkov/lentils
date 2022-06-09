@@ -39,12 +39,6 @@ func (iu *ItemUpdate) SetUpdateTime(t time.Time) *ItemUpdate {
 	return iu
 }
 
-// SetCode sets the "code" field.
-func (iu *ItemUpdate) SetCode(s string) *ItemUpdate {
-	iu.mutation.SetCode(s)
-	return iu
-}
-
 // SetSteps sets the "steps" field.
 func (iu *ItemUpdate) SetSteps(i int) *ItemUpdate {
 	iu.mutation.ResetSteps()
@@ -223,18 +217,12 @@ func (iu *ItemUpdate) Save(ctx context.Context) (int, error) {
 	)
 	iu.defaults()
 	if len(iu.hooks) == 0 {
-		if err = iu.check(); err != nil {
-			return 0, err
-		}
 		affected, err = iu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*ItemMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			if err = iu.check(); err != nil {
-				return 0, err
 			}
 			iu.mutation = mutation
 			affected, err = iu.sqlSave(ctx)
@@ -284,16 +272,6 @@ func (iu *ItemUpdate) defaults() {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (iu *ItemUpdate) check() error {
-	if v, ok := iu.mutation.Code(); ok {
-		if err := item.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Item.code": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (iu *ItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -317,13 +295,6 @@ func (iu *ItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: item.FieldUpdateTime,
-		})
-	}
-	if value, ok := iu.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: item.FieldCode,
 		})
 	}
 	if value, ok := iu.mutation.Steps(); ok {
@@ -593,12 +564,6 @@ func (iuo *ItemUpdateOne) SetUpdateTime(t time.Time) *ItemUpdateOne {
 	return iuo
 }
 
-// SetCode sets the "code" field.
-func (iuo *ItemUpdateOne) SetCode(s string) *ItemUpdateOne {
-	iuo.mutation.SetCode(s)
-	return iuo
-}
-
 // SetSteps sets the "steps" field.
 func (iuo *ItemUpdateOne) SetSteps(i int) *ItemUpdateOne {
 	iuo.mutation.ResetSteps()
@@ -784,18 +749,12 @@ func (iuo *ItemUpdateOne) Save(ctx context.Context) (*Item, error) {
 	)
 	iuo.defaults()
 	if len(iuo.hooks) == 0 {
-		if err = iuo.check(); err != nil {
-			return nil, err
-		}
 		node, err = iuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*ItemMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			if err = iuo.check(); err != nil {
-				return nil, err
 			}
 			iuo.mutation = mutation
 			node, err = iuo.sqlSave(ctx)
@@ -851,16 +810,6 @@ func (iuo *ItemUpdateOne) defaults() {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (iuo *ItemUpdateOne) check() error {
-	if v, ok := iuo.mutation.Code(); ok {
-		if err := item.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Item.code": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (iuo *ItemUpdateOne) sqlSave(ctx context.Context) (_node *Item, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -901,13 +850,6 @@ func (iuo *ItemUpdateOne) sqlSave(ctx context.Context) (_node *Item, err error) 
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: item.FieldUpdateTime,
-		})
-	}
-	if value, ok := iuo.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: item.FieldCode,
 		})
 	}
 	if value, ok := iuo.mutation.Steps(); ok {

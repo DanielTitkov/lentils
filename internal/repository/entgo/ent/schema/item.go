@@ -18,7 +18,7 @@ type Item struct {
 func (Item) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
-		field.String("code").NotEmpty().Unique(),
+		field.String("code").NotEmpty().Unique().Immutable(),
 		field.Int("steps").Default(2),
 	}
 }

@@ -126,7 +126,7 @@ scales:
     items:
       - code: tipi-item-op-1
         steps: 7
-        reverse: true
+        reverse: false
         translations: 
           - locale: en
             content: Open to new experiences, complex.

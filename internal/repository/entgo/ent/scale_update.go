@@ -39,12 +39,6 @@ func (su *ScaleUpdate) SetUpdateTime(t time.Time) *ScaleUpdate {
 	return su
 }
 
-// SetCode sets the "code" field.
-func (su *ScaleUpdate) SetCode(s string) *ScaleUpdate {
-	su.mutation.SetCode(s)
-	return su
-}
-
 // SetGlobal sets the "global" field.
 func (su *ScaleUpdate) SetGlobal(b bool) *ScaleUpdate {
 	su.mutation.SetGlobal(b)
@@ -293,11 +287,6 @@ func (su *ScaleUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (su *ScaleUpdate) check() error {
-	if v, ok := su.mutation.Code(); ok {
-		if err := scale.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Scale.code": %w`, err)}
-		}
-	}
 	if v, ok := su.mutation.GetType(); ok {
 		if err := scale.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "Scale.type": %w`, err)}
@@ -329,13 +318,6 @@ func (su *ScaleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: scale.FieldUpdateTime,
-		})
-	}
-	if value, ok := su.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: scale.FieldCode,
 		})
 	}
 	if value, ok := su.mutation.Global(); ok {
@@ -605,12 +587,6 @@ func (suo *ScaleUpdateOne) SetUpdateTime(t time.Time) *ScaleUpdateOne {
 	return suo
 }
 
-// SetCode sets the "code" field.
-func (suo *ScaleUpdateOne) SetCode(s string) *ScaleUpdateOne {
-	suo.mutation.SetCode(s)
-	return suo
-}
-
 // SetGlobal sets the "global" field.
 func (suo *ScaleUpdateOne) SetGlobal(b bool) *ScaleUpdateOne {
 	suo.mutation.SetGlobal(b)
@@ -872,11 +848,6 @@ func (suo *ScaleUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (suo *ScaleUpdateOne) check() error {
-	if v, ok := suo.mutation.Code(); ok {
-		if err := scale.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`ent: validator failed for field "Scale.code": %w`, err)}
-		}
-	}
 	if v, ok := suo.mutation.GetType(); ok {
 		if err := scale.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "Scale.type": %w`, err)}
@@ -925,13 +896,6 @@ func (suo *ScaleUpdateOne) sqlSave(ctx context.Context) (_node *Scale, err error
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: scale.FieldUpdateTime,
-		})
-	}
-	if value, ok := suo.mutation.Code(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: scale.FieldCode,
 		})
 	}
 	if value, ok := suo.mutation.Global(); ok {

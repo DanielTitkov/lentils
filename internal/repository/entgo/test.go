@@ -6,6 +6,8 @@ import (
 	"fmt"
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
@@ -133,11 +135,71 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 			}
 		}
 
-		// create or add items for scale
-		// TODO:
+		// create and add items for scale
+		for _, iArgs := range sArgs.Items {
+			// check if item exists by code
+			itm, err := tx.Item.Query().Where(item.CodeEQ(iArgs.Code)).Only(ctx)
+			if err != nil {
+				if !ent.IsNotFound(err) {
+					return rollback(tx, err)
+				}
+
+				// scale not found, create scale
+				itm, err = tx.Item.Create().
+					SetCode(iArgs.Code).
+					SetSteps(iArgs.Steps).
+					Save(ctx)
+				if err != nil {
+					return rollback(tx, err)
+				}
+			} else {
+				// items exists, update if allowed
+				itm, err = itm.Update().
+					SetSteps(iArgs.Steps).
+					Save(ctx)
+				if err != nil {
+					return rollback(tx, err)
+				}
+			}
+
+			// delete old translations if exist
+			// TODO: maybe change this to bulk upsert
+			_, err = tx.ItemTranslation.Delete().
+				Where(itemtranslation.HasItemWith(item.IDEQ(itm.ID))).
+				Exec(ctx)
+			if err != nil {
+				return rollback(tx, err)
+			}
+
+			// create scale translations
+			// this happens only on start time, so time doesn't matter
+			// and thus bulk is not used
+			for _, t := range iArgs.Translations {
+				_, err = tx.ItemTranslation.Create().
+					SetLocale(itemtranslation.Locale(t.Locale)).
+					SetContent(t.Content).
+					SetItemID(itm.ID).
+					Save(ctx)
+				if err != nil {
+					return rollback(tx, err)
+				}
+			}
+
+			// create item-scale edge
+			_, err = tx.ScaleItem.Create().
+				SetItemID(itm.ID).
+				SetScaleID(scl.ID).
+				SetReverse(iArgs.Reverse).
+				Save(ctx)
+			if err != nil {
+				return rollback(tx, err)
+			}
+			// finished creating an item
+		}
 
 		// add scale to test
 		updateTst.AddScaleIDs(scl.ID)
+		// finished creating a scale
 	}
 
 	// save test updates (adds scales with items and stuff)
