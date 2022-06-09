@@ -19,7 +19,6 @@ func (Item) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.String("code").NotEmpty().Unique(),
-		field.Bool("reverse").Default(false),
 		field.Int("steps").Default(2),
 	}
 }
@@ -31,7 +30,7 @@ func (Item) Edges() []ent.Edge {
 		edge.To("responses", Response.Type),
 		edge.To("translations", ItemTranslation.Type),
 		// belongs to
-		edge.From("scale", Scale.Type).Ref("items"),
+		edge.From("scale", Scale.Type).Ref("items").Through("scale_item", ScaleItem.Type),
 		edge.From("question", Question.Type).Ref("items"),
 	}
 }

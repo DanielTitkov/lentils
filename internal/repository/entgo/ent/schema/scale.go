@@ -31,7 +31,7 @@ func (Scale) Fields() []ent.Field {
 func (Scale) Edges() []ent.Edge {
 	return []ent.Edge{
 		// has
-		edge.To("items", Item.Type),
+		edge.To("items", Item.Type).Through("scale_item", ScaleItem.Type),
 		edge.To("interpretations", Interpretation.Type),
 		edge.To("translations", ScaleTranslation.Type),
 		// belongs to
