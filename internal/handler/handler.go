@@ -17,16 +17,14 @@ import (
 
 const (
 	// views
-	view404              = "404"
-	viewAbout            = "about"
-	viewAdmin            = "admin"
-	viewChallengeDetails = "challenge-details"
-	viewChallengeList    = "challenge-list"
-	viewChallengeUpdate  = "challenge-update"
-	viewHome             = "home"
-	viewProfile          = "profile"
-	viewPrivacy          = "privacy"
-	viewTerms            = "terms"
+	view404     = "404"
+	viewAbout   = "about"
+	viewAdmin   = "admin"
+	viewTest    = "test"
+	viewHome    = "home"
+	viewProfile = "profile"
+	viewPrivacy = "privacy"
+	viewTerms   = "terms"
 	// events (common)
 	eventCloseAuthModals = "close-auth-modals"
 	eventOpenLogoutModal = "open-logout-modal"
@@ -34,7 +32,8 @@ const (
 	eventCloseError      = "close-error-notification"
 	eventCloseMessage    = "close-message-notification"
 	// context
-	userCtxKeyValue = "user"
+	userCtxKeyValue   = "user"
+	localeCtxKeyValue = "locale"
 )
 
 type (
@@ -55,6 +54,7 @@ type (
 		ShowLogoutModal bool
 		CurrentView     string
 		Version         string
+		Locale          string
 	}
 
 	contextKey struct {
@@ -63,6 +63,7 @@ type (
 )
 
 var userCtxKey = &contextKey{userCtxKeyValue}
+var localeCtxKey = &contextKey{localeCtxKeyValue}
 
 func NewHandler(
 	app *app.App,
@@ -130,7 +131,16 @@ func UserFromCtx(ctx context.Context) (*domain.User, uuid.UUID) {
 	return user, user.ID
 }
 
+func localeFromCtx(ctx context.Context) string {
+	locale, ok := ctx.Value(localeCtxKey).(string)
+	if !ok {
+		return domain.LocaleEn
+	}
+	return locale
+}
+
 func (c *CommonInstance) fromContext(ctx context.Context) {
+	c.Locale = localeFromCtx(ctx)
 	user, userID := UserFromCtx(ctx)
 	c.User = user
 	c.UserID = userID

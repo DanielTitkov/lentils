@@ -34,6 +34,7 @@ type (
 
 		// test
 		CreateOrUpdateTestFromArgs(context.Context, *domain.CreateTestArgs) error
+		GetTests(ctx context.Context, locale string) ([]*domain.Test, error)
 
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)

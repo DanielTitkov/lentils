@@ -2,43 +2,47 @@ package handler
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"html/template"
 	"log"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
 
+	"github.com/gorilla/mux"
 	"github.com/jfyne/live"
 )
 
+const (
+	// events
+	// params
+	paramTestCode = "testCode"
+	// params values
+)
+
 type (
-	HomeInstance struct {
+	TestInstance struct {
 		*CommonInstance
-		Tests   []*domain.Test
-		Summary *domain.SystemSymmary
+		Test *domain.Test
 	}
 )
 
-func (h *Handler) NewHomeInstance(s live.Socket) *HomeInstance {
-	m, ok := s.Assigns().(*HomeInstance)
+func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
+	m, ok := s.Assigns().(*TestInstance)
 	if !ok {
-		return &HomeInstance{
-			CommonInstance: h.NewCommon(s, viewHome),
+		return &TestInstance{
+			CommonInstance: h.NewCommon(s, viewTest),
 		}
 	}
 
 	return m
 }
 
-func (ins *HomeInstance) withError(err error) *HomeInstance {
-	ins.Error = err
-	return ins
-}
-
-func (h *Handler) Home() live.Handler {
+func (h *Handler) Test() live.Handler {
 	t, err := template.ParseFiles(
-		h.t+"base.layout.html",
-		h.t+"page.home.html",
-		h.t+"part.system_summary.html",
+		h.t + "base.layout.html",
+		// h.t+"page.challenge_details.html",
+		// h.t+"part.challenge_details_scale.html",
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -48,7 +52,7 @@ func (h *Handler) Home() live.Handler {
 	// COMMON BLOCK START
 	// this logic must be present in all handlers
 	{
-		constructor := h.NewHomeInstance // NB: make sure constructor is correct
+		constructor := h.NewTestInstance // NB: make sure constructor is correct
 		// SAFE TO COPY
 		lvh.HandleEvent(eventCloseAuthModals, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 			instance := constructor(s)
@@ -83,23 +87,23 @@ func (h *Handler) Home() live.Handler {
 	}
 	// COMMON BLOCK END
 
-	// Set the mount function for this handler.
 	lvh.HandleMount(func(ctx context.Context, s live.Socket) (interface{}, error) {
-		instance := h.NewHomeInstance(s)
-		instance.fromContext(ctx)
-
-		// tests
-		tests, err := h.app.GetTestsForLocale(ctx, "en") // FIXME
-		if err != nil {
-			instance.Error = err
+		r := live.Request(ctx)
+		testCode, ok := mux.Vars(r)[paramTestCode]
+		if !ok {
+			return nil, errors.New("test code is required")
 		}
-		instance.Tests = tests
+		fmt.Println("TEST CODE", testCode)
 
-		// summary
-		summary, err := h.app.GetSystemSummary(ctx)
-		instance.Summary = summary
+		instance := h.NewTestInstance(s)
+		instance.fromContext(ctx)
+		// challenge, err := h.app.GetChallengeByID(ctx, challengeID, instance.UserID)
+		// if err != nil {
+		// 	instance.Error = err
+		// }
+		// instance.Challenge = challenge
 
-		return instance.withError(err), nil
+		return instance, nil
 	})
 
 	return lvh

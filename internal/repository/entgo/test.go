@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
@@ -15,6 +16,25 @@ import (
 
 	"github.com/DanielTitkov/lentils/internal/domain"
 )
+
+func (r *EntgoRepository) GetTests(ctx context.Context, locale string) ([]*domain.Test, error) {
+	tests, err := r.client.Test.Query().
+		WithTranslations(
+			func(q *ent.TestTranslationQuery) {
+				q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
+			}).
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []*domain.Test
+	for _, t := range tests {
+		res = append(res, entToDomainTest(t, locale))
+	}
+
+	return res, nil
+}
 
 // TODO: function too long, refactor please
 func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *domain.CreateTestArgs) error {
@@ -209,4 +229,30 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 	}
 
 	return tx.Commit()
+}
+
+func entToDomainTest(t *ent.Test, locale string) *domain.Test {
+	title := "no title for this locale: " + locale
+	description := "no description for this locale: " + locale
+	instruction := "no instructuin for this locale: " + locale
+
+	if t.Edges.Translations != nil {
+		if len(t.Edges.Translations) == 1 {
+			trans := t.Edges.Translations[0]
+			title = trans.Title
+			description = trans.Description
+			instruction = trans.Instruction
+		} else {
+			log.Println("got multiple translations for test, something is wrong") // FIXME
+		}
+	}
+
+	return &domain.Test{
+		ID:          t.ID,
+		Code:        t.Code,
+		Published:   t.Published,
+		Title:       title,
+		Description: description,
+		Instruction: instruction,
+	}
 }

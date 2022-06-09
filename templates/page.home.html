@@ -6,6 +6,14 @@
     Лентилс
     Тесты
   </div>
+  <div class="section">
+    {{ range $i, $test := .Tests }}
+    <div class="box notification">
+      <p class="title is-3">{{ $test.Title }}</p>
+      <p class="subtitle is-5">{{ $test.Description }}</p>
+    </div>
+    {{ end }}
+  </div>
   {{ if .Summary }}
   <div class="section">
     {{ template "system-summary" .Summary }}

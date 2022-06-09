@@ -13,6 +13,15 @@ func (a *App) CreateOrUpdateTestFromArgs(ctx context.Context, args domain.Create
 	return a.repo.CreateOrUpdateTestFromArgs(ctx, &args)
 }
 
+func (a *App) GetTestsForLocale(ctx context.Context, locale string) ([]*domain.Test, error) {
+	tests, err := a.repo.GetTests(ctx, locale)
+	if err != nil {
+		return nil, err
+	}
+
+	return tests, nil
+}
+
 func (a *App) loadTestPresets() error {
 	a.log.Info("loading test presets", fmt.Sprint(a.Cfg.Data.Presets.TestPresetsPaths))
 	for _, path := range a.Cfg.Data.Presets.TestPresetsPaths {
@@ -37,7 +46,6 @@ func (a *App) loadTestPresets() error {
 		}
 
 		a.log.Debug("loaded test", fmt.Sprintf("%+v", test))
-
 	}
 
 	return nil
