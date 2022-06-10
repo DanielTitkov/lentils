@@ -2,6 +2,9 @@ package app
 
 import (
 	"context"
+	"time"
+
+	"github.com/DanielTitkov/lentils/internal/util"
 
 	"github.com/DanielTitkov/lentils/internal/configs"
 	"github.com/DanielTitkov/lentils/internal/domain"
@@ -49,6 +52,7 @@ func New(
 	repo Repository,
 	store sessions.Store,
 ) (*App, error) {
+	defer util.LogExecutionTime(time.Now(), "app.New", logger)
 	app := App{
 		Cfg:   cfg,
 		log:   logger,
