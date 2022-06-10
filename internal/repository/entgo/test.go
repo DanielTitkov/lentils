@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
@@ -15,6 +16,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
+	"github.com/DanielTitkov/lentils/internal/util"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
 )
@@ -76,6 +78,7 @@ func (r *EntgoRepository) GetTestByCode(ctx context.Context, code string, locale
 
 // TODO: function too long, refactor please
 func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *domain.CreateTestArgs) error {
+	defer util.DebugExecutionTime(time.Now(), "entgo.CreateOrUpdateTestFromArgs", r.logger)
 	tx, err := r.client.Tx(ctx)
 	if err != nil {
 		return fmt.Errorf("starting a transaction: %w", err)

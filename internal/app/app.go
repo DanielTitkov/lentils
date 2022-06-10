@@ -52,7 +52,7 @@ func New(
 	repo Repository,
 	store sessions.Store,
 ) (*App, error) {
-	defer util.LogExecutionTime(time.Now(), "app.New", logger)
+	defer util.InfoExecutionTime(time.Now(), "app.New", logger)
 	app := App{
 		Cfg:   cfg,
 		log:   logger,

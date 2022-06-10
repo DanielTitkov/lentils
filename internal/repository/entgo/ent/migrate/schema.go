@@ -257,7 +257,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1654902467},
+		{Name: "seed", Type: field.TypeInt64, Default: 1654902780},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "test_takes", Type: field.TypeUUID},
 		{Name: "user_takes", Type: field.TypeUUID},
