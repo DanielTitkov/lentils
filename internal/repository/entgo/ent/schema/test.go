@@ -20,6 +20,7 @@ func (Test) Fields() []ent.Field {
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.String("code").NotEmpty().MaxLen(100).Unique().Immutable(),
 		field.Bool("published").Default(true),
+		field.Strings("available_locales").Optional(),
 	}
 }
 

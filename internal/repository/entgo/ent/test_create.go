@@ -74,6 +74,12 @@ func (tc *TestCreate) SetNillablePublished(b *bool) *TestCreate {
 	return tc
 }
 
+// SetAvailableLocales sets the "available_locales" field.
+func (tc *TestCreate) SetAvailableLocales(s []string) *TestCreate {
+	tc.mutation.SetAvailableLocales(s)
+	return tc
+}
+
 // SetID sets the "id" field.
 func (tc *TestCreate) SetID(u uuid.UUID) *TestCreate {
 	tc.mutation.SetID(u)
@@ -348,6 +354,14 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 			Column: test.FieldPublished,
 		})
 		_node.Published = value
+	}
+	if value, ok := tc.mutation.AvailableLocales(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Value:  value,
+			Column: test.FieldAvailableLocales,
+		})
+		_node.AvailableLocales = value
 	}
 	if nodes := tc.mutation.TakesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

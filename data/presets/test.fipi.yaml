@@ -1,5 +1,6 @@
 code: fipi
 published: true
+availableLocales: ["en", "ru"]
 translations:
   - locale: en
     title: FIPI

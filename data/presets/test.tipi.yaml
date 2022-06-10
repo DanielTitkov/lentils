@@ -1,5 +1,6 @@
 code: tipi
 published: true
+availableLocales: ["en", "ru"]
 translations:
   - locale: en
     title: TIPI

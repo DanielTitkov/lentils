@@ -3,13 +3,14 @@ package domain
 // test import args
 type (
 	CreateTestArgs struct {
-		Code         string
-		Published    bool
-		Generate     GenerateQuestionsArgs
-		Translations []TestTranslation
-		Questions    []CreateQuestionArgs
-		Scales       []CreateScaleArgs
-		Display      CreateTestDisplayArgs
+		Code             string
+		Published        bool
+		AvailableLocales []string `yaml:"availableLocales"`
+		Generate         GenerateQuestionsArgs
+		Translations     []TestTranslation
+		Questions        []CreateQuestionArgs
+		Scales           []CreateScaleArgs
+		Display          CreateTestDisplayArgs
 	}
 
 	CreateTestDisplayArgs struct {

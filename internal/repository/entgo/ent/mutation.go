@@ -7021,6 +7021,7 @@ type TestMutation struct {
 	update_time         *time.Time
 	code                *string
 	published           *bool
+	available_locales   *[]string
 	clearedFields       map[string]struct{}
 	takes               map[uuid.UUID]struct{}
 	removedtakes        map[uuid.UUID]struct{}
@@ -7287,6 +7288,55 @@ func (m *TestMutation) OldPublished(ctx context.Context) (v bool, err error) {
 // ResetPublished resets all changes to the "published" field.
 func (m *TestMutation) ResetPublished() {
 	m.published = nil
+}
+
+// SetAvailableLocales sets the "available_locales" field.
+func (m *TestMutation) SetAvailableLocales(s []string) {
+	m.available_locales = &s
+}
+
+// AvailableLocales returns the value of the "available_locales" field in the mutation.
+func (m *TestMutation) AvailableLocales() (r []string, exists bool) {
+	v := m.available_locales
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAvailableLocales returns the old "available_locales" field's value of the Test entity.
+// If the Test object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestMutation) OldAvailableLocales(ctx context.Context) (v []string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAvailableLocales is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAvailableLocales requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAvailableLocales: %w", err)
+	}
+	return oldValue.AvailableLocales, nil
+}
+
+// ClearAvailableLocales clears the value of the "available_locales" field.
+func (m *TestMutation) ClearAvailableLocales() {
+	m.available_locales = nil
+	m.clearedFields[test.FieldAvailableLocales] = struct{}{}
+}
+
+// AvailableLocalesCleared returns if the "available_locales" field was cleared in this mutation.
+func (m *TestMutation) AvailableLocalesCleared() bool {
+	_, ok := m.clearedFields[test.FieldAvailableLocales]
+	return ok
+}
+
+// ResetAvailableLocales resets all changes to the "available_locales" field.
+func (m *TestMutation) ResetAvailableLocales() {
+	m.available_locales = nil
+	delete(m.clearedFields, test.FieldAvailableLocales)
 }
 
 // AddTakeIDs adds the "takes" edge to the Take entity by ids.
@@ -7563,7 +7613,7 @@ func (m *TestMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 5)
 	if m.create_time != nil {
 		fields = append(fields, test.FieldCreateTime)
 	}
@@ -7575,6 +7625,9 @@ func (m *TestMutation) Fields() []string {
 	}
 	if m.published != nil {
 		fields = append(fields, test.FieldPublished)
+	}
+	if m.available_locales != nil {
+		fields = append(fields, test.FieldAvailableLocales)
 	}
 	return fields
 }
@@ -7592,6 +7645,8 @@ func (m *TestMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case test.FieldPublished:
 		return m.Published()
+	case test.FieldAvailableLocales:
+		return m.AvailableLocales()
 	}
 	return nil, false
 }
@@ -7609,6 +7664,8 @@ func (m *TestMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldCode(ctx)
 	case test.FieldPublished:
 		return m.OldPublished(ctx)
+	case test.FieldAvailableLocales:
+		return m.OldAvailableLocales(ctx)
 	}
 	return nil, fmt.Errorf("unknown Test field %s", name)
 }
@@ -7646,6 +7703,13 @@ func (m *TestMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPublished(v)
 		return nil
+	case test.FieldAvailableLocales:
+		v, ok := value.([]string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAvailableLocales(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)
 }
@@ -7675,7 +7739,11 @@ func (m *TestMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *TestMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(test.FieldAvailableLocales) {
+		fields = append(fields, test.FieldAvailableLocales)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -7688,6 +7756,11 @@ func (m *TestMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *TestMutation) ClearField(name string) error {
+	switch name {
+	case test.FieldAvailableLocales:
+		m.ClearAvailableLocales()
+		return nil
+	}
 	return fmt.Errorf("unknown Test nullable field %s", name)
 }
 
@@ -7706,6 +7779,9 @@ func (m *TestMutation) ResetField(name string) error {
 		return nil
 	case test.FieldPublished:
 		m.ResetPublished()
+		return nil
+	case test.FieldAvailableLocales:
+		m.ResetAvailableLocales()
 		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)

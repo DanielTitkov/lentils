@@ -54,6 +54,18 @@ func (tu *TestUpdate) SetNillablePublished(b *bool) *TestUpdate {
 	return tu
 }
 
+// SetAvailableLocales sets the "available_locales" field.
+func (tu *TestUpdate) SetAvailableLocales(s []string) *TestUpdate {
+	tu.mutation.SetAvailableLocales(s)
+	return tu
+}
+
+// ClearAvailableLocales clears the value of the "available_locales" field.
+func (tu *TestUpdate) ClearAvailableLocales() *TestUpdate {
+	tu.mutation.ClearAvailableLocales()
+	return tu
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by IDs.
 func (tu *TestUpdate) AddTakeIDs(ids ...uuid.UUID) *TestUpdate {
 	tu.mutation.AddTakeIDs(ids...)
@@ -321,6 +333,19 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeBool,
 			Value:  value,
 			Column: test.FieldPublished,
+		})
+	}
+	if value, ok := tu.mutation.AvailableLocales(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Value:  value,
+			Column: test.FieldAvailableLocales,
+		})
+	}
+	if tu.mutation.AvailableLocalesCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Column: test.FieldAvailableLocales,
 		})
 	}
 	if tu.mutation.TakesCleared() {
@@ -610,6 +635,18 @@ func (tuo *TestUpdateOne) SetNillablePublished(b *bool) *TestUpdateOne {
 	if b != nil {
 		tuo.SetPublished(*b)
 	}
+	return tuo
+}
+
+// SetAvailableLocales sets the "available_locales" field.
+func (tuo *TestUpdateOne) SetAvailableLocales(s []string) *TestUpdateOne {
+	tuo.mutation.SetAvailableLocales(s)
+	return tuo
+}
+
+// ClearAvailableLocales clears the value of the "available_locales" field.
+func (tuo *TestUpdateOne) ClearAvailableLocales() *TestUpdateOne {
+	tuo.mutation.ClearAvailableLocales()
 	return tuo
 }
 
@@ -910,6 +947,19 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 			Type:   field.TypeBool,
 			Value:  value,
 			Column: test.FieldPublished,
+		})
+	}
+	if value, ok := tuo.mutation.AvailableLocales(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Value:  value,
+			Column: test.FieldAvailableLocales,
+		})
+	}
+	if tuo.mutation.AvailableLocalesCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Column: test.FieldAvailableLocales,
 		})
 	}
 	if tuo.mutation.TakesCleared() {

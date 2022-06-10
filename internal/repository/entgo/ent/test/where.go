@@ -399,6 +399,20 @@ func PublishedNEQ(v bool) predicate.Test {
 	})
 }
 
+// AvailableLocalesIsNil applies the IsNil predicate on the "available_locales" field.
+func AvailableLocalesIsNil() predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldAvailableLocales)))
+	})
+}
+
+// AvailableLocalesNotNil applies the NotNil predicate on the "available_locales" field.
+func AvailableLocalesNotNil() predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldAvailableLocales)))
+	})
+}
+
 // HasTakes applies the HasEdge predicate on the "takes" edge.
 func HasTakes() predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {

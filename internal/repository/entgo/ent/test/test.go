@@ -21,6 +21,8 @@ const (
 	FieldCode = "code"
 	// FieldPublished holds the string denoting the published field in the database.
 	FieldPublished = "published"
+	// FieldAvailableLocales holds the string denoting the available_locales field in the database.
+	FieldAvailableLocales = "available_locales"
 	// EdgeTakes holds the string denoting the takes edge name in mutations.
 	EdgeTakes = "takes"
 	// EdgeQuestions holds the string denoting the questions edge name in mutations.
@@ -73,6 +75,7 @@ var Columns = []string{
 	FieldUpdateTime,
 	FieldCode,
 	FieldPublished,
+	FieldAvailableLocales,
 }
 
 var (

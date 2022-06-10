@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -26,6 +27,8 @@ type Test struct {
 	Code string `json:"code,omitempty"`
 	// Published holds the value of the "published" field.
 	Published bool `json:"published,omitempty"`
+	// AvailableLocales holds the value of the "available_locales" field.
+	AvailableLocales []string `json:"available_locales,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TestQuery when eager-loading is set.
 	Edges TestEdges `json:"edges"`
@@ -103,6 +106,8 @@ func (*Test) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case test.FieldAvailableLocales:
+			values[i] = new([]byte)
 		case test.FieldPublished:
 			values[i] = new(sql.NullBool)
 		case test.FieldCode:
@@ -155,6 +160,14 @@ func (t *Test) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field published", values[i])
 			} else if value.Valid {
 				t.Published = value.Bool
+			}
+		case test.FieldAvailableLocales:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field available_locales", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &t.AvailableLocales); err != nil {
+					return fmt.Errorf("unmarshal field available_locales: %w", err)
+				}
 			}
 		}
 	}
@@ -220,6 +233,9 @@ func (t *Test) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("published=")
 	builder.WriteString(fmt.Sprintf("%v", t.Published))
+	builder.WriteString(", ")
+	builder.WriteString("available_locales=")
+	builder.WriteString(fmt.Sprintf("%v", t.AvailableLocales))
 	builder.WriteByte(')')
 	return builder.String()
 }

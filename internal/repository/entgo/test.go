@@ -92,6 +92,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		tst, err = tx.Test.Create().
 			SetCode(args.Code).
 			SetPublished(args.Published).
+			SetAvailableLocales(args.AvailableLocales).
 			Save(ctx)
 		if err != nil {
 			return rollback(tx, err)
@@ -100,6 +101,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		// test exists, update
 		tst, err = tst.Update().
 			SetPublished(args.Published).
+			SetAvailableLocales(args.AvailableLocales).
 			// clear edges
 			ClearScales().
 			ClearQuestions().
@@ -394,14 +396,15 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 	}
 
 	return &domain.Test{
-		ID:          t.ID,
-		Code:        t.Code,
-		Published:   t.Published,
-		Title:       title,
-		Description: description,
-		Instruction: instruction,
-		Display:     display,
-		Questions:   questions,
+		ID:               t.ID,
+		Code:             t.Code,
+		Published:        t.Published,
+		AvailableLocales: t.AvailableLocales,
+		Title:            title,
+		Description:      description,
+		Instruction:      instruction,
+		Display:          display,
+		Questions:        questions,
 	}
 }
 

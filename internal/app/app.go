@@ -87,3 +87,13 @@ func (a *App) IsValidLocale(locale string) bool {
 
 	return false
 }
+
+func (a *App) AreValidLocales(locales []string) bool {
+	for _, l := range locales {
+		if ok := a.IsValidLocale(l); !ok {
+			return false
+		}
+	}
+
+	return true
+}

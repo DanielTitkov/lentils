@@ -15,6 +15,7 @@ type (
 		Description       string // translatable
 		Instruction       string // translatable
 		Locale            string
+		AvailableLocales  []string
 		GenerateQuestions string
 		Published         bool
 		Questions         []*Question

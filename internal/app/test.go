@@ -48,6 +48,7 @@ func (a *App) PrepareTest(ctx context.Context, code string, locale string, args 
 
 func (a *App) loadTestPresets() error {
 	a.log.Info("loading test presets", fmt.Sprint(a.Cfg.Data.Presets.TestPresetsPaths))
+	// FIXME: for production MUST NOT FAIL on single wrong test
 	for _, path := range a.Cfg.Data.Presets.TestPresetsPaths {
 		a.log.Debug("reading from file", path)
 		data, err := ioutil.ReadFile(path)
@@ -58,6 +59,14 @@ func (a *App) loadTestPresets() error {
 		var test domain.CreateTestArgs
 		err = yaml.Unmarshal(data, &test)
 		if err != nil {
+			return err
+		}
+
+		if ok := a.AreValidLocales(test.AvailableLocales); !ok {
+			return fmt.Errorf("locales are not valid: %v", test.AvailableLocales)
+		}
+
+		if err := test.ValidateTranslations(); err != nil {
 			return err
 		}
 
@@ -73,7 +82,7 @@ func (a *App) loadTestPresets() error {
 			continue
 		}
 
-		a.log.Debug("loaded test", fmt.Sprintf("%+v", test))
+		a.log.Debug("loaded test", fmt.Sprintf("%+v", test.Code))
 	}
 
 	return nil

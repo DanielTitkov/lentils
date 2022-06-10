@@ -257,7 +257,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1654899955},
+		{Name: "seed", Type: field.TypeInt64, Default: 1654902196},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "test_takes", Type: field.TypeUUID},
 		{Name: "user_takes", Type: field.TypeUUID},
@@ -289,6 +289,7 @@ var (
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 100},
 		{Name: "published", Type: field.TypeBool, Default: true},
+		{Name: "available_locales", Type: field.TypeJSON, Nullable: true},
 	}
 	// TestsTable holds the schema information for the "tests" table.
 	TestsTable = &schema.Table{
