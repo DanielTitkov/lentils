@@ -16,6 +16,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/google/uuid"
 )
@@ -34,6 +35,7 @@ type TestQuery struct {
 	withQuestions    *QuestionQuery
 	withTranslations *TestTranslationQuery
 	withScales       *ScaleQuery
+	withDisplay      *TestDisplayQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -151,6 +153,28 @@ func (tq *TestQuery) QueryScales() *ScaleQuery {
 			sqlgraph.From(test.Table, test.FieldID, selector),
 			sqlgraph.To(scale.Table, scale.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, test.ScalesTable, test.ScalesPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryDisplay chains the current query on the "display" edge.
+func (tq *TestQuery) QueryDisplay() *TestDisplayQuery {
+	query := &TestDisplayQuery{config: tq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, selector),
+			sqlgraph.To(testdisplay.Table, testdisplay.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, test.DisplayTable, test.DisplayColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -343,6 +367,7 @@ func (tq *TestQuery) Clone() *TestQuery {
 		withQuestions:    tq.withQuestions.Clone(),
 		withTranslations: tq.withTranslations.Clone(),
 		withScales:       tq.withScales.Clone(),
+		withDisplay:      tq.withDisplay.Clone(),
 		// clone intermediate query.
 		sql:    tq.sql.Clone(),
 		path:   tq.path,
@@ -391,6 +416,17 @@ func (tq *TestQuery) WithScales(opts ...func(*ScaleQuery)) *TestQuery {
 		opt(query)
 	}
 	tq.withScales = query
+	return tq
+}
+
+// WithDisplay tells the query-builder to eager-load the nodes that are connected to
+// the "display" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TestQuery) WithDisplay(opts ...func(*TestDisplayQuery)) *TestQuery {
+	query := &TestDisplayQuery{config: tq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withDisplay = query
 	return tq
 }
 
@@ -464,11 +500,12 @@ func (tq *TestQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Test, e
 	var (
 		nodes       = []*Test{}
 		_spec       = tq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			tq.withTakes != nil,
 			tq.withQuestions != nil,
 			tq.withTranslations != nil,
 			tq.withScales != nil,
+			tq.withDisplay != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -651,6 +688,34 @@ func (tq *TestQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Test, e
 			for kn := range nodes {
 				kn.Edges.Scales = append(kn.Edges.Scales, n)
 			}
+		}
+	}
+
+	if query := tq.withDisplay; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[uuid.UUID]*Test)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.TestDisplay(func(s *sql.Selector) {
+			s.Where(sql.InValues(test.DisplayColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.test_display
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "test_display" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "test_display" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Display = n
 		}
 	}
 

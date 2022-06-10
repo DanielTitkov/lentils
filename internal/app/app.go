@@ -5,7 +5,7 @@ import (
 
 	"github.com/DanielTitkov/lentils/internal/configs"
 	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/logger"
+	"github.com/DanielTitkov/lentils/internal/logger"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 )
@@ -17,6 +17,7 @@ type (
 		repo          Repository
 		systemSummary *domain.SystemSymmary
 		Store         sessions.Store
+		locales       []string // locale count is not very big so no need to have map
 	}
 	Repository interface {
 		// user
@@ -35,6 +36,7 @@ type (
 		// test
 		CreateOrUpdateTestFromArgs(context.Context, *domain.CreateTestArgs) error
 		GetTests(ctx context.Context, locale string) ([]*domain.Test, error)
+		GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error)
 
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)
@@ -52,6 +54,10 @@ func New(
 		log:   logger,
 		repo:  repo,
 		Store: store,
+		locales: []string{
+			domain.LocaleEn,
+			domain.LocaleRu,
+		},
 	}
 
 	err := app.loadUserPresets()
@@ -70,4 +76,14 @@ func New(
 	go app.UpdateSystemSummaryJob() // TODO: move to jobs?
 
 	return &app, nil
+}
+
+func (a *App) IsValidLocale(locale string) bool {
+	for _, l := range a.locales {
+		if l == locale {
+			return true
+		}
+	}
+
+	return false
 }

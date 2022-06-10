@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"errors"
-	"fmt"
 	"html/template"
 	"log"
 
@@ -15,6 +14,7 @@ import (
 
 const (
 	// events
+	eventBeginTest = "begin-test"
 	// params
 	paramTestCode = "testCode"
 	// params values
@@ -23,15 +23,23 @@ const (
 type (
 	TestInstance struct {
 		*CommonInstance
-		Test *domain.Test
+		Test     *domain.Test
+		TestStep string
+		Page     int
 	}
 )
+
+func (ins *TestInstance) withError(err error) *TestInstance {
+	ins.Error = err
+	return ins
+}
 
 func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 	m, ok := s.Assigns().(*TestInstance)
 	if !ok {
 		return &TestInstance{
 			CommonInstance: h.NewCommon(s, viewTest),
+			TestStep:       domain.TestStepIntro,
 		}
 	}
 
@@ -40,9 +48,8 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 
 func (h *Handler) Test() live.Handler {
 	t, err := template.ParseFiles(
-		h.t + "base.layout.html",
-		// h.t+"page.challenge_details.html",
-		// h.t+"part.challenge_details_scale.html",
+		h.t+"base.layout.html",
+		h.t+"page.test.html",
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -93,15 +100,15 @@ func (h *Handler) Test() live.Handler {
 		if !ok {
 			return nil, errors.New("test code is required")
 		}
-		fmt.Println("TEST CODE", testCode)
 
 		instance := h.NewTestInstance(s)
 		instance.fromContext(ctx)
-		// challenge, err := h.app.GetChallengeByID(ctx, challengeID, instance.UserID)
-		// if err != nil {
-		// 	instance.Error = err
-		// }
-		// instance.Challenge = challenge
+
+		test, err := h.app.PrepareTest(ctx, testCode, "en", nil) // FIXME
+		if err != nil {
+			return instance.withError(err), nil
+		}
+		instance.Test = test
 
 		return instance, nil
 	})

@@ -9,4 +9,11 @@ const (
 	GenerateQuestionsEachItem = "each-item"
 	// scale types
 	ScaleTypeSten = "sten"
+	// question types
+	QuestionTypeSimple = "simple"
+	// test steps
+	TestStepIntro     = "intro"
+	TestStepQuestions = "questions"
+	TestStepFinish    = "finish"
+	TestStepResult    = "result"
 )

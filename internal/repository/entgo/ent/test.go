@@ -9,6 +9,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/google/uuid"
 )
 
@@ -40,9 +41,11 @@ type TestEdges struct {
 	Translations []*TestTranslation `json:"translations,omitempty"`
 	// Scales holds the value of the scales edge.
 	Scales []*Scale `json:"scales,omitempty"`
+	// Display holds the value of the display edge.
+	Display *TestDisplay `json:"display,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // TakesOrErr returns the Takes value or an error if the edge
@@ -79,6 +82,20 @@ func (e TestEdges) ScalesOrErr() ([]*Scale, error) {
 		return e.Scales, nil
 	}
 	return nil, &NotLoadedError{edge: "scales"}
+}
+
+// DisplayOrErr returns the Display value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TestEdges) DisplayOrErr() (*TestDisplay, error) {
+	if e.loadedTypes[4] {
+		if e.Display == nil {
+			// The edge display was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: testdisplay.Label}
+		}
+		return e.Display, nil
+	}
+	return nil, &NotLoadedError{edge: "display"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -162,6 +179,11 @@ func (t *Test) QueryTranslations() *TestTranslationQuery {
 // QueryScales queries the "scales" edge of the Test entity.
 func (t *Test) QueryScales() *ScaleQuery {
 	return (&TestClient{config: t.config}).QueryScales(t)
+}
+
+// QueryDisplay queries the "display" edge of the Test entity.
+func (t *Test) QueryDisplay() *TestDisplayQuery {
+	return (&TestClient{config: t.config}).QueryDisplay(t)
 }
 
 // Update returns a builder for updating this Test.

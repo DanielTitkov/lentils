@@ -12,7 +12,7 @@ import (
 
 	"github.com/DanielTitkov/lentils/internal/app"
 	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/logger"
+	"github.com/DanielTitkov/lentils/internal/logger"
 )
 
 const (

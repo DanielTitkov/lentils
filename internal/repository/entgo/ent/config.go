@@ -36,6 +36,7 @@ type hooks struct {
 	ScaleTranslation          []ent.Hook
 	Take                      []ent.Hook
 	Test                      []ent.Hook
+	TestDisplay               []ent.Hook
 	TestTranslation           []ent.Hook
 	User                      []ent.Hook
 	UserSession               []ent.Hook

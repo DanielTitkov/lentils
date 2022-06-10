@@ -19,6 +19,12 @@ type (
 		Published         bool
 		Questions         []*Question
 		Scales            []*Scale
+		Display           TestDisplay
+	}
+
+	TestDisplay struct {
+		RandomizeOrder   bool
+		QuestionsPerPage int
 	}
 
 	Item struct {
@@ -28,19 +34,20 @@ type (
 		QuestionID uuid.UUID
 		Code       string
 		Content    string // translatable
-		Type       string
-		Steps      int // number of stepes in response scale
+		Steps      int    // number of stepes in response scale
 		Reverse    bool
+		// Type       string
 	}
 
 	Question struct {
 		ID            uuid.UUID
 		TestID        uuid.UUID
 		Code          string
+		Order         int
 		Content       string // translatable
 		HeaderContent string // translatable
-		FooterConent  string // translatable
-		Items         []Item
+		FooterContent string // translatable
+		Items         []*Item
 		// Type          string // not needed as yet
 	}
 

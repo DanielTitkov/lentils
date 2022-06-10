@@ -4,14 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
@@ -34,6 +36,42 @@ func (r *EntgoRepository) GetTests(ctx context.Context, locale string) ([]*domai
 	}
 
 	return res, nil
+}
+
+func (r *EntgoRepository) GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error) {
+	tst, err := r.client.Test.Query().
+		Where(test.CodeEQ(code)).
+		WithDisplay().
+		WithQuestions(
+			func(q *ent.QuestionQuery) {
+				q.WithTranslations(
+					func(tq *ent.QuestionTranslationQuery) {
+						tq.Where(questiontranslation.LocaleEQ(questiontranslation.Locale(locale)))
+					},
+				).WithItems(
+					func(iq *ent.ItemQuery) {
+						iq.WithTranslations(
+							func(itq *ent.ItemTranslationQuery) {
+								itq.Where(itemtranslation.LocaleEQ(itemtranslation.Locale(locale)))
+							},
+						)
+					},
+				)
+			},
+		).
+		WithTranslations(
+			func(q *ent.TestTranslationQuery) {
+				q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
+			},
+		).
+		Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO
+
+	return entToDomainTest(tst, locale), nil
 }
 
 // TODO: function too long, refactor please
@@ -64,6 +102,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 			SetPublished(args.Published).
 			// clear edges
 			ClearScales().
+			ClearQuestions().
 			Save(ctx)
 		if err != nil {
 			return rollback(tx, err)
@@ -93,6 +132,25 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		if err != nil {
 			return rollback(tx, err)
 		}
+	}
+
+	// update test display
+	// delete old display if exist
+	// TODO: maybe change this to upsert
+	_, err = tx.TestDisplay.Delete().
+		Where(testdisplay.HasTestWith(test.IDEQ(tst.ID))).
+		Exec(ctx)
+	if err != nil {
+		return rollback(tx, err)
+	}
+
+	_, err = tx.TestDisplay.Create().
+		SetTestID(tst.ID).
+		SetQuestionsPerPage(args.Display.QuestionsPerPage).
+		SetRandomizeOrder(args.Display.RandomizeOrder).
+		Save(ctx)
+	if err != nil {
+		return rollback(tx, err)
 	}
 
 	// create or update scales for test
@@ -164,7 +222,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 					return rollback(tx, err)
 				}
 
-				// scale not found, create scale
+				// item not found, create item
 				itm, err = tx.Item.Create().
 					SetCode(iArgs.Code).
 					SetSteps(iArgs.Steps).
@@ -191,7 +249,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 				return rollback(tx, err)
 			}
 
-			// create scale translations
+			// create item translations
 			// this happens only on start time, so time doesn't matter
 			// and thus bulk is not used
 			for _, t := range iArgs.Translations {
@@ -222,6 +280,84 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		// finished creating a scale
 	}
 
+	// add questions for test
+	for _, qArgs := range args.Questions {
+		// check if question exists by code
+		q, err := tx.Question.Query().Where(question.CodeEQ(qArgs.Code)).Only(ctx)
+		if err != nil {
+			if !ent.IsNotFound(err) {
+				return rollback(tx, err)
+			}
+
+			// scale not found, create scale
+			q, err = tx.Question.Create().
+				SetCode(qArgs.Code).
+				SetOrder(qArgs.Order).
+				SetType(question.Type(qArgs.Type)).
+				Save(ctx)
+			if err != nil {
+				return rollback(tx, err)
+			}
+		} else {
+			// question exists, update
+			q, err = q.Update().
+				SetType(question.Type(qArgs.Type)).
+				SetOrder(qArgs.Order).
+				ClearItems().
+				Save(ctx)
+			if err != nil {
+				return rollback(tx, err)
+			}
+		}
+
+		// delete old translations if exist
+		// TODO: maybe change this to bulk upsert
+		_, err = tx.QuestionTranslation.Delete().
+			Where(questiontranslation.HasQuestionWith(question.IDEQ(q.ID))).
+			Exec(ctx)
+		if err != nil {
+			return rollback(tx, err)
+		}
+
+		// create question translations
+		// this happens only on start time, so time doesn't matter
+		// and thus bulk is not used
+		for _, t := range qArgs.Translations {
+			_, err = tx.QuestionTranslation.Create().
+				SetLocale(questiontranslation.Locale(t.Locale)).
+				SetContent(t.Content).
+				SetHeaderContent(t.HeaderContent).
+				SetFooterContent(t.FooterConent).
+				SetQuestionID(q.ID).
+				Save(ctx)
+			if err != nil {
+				return rollback(tx, err)
+			}
+		}
+
+		// add items for question
+		updateQuestion := q.Update()
+		for _, iArgs := range qArgs.Items {
+			// item for question must exist.
+			// not allowed to create items without scale
+			itm, err := tx.Item.Query().Where(item.CodeEQ(iArgs.Code)).Only(ctx)
+			if err != nil {
+				return rollback(tx, err)
+			}
+
+			updateQuestion.AddItemIDs(itm.ID)
+			// finished adding an item to question
+		}
+		q, err = updateQuestion.Save(ctx)
+		if err != nil {
+			return rollback(tx, err)
+		}
+
+		// add scale to test
+		updateTst.AddQuestionIDs(q.ID)
+		// finished creating a question
+	}
+
 	// save test updates (adds scales with items and stuff)
 	_, err = updateTst.Save(ctx)
 	if err != nil {
@@ -234,7 +370,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 	title := "no title for this locale: " + locale
 	description := "no description for this locale: " + locale
-	instruction := "no instructuin for this locale: " + locale
+	instruction := "no instruction for this locale: " + locale
 
 	if t.Edges.Translations != nil {
 		if len(t.Edges.Translations) == 1 {
@@ -242,8 +378,18 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 			title = trans.Title
 			description = trans.Description
 			instruction = trans.Instruction
-		} else {
-			log.Println("got multiple translations for test, something is wrong") // FIXME
+		}
+	}
+
+	var display domain.TestDisplay
+	if t.Edges.Display != nil {
+		display = entToDomainTestDisplay(t.Edges.Display)
+	}
+
+	var questions []*domain.Question
+	if t.Edges.Questions != nil {
+		for _, q := range t.Edges.Questions {
+			questions = append(questions, entToDomainQuestion(q, locale))
 		}
 	}
 
@@ -254,5 +400,14 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Title:       title,
 		Description: description,
 		Instruction: instruction,
+		Display:     display,
+		Questions:   questions,
+	}
+}
+
+func entToDomainTestDisplay(d *ent.TestDisplay) domain.TestDisplay {
+	return domain.TestDisplay{
+		QuestionsPerPage: d.QuestionsPerPage,
+		RandomizeOrder:   d.RandomizeOrder,
 	}
 }

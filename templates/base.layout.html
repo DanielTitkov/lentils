@@ -38,11 +38,13 @@
       {{ template "view" . }}
       <script type="text/javascript" src="/live.js"></script>
     </div>
+    {{ if eq .CurrentView "fakeview" }}
     {{ if not .User }}
     <div class="container box">
       <h3 class="title is-3 is-size-5-mobile has-text-centered">Войдите, чтобы оставлять прогнозы</h3>
       {{ template "login-block" }}
     </div>
+    {{ end }}
     {{ end }}
   </section>
   {{ template "footer" . }}
@@ -123,9 +125,8 @@
     </a> -->
   </div>
   <p class="heading has-text-centered">
-    Регистрация нужна чтобы сократить возможности накрутки.<br>
     Ваше имя и email не будут опубликованы<br>
-    и не будут доступны другим пользователям. 
+    и не будут доступны другим пользователям.
   </p>
 </div>
 {{ end }}

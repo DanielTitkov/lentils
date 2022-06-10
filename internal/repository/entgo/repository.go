@@ -1,8 +1,8 @@
 package entgo
 
 import (
+	"github.com/DanielTitkov/lentils/internal/logger"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/lentils/logger"
 )
 
 type EntgoRepository struct {

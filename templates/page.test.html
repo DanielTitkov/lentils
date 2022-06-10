@@ -1,0 +1,28 @@
+{{ define "title" }} {{ .Test.Code }} {{ end }}
+{{ define "view" }}
+<main>
+  <div class="section">
+    <h1 class="title is-1">{{ .Test.Code }}</h1>
+    <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
+  </div>
+  <div class="section">
+    <p>{{ .Test.Instruction }}</p>
+  </div>
+  <div class="section">
+    <p class="block is-size-5 has-text-centered">When you are happy please continue to the next step.</p>
+    <div class="level">
+      <div class="level-item has-text-centered">
+        <div class="block">
+          <button class="button is-large is-primary is-rounded" live-click="begin-test">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    {{ .Test }}
+    {{ range .Test.Questions }}
+    <p>{{ . }}</p>
+    {{ end }}
+  </div>
+</main>
+{{ end }}

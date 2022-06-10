@@ -38,9 +38,38 @@ func (qu *QuestionUpdate) SetUpdateTime(t time.Time) *QuestionUpdate {
 	return qu
 }
 
+// SetOrder sets the "order" field.
+func (qu *QuestionUpdate) SetOrder(i int) *QuestionUpdate {
+	qu.mutation.ResetOrder()
+	qu.mutation.SetOrder(i)
+	return qu
+}
+
+// SetNillableOrder sets the "order" field if the given value is not nil.
+func (qu *QuestionUpdate) SetNillableOrder(i *int) *QuestionUpdate {
+	if i != nil {
+		qu.SetOrder(*i)
+	}
+	return qu
+}
+
+// AddOrder adds i to the "order" field.
+func (qu *QuestionUpdate) AddOrder(i int) *QuestionUpdate {
+	qu.mutation.AddOrder(i)
+	return qu
+}
+
 // SetType sets the "type" field.
-func (qu *QuestionUpdate) SetType(s string) *QuestionUpdate {
-	qu.mutation.SetType(s)
+func (qu *QuestionUpdate) SetType(q question.Type) *QuestionUpdate {
+	qu.mutation.SetType(q)
+	return qu
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (qu *QuestionUpdate) SetNillableType(q *question.Type) *QuestionUpdate {
+	if q != nil {
+		qu.SetType(*q)
+	}
 	return qu
 }
 
@@ -261,9 +290,23 @@ func (qu *QuestionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: question.FieldUpdateTime,
 		})
 	}
+	if value, ok := qu.mutation.Order(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: question.FieldOrder,
+		})
+	}
+	if value, ok := qu.mutation.AddedOrder(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: question.FieldOrder,
+		})
+	}
 	if value, ok := qu.mutation.GetType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeEnum,
 			Value:  value,
 			Column: question.FieldType,
 		})
@@ -455,9 +498,38 @@ func (quo *QuestionUpdateOne) SetUpdateTime(t time.Time) *QuestionUpdateOne {
 	return quo
 }
 
+// SetOrder sets the "order" field.
+func (quo *QuestionUpdateOne) SetOrder(i int) *QuestionUpdateOne {
+	quo.mutation.ResetOrder()
+	quo.mutation.SetOrder(i)
+	return quo
+}
+
+// SetNillableOrder sets the "order" field if the given value is not nil.
+func (quo *QuestionUpdateOne) SetNillableOrder(i *int) *QuestionUpdateOne {
+	if i != nil {
+		quo.SetOrder(*i)
+	}
+	return quo
+}
+
+// AddOrder adds i to the "order" field.
+func (quo *QuestionUpdateOne) AddOrder(i int) *QuestionUpdateOne {
+	quo.mutation.AddOrder(i)
+	return quo
+}
+
 // SetType sets the "type" field.
-func (quo *QuestionUpdateOne) SetType(s string) *QuestionUpdateOne {
-	quo.mutation.SetType(s)
+func (quo *QuestionUpdateOne) SetType(q question.Type) *QuestionUpdateOne {
+	quo.mutation.SetType(q)
+	return quo
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (quo *QuestionUpdateOne) SetNillableType(q *question.Type) *QuestionUpdateOne {
+	if q != nil {
+		quo.SetType(*q)
+	}
 	return quo
 }
 
@@ -708,9 +780,23 @@ func (quo *QuestionUpdateOne) sqlSave(ctx context.Context) (_node *Question, err
 			Column: question.FieldUpdateTime,
 		})
 	}
+	if value, ok := quo.mutation.Order(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: question.FieldOrder,
+		})
+	}
+	if value, ok := quo.mutation.AddedOrder(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: question.FieldOrder,
+		})
+	}
 	if value, ok := quo.mutation.GetType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeEnum,
 			Value:  value,
 			Column: question.FieldType,
 		})

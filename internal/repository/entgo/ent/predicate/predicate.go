@@ -42,6 +42,9 @@ type Take func(*sql.Selector)
 // Test is the predicate function for test builders.
 type Test func(*sql.Selector)
 
+// TestDisplay is the predicate function for testdisplay builders.
+type TestDisplay func(*sql.Selector)
+
 // TestTranslation is the predicate function for testtranslation builders.
 type TestTranslation func(*sql.Selector)
 

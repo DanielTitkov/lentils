@@ -22,6 +22,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/usersession"
@@ -60,6 +61,8 @@ type Client struct {
 	Take *TakeClient
 	// Test is the client for interacting with the Test builders.
 	Test *TestClient
+	// TestDisplay is the client for interacting with the TestDisplay builders.
+	TestDisplay *TestDisplayClient
 	// TestTranslation is the client for interacting with the TestTranslation builders.
 	TestTranslation *TestTranslationClient
 	// User is the client for interacting with the User builders.
@@ -91,6 +94,7 @@ func (c *Client) init() {
 	c.ScaleTranslation = NewScaleTranslationClient(c.config)
 	c.Take = NewTakeClient(c.config)
 	c.Test = NewTestClient(c.config)
+	c.TestDisplay = NewTestDisplayClient(c.config)
 	c.TestTranslation = NewTestTranslationClient(c.config)
 	c.User = NewUserClient(c.config)
 	c.UserSession = NewUserSessionClient(c.config)
@@ -139,6 +143,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ScaleTranslation:          NewScaleTranslationClient(cfg),
 		Take:                      NewTakeClient(cfg),
 		Test:                      NewTestClient(cfg),
+		TestDisplay:               NewTestDisplayClient(cfg),
 		TestTranslation:           NewTestTranslationClient(cfg),
 		User:                      NewUserClient(cfg),
 		UserSession:               NewUserSessionClient(cfg),
@@ -173,6 +178,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ScaleTranslation:          NewScaleTranslationClient(cfg),
 		Take:                      NewTakeClient(cfg),
 		Test:                      NewTestClient(cfg),
+		TestDisplay:               NewTestDisplayClient(cfg),
 		TestTranslation:           NewTestTranslationClient(cfg),
 		User:                      NewUserClient(cfg),
 		UserSession:               NewUserSessionClient(cfg),
@@ -217,6 +223,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.ScaleTranslation.Use(hooks...)
 	c.Take.Use(hooks...)
 	c.Test.Use(hooks...)
+	c.TestDisplay.Use(hooks...)
 	c.TestTranslation.Use(hooks...)
 	c.User.Use(hooks...)
 	c.UserSession.Use(hooks...)
@@ -1727,9 +1734,131 @@ func (c *TestClient) QueryScales(t *Test) *ScaleQuery {
 	return query
 }
 
+// QueryDisplay queries the display edge of a Test.
+func (c *TestClient) QueryDisplay(t *Test) *TestDisplayQuery {
+	query := &TestDisplayQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, id),
+			sqlgraph.To(testdisplay.Table, testdisplay.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, test.DisplayTable, test.DisplayColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *TestClient) Hooks() []Hook {
 	return c.hooks.Test
+}
+
+// TestDisplayClient is a client for the TestDisplay schema.
+type TestDisplayClient struct {
+	config
+}
+
+// NewTestDisplayClient returns a client for the TestDisplay from the given config.
+func NewTestDisplayClient(c config) *TestDisplayClient {
+	return &TestDisplayClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `testdisplay.Hooks(f(g(h())))`.
+func (c *TestDisplayClient) Use(hooks ...Hook) {
+	c.hooks.TestDisplay = append(c.hooks.TestDisplay, hooks...)
+}
+
+// Create returns a builder for creating a TestDisplay entity.
+func (c *TestDisplayClient) Create() *TestDisplayCreate {
+	mutation := newTestDisplayMutation(c.config, OpCreate)
+	return &TestDisplayCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of TestDisplay entities.
+func (c *TestDisplayClient) CreateBulk(builders ...*TestDisplayCreate) *TestDisplayCreateBulk {
+	return &TestDisplayCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for TestDisplay.
+func (c *TestDisplayClient) Update() *TestDisplayUpdate {
+	mutation := newTestDisplayMutation(c.config, OpUpdate)
+	return &TestDisplayUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TestDisplayClient) UpdateOne(td *TestDisplay) *TestDisplayUpdateOne {
+	mutation := newTestDisplayMutation(c.config, OpUpdateOne, withTestDisplay(td))
+	return &TestDisplayUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TestDisplayClient) UpdateOneID(id uuid.UUID) *TestDisplayUpdateOne {
+	mutation := newTestDisplayMutation(c.config, OpUpdateOne, withTestDisplayID(id))
+	return &TestDisplayUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for TestDisplay.
+func (c *TestDisplayClient) Delete() *TestDisplayDelete {
+	mutation := newTestDisplayMutation(c.config, OpDelete)
+	return &TestDisplayDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TestDisplayClient) DeleteOne(td *TestDisplay) *TestDisplayDeleteOne {
+	return c.DeleteOneID(td.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *TestDisplayClient) DeleteOneID(id uuid.UUID) *TestDisplayDeleteOne {
+	builder := c.Delete().Where(testdisplay.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TestDisplayDeleteOne{builder}
+}
+
+// Query returns a query builder for TestDisplay.
+func (c *TestDisplayClient) Query() *TestDisplayQuery {
+	return &TestDisplayQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a TestDisplay entity by its id.
+func (c *TestDisplayClient) Get(ctx context.Context, id uuid.UUID) (*TestDisplay, error) {
+	return c.Query().Where(testdisplay.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TestDisplayClient) GetX(ctx context.Context, id uuid.UUID) *TestDisplay {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryTest queries the test edge of a TestDisplay.
+func (c *TestDisplayClient) QueryTest(td *TestDisplay) *TestQuery {
+	query := &TestQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := td.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(testdisplay.Table, testdisplay.FieldID, id),
+			sqlgraph.To(test.Table, test.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, testdisplay.TestTable, testdisplay.TestColumn),
+		)
+		fromV = sqlgraph.Neighbors(td.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *TestDisplayClient) Hooks() []Hook {
+	return c.hooks.TestDisplay
 }
 
 // TestTranslationClient is a client for the TestTranslation schema.

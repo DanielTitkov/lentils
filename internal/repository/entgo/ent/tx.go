@@ -36,6 +36,8 @@ type Tx struct {
 	Take *TakeClient
 	// Test is the client for interacting with the Test builders.
 	Test *TestClient
+	// TestDisplay is the client for interacting with the TestDisplay builders.
+	TestDisplay *TestDisplayClient
 	// TestTranslation is the client for interacting with the TestTranslation builders.
 	TestTranslation *TestTranslationClient
 	// User is the client for interacting with the User builders.
@@ -189,6 +191,7 @@ func (tx *Tx) init() {
 	tx.ScaleTranslation = NewScaleTranslationClient(tx.config)
 	tx.Take = NewTakeClient(tx.config)
 	tx.Test = NewTestClient(tx.config)
+	tx.TestDisplay = NewTestDisplayClient(tx.config)
 	tx.TestTranslation = NewTestTranslationClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 	tx.UserSession = NewUserSessionClient(tx.config)

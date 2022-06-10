@@ -1,17 +1,13 @@
-{{ define "title" }} Crowdsourced predictions {{ end }}
+{{ define "title" }} Lentils {{ end }}
 {{ define "view" }}
-
 <main>
   <div class="section">
-    Лентилс
-    Тесты
+    <h1 class="title is-1">Lentils</h1>
+    <h3 class="subtitle is-3">Психологические тесты и всё такое</h3>
   </div>
   <div class="section">
     {{ range $i, $test := .Tests }}
-    <div class="box notification">
-      <p class="title is-3">{{ $test.Title }}</p>
-      <p class="subtitle is-5">{{ $test.Description }}</p>
-    </div>
+    {{ template "test-card" $test }}
     {{ end }}
   </div>
   {{ if .Summary }}
@@ -20,5 +16,11 @@
   </div>
   {{ end }}
 </main>
+{{ end }}
 
+{{ define "test-card" }}
+<div class="box notification">
+  <p class="title is-3"><a href="/test/{{ .Code }}">{{ .Title }}</a></p>
+  <p class="subtitle is-5">{{ .Description }}</p>
+</div>
 {{ end }}

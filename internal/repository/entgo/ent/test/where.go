@@ -511,6 +511,34 @@ func HasScalesWith(preds ...predicate.Scale) predicate.Test {
 	})
 }
 
+// HasDisplay applies the HasEdge predicate on the "display" edge.
+func HasDisplay() predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(DisplayTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, DisplayTable, DisplayColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasDisplayWith applies the HasEdge predicate on the "display" edge with a given conditions (other predicates).
+func HasDisplayWith(preds ...predicate.TestDisplay) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(DisplayInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, DisplayTable, DisplayColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.Test) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {

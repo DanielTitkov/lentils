@@ -29,6 +29,8 @@ const (
 	EdgeTranslations = "translations"
 	// EdgeScales holds the string denoting the scales edge name in mutations.
 	EdgeScales = "scales"
+	// EdgeDisplay holds the string denoting the display edge name in mutations.
+	EdgeDisplay = "display"
 	// Table holds the table name of the test in the database.
 	Table = "tests"
 	// TakesTable is the table that holds the takes relation/edge.
@@ -55,6 +57,13 @@ const (
 	// ScalesInverseTable is the table name for the Scale entity.
 	// It exists in this package in order to avoid circular dependency with the "scale" package.
 	ScalesInverseTable = "scales"
+	// DisplayTable is the table that holds the display relation/edge.
+	DisplayTable = "test_displays"
+	// DisplayInverseTable is the table name for the TestDisplay entity.
+	// It exists in this package in order to avoid circular dependency with the "testdisplay" package.
+	DisplayInverseTable = "test_displays"
+	// DisplayColumn is the table column denoting the display relation/edge.
+	DisplayColumn = "test_display"
 )
 
 // Columns holds all SQL columns for test fields.

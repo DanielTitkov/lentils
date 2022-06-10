@@ -1,26 +1,26 @@
-code: tipi
+code: fipi
 published: true
 translations:
   - locale: en
-    title: TIPI
-    description: Ten-Item Personality Inventory by Gosling, Rentfrow and Swan (2003)
-    instruction: Answer all the questions (there's only 10 of them!)
+    title: FIPI
+    description: Five-Item Personality Inventory (for testing only)
+    instruction: Answer all the questions (there's only 5 of them!)
   - locale: ru
     title: ТИПИ
-    description: Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
-    instruction: Ответьте на все вопросы (их всего 10!)
+    description: Краткий тест личности (для тестов)
+    instruction: Ответьте на все вопросы (их всего 5!)
 scales: 
-  - code: tipi-scale-1-extraversion
+  - code: fipi-scale-1-extraversion
     type: sten
     translations:
       - locale: en
-        title: TIPI-Extraversion
+        title: FIPI-Extraversion
         description: Extraversion scale
       - locale: ru
         title: ТИПИ-Экстраверсия
         description: Шкала экстраверсии
     items:
-      - code: tipi-item-ex-1
+      - code: fipi-item-ex-1
         steps: 7
         reverse: false
         translations: 
@@ -28,25 +28,17 @@ scales:
             content: Extraverted, enthusiastic.
           - locale: ru
             content: Экстраверт, полный энтузиазма.
-      - code: tipi-item-ex-2
-        steps: 7
-        reverse: true
-        translations: 
-          - locale: en
-            content: Reserved, quiet.
-          - locale: ru
-            content: Сдержанный, тихий.
-  - code: tipi-scale-2-agreeableness
+  - code: fipi-scale-2-agreeableness
     type: sten
     translations:
       - locale: en
-        title: TIPI-Agreeableness
+        title: FIPI-Agreeableness
         description: Agreeableness scale
       - locale: ru
         title: ТИПИ-Доброжелательность
         description: Шкала доброжелательности
     items:
-      - code: tipi-item-agr-1
+      - code: fipi-item-agr-1
         steps: 7
         reverse: true
         translations: 
@@ -54,25 +46,17 @@ scales:
             content: Critical, quarrelsome.
           - locale: ru
             content: Критичный, придирчивый.
-      - code: tipi-item-arg-2
-        steps: 7
-        reverse: false
-        translations: 
-          - locale: en
-            content: Sympathetic, warm.
-          - locale: ru
-            content: Сочувствующий, сердечный.
-  - code: tipi-scale-3-conscientiousness
+  - code: fipi-scale-3-conscientiousness
     type: sten
     translations:
       - locale: en
-        title: TIPI-Conscientiousness
+        title: FIPI-Conscientiousness
         description: Conscientiousness scale
       - locale: ru
         title: ТИПИ-Сознательность
         description: Шкала сознательнольсти
     items:
-      - code: tipi-item-cons-1
+      - code: fipi-item-cons-1
         steps: 7
         reverse: false
         translations: 
@@ -80,25 +64,17 @@ scales:
             content: Dependable, self-disciplined.
           - locale: ru
             content: Надежный, дисциплинированный.
-      - code: tipi-item-cons-2
-        steps: 7
-        reverse: true
-        translations: 
-          - locale: en
-            content: Disorganized, careless.
-          - locale: ru
-            content: Неорганизованный, беззаботный.
-  - code: tipi-scale-4-stability
+  - code: fipi-scale-4-stability
     type: sten
     translations:
       - locale: en
-        title: TIPI-Emotional Stability
+        title: FIPI-Emotional Stability
         description: Emotional Stability scale
       - locale: ru
         title: ТИПИ-Эмоциональная стабильность
         description: Шкала эмоциональной стабильности
     items:
-      - code: tipi-item-stab-1
+      - code: fipi-item-stab-1
         steps: 7
         reverse: true
         translations: 
@@ -106,25 +82,17 @@ scales:
             content: Anxious, easily upset.
           - locale: ru
             content: Тревожный, легко расстраиваемый.
-      - code: tipi-item-stab-2
-        steps: 7
-        reverse: false
-        translations: 
-          - locale: en
-            content: Calm, emotionally stable.
-          - locale: ru
-            content: Спокойный, эмоционально стабильный.
-  - code: tipi-scale-5-openness
+  - code: fipi-scale-5-openness
     type: sten
     translations:
       - locale: en
-        title: TIPI-Openness to Experience
+        title: FIPI-Openness to Experience
         description: Openness to Experience scale
       - locale: ru
         title: ТИПИ-Открытость новому опыту
         description: Шкала открытости новому опыту
     items:
-      - code: tipi-item-op-1
+      - code: fipi-item-op-1
         steps: 7
         reverse: false
         translations: 
@@ -132,24 +100,59 @@ scales:
             content: Open to new experiences, complex.
           - locale: ru
             content: Открытый опыту, многоуровневый.
-      - code: tipi-item-op-2
-        steps: 7
-        reverse: true
-        translations: 
-          - locale: en
-            content: Conventional, uncreative.
-          - locale: ru
-            content: Консервативный, далекий от творчества.
-generate: 
-  method: each-item
-  template:
+questions: 
+  - code: fipi-question-1
+    order: 10
     type: simple
-    code: tipi-question
+    items: 
+      - code: fipi-item-op-1
     translations: 
       - locale: en
         content: "How this is about you?"
       - locale: ru
         content: "Оцените, насколько вам это подходит?"
+  - code: fipi-question-2
+    order: 20
+    type: simple
+    items: 
+      - code: fipi-item-stab-1
+    translations: 
+      - locale: en
+        content: "How this is about you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"
+  - code: fipi-question-3
+    order: 30
+    type: simple
+    items: 
+      - code: fipi-item-cons-1
+    translations: 
+      - locale: en
+        content: "How this is about you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"
+  - code: fipi-question-4
+    order: 40
+    type: simple
+    items: 
+      - code: fipi-item-agr-1
+    translations: 
+      - locale: en
+        content: "How this is about you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"
+  - code: fipi-question-5
+    order: 50
+    type: simple
+    items: 
+      - code: fipi-item-ex-1
+    translations: 
+      - locale: en
+        content: "How this is about you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"
+generate: 
+  method: none
 display:
-  questionsPerPage: 1
+  questionsPerPage: 2
   randomizeOrder: false

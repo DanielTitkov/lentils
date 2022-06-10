@@ -16,6 +16,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/google/uuid"
 )
@@ -113,6 +114,25 @@ func (tu *TestUpdate) AddScales(s ...*Scale) *TestUpdate {
 	return tu.AddScaleIDs(ids...)
 }
 
+// SetDisplayID sets the "display" edge to the TestDisplay entity by ID.
+func (tu *TestUpdate) SetDisplayID(id uuid.UUID) *TestUpdate {
+	tu.mutation.SetDisplayID(id)
+	return tu
+}
+
+// SetNillableDisplayID sets the "display" edge to the TestDisplay entity by ID if the given value is not nil.
+func (tu *TestUpdate) SetNillableDisplayID(id *uuid.UUID) *TestUpdate {
+	if id != nil {
+		tu = tu.SetDisplayID(*id)
+	}
+	return tu
+}
+
+// SetDisplay sets the "display" edge to the TestDisplay entity.
+func (tu *TestUpdate) SetDisplay(t *TestDisplay) *TestUpdate {
+	return tu.SetDisplayID(t.ID)
+}
+
 // Mutation returns the TestMutation object of the builder.
 func (tu *TestUpdate) Mutation() *TestMutation {
 	return tu.mutation
@@ -200,6 +220,12 @@ func (tu *TestUpdate) RemoveScales(s ...*Scale) *TestUpdate {
 		ids[i] = s[i].ID
 	}
 	return tu.RemoveScaleIDs(ids...)
+}
+
+// ClearDisplay clears the "display" edge to the TestDisplay entity.
+func (tu *TestUpdate) ClearDisplay() *TestUpdate {
+	tu.mutation.ClearDisplay()
+	return tu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -513,6 +539,41 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if tu.mutation.DisplayCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   test.DisplayTable,
+			Columns: []string{test.DisplayColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: testdisplay.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.DisplayIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   test.DisplayTable,
+			Columns: []string{test.DisplayColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: testdisplay.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{test.Label}
@@ -612,6 +673,25 @@ func (tuo *TestUpdateOne) AddScales(s ...*Scale) *TestUpdateOne {
 	return tuo.AddScaleIDs(ids...)
 }
 
+// SetDisplayID sets the "display" edge to the TestDisplay entity by ID.
+func (tuo *TestUpdateOne) SetDisplayID(id uuid.UUID) *TestUpdateOne {
+	tuo.mutation.SetDisplayID(id)
+	return tuo
+}
+
+// SetNillableDisplayID sets the "display" edge to the TestDisplay entity by ID if the given value is not nil.
+func (tuo *TestUpdateOne) SetNillableDisplayID(id *uuid.UUID) *TestUpdateOne {
+	if id != nil {
+		tuo = tuo.SetDisplayID(*id)
+	}
+	return tuo
+}
+
+// SetDisplay sets the "display" edge to the TestDisplay entity.
+func (tuo *TestUpdateOne) SetDisplay(t *TestDisplay) *TestUpdateOne {
+	return tuo.SetDisplayID(t.ID)
+}
+
 // Mutation returns the TestMutation object of the builder.
 func (tuo *TestUpdateOne) Mutation() *TestMutation {
 	return tuo.mutation
@@ -699,6 +779,12 @@ func (tuo *TestUpdateOne) RemoveScales(s ...*Scale) *TestUpdateOne {
 		ids[i] = s[i].ID
 	}
 	return tuo.RemoveScaleIDs(ids...)
+}
+
+// ClearDisplay clears the "display" edge to the TestDisplay entity.
+func (tuo *TestUpdateOne) ClearDisplay() *TestUpdateOne {
+	tuo.mutation.ClearDisplay()
+	return tuo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -1034,6 +1120,41 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: scale.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.DisplayCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   test.DisplayTable,
+			Columns: []string{test.DisplayColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: testdisplay.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.DisplayIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   test.DisplayTable,
+			Columns: []string{test.DisplayColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: testdisplay.FieldID,
 				},
 			},
 		}

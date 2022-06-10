@@ -18,6 +18,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/schema"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/usersession"
@@ -109,14 +110,14 @@ func init() {
 	question.DefaultUpdateTime = questionDescUpdateTime.Default.(func() time.Time)
 	// question.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	question.UpdateDefaultUpdateTime = questionDescUpdateTime.UpdateDefault.(func() time.Time)
+	// questionDescOrder is the schema descriptor for order field.
+	questionDescOrder := questionFields[1].Descriptor()
+	// question.DefaultOrder holds the default value on creation for the order field.
+	question.DefaultOrder = questionDescOrder.Default.(int)
 	// questionDescCode is the schema descriptor for code field.
-	questionDescCode := questionFields[1].Descriptor()
+	questionDescCode := questionFields[2].Descriptor()
 	// question.CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	question.CodeValidator = questionDescCode.Validators[0].(func(string) error)
-	// questionDescType is the schema descriptor for type field.
-	questionDescType := questionFields[2].Descriptor()
-	// question.TypeValidator is a validator for the "type" field. It is called by the builders before save.
-	question.TypeValidator = questionDescType.Validators[0].(func(string) error)
 	// questionDescID is the schema descriptor for id field.
 	questionDescID := questionFields[0].Descriptor()
 	// question.DefaultID holds the default value on creation for the id field.
@@ -257,6 +258,22 @@ func init() {
 	testDescID := testFields[0].Descriptor()
 	// test.DefaultID holds the default value on creation for the id field.
 	test.DefaultID = testDescID.Default.(func() uuid.UUID)
+	testdisplayFields := schema.TestDisplay{}.Fields()
+	_ = testdisplayFields
+	// testdisplayDescRandomizeOrder is the schema descriptor for randomize_order field.
+	testdisplayDescRandomizeOrder := testdisplayFields[1].Descriptor()
+	// testdisplay.DefaultRandomizeOrder holds the default value on creation for the randomize_order field.
+	testdisplay.DefaultRandomizeOrder = testdisplayDescRandomizeOrder.Default.(bool)
+	// testdisplayDescQuestionsPerPage is the schema descriptor for questions_per_page field.
+	testdisplayDescQuestionsPerPage := testdisplayFields[2].Descriptor()
+	// testdisplay.DefaultQuestionsPerPage holds the default value on creation for the questions_per_page field.
+	testdisplay.DefaultQuestionsPerPage = testdisplayDescQuestionsPerPage.Default.(int)
+	// testdisplay.QuestionsPerPageValidator is a validator for the "questions_per_page" field. It is called by the builders before save.
+	testdisplay.QuestionsPerPageValidator = testdisplayDescQuestionsPerPage.Validators[0].(func(int) error)
+	// testdisplayDescID is the schema descriptor for id field.
+	testdisplayDescID := testdisplayFields[0].Descriptor()
+	// testdisplay.DefaultID holds the default value on creation for the id field.
+	testdisplay.DefaultID = testdisplayDescID.Default.(func() uuid.UUID)
 	testtranslationFields := schema.TestTranslation{}.Fields()
 	_ = testtranslationFields
 	// testtranslationDescTitle is the schema descriptor for title field.

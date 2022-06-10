@@ -21,10 +21,12 @@ type Question struct {
 	CreateTime time.Time `json:"create_time,omitempty"`
 	// UpdateTime holds the value of the "update_time" field.
 	UpdateTime time.Time `json:"update_time,omitempty"`
+	// Order holds the value of the "order" field.
+	Order int `json:"order,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
 	// Type holds the value of the "type" field.
-	Type string `json:"type,omitempty"`
+	Type question.Type `json:"type,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the QuestionQuery when eager-loading is set.
 	Edges QuestionEdges `json:"edges"`
@@ -75,6 +77,8 @@ func (*Question) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case question.FieldOrder:
+			values[i] = new(sql.NullInt64)
 		case question.FieldCode, question.FieldType:
 			values[i] = new(sql.NullString)
 		case question.FieldCreateTime, question.FieldUpdateTime:
@@ -114,6 +118,12 @@ func (q *Question) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				q.UpdateTime = value.Time
 			}
+		case question.FieldOrder:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field order", values[i])
+			} else if value.Valid {
+				q.Order = int(value.Int64)
+			}
 		case question.FieldCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
@@ -124,7 +134,7 @@ func (q *Question) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				q.Type = value.String
+				q.Type = question.Type(value.String)
 			}
 		}
 	}
@@ -175,11 +185,14 @@ func (q *Question) String() string {
 	builder.WriteString("update_time=")
 	builder.WriteString(q.UpdateTime.Format(time.ANSIC))
 	builder.WriteString(", ")
+	builder.WriteString("order=")
+	builder.WriteString(fmt.Sprintf("%v", q.Order))
+	builder.WriteString(", ")
 	builder.WriteString("code=")
 	builder.WriteString(q.Code)
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(q.Type)
+	builder.WriteString(fmt.Sprintf("%v", q.Type))
 	builder.WriteByte(')')
 	return builder.String()
 }

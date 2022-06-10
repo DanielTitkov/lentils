@@ -3,6 +3,7 @@
 package question
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -17,6 +18,8 @@ const (
 	FieldCreateTime = "create_time"
 	// FieldUpdateTime holds the string denoting the update_time field in the database.
 	FieldUpdateTime = "update_time"
+	// FieldOrder holds the string denoting the order field in the database.
+	FieldOrder = "order"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
 	// FieldType holds the string denoting the type field in the database.
@@ -53,6 +56,7 @@ var Columns = []string{
 	FieldID,
 	FieldCreateTime,
 	FieldUpdateTime,
+	FieldOrder,
 	FieldCode,
 	FieldType,
 }
@@ -83,10 +87,35 @@ var (
 	DefaultUpdateTime func() time.Time
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
+	// DefaultOrder holds the default value on creation for the "order" field.
+	DefaultOrder int
 	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	CodeValidator func(string) error
-	// TypeValidator is a validator for the "type" field. It is called by the builders before save.
-	TypeValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
+
+// Type defines the type for the "type" enum field.
+type Type string
+
+// TypeSimple is the default value of the Type enum.
+const DefaultType = TypeSimple
+
+// Type values.
+const (
+	TypeSimple Type = "simple"
+)
+
+func (_type Type) String() string {
+	return string(_type)
+}
+
+// TypeValidator is a validator for the "type" field enum values. It is called by the builders before save.
+func TypeValidator(_type Type) error {
+	switch _type {
+	case TypeSimple:
+		return nil
+	default:
+		return fmt.Errorf("question: invalid enum value for type field: %q", _type)
+	}
+}

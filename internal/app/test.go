@@ -22,6 +22,30 @@ func (a *App) GetTestsForLocale(ctx context.Context, locale string) ([]*domain.T
 	return tests, nil
 }
 
+func (a *App) GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error) {
+	// TODO: check locale
+	return a.repo.GetTestByCode(ctx, code, locale)
+}
+
+func (a *App) PrepareTest(ctx context.Context, code string, locale string, args *domain.PrepareTestArgs) (*domain.Test, error) {
+	if ok := a.IsValidLocale(locale); !ok {
+		return nil, fmt.Errorf("got unknown locale: %s", locale)
+	}
+
+	test, err := a.repo.GetTestByCode(ctx, code, locale)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: probably move to test usecase
+	if test.Display.RandomizeOrder {
+	} else {
+		test.OrderQuestions()
+	}
+
+	return test, nil
+}
+
 func (a *App) loadTestPresets() error {
 	a.log.Info("loading test presets", fmt.Sprint(a.Cfg.Data.Presets.TestPresetsPaths))
 	for _, path := range a.Cfg.Data.Presets.TestPresetsPaths {
@@ -37,9 +61,13 @@ func (a *App) loadTestPresets() error {
 			return err
 		}
 
-		ctx := context.Background()
+		// switch test.Generate.Method {
+		// case domain.GenerateQuestionsNone:
+		// case domain.GenerateQuestionsEachItem:
+		// default:
+		// }
 
-		err = a.CreateOrUpdateTestFromArgs(ctx, test)
+		err = a.CreateOrUpdateTestFromArgs(context.Background(), test)
 		if err != nil {
 			a.log.Error("failed to load test", err)
 			continue
@@ -50,3 +78,10 @@ func (a *App) loadTestPresets() error {
 
 	return nil
 }
+
+// func generateQuestionsEachItem(test *domain.CreateTestArgs) error {
+// 	var questions []domain.CreateQuestionArgs
+// 	for _, s := range
+
+// 	return nil
+// }

@@ -105,8 +105,9 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
+		{Name: "order", Type: field.TypeInt, Default: 10},
 		{Name: "code", Type: field.TypeString, Unique: true},
-		{Name: "type", Type: field.TypeString},
+		{Name: "type", Type: field.TypeEnum, Enums: []string{"simple"}, Default: "simple"},
 	}
 	// QuestionsTable holds the schema information for the "questions" table.
 	QuestionsTable = &schema.Table{
@@ -256,7 +257,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1654811687},
+		{Name: "seed", Type: field.TypeInt64, Default: 1654899955},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "test_takes", Type: field.TypeUUID},
 		{Name: "user_takes", Type: field.TypeUUID},
@@ -294,6 +295,27 @@ var (
 		Name:       "tests",
 		Columns:    TestsColumns,
 		PrimaryKey: []*schema.Column{TestsColumns[0]},
+	}
+	// TestDisplaysColumns holds the columns for the "test_displays" table.
+	TestDisplaysColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "randomize_order", Type: field.TypeBool, Default: false},
+		{Name: "questions_per_page", Type: field.TypeInt, Default: 1},
+		{Name: "test_display", Type: field.TypeUUID, Unique: true},
+	}
+	// TestDisplaysTable holds the schema information for the "test_displays" table.
+	TestDisplaysTable = &schema.Table{
+		Name:       "test_displays",
+		Columns:    TestDisplaysColumns,
+		PrimaryKey: []*schema.Column{TestDisplaysColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "test_displays_tests_display",
+				Columns:    []*schema.Column{TestDisplaysColumns[3]},
+				RefColumns: []*schema.Column{TestsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
 	}
 	// TestTranslationsColumns holds the columns for the "test_translations" table.
 	TestTranslationsColumns = []*schema.Column{
@@ -467,6 +489,7 @@ var (
 		ScaleTranslationsTable,
 		TakesTable,
 		TestsTable,
+		TestDisplaysTable,
 		TestTranslationsTable,
 		UsersTable,
 		UserSessionsTable,
@@ -488,6 +511,7 @@ func init() {
 	ScaleTranslationsTable.ForeignKeys[0].RefTable = ScalesTable
 	TakesTable.ForeignKeys[0].RefTable = TestsTable
 	TakesTable.ForeignKeys[1].RefTable = UsersTable
+	TestDisplaysTable.ForeignKeys[0].RefTable = TestsTable
 	TestTranslationsTable.ForeignKeys[0].RefTable = TestsTable
 	UserSessionsTable.ForeignKeys[0].RefTable = UsersTable
 	QuestionItemsTable.ForeignKeys[0].RefTable = QuestionsTable

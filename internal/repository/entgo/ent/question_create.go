@@ -52,6 +52,20 @@ func (qc *QuestionCreate) SetNillableUpdateTime(t *time.Time) *QuestionCreate {
 	return qc
 }
 
+// SetOrder sets the "order" field.
+func (qc *QuestionCreate) SetOrder(i int) *QuestionCreate {
+	qc.mutation.SetOrder(i)
+	return qc
+}
+
+// SetNillableOrder sets the "order" field if the given value is not nil.
+func (qc *QuestionCreate) SetNillableOrder(i *int) *QuestionCreate {
+	if i != nil {
+		qc.SetOrder(*i)
+	}
+	return qc
+}
+
 // SetCode sets the "code" field.
 func (qc *QuestionCreate) SetCode(s string) *QuestionCreate {
 	qc.mutation.SetCode(s)
@@ -59,8 +73,16 @@ func (qc *QuestionCreate) SetCode(s string) *QuestionCreate {
 }
 
 // SetType sets the "type" field.
-func (qc *QuestionCreate) SetType(s string) *QuestionCreate {
-	qc.mutation.SetType(s)
+func (qc *QuestionCreate) SetType(q question.Type) *QuestionCreate {
+	qc.mutation.SetType(q)
+	return qc
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (qc *QuestionCreate) SetNillableType(q *question.Type) *QuestionCreate {
+	if q != nil {
+		qc.SetType(*q)
+	}
 	return qc
 }
 
@@ -208,6 +230,14 @@ func (qc *QuestionCreate) defaults() {
 		v := question.DefaultUpdateTime()
 		qc.mutation.SetUpdateTime(v)
 	}
+	if _, ok := qc.mutation.Order(); !ok {
+		v := question.DefaultOrder
+		qc.mutation.SetOrder(v)
+	}
+	if _, ok := qc.mutation.GetType(); !ok {
+		v := question.DefaultType
+		qc.mutation.SetType(v)
+	}
 	if _, ok := qc.mutation.ID(); !ok {
 		v := question.DefaultID()
 		qc.mutation.SetID(v)
@@ -221,6 +251,9 @@ func (qc *QuestionCreate) check() error {
 	}
 	if _, ok := qc.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "Question.update_time"`)}
+	}
+	if _, ok := qc.mutation.Order(); !ok {
+		return &ValidationError{Name: "order", err: errors.New(`ent: missing required field "Question.order"`)}
 	}
 	if _, ok := qc.mutation.Code(); !ok {
 		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Question.code"`)}
@@ -290,6 +323,14 @@ func (qc *QuestionCreate) createSpec() (*Question, *sqlgraph.CreateSpec) {
 		})
 		_node.UpdateTime = value
 	}
+	if value, ok := qc.mutation.Order(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: question.FieldOrder,
+		})
+		_node.Order = value
+	}
 	if value, ok := qc.mutation.Code(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -300,7 +341,7 @@ func (qc *QuestionCreate) createSpec() (*Question, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := qc.mutation.GetType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeEnum,
 			Value:  value,
 			Column: question.FieldType,
 		})

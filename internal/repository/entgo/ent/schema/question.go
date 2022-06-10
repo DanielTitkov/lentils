@@ -6,6 +6,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
+	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/google/uuid"
 )
 
@@ -18,8 +19,11 @@ type Question struct {
 func (Question) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
+		field.Int("order").Default(10),
 		field.String("code").NotEmpty().Unique().Immutable(),
-		field.String("type").NotEmpty(),
+		field.Enum("type").Values(
+			domain.QuestionTypeSimple,
+		).Default(domain.QuestionTypeSimple),
 	}
 }
 

@@ -1,5 +1,6 @@
 package domain
 
+// test import args
 type (
 	CreateTestArgs struct {
 		Code         string
@@ -8,11 +9,21 @@ type (
 		Translations []TestTranslation
 		Questions    []CreateQuestionArgs
 		Scales       []CreateScaleArgs
+		Display      CreateTestDisplayArgs
+	}
+
+	CreateTestDisplayArgs struct {
+		QuestionsPerPage int  `yaml:"questionsPerPage"`
+		RandomizeOrder   bool `yaml:"randomizeOrder"`
 	}
 
 	GenerateQuestionsArgs struct {
 		Method   string
 		Template CreateQuestionArgs
+		// TODO:
+		// for each user
+		// force generate
+		// randomize items
 	}
 
 	TestTranslation struct {
@@ -23,8 +34,11 @@ type (
 	}
 
 	CreateQuestionArgs struct {
+		Code         string
 		Type         string
+		Order        int
 		Translations []QuestionTranslation
+		Items        []CreateItemArgs
 	}
 
 	QuestionTranslation struct {
@@ -57,5 +71,11 @@ type (
 	ItemTranslation struct {
 		Locale  string
 		Content string
+	}
+)
+
+// function args
+type (
+	PrepareTestArgs struct {
 	}
 )

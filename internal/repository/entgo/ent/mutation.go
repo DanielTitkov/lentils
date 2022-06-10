@@ -22,6 +22,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/usersession"
@@ -51,6 +52,7 @@ const (
 	TypeScaleTranslation          = "ScaleTranslation"
 	TypeTake                      = "Take"
 	TypeTest                      = "Test"
+	TypeTestDisplay               = "TestDisplay"
 	TypeTestTranslation           = "TestTranslation"
 	TypeUser                      = "User"
 	TypeUserSession               = "UserSession"
@@ -2378,8 +2380,10 @@ type QuestionMutation struct {
 	id                  *uuid.UUID
 	create_time         *time.Time
 	update_time         *time.Time
+	_order              *int
+	add_order           *int
 	code                *string
-	_type               *string
+	_type               *question.Type
 	clearedFields       map[string]struct{}
 	items               map[uuid.UUID]struct{}
 	removeditems        map[uuid.UUID]struct{}
@@ -2571,6 +2575,62 @@ func (m *QuestionMutation) ResetUpdateTime() {
 	m.update_time = nil
 }
 
+// SetOrder sets the "order" field.
+func (m *QuestionMutation) SetOrder(i int) {
+	m._order = &i
+	m.add_order = nil
+}
+
+// Order returns the value of the "order" field in the mutation.
+func (m *QuestionMutation) Order() (r int, exists bool) {
+	v := m._order
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOrder returns the old "order" field's value of the Question entity.
+// If the Question object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *QuestionMutation) OldOrder(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOrder is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOrder requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOrder: %w", err)
+	}
+	return oldValue.Order, nil
+}
+
+// AddOrder adds i to the "order" field.
+func (m *QuestionMutation) AddOrder(i int) {
+	if m.add_order != nil {
+		*m.add_order += i
+	} else {
+		m.add_order = &i
+	}
+}
+
+// AddedOrder returns the value that was added to the "order" field in this mutation.
+func (m *QuestionMutation) AddedOrder() (r int, exists bool) {
+	v := m.add_order
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetOrder resets all changes to the "order" field.
+func (m *QuestionMutation) ResetOrder() {
+	m._order = nil
+	m.add_order = nil
+}
+
 // SetCode sets the "code" field.
 func (m *QuestionMutation) SetCode(s string) {
 	m.code = &s
@@ -2608,12 +2668,12 @@ func (m *QuestionMutation) ResetCode() {
 }
 
 // SetType sets the "type" field.
-func (m *QuestionMutation) SetType(s string) {
-	m._type = &s
+func (m *QuestionMutation) SetType(q question.Type) {
+	m._type = &q
 }
 
 // GetType returns the value of the "type" field in the mutation.
-func (m *QuestionMutation) GetType() (r string, exists bool) {
+func (m *QuestionMutation) GetType() (r question.Type, exists bool) {
 	v := m._type
 	if v == nil {
 		return
@@ -2624,7 +2684,7 @@ func (m *QuestionMutation) GetType() (r string, exists bool) {
 // OldType returns the old "type" field's value of the Question entity.
 // If the Question object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *QuestionMutation) OldType(ctx context.Context) (v string, err error) {
+func (m *QuestionMutation) OldType(ctx context.Context) (v question.Type, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldType is only allowed on UpdateOne operations")
 	}
@@ -2824,12 +2884,15 @@ func (m *QuestionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *QuestionMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 5)
 	if m.create_time != nil {
 		fields = append(fields, question.FieldCreateTime)
 	}
 	if m.update_time != nil {
 		fields = append(fields, question.FieldUpdateTime)
+	}
+	if m._order != nil {
+		fields = append(fields, question.FieldOrder)
 	}
 	if m.code != nil {
 		fields = append(fields, question.FieldCode)
@@ -2849,6 +2912,8 @@ func (m *QuestionMutation) Field(name string) (ent.Value, bool) {
 		return m.CreateTime()
 	case question.FieldUpdateTime:
 		return m.UpdateTime()
+	case question.FieldOrder:
+		return m.Order()
 	case question.FieldCode:
 		return m.Code()
 	case question.FieldType:
@@ -2866,6 +2931,8 @@ func (m *QuestionMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldCreateTime(ctx)
 	case question.FieldUpdateTime:
 		return m.OldUpdateTime(ctx)
+	case question.FieldOrder:
+		return m.OldOrder(ctx)
 	case question.FieldCode:
 		return m.OldCode(ctx)
 	case question.FieldType:
@@ -2893,6 +2960,13 @@ func (m *QuestionMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUpdateTime(v)
 		return nil
+	case question.FieldOrder:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOrder(v)
+		return nil
 	case question.FieldCode:
 		v, ok := value.(string)
 		if !ok {
@@ -2901,7 +2975,7 @@ func (m *QuestionMutation) SetField(name string, value ent.Value) error {
 		m.SetCode(v)
 		return nil
 	case question.FieldType:
-		v, ok := value.(string)
+		v, ok := value.(question.Type)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2914,13 +2988,21 @@ func (m *QuestionMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *QuestionMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.add_order != nil {
+		fields = append(fields, question.FieldOrder)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *QuestionMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case question.FieldOrder:
+		return m.AddedOrder()
+	}
 	return nil, false
 }
 
@@ -2929,6 +3011,13 @@ func (m *QuestionMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *QuestionMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case question.FieldOrder:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOrder(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Question numeric field %s", name)
 }
@@ -2961,6 +3050,9 @@ func (m *QuestionMutation) ResetField(name string) error {
 		return nil
 	case question.FieldUpdateTime:
 		m.ResetUpdateTime()
+		return nil
+	case question.FieldOrder:
+		m.ResetOrder()
 		return nil
 	case question.FieldCode:
 		m.ResetCode()
@@ -6942,6 +7034,8 @@ type TestMutation struct {
 	scales              map[uuid.UUID]struct{}
 	removedscales       map[uuid.UUID]struct{}
 	clearedscales       bool
+	display             *uuid.UUID
+	cleareddisplay      bool
 	done                bool
 	oldValue            func(context.Context) (*Test, error)
 	predicates          []predicate.Test
@@ -7411,6 +7505,45 @@ func (m *TestMutation) ResetScales() {
 	m.removedscales = nil
 }
 
+// SetDisplayID sets the "display" edge to the TestDisplay entity by id.
+func (m *TestMutation) SetDisplayID(id uuid.UUID) {
+	m.display = &id
+}
+
+// ClearDisplay clears the "display" edge to the TestDisplay entity.
+func (m *TestMutation) ClearDisplay() {
+	m.cleareddisplay = true
+}
+
+// DisplayCleared reports if the "display" edge to the TestDisplay entity was cleared.
+func (m *TestMutation) DisplayCleared() bool {
+	return m.cleareddisplay
+}
+
+// DisplayID returns the "display" edge ID in the mutation.
+func (m *TestMutation) DisplayID() (id uuid.UUID, exists bool) {
+	if m.display != nil {
+		return *m.display, true
+	}
+	return
+}
+
+// DisplayIDs returns the "display" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// DisplayID instead. It exists only for internal usage by the builders.
+func (m *TestMutation) DisplayIDs() (ids []uuid.UUID) {
+	if id := m.display; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetDisplay resets all changes to the "display" edge.
+func (m *TestMutation) ResetDisplay() {
+	m.display = nil
+	m.cleareddisplay = false
+}
+
 // Where appends a list predicates to the TestMutation builder.
 func (m *TestMutation) Where(ps ...predicate.Test) {
 	m.predicates = append(m.predicates, ps...)
@@ -7580,7 +7713,7 @@ func (m *TestMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TestMutation) AddedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.takes != nil {
 		edges = append(edges, test.EdgeTakes)
 	}
@@ -7592,6 +7725,9 @@ func (m *TestMutation) AddedEdges() []string {
 	}
 	if m.scales != nil {
 		edges = append(edges, test.EdgeScales)
+	}
+	if m.display != nil {
+		edges = append(edges, test.EdgeDisplay)
 	}
 	return edges
 }
@@ -7624,13 +7760,17 @@ func (m *TestMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case test.EdgeDisplay:
+		if id := m.display; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TestMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.removedtakes != nil {
 		edges = append(edges, test.EdgeTakes)
 	}
@@ -7680,7 +7820,7 @@ func (m *TestMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TestMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.clearedtakes {
 		edges = append(edges, test.EdgeTakes)
 	}
@@ -7692,6 +7832,9 @@ func (m *TestMutation) ClearedEdges() []string {
 	}
 	if m.clearedscales {
 		edges = append(edges, test.EdgeScales)
+	}
+	if m.cleareddisplay {
+		edges = append(edges, test.EdgeDisplay)
 	}
 	return edges
 }
@@ -7708,6 +7851,8 @@ func (m *TestMutation) EdgeCleared(name string) bool {
 		return m.clearedtranslations
 	case test.EdgeScales:
 		return m.clearedscales
+	case test.EdgeDisplay:
+		return m.cleareddisplay
 	}
 	return false
 }
@@ -7716,6 +7861,9 @@ func (m *TestMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *TestMutation) ClearEdge(name string) error {
 	switch name {
+	case test.EdgeDisplay:
+		m.ClearDisplay()
+		return nil
 	}
 	return fmt.Errorf("unknown Test unique edge %s", name)
 }
@@ -7736,8 +7884,487 @@ func (m *TestMutation) ResetEdge(name string) error {
 	case test.EdgeScales:
 		m.ResetScales()
 		return nil
+	case test.EdgeDisplay:
+		m.ResetDisplay()
+		return nil
 	}
 	return fmt.Errorf("unknown Test edge %s", name)
+}
+
+// TestDisplayMutation represents an operation that mutates the TestDisplay nodes in the graph.
+type TestDisplayMutation struct {
+	config
+	op                    Op
+	typ                   string
+	id                    *uuid.UUID
+	randomize_order       *bool
+	questions_per_page    *int
+	addquestions_per_page *int
+	clearedFields         map[string]struct{}
+	test                  *uuid.UUID
+	clearedtest           bool
+	done                  bool
+	oldValue              func(context.Context) (*TestDisplay, error)
+	predicates            []predicate.TestDisplay
+}
+
+var _ ent.Mutation = (*TestDisplayMutation)(nil)
+
+// testdisplayOption allows management of the mutation configuration using functional options.
+type testdisplayOption func(*TestDisplayMutation)
+
+// newTestDisplayMutation creates new mutation for the TestDisplay entity.
+func newTestDisplayMutation(c config, op Op, opts ...testdisplayOption) *TestDisplayMutation {
+	m := &TestDisplayMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeTestDisplay,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withTestDisplayID sets the ID field of the mutation.
+func withTestDisplayID(id uuid.UUID) testdisplayOption {
+	return func(m *TestDisplayMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *TestDisplay
+		)
+		m.oldValue = func(ctx context.Context) (*TestDisplay, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().TestDisplay.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withTestDisplay sets the old TestDisplay of the mutation.
+func withTestDisplay(node *TestDisplay) testdisplayOption {
+	return func(m *TestDisplayMutation) {
+		m.oldValue = func(context.Context) (*TestDisplay, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m TestDisplayMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m TestDisplayMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of TestDisplay entities.
+func (m *TestDisplayMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *TestDisplayMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *TestDisplayMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uuid.UUID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().TestDisplay.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetRandomizeOrder sets the "randomize_order" field.
+func (m *TestDisplayMutation) SetRandomizeOrder(b bool) {
+	m.randomize_order = &b
+}
+
+// RandomizeOrder returns the value of the "randomize_order" field in the mutation.
+func (m *TestDisplayMutation) RandomizeOrder() (r bool, exists bool) {
+	v := m.randomize_order
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRandomizeOrder returns the old "randomize_order" field's value of the TestDisplay entity.
+// If the TestDisplay object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestDisplayMutation) OldRandomizeOrder(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRandomizeOrder is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRandomizeOrder requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRandomizeOrder: %w", err)
+	}
+	return oldValue.RandomizeOrder, nil
+}
+
+// ResetRandomizeOrder resets all changes to the "randomize_order" field.
+func (m *TestDisplayMutation) ResetRandomizeOrder() {
+	m.randomize_order = nil
+}
+
+// SetQuestionsPerPage sets the "questions_per_page" field.
+func (m *TestDisplayMutation) SetQuestionsPerPage(i int) {
+	m.questions_per_page = &i
+	m.addquestions_per_page = nil
+}
+
+// QuestionsPerPage returns the value of the "questions_per_page" field in the mutation.
+func (m *TestDisplayMutation) QuestionsPerPage() (r int, exists bool) {
+	v := m.questions_per_page
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldQuestionsPerPage returns the old "questions_per_page" field's value of the TestDisplay entity.
+// If the TestDisplay object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestDisplayMutation) OldQuestionsPerPage(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldQuestionsPerPage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldQuestionsPerPage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldQuestionsPerPage: %w", err)
+	}
+	return oldValue.QuestionsPerPage, nil
+}
+
+// AddQuestionsPerPage adds i to the "questions_per_page" field.
+func (m *TestDisplayMutation) AddQuestionsPerPage(i int) {
+	if m.addquestions_per_page != nil {
+		*m.addquestions_per_page += i
+	} else {
+		m.addquestions_per_page = &i
+	}
+}
+
+// AddedQuestionsPerPage returns the value that was added to the "questions_per_page" field in this mutation.
+func (m *TestDisplayMutation) AddedQuestionsPerPage() (r int, exists bool) {
+	v := m.addquestions_per_page
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetQuestionsPerPage resets all changes to the "questions_per_page" field.
+func (m *TestDisplayMutation) ResetQuestionsPerPage() {
+	m.questions_per_page = nil
+	m.addquestions_per_page = nil
+}
+
+// SetTestID sets the "test" edge to the Test entity by id.
+func (m *TestDisplayMutation) SetTestID(id uuid.UUID) {
+	m.test = &id
+}
+
+// ClearTest clears the "test" edge to the Test entity.
+func (m *TestDisplayMutation) ClearTest() {
+	m.clearedtest = true
+}
+
+// TestCleared reports if the "test" edge to the Test entity was cleared.
+func (m *TestDisplayMutation) TestCleared() bool {
+	return m.clearedtest
+}
+
+// TestID returns the "test" edge ID in the mutation.
+func (m *TestDisplayMutation) TestID() (id uuid.UUID, exists bool) {
+	if m.test != nil {
+		return *m.test, true
+	}
+	return
+}
+
+// TestIDs returns the "test" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// TestID instead. It exists only for internal usage by the builders.
+func (m *TestDisplayMutation) TestIDs() (ids []uuid.UUID) {
+	if id := m.test; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetTest resets all changes to the "test" edge.
+func (m *TestDisplayMutation) ResetTest() {
+	m.test = nil
+	m.clearedtest = false
+}
+
+// Where appends a list predicates to the TestDisplayMutation builder.
+func (m *TestDisplayMutation) Where(ps ...predicate.TestDisplay) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *TestDisplayMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (TestDisplay).
+func (m *TestDisplayMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *TestDisplayMutation) Fields() []string {
+	fields := make([]string, 0, 2)
+	if m.randomize_order != nil {
+		fields = append(fields, testdisplay.FieldRandomizeOrder)
+	}
+	if m.questions_per_page != nil {
+		fields = append(fields, testdisplay.FieldQuestionsPerPage)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *TestDisplayMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case testdisplay.FieldRandomizeOrder:
+		return m.RandomizeOrder()
+	case testdisplay.FieldQuestionsPerPage:
+		return m.QuestionsPerPage()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *TestDisplayMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case testdisplay.FieldRandomizeOrder:
+		return m.OldRandomizeOrder(ctx)
+	case testdisplay.FieldQuestionsPerPage:
+		return m.OldQuestionsPerPage(ctx)
+	}
+	return nil, fmt.Errorf("unknown TestDisplay field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *TestDisplayMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case testdisplay.FieldRandomizeOrder:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRandomizeOrder(v)
+		return nil
+	case testdisplay.FieldQuestionsPerPage:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetQuestionsPerPage(v)
+		return nil
+	}
+	return fmt.Errorf("unknown TestDisplay field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *TestDisplayMutation) AddedFields() []string {
+	var fields []string
+	if m.addquestions_per_page != nil {
+		fields = append(fields, testdisplay.FieldQuestionsPerPage)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *TestDisplayMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case testdisplay.FieldQuestionsPerPage:
+		return m.AddedQuestionsPerPage()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *TestDisplayMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case testdisplay.FieldQuestionsPerPage:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddQuestionsPerPage(v)
+		return nil
+	}
+	return fmt.Errorf("unknown TestDisplay numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *TestDisplayMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *TestDisplayMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *TestDisplayMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown TestDisplay nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *TestDisplayMutation) ResetField(name string) error {
+	switch name {
+	case testdisplay.FieldRandomizeOrder:
+		m.ResetRandomizeOrder()
+		return nil
+	case testdisplay.FieldQuestionsPerPage:
+		m.ResetQuestionsPerPage()
+		return nil
+	}
+	return fmt.Errorf("unknown TestDisplay field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *TestDisplayMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.test != nil {
+		edges = append(edges, testdisplay.EdgeTest)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *TestDisplayMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case testdisplay.EdgeTest:
+		if id := m.test; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *TestDisplayMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *TestDisplayMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *TestDisplayMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedtest {
+		edges = append(edges, testdisplay.EdgeTest)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *TestDisplayMutation) EdgeCleared(name string) bool {
+	switch name {
+	case testdisplay.EdgeTest:
+		return m.clearedtest
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *TestDisplayMutation) ClearEdge(name string) error {
+	switch name {
+	case testdisplay.EdgeTest:
+		m.ClearTest()
+		return nil
+	}
+	return fmt.Errorf("unknown TestDisplay unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *TestDisplayMutation) ResetEdge(name string) error {
+	switch name {
+	case testdisplay.EdgeTest:
+		m.ResetTest()
+		return nil
+	}
+	return fmt.Errorf("unknown TestDisplay edge %s", name)
 }
 
 // TestTranslationMutation represents an operation that mutates the TestTranslation nodes in the graph.

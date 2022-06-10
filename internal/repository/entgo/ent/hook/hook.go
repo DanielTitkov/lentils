@@ -165,6 +165,19 @@ func (f TestFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error)
 	return f(ctx, mv)
 }
 
+// The TestDisplayFunc type is an adapter to allow the use of ordinary
+// function as TestDisplay mutator.
+type TestDisplayFunc func(context.Context, *ent.TestDisplayMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TestDisplayFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.TestDisplayMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TestDisplayMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The TestTranslationFunc type is an adapter to allow the use of ordinary
 // function as TestTranslation mutator.
 type TestTranslationFunc func(context.Context, *ent.TestTranslationMutation) (ent.Value, error)
