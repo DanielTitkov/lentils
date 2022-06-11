@@ -1,6 +1,7 @@
 code: tipi
 published: true
 availableLocales: ["en", "ru"]
+forceUpdate: false
 translations:
   - locale: en
     title: TIPI

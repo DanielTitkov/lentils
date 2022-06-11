@@ -24,8 +24,14 @@ type (
 	TestInstance struct {
 		*CommonInstance
 		Test     *domain.Test
+		Take     *domain.Take
 		TestStep string
 		Page     int
+		// to have constants in templates
+		IntroStatus     string
+		QuestionsStatus string
+		FinishStatus    string
+		ResultStatus    string
 	}
 )
 
@@ -38,8 +44,12 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 	m, ok := s.Assigns().(*TestInstance)
 	if !ok {
 		return &TestInstance{
-			CommonInstance: h.NewCommon(s, viewTest),
-			TestStep:       domain.TestStepIntro,
+			CommonInstance:  h.NewCommon(s, viewTest),
+			TestStep:        domain.TestStepIntro,
+			IntroStatus:     domain.TestStepIntro,
+			QuestionsStatus: domain.TestStepQuestions,
+			FinishStatus:    domain.TestStepFinish,
+			ResultStatus:    domain.TestStepResult,
 		}
 	}
 
@@ -104,11 +114,31 @@ func (h *Handler) Test() live.Handler {
 		instance := h.NewTestInstance(s)
 		instance.fromContext(ctx)
 
-		test, err := h.app.PrepareTest(ctx, testCode, "en", nil) // FIXME
+		if instance.User == nil {
+			return instance.withError(errors.New("user is nil")), nil
+		}
+
+		test, take, err := h.app.PrepareTest(ctx, testCode, "en", &domain.PrepareTestArgs{
+			UserID:  instance.UserID,
+			Session: instance.Session,
+		}) // FIXME
 		if err != nil {
 			return instance.withError(err), nil
 		}
 		instance.Test = test
+		instance.Take = take
+
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventBeginTest, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+
+		instance.Take, err = h.app.BeginTest(ctx, instance.Take)
+		if err != nil {
+			return instance.withError(err), nil
+		}
+		instance.Page = 1
 
 		return instance, nil
 	})

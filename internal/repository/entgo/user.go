@@ -51,13 +51,19 @@ func (r *EntgoRepository) GetUserByID(ctx context.Context, id uuid.UUID) (*domai
 }
 
 func (r *EntgoRepository) CreateUser(ctx context.Context, u *domain.User) (*domain.User, error) {
+	var email *string
+	if u.Email != "" {
+		email = &u.Email
+	}
+
 	user, err := r.client.User.
 		Create().
 		SetName(u.Name).
-		SetEmail(u.Email).
+		SetNillableEmail(email).
 		SetPasswordHash(u.PasswordHash).
 		SetPicture(u.Picture).
 		SetLocale(user.Locale(u.Locale)).
+		SetAnonymous(u.Anonymous).
 		// TODO: not setting admin here
 		SetMeta(u.Meta).
 		Save(ctx)
@@ -69,14 +75,20 @@ func (r *EntgoRepository) CreateUser(ctx context.Context, u *domain.User) (*doma
 }
 
 func entToDomainUser(user *ent.User) *domain.User {
+	var email string
+	if user.Email != nil {
+		email = *user.Email
+	}
+
 	return &domain.User{
 		ID:           user.ID,
 		Name:         user.Name,
-		Email:        user.Email,
+		Email:        email,
 		Picture:      user.Picture,
 		PasswordHash: user.PasswordHash,
 		Meta:         user.Meta,
 		Locale:       user.Locale.String(),
 		Admin:        user.Admin,
+		Anonymous:    user.Anonymous,
 	}
 }

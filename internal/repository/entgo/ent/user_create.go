@@ -51,6 +51,12 @@ func (uc *UserCreate) SetNillableUpdateTime(t *time.Time) *UserCreate {
 	return uc
 }
 
+// SetLocale sets the "locale" field.
+func (uc *UserCreate) SetLocale(u user.Locale) *UserCreate {
+	uc.mutation.SetLocale(u)
+	return uc
+}
+
 // SetName sets the "name" field.
 func (uc *UserCreate) SetName(s string) *UserCreate {
 	uc.mutation.SetName(s)
@@ -60,6 +66,14 @@ func (uc *UserCreate) SetName(s string) *UserCreate {
 // SetEmail sets the "email" field.
 func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	uc.mutation.SetEmail(s)
+	return uc
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uc *UserCreate) SetNillableEmail(s *string) *UserCreate {
+	if s != nil {
+		uc.SetEmail(*s)
+	}
 	return uc
 }
 
@@ -77,6 +91,12 @@ func (uc *UserCreate) SetNillablePicture(s *string) *UserCreate {
 	return uc
 }
 
+// SetPasswordHash sets the "password_hash" field.
+func (uc *UserCreate) SetPasswordHash(s string) *UserCreate {
+	uc.mutation.SetPasswordHash(s)
+	return uc
+}
+
 // SetAdmin sets the "admin" field.
 func (uc *UserCreate) SetAdmin(b bool) *UserCreate {
 	uc.mutation.SetAdmin(b)
@@ -91,22 +111,16 @@ func (uc *UserCreate) SetNillableAdmin(b *bool) *UserCreate {
 	return uc
 }
 
-// SetPasswordHash sets the "password_hash" field.
-func (uc *UserCreate) SetPasswordHash(s string) *UserCreate {
-	uc.mutation.SetPasswordHash(s)
+// SetAnonymous sets the "anonymous" field.
+func (uc *UserCreate) SetAnonymous(b bool) *UserCreate {
+	uc.mutation.SetAnonymous(b)
 	return uc
 }
 
-// SetLocale sets the "locale" field.
-func (uc *UserCreate) SetLocale(u user.Locale) *UserCreate {
-	uc.mutation.SetLocale(u)
-	return uc
-}
-
-// SetNillableLocale sets the "locale" field if the given value is not nil.
-func (uc *UserCreate) SetNillableLocale(u *user.Locale) *UserCreate {
-	if u != nil {
-		uc.SetLocale(*u)
+// SetNillableAnonymous sets the "anonymous" field if the given value is not nil.
+func (uc *UserCreate) SetNillableAnonymous(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetAnonymous(*b)
 	}
 	return uc
 }
@@ -159,6 +173,40 @@ func (uc *UserCreate) AddTakes(t ...*Take) *UserCreate {
 		ids[i] = t[i].ID
 	}
 	return uc.AddTakeIDs(ids...)
+}
+
+// SetParentID sets the "parent" edge to the User entity by ID.
+func (uc *UserCreate) SetParentID(id uuid.UUID) *UserCreate {
+	uc.mutation.SetParentID(id)
+	return uc
+}
+
+// SetNillableParentID sets the "parent" edge to the User entity by ID if the given value is not nil.
+func (uc *UserCreate) SetNillableParentID(id *uuid.UUID) *UserCreate {
+	if id != nil {
+		uc = uc.SetParentID(*id)
+	}
+	return uc
+}
+
+// SetParent sets the "parent" edge to the User entity.
+func (uc *UserCreate) SetParent(u *User) *UserCreate {
+	return uc.SetParentID(u.ID)
+}
+
+// AddAliasIDs adds the "aliases" edge to the User entity by IDs.
+func (uc *UserCreate) AddAliasIDs(ids ...uuid.UUID) *UserCreate {
+	uc.mutation.AddAliasIDs(ids...)
+	return uc
+}
+
+// AddAliases adds the "aliases" edges to the User entity.
+func (uc *UserCreate) AddAliases(u ...*User) *UserCreate {
+	ids := make([]uuid.UUID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uc.AddAliasIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -254,9 +302,9 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultAdmin
 		uc.mutation.SetAdmin(v)
 	}
-	if _, ok := uc.mutation.Locale(); !ok {
-		v := user.DefaultLocale
-		uc.mutation.SetLocale(v)
+	if _, ok := uc.mutation.Anonymous(); !ok {
+		v := user.DefaultAnonymous
+		uc.mutation.SetAnonymous(v)
 	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
@@ -272,6 +320,14 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "User.update_time"`)}
 	}
+	if _, ok := uc.mutation.Locale(); !ok {
+		return &ValidationError{Name: "locale", err: errors.New(`ent: missing required field "User.locale"`)}
+	}
+	if v, ok := uc.mutation.Locale(); ok {
+		if err := user.LocaleValidator(v); err != nil {
+			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "User.locale": %w`, err)}
+		}
+	}
 	if _, ok := uc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "User.name"`)}
 	}
@@ -280,27 +336,19 @@ func (uc *UserCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
-	if _, ok := uc.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "User.email"`)}
-	}
 	if v, ok := uc.mutation.Email(); ok {
 		if err := user.EmailValidator(v); err != nil {
 			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "User.email": %w`, err)}
 		}
 	}
-	if _, ok := uc.mutation.Admin(); !ok {
-		return &ValidationError{Name: "admin", err: errors.New(`ent: missing required field "User.admin"`)}
-	}
 	if _, ok := uc.mutation.PasswordHash(); !ok {
 		return &ValidationError{Name: "password_hash", err: errors.New(`ent: missing required field "User.password_hash"`)}
 	}
-	if _, ok := uc.mutation.Locale(); !ok {
-		return &ValidationError{Name: "locale", err: errors.New(`ent: missing required field "User.locale"`)}
+	if _, ok := uc.mutation.Admin(); !ok {
+		return &ValidationError{Name: "admin", err: errors.New(`ent: missing required field "User.admin"`)}
 	}
-	if v, ok := uc.mutation.Locale(); ok {
-		if err := user.LocaleValidator(v); err != nil {
-			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "User.locale": %w`, err)}
-		}
+	if _, ok := uc.mutation.Anonymous(); !ok {
+		return &ValidationError{Name: "anonymous", err: errors.New(`ent: missing required field "User.anonymous"`)}
 	}
 	return nil
 }
@@ -354,6 +402,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		})
 		_node.UpdateTime = value
 	}
+	if value, ok := uc.mutation.Locale(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: user.FieldLocale,
+		})
+		_node.Locale = value
+	}
 	if value, ok := uc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -368,7 +424,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Value:  value,
 			Column: user.FieldEmail,
 		})
-		_node.Email = value
+		_node.Email = &value
 	}
 	if value, ok := uc.mutation.Picture(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -378,14 +434,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		})
 		_node.Picture = value
 	}
-	if value, ok := uc.mutation.Admin(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldAdmin,
-		})
-		_node.Admin = value
-	}
 	if value, ok := uc.mutation.PasswordHash(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -394,13 +442,21 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		})
 		_node.PasswordHash = value
 	}
-	if value, ok := uc.mutation.Locale(); ok {
+	if value, ok := uc.mutation.Admin(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
+			Type:   field.TypeBool,
 			Value:  value,
-			Column: user.FieldLocale,
+			Column: user.FieldAdmin,
 		})
-		_node.Locale = value
+		_node.Admin = value
+	}
+	if value, ok := uc.mutation.Anonymous(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: user.FieldAnonymous,
+		})
+		_node.Anonymous = value
 	}
 	if value, ok := uc.mutation.Meta(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -440,6 +496,45 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: take.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.ParentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.ParentTable,
+			Columns: []string{user.ParentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.user_aliases = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.AliasesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AliasesTable,
+			Columns: []string{user.AliasesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
 				},
 			},
 		}

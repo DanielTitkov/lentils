@@ -18,24 +18,30 @@ const (
 	FieldCreateTime = "create_time"
 	// FieldUpdateTime holds the string denoting the update_time field in the database.
 	FieldUpdateTime = "update_time"
+	// FieldLocale holds the string denoting the locale field in the database.
+	FieldLocale = "locale"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
 	// FieldPicture holds the string denoting the picture field in the database.
 	FieldPicture = "picture"
-	// FieldAdmin holds the string denoting the admin field in the database.
-	FieldAdmin = "admin"
 	// FieldPasswordHash holds the string denoting the password_hash field in the database.
 	FieldPasswordHash = "password_hash"
-	// FieldLocale holds the string denoting the locale field in the database.
-	FieldLocale = "locale"
+	// FieldAdmin holds the string denoting the admin field in the database.
+	FieldAdmin = "admin"
+	// FieldAnonymous holds the string denoting the anonymous field in the database.
+	FieldAnonymous = "anonymous"
 	// FieldMeta holds the string denoting the meta field in the database.
 	FieldMeta = "meta"
 	// EdgeSessions holds the string denoting the sessions edge name in mutations.
 	EdgeSessions = "sessions"
 	// EdgeTakes holds the string denoting the takes edge name in mutations.
 	EdgeTakes = "takes"
+	// EdgeParent holds the string denoting the parent edge name in mutations.
+	EdgeParent = "parent"
+	// EdgeAliases holds the string denoting the aliases edge name in mutations.
+	EdgeAliases = "aliases"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// SessionsTable is the table that holds the sessions relation/edge.
@@ -52,6 +58,14 @@ const (
 	TakesInverseTable = "takes"
 	// TakesColumn is the table column denoting the takes relation/edge.
 	TakesColumn = "user_takes"
+	// ParentTable is the table that holds the parent relation/edge.
+	ParentTable = "users"
+	// ParentColumn is the table column denoting the parent relation/edge.
+	ParentColumn = "user_aliases"
+	// AliasesTable is the table that holds the aliases relation/edge.
+	AliasesTable = "users"
+	// AliasesColumn is the table column denoting the aliases relation/edge.
+	AliasesColumn = "user_aliases"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -59,19 +73,31 @@ var Columns = []string{
 	FieldID,
 	FieldCreateTime,
 	FieldUpdateTime,
+	FieldLocale,
 	FieldName,
 	FieldEmail,
 	FieldPicture,
-	FieldAdmin,
 	FieldPasswordHash,
-	FieldLocale,
+	FieldAdmin,
+	FieldAnonymous,
 	FieldMeta,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the "users"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"user_aliases",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -93,15 +119,14 @@ var (
 	DefaultPicture string
 	// DefaultAdmin holds the default value on creation for the "admin" field.
 	DefaultAdmin bool
+	// DefaultAnonymous holds the default value on creation for the "anonymous" field.
+	DefaultAnonymous bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
 
 // Locale defines the type for the "locale" enum field.
 type Locale string
-
-// LocaleRu is the default value of the Locale enum.
-const DefaultLocale = LocaleRu
 
 // Locale values.
 const (

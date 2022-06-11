@@ -1,11 +1,16 @@
 package domain
 
+import (
+	"github.com/google/uuid"
+)
+
 // test import args
 type (
 	CreateTestArgs struct {
 		Code             string
 		Published        bool
 		AvailableLocales []string `yaml:"availableLocales"`
+		ForceUpdate      bool     `yaml:"forceUpdate"`
 		Generate         GenerateQuestionsArgs
 		Translations     []TestTranslation
 		Questions        []CreateQuestionArgs
@@ -78,5 +83,7 @@ type (
 // function args
 type (
 	PrepareTestArgs struct {
+		UserID  uuid.UUID
+		Session string
 	}
 )

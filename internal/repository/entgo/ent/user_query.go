@@ -30,6 +30,9 @@ type UserQuery struct {
 	// eager-loading edges.
 	withSessions *UserSessionQuery
 	withTakes    *TakeQuery
+	withParent   *UserQuery
+	withAliases  *UserQuery
+	withFKs      bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -103,6 +106,50 @@ func (uq *UserQuery) QueryTakes() *TakeQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(take.Table, take.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, user.TakesTable, user.TakesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryParent chains the current query on the "parent" edge.
+func (uq *UserQuery) QueryParent() *UserQuery {
+	query := &UserQuery{config: uq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, user.ParentTable, user.ParentColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryAliases chains the current query on the "aliases" edge.
+func (uq *UserQuery) QueryAliases() *UserQuery {
+	query := &UserQuery{config: uq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.AliasesTable, user.AliasesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,6 +340,8 @@ func (uq *UserQuery) Clone() *UserQuery {
 		predicates:   append([]predicate.User{}, uq.predicates...),
 		withSessions: uq.withSessions.Clone(),
 		withTakes:    uq.withTakes.Clone(),
+		withParent:   uq.withParent.Clone(),
+		withAliases:  uq.withAliases.Clone(),
 		// clone intermediate query.
 		sql:    uq.sql.Clone(),
 		path:   uq.path,
@@ -319,6 +368,28 @@ func (uq *UserQuery) WithTakes(opts ...func(*TakeQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withTakes = query
+	return uq
+}
+
+// WithParent tells the query-builder to eager-load the nodes that are connected to
+// the "parent" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithParent(opts ...func(*UserQuery)) *UserQuery {
+	query := &UserQuery{config: uq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withParent = query
+	return uq
+}
+
+// WithAliases tells the query-builder to eager-load the nodes that are connected to
+// the "aliases" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithAliases(opts ...func(*UserQuery)) *UserQuery {
+	query := &UserQuery{config: uq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withAliases = query
 	return uq
 }
 
@@ -391,12 +462,21 @@ func (uq *UserQuery) prepareQuery(ctx context.Context) error {
 func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, error) {
 	var (
 		nodes       = []*User{}
+		withFKs     = uq.withFKs
 		_spec       = uq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [4]bool{
 			uq.withSessions != nil,
 			uq.withTakes != nil,
+			uq.withParent != nil,
+			uq.withAliases != nil,
 		}
 	)
+	if uq.withParent != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, user.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		return (*User).scanValues(nil, columns)
 	}
@@ -471,6 +551,64 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 				return nil, fmt.Errorf(`unexpected foreign-key "user_takes" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Takes = append(node.Edges.Takes, n)
+		}
+	}
+
+	if query := uq.withParent; query != nil {
+		ids := make([]uuid.UUID, 0, len(nodes))
+		nodeids := make(map[uuid.UUID][]*User)
+		for i := range nodes {
+			if nodes[i].user_aliases == nil {
+				continue
+			}
+			fk := *nodes[i].user_aliases
+			if _, ok := nodeids[fk]; !ok {
+				ids = append(ids, fk)
+			}
+			nodeids[fk] = append(nodeids[fk], nodes[i])
+		}
+		query.Where(user.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "user_aliases" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Parent = n
+			}
+		}
+	}
+
+	if query := uq.withAliases; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[uuid.UUID]*User)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Aliases = []*User{}
+		}
+		query.withFKs = true
+		query.Where(predicate.User(func(s *sql.Selector) {
+			s.Where(sql.InValues(user.AliasesColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.user_aliases
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "user_aliases" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "user_aliases" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Aliases = append(node.Edges.Aliases, n)
 		}
 	}
 

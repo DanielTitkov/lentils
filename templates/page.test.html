@@ -5,6 +5,7 @@
     <h1 class="title is-1">{{ .Test.Code }}</h1>
     <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
   </div>
+  {{ if eq .Take.Status .IntroStatus }}
   <div class="section">
     <p>{{ .Test.Instruction }}</p>
   </div>
@@ -24,5 +25,24 @@
     <p>{{ . }}</p>
     {{ end }}
   </div>
+  {{ end }}
+
+  {{ if eq .Take.Status .QuestionsStatus }}
+  <div class="section">
+    <p class="block is-size-5 has-text-centered">When you are happy please continue to the next step.</p>
+    <div class="level">
+      <div class="level-item has-text-centered">
+        <div class="block">
+          <button class="button is-large is-primary is-danger" live-click="prev-page">Previous</button>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div class="block">
+          <button class="button is-large is-primary is-success" live-click="next-page">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ end }}
 </main>
 {{ end }}

@@ -88,6 +88,8 @@ type (
 		Seed       int64
 		CreateTime time.Time
 		UpdateTime time.Time
+		Status     string
+		Progress   int
 		Meta       map[string]interface{}
 	}
 )
@@ -103,14 +105,13 @@ type (
 		Password     string
 		PasswordHash string
 		Locale       string
+		Anonymous    bool
+		AnonymousID  []uuid.UUID
 		Meta         map[string]interface{}
 	}
 
 	UserSummary struct {
-		UserID               uuid.UUID
-		CorrectPredictions   int
-		IncorrectPredictions int
-		UnknownPredictions   int
+		UserID uuid.UUID
 	}
 
 	UserSession struct {

@@ -213,6 +213,10 @@ func init() {
 	takeDescSeed := takeFields[1].Descriptor()
 	// take.DefaultSeed holds the default value on creation for the seed field.
 	take.DefaultSeed = takeDescSeed.Default.(int64)
+	// takeDescProgress is the schema descriptor for progress field.
+	takeDescProgress := takeFields[2].Descriptor()
+	// take.DefaultProgress holds the default value on creation for the progress field.
+	take.DefaultProgress = takeDescProgress.Default.(int)
 	// takeDescID is the schema descriptor for id field.
 	takeDescID := takeFields[0].Descriptor()
 	// take.DefaultID holds the default value on creation for the id field.
@@ -326,9 +330,13 @@ func init() {
 	// user.DefaultPicture holds the default value on creation for the picture field.
 	user.DefaultPicture = userDescPicture.Default.(string)
 	// userDescAdmin is the schema descriptor for admin field.
-	userDescAdmin := userFields[4].Descriptor()
+	userDescAdmin := userFields[5].Descriptor()
 	// user.DefaultAdmin holds the default value on creation for the admin field.
 	user.DefaultAdmin = userDescAdmin.Default.(bool)
+	// userDescAnonymous is the schema descriptor for anonymous field.
+	userDescAnonymous := userFields[6].Descriptor()
+	// user.DefaultAnonymous holds the default value on creation for the anonymous field.
+	user.DefaultAnonymous = userDescAnonymous.Default.(bool)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userFields[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

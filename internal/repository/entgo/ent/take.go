@@ -26,6 +26,10 @@ type Take struct {
 	UpdateTime time.Time `json:"update_time,omitempty"`
 	// Seed holds the value of the "seed" field.
 	Seed int64 `json:"seed,omitempty"`
+	// Progress holds the value of the "progress" field.
+	Progress int `json:"progress,omitempty"`
+	// Status holds the value of the "status" field.
+	Status take.Status `json:"status,omitempty"`
 	// Meta holds the value of the "meta" field.
 	Meta map[string]interface{} `json:"meta,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -92,8 +96,10 @@ func (*Take) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case take.FieldMeta:
 			values[i] = new([]byte)
-		case take.FieldSeed:
+		case take.FieldSeed, take.FieldProgress:
 			values[i] = new(sql.NullInt64)
+		case take.FieldStatus:
+			values[i] = new(sql.NullString)
 		case take.FieldCreateTime, take.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
 		case take.FieldID:
@@ -140,6 +146,18 @@ func (t *Take) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field seed", values[i])
 			} else if value.Valid {
 				t.Seed = value.Int64
+			}
+		case take.FieldProgress:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field progress", values[i])
+			} else if value.Valid {
+				t.Progress = int(value.Int64)
+			}
+		case take.FieldStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				t.Status = take.Status(value.String)
 			}
 		case take.FieldMeta:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -214,6 +232,12 @@ func (t *Take) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("seed=")
 	builder.WriteString(fmt.Sprintf("%v", t.Seed))
+	builder.WriteString(", ")
+	builder.WriteString("progress=")
+	builder.WriteString(fmt.Sprintf("%v", t.Progress))
+	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(fmt.Sprintf("%v", t.Status))
 	builder.WriteString(", ")
 	builder.WriteString("meta=")
 	builder.WriteString(fmt.Sprintf("%v", t.Meta))

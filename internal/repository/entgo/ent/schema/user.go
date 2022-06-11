@@ -5,7 +5,6 @@ import (
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
-	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/google/uuid"
 )
 
@@ -19,11 +18,11 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.String("name").NotEmpty(),
-		field.String("email").NotEmpty().Unique(),
+		field.String("email").NotEmpty().Unique().Optional().Nillable(),
 		field.String("picture").Optional().Default("https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
-		field.Bool("admin").Default(false),
 		field.String("password_hash"),
-		field.Enum("locale").Values(domain.LocaleEn, domain.LocaleRu).Default(domain.LocaleRu),
+		field.Bool("admin").Default(false),
+		field.Bool("anonymous").Default(false),
 		field.JSON("meta", make(map[string]interface{})).Optional(),
 	}
 }
@@ -35,11 +34,16 @@ func (User) Edges() []ent.Edge {
 		// edge.To("tests", Test.Type), // not needed for now
 		edge.To("sessions", UserSession.Type),
 		edge.To("takes", Take.Type),
+		// same type
+		// if anonymous user registeres at some point his anonymous accounts
+		// shoud be bound to his real account
+		edge.To("aliases", User.Type).From("parent").Unique(),
 	}
 }
 
 func (User) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.Time{},
+		LocaleMixin{}, // holds locale names
 	}
 }

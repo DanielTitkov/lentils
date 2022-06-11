@@ -101,7 +101,12 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 			return rollback(tx, err)
 		}
 	} else {
-		// test exists, update
+		// test exists
+		if !args.ForceUpdate {
+			// don't update existing test
+			return tx.Commit()
+		}
+		// update is on, update test
 		tst, err = tst.Update().
 			SetPublished(args.Published).
 			SetAvailableLocales(args.AvailableLocales).

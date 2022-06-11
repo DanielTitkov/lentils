@@ -38,6 +38,41 @@ func (tu *TakeUpdate) SetUpdateTime(t time.Time) *TakeUpdate {
 	return tu
 }
 
+// SetProgress sets the "progress" field.
+func (tu *TakeUpdate) SetProgress(i int) *TakeUpdate {
+	tu.mutation.ResetProgress()
+	tu.mutation.SetProgress(i)
+	return tu
+}
+
+// SetNillableProgress sets the "progress" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillableProgress(i *int) *TakeUpdate {
+	if i != nil {
+		tu.SetProgress(*i)
+	}
+	return tu
+}
+
+// AddProgress adds i to the "progress" field.
+func (tu *TakeUpdate) AddProgress(i int) *TakeUpdate {
+	tu.mutation.AddProgress(i)
+	return tu
+}
+
+// SetStatus sets the "status" field.
+func (tu *TakeUpdate) SetStatus(t take.Status) *TakeUpdate {
+	tu.mutation.SetStatus(t)
+	return tu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillableStatus(t *take.Status) *TakeUpdate {
+	if t != nil {
+		tu.SetStatus(*t)
+	}
+	return tu
+}
+
 // SetMeta sets the "meta" field.
 func (tu *TakeUpdate) SetMeta(m map[string]interface{}) *TakeUpdate {
 	tu.mutation.SetMeta(m)
@@ -196,6 +231,11 @@ func (tu *TakeUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tu *TakeUpdate) check() error {
+	if v, ok := tu.mutation.Status(); ok {
+		if err := take.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
+		}
+	}
 	if _, ok := tu.mutation.TestID(); tu.mutation.TestCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Take.test"`)
 	}
@@ -228,6 +268,27 @@ func (tu *TakeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: take.FieldUpdateTime,
+		})
+	}
+	if value, ok := tu.mutation.Progress(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldProgress,
+		})
+	}
+	if value, ok := tu.mutation.AddedProgress(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldProgress,
+		})
+	}
+	if value, ok := tu.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: take.FieldStatus,
 		})
 	}
 	if value, ok := tu.mutation.Meta(); ok {
@@ -389,6 +450,41 @@ type TakeUpdateOne struct {
 // SetUpdateTime sets the "update_time" field.
 func (tuo *TakeUpdateOne) SetUpdateTime(t time.Time) *TakeUpdateOne {
 	tuo.mutation.SetUpdateTime(t)
+	return tuo
+}
+
+// SetProgress sets the "progress" field.
+func (tuo *TakeUpdateOne) SetProgress(i int) *TakeUpdateOne {
+	tuo.mutation.ResetProgress()
+	tuo.mutation.SetProgress(i)
+	return tuo
+}
+
+// SetNillableProgress sets the "progress" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillableProgress(i *int) *TakeUpdateOne {
+	if i != nil {
+		tuo.SetProgress(*i)
+	}
+	return tuo
+}
+
+// AddProgress adds i to the "progress" field.
+func (tuo *TakeUpdateOne) AddProgress(i int) *TakeUpdateOne {
+	tuo.mutation.AddProgress(i)
+	return tuo
+}
+
+// SetStatus sets the "status" field.
+func (tuo *TakeUpdateOne) SetStatus(t take.Status) *TakeUpdateOne {
+	tuo.mutation.SetStatus(t)
+	return tuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillableStatus(t *take.Status) *TakeUpdateOne {
+	if t != nil {
+		tuo.SetStatus(*t)
+	}
 	return tuo
 }
 
@@ -563,6 +659,11 @@ func (tuo *TakeUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tuo *TakeUpdateOne) check() error {
+	if v, ok := tuo.mutation.Status(); ok {
+		if err := take.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
+		}
+	}
 	if _, ok := tuo.mutation.TestID(); tuo.mutation.TestCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Take.test"`)
 	}
@@ -612,6 +713,27 @@ func (tuo *TakeUpdateOne) sqlSave(ctx context.Context) (_node *Take, err error) 
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: take.FieldUpdateTime,
+		})
+	}
+	if value, ok := tuo.mutation.Progress(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldProgress,
+		})
+	}
+	if value, ok := tuo.mutation.AddedProgress(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldProgress,
+		})
+	}
+	if value, ok := tuo.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: take.FieldStatus,
 		})
 	}
 	if value, ok := tuo.mutation.Meta(); ok {

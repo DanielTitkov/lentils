@@ -14,7 +14,7 @@
 
 <body has-navbar-fixed-bottom>
   <!-- debug start -->
-  <!-- {{ if .Env }}
+  {{ if .Env }}
   {{ if eq .Env "dev" }}
   <div class="box">
     <p class="heading">Debug info</p>
@@ -23,7 +23,7 @@
     <p><b>User: </b>{{ .User }}</p>
   </div>
   {{ end }}
-  {{ end }} -->
+  {{ end }}
   <!-- debug end -->
   {{ template "navigation" . }}
   {{ template "navigation-mobile" . }}

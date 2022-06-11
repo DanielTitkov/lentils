@@ -115,6 +115,13 @@ func Seed(v int64) predicate.Take {
 	})
 }
 
+// Progress applies equality check predicate on the "progress" field. It's identical to ProgressEQ.
+func Progress(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldProgress), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {
@@ -340,6 +347,130 @@ func SeedLT(v int64) predicate.Take {
 func SeedLTE(v int64) predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldSeed), v))
+	})
+}
+
+// ProgressEQ applies the EQ predicate on the "progress" field.
+func ProgressEQ(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldProgress), v))
+	})
+}
+
+// ProgressNEQ applies the NEQ predicate on the "progress" field.
+func ProgressNEQ(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldProgress), v))
+	})
+}
+
+// ProgressIn applies the In predicate on the "progress" field.
+func ProgressIn(vs ...int) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldProgress), v...))
+	})
+}
+
+// ProgressNotIn applies the NotIn predicate on the "progress" field.
+func ProgressNotIn(vs ...int) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldProgress), v...))
+	})
+}
+
+// ProgressGT applies the GT predicate on the "progress" field.
+func ProgressGT(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldProgress), v))
+	})
+}
+
+// ProgressGTE applies the GTE predicate on the "progress" field.
+func ProgressGTE(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldProgress), v))
+	})
+}
+
+// ProgressLT applies the LT predicate on the "progress" field.
+func ProgressLT(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldProgress), v))
+	})
+}
+
+// ProgressLTE applies the LTE predicate on the "progress" field.
+func ProgressLTE(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldProgress), v))
+	})
+}
+
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v Status) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldStatus), v))
+	})
+}
+
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v Status) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldStatus), v))
+	})
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...Status) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldStatus), v...))
+	})
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...Status) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldStatus), v...))
 	})
 }
 

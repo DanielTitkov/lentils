@@ -41,6 +41,10 @@ type (
 		GetTests(ctx context.Context, locale string) ([]*domain.Test, error)
 		GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error)
 
+		// take
+		CreateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error)
+		UpdateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error)
+
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)
 	}

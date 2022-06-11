@@ -41,6 +41,13 @@ func (l *Logger) Info(msg, info string) {
 	)
 }
 
+func (l *Logger) Warn(msg, info string) {
+	l.logger.Warn(msg,
+		zap.String("time", getTime()),
+		zap.String("info", info),
+	)
+}
+
 func (l *Logger) Fatal(msg string, err error) {
 	l.logger.Fatal(msg,
 		zap.String("time", getTime()),

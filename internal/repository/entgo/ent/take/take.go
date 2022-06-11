@@ -3,6 +3,7 @@
 package take
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -19,6 +20,10 @@ const (
 	FieldUpdateTime = "update_time"
 	// FieldSeed holds the string denoting the seed field in the database.
 	FieldSeed = "seed"
+	// FieldProgress holds the string denoting the progress field in the database.
+	FieldProgress = "progress"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
 	// FieldMeta holds the string denoting the meta field in the database.
 	FieldMeta = "meta"
 	// EdgeResponses holds the string denoting the responses edge name in mutations.
@@ -58,6 +63,8 @@ var Columns = []string{
 	FieldCreateTime,
 	FieldUpdateTime,
 	FieldSeed,
+	FieldProgress,
+	FieldStatus,
 	FieldMeta,
 }
 
@@ -92,6 +99,36 @@ var (
 	UpdateDefaultUpdateTime func() time.Time
 	// DefaultSeed holds the default value on creation for the "seed" field.
 	DefaultSeed int64
+	// DefaultProgress holds the default value on creation for the "progress" field.
+	DefaultProgress int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
+
+// Status defines the type for the "status" enum field.
+type Status string
+
+// StatusIntro is the default value of the Status enum.
+const DefaultStatus = StatusIntro
+
+// Status values.
+const (
+	StatusIntro     Status = "intro"
+	StatusQuestions Status = "questions"
+	StatusFinish    Status = "finish"
+	StatusResult    Status = "result"
+)
+
+func (s Status) String() string {
+	return string(s)
+}
+
+// StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
+func StatusValidator(s Status) error {
+	switch s {
+	case StatusIntro, StatusQuestions, StatusFinish, StatusResult:
+		return nil
+	default:
+		return fmt.Errorf("take: invalid enum value for status field: %q", s)
+	}
+}

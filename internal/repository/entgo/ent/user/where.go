@@ -129,6 +129,13 @@ func Picture(v string) predicate.User {
 	})
 }
 
+// PasswordHash applies equality check predicate on the "password_hash" field. It's identical to PasswordHashEQ.
+func PasswordHash(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPasswordHash), v))
+	})
+}
+
 // Admin applies equality check predicate on the "admin" field. It's identical to AdminEQ.
 func Admin(v bool) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -136,10 +143,10 @@ func Admin(v bool) predicate.User {
 	})
 }
 
-// PasswordHash applies equality check predicate on the "password_hash" field. It's identical to PasswordHashEQ.
-func PasswordHash(v string) predicate.User {
+// Anonymous applies equality check predicate on the "anonymous" field. It's identical to AnonymousEQ.
+func Anonymous(v bool) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPasswordHash), v))
+		s.Where(sql.EQ(s.C(FieldAnonymous), v))
 	})
 }
 
@@ -292,6 +299,54 @@ func UpdateTimeLT(v time.Time) predicate.User {
 func UpdateTimeLTE(v time.Time) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldUpdateTime), v))
+	})
+}
+
+// LocaleEQ applies the EQ predicate on the "locale" field.
+func LocaleEQ(v Locale) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLocale), v))
+	})
+}
+
+// LocaleNEQ applies the NEQ predicate on the "locale" field.
+func LocaleNEQ(v Locale) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldLocale), v))
+	})
+}
+
+// LocaleIn applies the In predicate on the "locale" field.
+func LocaleIn(vs ...Locale) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldLocale), v...))
+	})
+}
+
+// LocaleNotIn applies the NotIn predicate on the "locale" field.
+func LocaleNotIn(vs ...Locale) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldLocale), v...))
 	})
 }
 
@@ -503,6 +558,20 @@ func EmailHasSuffix(v string) predicate.User {
 	})
 }
 
+// EmailIsNil applies the IsNil predicate on the "email" field.
+func EmailIsNil() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldEmail)))
+	})
+}
+
+// EmailNotNil applies the NotNil predicate on the "email" field.
+func EmailNotNil() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldEmail)))
+	})
+}
+
 // EmailEqualFold applies the EqualFold predicate on the "email" field.
 func EmailEqualFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -642,20 +711,6 @@ func PictureContainsFold(v string) predicate.User {
 	})
 }
 
-// AdminEQ applies the EQ predicate on the "admin" field.
-func AdminEQ(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAdmin), v))
-	})
-}
-
-// AdminNEQ applies the NEQ predicate on the "admin" field.
-func AdminNEQ(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldAdmin), v))
-	})
-}
-
 // PasswordHashEQ applies the EQ predicate on the "password_hash" field.
 func PasswordHashEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -767,51 +822,31 @@ func PasswordHashContainsFold(v string) predicate.User {
 	})
 }
 
-// LocaleEQ applies the EQ predicate on the "locale" field.
-func LocaleEQ(v Locale) predicate.User {
+// AdminEQ applies the EQ predicate on the "admin" field.
+func AdminEQ(v bool) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldLocale), v))
+		s.Where(sql.EQ(s.C(FieldAdmin), v))
 	})
 }
 
-// LocaleNEQ applies the NEQ predicate on the "locale" field.
-func LocaleNEQ(v Locale) predicate.User {
+// AdminNEQ applies the NEQ predicate on the "admin" field.
+func AdminNEQ(v bool) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldLocale), v))
+		s.Where(sql.NEQ(s.C(FieldAdmin), v))
 	})
 }
 
-// LocaleIn applies the In predicate on the "locale" field.
-func LocaleIn(vs ...Locale) predicate.User {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
+// AnonymousEQ applies the EQ predicate on the "anonymous" field.
+func AnonymousEQ(v bool) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldLocale), v...))
+		s.Where(sql.EQ(s.C(FieldAnonymous), v))
 	})
 }
 
-// LocaleNotIn applies the NotIn predicate on the "locale" field.
-func LocaleNotIn(vs ...Locale) predicate.User {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
+// AnonymousNEQ applies the NEQ predicate on the "anonymous" field.
+func AnonymousNEQ(v bool) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldLocale), v...))
+		s.Where(sql.NEQ(s.C(FieldAnonymous), v))
 	})
 }
 
@@ -876,6 +911,62 @@ func HasTakesWith(preds ...predicate.Take) predicate.User {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(TakesInverseTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, TakesTable, TakesColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasParent applies the HasEdge predicate on the "parent" edge.
+func HasParent() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ParentTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ParentTable, ParentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasParentWith applies the HasEdge predicate on the "parent" edge with a given conditions (other predicates).
+func HasParentWith(preds ...predicate.User) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ParentTable, ParentColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasAliases applies the HasEdge predicate on the "aliases" edge.
+func HasAliases() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AliasesTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AliasesTable, AliasesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAliasesWith applies the HasEdge predicate on the "aliases" edge with a given conditions (other predicates).
+func HasAliasesWith(preds ...predicate.User) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AliasesTable, AliasesColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

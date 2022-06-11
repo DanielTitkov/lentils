@@ -49,6 +49,20 @@ func (uu *UserUpdate) SetEmail(s string) *UserUpdate {
 	return uu
 }
 
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableEmail(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetEmail(*s)
+	}
+	return uu
+}
+
+// ClearEmail clears the value of the "email" field.
+func (uu *UserUpdate) ClearEmail() *UserUpdate {
+	uu.mutation.ClearEmail()
+	return uu
+}
+
 // SetPicture sets the "picture" field.
 func (uu *UserUpdate) SetPicture(s string) *UserUpdate {
 	uu.mutation.SetPicture(s)
@@ -69,6 +83,12 @@ func (uu *UserUpdate) ClearPicture() *UserUpdate {
 	return uu
 }
 
+// SetPasswordHash sets the "password_hash" field.
+func (uu *UserUpdate) SetPasswordHash(s string) *UserUpdate {
+	uu.mutation.SetPasswordHash(s)
+	return uu
+}
+
 // SetAdmin sets the "admin" field.
 func (uu *UserUpdate) SetAdmin(b bool) *UserUpdate {
 	uu.mutation.SetAdmin(b)
@@ -83,22 +103,16 @@ func (uu *UserUpdate) SetNillableAdmin(b *bool) *UserUpdate {
 	return uu
 }
 
-// SetPasswordHash sets the "password_hash" field.
-func (uu *UserUpdate) SetPasswordHash(s string) *UserUpdate {
-	uu.mutation.SetPasswordHash(s)
+// SetAnonymous sets the "anonymous" field.
+func (uu *UserUpdate) SetAnonymous(b bool) *UserUpdate {
+	uu.mutation.SetAnonymous(b)
 	return uu
 }
 
-// SetLocale sets the "locale" field.
-func (uu *UserUpdate) SetLocale(u user.Locale) *UserUpdate {
-	uu.mutation.SetLocale(u)
-	return uu
-}
-
-// SetNillableLocale sets the "locale" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableLocale(u *user.Locale) *UserUpdate {
-	if u != nil {
-		uu.SetLocale(*u)
+// SetNillableAnonymous sets the "anonymous" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableAnonymous(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetAnonymous(*b)
 	}
 	return uu
 }
@@ -143,6 +157,40 @@ func (uu *UserUpdate) AddTakes(t ...*Take) *UserUpdate {
 		ids[i] = t[i].ID
 	}
 	return uu.AddTakeIDs(ids...)
+}
+
+// SetParentID sets the "parent" edge to the User entity by ID.
+func (uu *UserUpdate) SetParentID(id uuid.UUID) *UserUpdate {
+	uu.mutation.SetParentID(id)
+	return uu
+}
+
+// SetNillableParentID sets the "parent" edge to the User entity by ID if the given value is not nil.
+func (uu *UserUpdate) SetNillableParentID(id *uuid.UUID) *UserUpdate {
+	if id != nil {
+		uu = uu.SetParentID(*id)
+	}
+	return uu
+}
+
+// SetParent sets the "parent" edge to the User entity.
+func (uu *UserUpdate) SetParent(u *User) *UserUpdate {
+	return uu.SetParentID(u.ID)
+}
+
+// AddAliasIDs adds the "aliases" edge to the User entity by IDs.
+func (uu *UserUpdate) AddAliasIDs(ids ...uuid.UUID) *UserUpdate {
+	uu.mutation.AddAliasIDs(ids...)
+	return uu
+}
+
+// AddAliases adds the "aliases" edges to the User entity.
+func (uu *UserUpdate) AddAliases(u ...*User) *UserUpdate {
+	ids := make([]uuid.UUID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uu.AddAliasIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -190,6 +238,33 @@ func (uu *UserUpdate) RemoveTakes(t ...*Take) *UserUpdate {
 		ids[i] = t[i].ID
 	}
 	return uu.RemoveTakeIDs(ids...)
+}
+
+// ClearParent clears the "parent" edge to the User entity.
+func (uu *UserUpdate) ClearParent() *UserUpdate {
+	uu.mutation.ClearParent()
+	return uu
+}
+
+// ClearAliases clears all "aliases" edges to the User entity.
+func (uu *UserUpdate) ClearAliases() *UserUpdate {
+	uu.mutation.ClearAliases()
+	return uu
+}
+
+// RemoveAliasIDs removes the "aliases" edge to User entities by IDs.
+func (uu *UserUpdate) RemoveAliasIDs(ids ...uuid.UUID) *UserUpdate {
+	uu.mutation.RemoveAliasIDs(ids...)
+	return uu
+}
+
+// RemoveAliases removes "aliases" edges to User entities.
+func (uu *UserUpdate) RemoveAliases(u ...*User) *UserUpdate {
+	ids := make([]uuid.UUID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uu.RemoveAliasIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -273,11 +348,6 @@ func (uu *UserUpdate) check() error {
 			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "User.email": %w`, err)}
 		}
 	}
-	if v, ok := uu.mutation.Locale(); ok {
-		if err := user.LocaleValidator(v); err != nil {
-			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "User.locale": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -320,6 +390,12 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldEmail,
 		})
 	}
+	if uu.mutation.EmailCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: user.FieldEmail,
+		})
+	}
 	if value, ok := uu.mutation.Picture(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -333,13 +409,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldPicture,
 		})
 	}
-	if value, ok := uu.mutation.Admin(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldAdmin,
-		})
-	}
 	if value, ok := uu.mutation.PasswordHash(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -347,11 +416,18 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldPasswordHash,
 		})
 	}
-	if value, ok := uu.mutation.Locale(); ok {
+	if value, ok := uu.mutation.Admin(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
+			Type:   field.TypeBool,
 			Value:  value,
-			Column: user.FieldLocale,
+			Column: user.FieldAdmin,
+		})
+	}
+	if value, ok := uu.mutation.Anonymous(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: user.FieldAnonymous,
 		})
 	}
 	if value, ok := uu.mutation.Meta(); ok {
@@ -475,6 +551,95 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.ParentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.ParentTable,
+			Columns: []string{user.ParentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.ParentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.ParentTable,
+			Columns: []string{user.ParentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.AliasesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AliasesTable,
+			Columns: []string{user.AliasesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedAliasesIDs(); len(nodes) > 0 && !uu.mutation.AliasesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AliasesTable,
+			Columns: []string{user.AliasesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.AliasesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AliasesTable,
+			Columns: []string{user.AliasesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -512,6 +677,20 @@ func (uuo *UserUpdateOne) SetEmail(s string) *UserUpdateOne {
 	return uuo
 }
 
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableEmail(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetEmail(*s)
+	}
+	return uuo
+}
+
+// ClearEmail clears the value of the "email" field.
+func (uuo *UserUpdateOne) ClearEmail() *UserUpdateOne {
+	uuo.mutation.ClearEmail()
+	return uuo
+}
+
 // SetPicture sets the "picture" field.
 func (uuo *UserUpdateOne) SetPicture(s string) *UserUpdateOne {
 	uuo.mutation.SetPicture(s)
@@ -532,6 +711,12 @@ func (uuo *UserUpdateOne) ClearPicture() *UserUpdateOne {
 	return uuo
 }
 
+// SetPasswordHash sets the "password_hash" field.
+func (uuo *UserUpdateOne) SetPasswordHash(s string) *UserUpdateOne {
+	uuo.mutation.SetPasswordHash(s)
+	return uuo
+}
+
 // SetAdmin sets the "admin" field.
 func (uuo *UserUpdateOne) SetAdmin(b bool) *UserUpdateOne {
 	uuo.mutation.SetAdmin(b)
@@ -546,22 +731,16 @@ func (uuo *UserUpdateOne) SetNillableAdmin(b *bool) *UserUpdateOne {
 	return uuo
 }
 
-// SetPasswordHash sets the "password_hash" field.
-func (uuo *UserUpdateOne) SetPasswordHash(s string) *UserUpdateOne {
-	uuo.mutation.SetPasswordHash(s)
+// SetAnonymous sets the "anonymous" field.
+func (uuo *UserUpdateOne) SetAnonymous(b bool) *UserUpdateOne {
+	uuo.mutation.SetAnonymous(b)
 	return uuo
 }
 
-// SetLocale sets the "locale" field.
-func (uuo *UserUpdateOne) SetLocale(u user.Locale) *UserUpdateOne {
-	uuo.mutation.SetLocale(u)
-	return uuo
-}
-
-// SetNillableLocale sets the "locale" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableLocale(u *user.Locale) *UserUpdateOne {
-	if u != nil {
-		uuo.SetLocale(*u)
+// SetNillableAnonymous sets the "anonymous" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableAnonymous(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetAnonymous(*b)
 	}
 	return uuo
 }
@@ -606,6 +785,40 @@ func (uuo *UserUpdateOne) AddTakes(t ...*Take) *UserUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return uuo.AddTakeIDs(ids...)
+}
+
+// SetParentID sets the "parent" edge to the User entity by ID.
+func (uuo *UserUpdateOne) SetParentID(id uuid.UUID) *UserUpdateOne {
+	uuo.mutation.SetParentID(id)
+	return uuo
+}
+
+// SetNillableParentID sets the "parent" edge to the User entity by ID if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableParentID(id *uuid.UUID) *UserUpdateOne {
+	if id != nil {
+		uuo = uuo.SetParentID(*id)
+	}
+	return uuo
+}
+
+// SetParent sets the "parent" edge to the User entity.
+func (uuo *UserUpdateOne) SetParent(u *User) *UserUpdateOne {
+	return uuo.SetParentID(u.ID)
+}
+
+// AddAliasIDs adds the "aliases" edge to the User entity by IDs.
+func (uuo *UserUpdateOne) AddAliasIDs(ids ...uuid.UUID) *UserUpdateOne {
+	uuo.mutation.AddAliasIDs(ids...)
+	return uuo
+}
+
+// AddAliases adds the "aliases" edges to the User entity.
+func (uuo *UserUpdateOne) AddAliases(u ...*User) *UserUpdateOne {
+	ids := make([]uuid.UUID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uuo.AddAliasIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -653,6 +866,33 @@ func (uuo *UserUpdateOne) RemoveTakes(t ...*Take) *UserUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return uuo.RemoveTakeIDs(ids...)
+}
+
+// ClearParent clears the "parent" edge to the User entity.
+func (uuo *UserUpdateOne) ClearParent() *UserUpdateOne {
+	uuo.mutation.ClearParent()
+	return uuo
+}
+
+// ClearAliases clears all "aliases" edges to the User entity.
+func (uuo *UserUpdateOne) ClearAliases() *UserUpdateOne {
+	uuo.mutation.ClearAliases()
+	return uuo
+}
+
+// RemoveAliasIDs removes the "aliases" edge to User entities by IDs.
+func (uuo *UserUpdateOne) RemoveAliasIDs(ids ...uuid.UUID) *UserUpdateOne {
+	uuo.mutation.RemoveAliasIDs(ids...)
+	return uuo
+}
+
+// RemoveAliases removes "aliases" edges to User entities.
+func (uuo *UserUpdateOne) RemoveAliases(u ...*User) *UserUpdateOne {
+	ids := make([]uuid.UUID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uuo.RemoveAliasIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -749,11 +989,6 @@ func (uuo *UserUpdateOne) check() error {
 			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "User.email": %w`, err)}
 		}
 	}
-	if v, ok := uuo.mutation.Locale(); ok {
-		if err := user.LocaleValidator(v); err != nil {
-			return &ValidationError{Name: "locale", err: fmt.Errorf(`ent: validator failed for field "User.locale": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -813,6 +1048,12 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Column: user.FieldEmail,
 		})
 	}
+	if uuo.mutation.EmailCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: user.FieldEmail,
+		})
+	}
 	if value, ok := uuo.mutation.Picture(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -826,13 +1067,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Column: user.FieldPicture,
 		})
 	}
-	if value, ok := uuo.mutation.Admin(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldAdmin,
-		})
-	}
 	if value, ok := uuo.mutation.PasswordHash(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -840,11 +1074,18 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Column: user.FieldPasswordHash,
 		})
 	}
-	if value, ok := uuo.mutation.Locale(); ok {
+	if value, ok := uuo.mutation.Admin(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
+			Type:   field.TypeBool,
 			Value:  value,
-			Column: user.FieldLocale,
+			Column: user.FieldAdmin,
+		})
+	}
+	if value, ok := uuo.mutation.Anonymous(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: user.FieldAnonymous,
 		})
 	}
 	if value, ok := uuo.mutation.Meta(); ok {
@@ -960,6 +1201,95 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: take.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.ParentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.ParentTable,
+			Columns: []string{user.ParentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.ParentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.ParentTable,
+			Columns: []string{user.ParentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.AliasesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AliasesTable,
+			Columns: []string{user.AliasesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedAliasesIDs(); len(nodes) > 0 && !uuo.mutation.AliasesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AliasesTable,
+			Columns: []string{user.AliasesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.AliasesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AliasesTable,
+			Columns: []string{user.AliasesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: user.FieldID,
 				},
 			},
 		}

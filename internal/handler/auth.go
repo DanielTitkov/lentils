@@ -20,7 +20,7 @@ func (h *Handler) Logout(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// set user session inactive
-	ses, err := h.app.CreateOrUpdateUserSession(req, user, true, false)
+	ses, err := h.app.CreateOrUpdateUserSession(req, user, false)
 	if err != nil {
 		// TODO: propagate error to context
 		h.log.Error("failed to create user session", err)
@@ -55,7 +55,7 @@ func (h *Handler) CompleteOAuth(res http.ResponseWriter, req *http.Request) {
 	h.log.Debug("user authenticated", fmt.Sprintf("email: %s, provider: %s", user.Email, gu.Provider))
 
 	// add or update session for user
-	ses, err := h.app.CreateOrUpdateUserSession(req, user, true, true)
+	ses, err := h.app.CreateOrUpdateUserSession(req, user, true)
 	if err != nil {
 		h.log.Error("failed to create user session", err)
 		fmt.Fprintln(res, err)

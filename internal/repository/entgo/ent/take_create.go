@@ -66,6 +66,34 @@ func (tc *TakeCreate) SetNillableSeed(i *int64) *TakeCreate {
 	return tc
 }
 
+// SetProgress sets the "progress" field.
+func (tc *TakeCreate) SetProgress(i int) *TakeCreate {
+	tc.mutation.SetProgress(i)
+	return tc
+}
+
+// SetNillableProgress sets the "progress" field if the given value is not nil.
+func (tc *TakeCreate) SetNillableProgress(i *int) *TakeCreate {
+	if i != nil {
+		tc.SetProgress(*i)
+	}
+	return tc
+}
+
+// SetStatus sets the "status" field.
+func (tc *TakeCreate) SetStatus(t take.Status) *TakeCreate {
+	tc.mutation.SetStatus(t)
+	return tc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (tc *TakeCreate) SetNillableStatus(t *take.Status) *TakeCreate {
+	if t != nil {
+		tc.SetStatus(*t)
+	}
+	return tc
+}
+
 // SetMeta sets the "meta" field.
 func (tc *TakeCreate) SetMeta(m map[string]interface{}) *TakeCreate {
 	tc.mutation.SetMeta(m)
@@ -212,6 +240,14 @@ func (tc *TakeCreate) defaults() {
 		v := take.DefaultSeed
 		tc.mutation.SetSeed(v)
 	}
+	if _, ok := tc.mutation.Progress(); !ok {
+		v := take.DefaultProgress
+		tc.mutation.SetProgress(v)
+	}
+	if _, ok := tc.mutation.Status(); !ok {
+		v := take.DefaultStatus
+		tc.mutation.SetStatus(v)
+	}
 	if _, ok := tc.mutation.ID(); !ok {
 		v := take.DefaultID()
 		tc.mutation.SetID(v)
@@ -228,6 +264,17 @@ func (tc *TakeCreate) check() error {
 	}
 	if _, ok := tc.mutation.Seed(); !ok {
 		return &ValidationError{Name: "seed", err: errors.New(`ent: missing required field "Take.seed"`)}
+	}
+	if _, ok := tc.mutation.Progress(); !ok {
+		return &ValidationError{Name: "progress", err: errors.New(`ent: missing required field "Take.progress"`)}
+	}
+	if _, ok := tc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Take.status"`)}
+	}
+	if v, ok := tc.mutation.Status(); ok {
+		if err := take.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
+		}
 	}
 	if _, ok := tc.mutation.TestID(); !ok {
 		return &ValidationError{Name: "test", err: errors.New(`ent: missing required edge "Take.test"`)}
@@ -294,6 +341,22 @@ func (tc *TakeCreate) createSpec() (*Take, *sqlgraph.CreateSpec) {
 			Column: take.FieldSeed,
 		})
 		_node.Seed = value
+	}
+	if value, ok := tc.mutation.Progress(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldProgress,
+		})
+		_node.Progress = value
+	}
+	if value, ok := tc.mutation.Status(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: take.FieldStatus,
+		})
+		_node.Status = value
 	}
 	if value, ok := tc.mutation.Meta(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

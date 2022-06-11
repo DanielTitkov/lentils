@@ -27,10 +27,8 @@ func (a *App) CreateUser(ctx context.Context, u *domain.User) (*domain.User, err
 
 	u.PasswordHash = string(hash)
 
-	switch u.Locale {
-	case domain.LocaleRu, domain.LocaleEn:
-	default:
-		a.log.Error(fmt.Sprintf("got unknown locale %s, setting to default %s", u.Locale, domain.LocaleEn), errors.New("unknown locale"))
+	if !a.IsValidLocale(u.Locale) {
+		a.log.Warn(fmt.Sprintf("got unknown locale %s, setting to default %s", u.Locale, domain.LocaleEn), "unknown locale")
 		u.Locale = domain.LocaleEn
 	}
 
@@ -63,6 +61,32 @@ func (a *App) LogoutUser(ctx context.Context) error {
 	return nil
 }
 
+func (a *App) CreateAnonymousUser(ctx context.Context) (*domain.User, error) {
+	passw, err := password.Generate(16, 5, 0, false, true)
+	if err != nil {
+		return nil, err
+	}
+
+	meta := make(map[string]interface{})
+	user := &domain.User{
+		Name:      "anonymous",
+		Email:     "",
+		Password:  passw,
+		Admin:     false,
+		Anonymous: true,
+		Meta:      meta,
+	}
+
+	user, err = a.CreateUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+
+	// user.Password = passw
+
+	return user, nil
+}
+
 func (a *App) CreateUserFromGoth(ctx context.Context, gu *goth.User) (*domain.User, error) {
 	passw, err := password.Generate(16, 5, 0, false, true)
 	if err != nil {
@@ -73,12 +97,13 @@ func (a *App) CreateUserFromGoth(ctx context.Context, gu *goth.User) (*domain.Us
 	meta[gu.Provider] = *gu
 
 	user := &domain.User{
-		Name:     gu.NickName,
-		Email:    gu.Email,
-		Picture:  gu.AvatarURL,
-		Password: passw,
-		Admin:    false,
-		Meta:     meta,
+		Name:      gu.NickName,
+		Email:     gu.Email,
+		Picture:   gu.AvatarURL,
+		Password:  passw,
+		Admin:     false,
+		Anonymous: false,
+		Meta:      meta,
 	}
 
 	user, err = a.CreateUser(ctx, user)
@@ -99,12 +124,13 @@ func (a *App) GetUserByEmail(ctx context.Context, email string) (*domain.User, e
 
 	// we should not return password hash if this is not needed
 	return &domain.User{
-		ID:      user.ID,
-		Name:    user.Name,
-		Email:   user.Email,
-		Picture: user.Picture,
-		Admin:   user.Admin,
-		Meta:    user.Meta,
+		ID:        user.ID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Picture:   user.Picture,
+		Admin:     user.Admin,
+		Anonymous: user.Anonymous,
+		Meta:      user.Meta,
 	}, nil
 }
 

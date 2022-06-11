@@ -27,14 +27,14 @@ func (a *App) GetTestByCode(ctx context.Context, code string, locale string) (*d
 	return a.repo.GetTestByCode(ctx, code, locale)
 }
 
-func (a *App) PrepareTest(ctx context.Context, code string, locale string, args *domain.PrepareTestArgs) (*domain.Test, error) {
+func (a *App) PrepareTest(ctx context.Context, code string, locale string, args *domain.PrepareTestArgs) (*domain.Test, *domain.Take, error) {
 	if ok := a.IsValidLocale(locale); !ok {
-		return nil, fmt.Errorf("got unknown locale: %s", locale)
+		return nil, nil, fmt.Errorf("got unknown locale: %s", locale)
 	}
 
 	test, err := a.repo.GetTestByCode(ctx, code, locale)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	// TODO: probably move to test usecase
@@ -43,7 +43,18 @@ func (a *App) PrepareTest(ctx context.Context, code string, locale string, args 
 		test.OrderQuestions()
 	}
 
-	return test, nil
+	takeMeta := make(map[string]interface{})
+	takeMeta["session"] = args.Session
+	take, err := a.repo.CreateTake(ctx, &domain.Take{
+		UserID: args.UserID,
+		TestID: test.ID,
+		Meta:   takeMeta,
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return test, take, nil
 }
 
 func (a *App) loadTestPresets() error {

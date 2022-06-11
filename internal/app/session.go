@@ -1,7 +1,6 @@
 package app
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -61,11 +60,7 @@ func (a *App) CreateUserSession(req *http.Request, user *domain.User) (*domain.U
 	return session, nil
 }
 
-func (a *App) CreateOrUpdateUserSession(req *http.Request, user *domain.User, withOAuth bool, setActiveStatus bool) (*domain.UserSession, error) {
-	if !withOAuth {
-		return nil, errors.New("not allowed without oauth")
-	}
-
+func (a *App) CreateOrUpdateUserSession(req *http.Request, user *domain.User, setActiveStatus bool) (*domain.UserSession, error) {
 	// get session sid for request
 	sid, err := a.LiveSessionID(req)
 	if err != nil {
@@ -108,15 +103,29 @@ func (a *App) GetUserBySession(req *http.Request) (*domain.User, error) {
 		return nil, err
 	}
 
-	// proceed without user
+	var user *domain.User
 	if !registered {
-		return nil, nil
-	}
+		// session is not registested
+		// if user is not registered we need to create anonymous user
+		user, err = a.CreateAnonymousUser(req.Context())
+		if err != nil {
+			return nil, err
+		}
 
-	// retrieve user and add to context
-	user, err := a.repo.GetUserBySession(req.Context(), session)
-	if err != nil {
-		return nil, err
+		// add or update session for user
+		session, err = a.CreateOrUpdateUserSession(req, user, true)
+		if err != nil {
+			a.log.Error("failed to create user session", err)
+			return nil, err
+		}
+
+		a.log.Debug("user session refreshed", fmt.Sprintf("email: %s, sid: %s", user.Email, session.SID))
+	} else {
+		// retrieve user and add to context
+		user, err = a.repo.GetUserBySession(req.Context(), session)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// update session activity

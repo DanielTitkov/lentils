@@ -6273,6 +6273,9 @@ type TakeMutation struct {
 	update_time      *time.Time
 	seed             *int64
 	addseed          *int64
+	progress         *int
+	addprogress      *int
+	status           *take.Status
 	meta             *map[string]interface{}
 	clearedFields    map[string]struct{}
 	responses        map[uuid.UUID]struct{}
@@ -6519,6 +6522,98 @@ func (m *TakeMutation) ResetSeed() {
 	m.addseed = nil
 }
 
+// SetProgress sets the "progress" field.
+func (m *TakeMutation) SetProgress(i int) {
+	m.progress = &i
+	m.addprogress = nil
+}
+
+// Progress returns the value of the "progress" field in the mutation.
+func (m *TakeMutation) Progress() (r int, exists bool) {
+	v := m.progress
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldProgress returns the old "progress" field's value of the Take entity.
+// If the Take object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TakeMutation) OldProgress(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldProgress is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldProgress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldProgress: %w", err)
+	}
+	return oldValue.Progress, nil
+}
+
+// AddProgress adds i to the "progress" field.
+func (m *TakeMutation) AddProgress(i int) {
+	if m.addprogress != nil {
+		*m.addprogress += i
+	} else {
+		m.addprogress = &i
+	}
+}
+
+// AddedProgress returns the value that was added to the "progress" field in this mutation.
+func (m *TakeMutation) AddedProgress() (r int, exists bool) {
+	v := m.addprogress
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetProgress resets all changes to the "progress" field.
+func (m *TakeMutation) ResetProgress() {
+	m.progress = nil
+	m.addprogress = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *TakeMutation) SetStatus(t take.Status) {
+	m.status = &t
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *TakeMutation) Status() (r take.Status, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the Take entity.
+// If the Take object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TakeMutation) OldStatus(ctx context.Context) (v take.Status, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *TakeMutation) ResetStatus() {
+	m.status = nil
+}
+
 // SetMeta sets the "meta" field.
 func (m *TakeMutation) SetMeta(value map[string]interface{}) {
 	m.meta = &value
@@ -6719,7 +6814,7 @@ func (m *TakeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TakeMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 6)
 	if m.create_time != nil {
 		fields = append(fields, take.FieldCreateTime)
 	}
@@ -6728,6 +6823,12 @@ func (m *TakeMutation) Fields() []string {
 	}
 	if m.seed != nil {
 		fields = append(fields, take.FieldSeed)
+	}
+	if m.progress != nil {
+		fields = append(fields, take.FieldProgress)
+	}
+	if m.status != nil {
+		fields = append(fields, take.FieldStatus)
 	}
 	if m.meta != nil {
 		fields = append(fields, take.FieldMeta)
@@ -6746,6 +6847,10 @@ func (m *TakeMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdateTime()
 	case take.FieldSeed:
 		return m.Seed()
+	case take.FieldProgress:
+		return m.Progress()
+	case take.FieldStatus:
+		return m.Status()
 	case take.FieldMeta:
 		return m.Meta()
 	}
@@ -6763,6 +6868,10 @@ func (m *TakeMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdateTime(ctx)
 	case take.FieldSeed:
 		return m.OldSeed(ctx)
+	case take.FieldProgress:
+		return m.OldProgress(ctx)
+	case take.FieldStatus:
+		return m.OldStatus(ctx)
 	case take.FieldMeta:
 		return m.OldMeta(ctx)
 	}
@@ -6795,6 +6904,20 @@ func (m *TakeMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetSeed(v)
 		return nil
+	case take.FieldProgress:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetProgress(v)
+		return nil
+	case take.FieldStatus:
+		v, ok := value.(take.Status)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
 	case take.FieldMeta:
 		v, ok := value.(map[string]interface{})
 		if !ok {
@@ -6813,6 +6936,9 @@ func (m *TakeMutation) AddedFields() []string {
 	if m.addseed != nil {
 		fields = append(fields, take.FieldSeed)
 	}
+	if m.addprogress != nil {
+		fields = append(fields, take.FieldProgress)
+	}
 	return fields
 }
 
@@ -6823,6 +6949,8 @@ func (m *TakeMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case take.FieldSeed:
 		return m.AddedSeed()
+	case take.FieldProgress:
+		return m.AddedProgress()
 	}
 	return nil, false
 }
@@ -6838,6 +6966,13 @@ func (m *TakeMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSeed(v)
+		return nil
+	case take.FieldProgress:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddProgress(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Take numeric field %s", name)
@@ -6883,6 +7018,12 @@ func (m *TakeMutation) ResetField(name string) error {
 		return nil
 	case take.FieldSeed:
 		m.ResetSeed()
+		return nil
+	case take.FieldProgress:
+		m.ResetProgress()
+		return nil
+	case take.FieldStatus:
+		m.ResetStatus()
 		return nil
 	case take.FieldMeta:
 		m.ResetMeta()
@@ -9040,12 +9181,13 @@ type UserMutation struct {
 	id              *uuid.UUID
 	create_time     *time.Time
 	update_time     *time.Time
+	locale          *user.Locale
 	name            *string
 	email           *string
 	picture         *string
-	admin           *bool
 	password_hash   *string
-	locale          *user.Locale
+	admin           *bool
+	anonymous       *bool
 	meta            *map[string]interface{}
 	clearedFields   map[string]struct{}
 	sessions        map[int]struct{}
@@ -9054,6 +9196,11 @@ type UserMutation struct {
 	takes           map[uuid.UUID]struct{}
 	removedtakes    map[uuid.UUID]struct{}
 	clearedtakes    bool
+	parent          *uuid.UUID
+	clearedparent   bool
+	aliases         map[uuid.UUID]struct{}
+	removedaliases  map[uuid.UUID]struct{}
+	clearedaliases  bool
 	done            bool
 	oldValue        func(context.Context) (*User, error)
 	predicates      []predicate.User
@@ -9235,6 +9382,42 @@ func (m *UserMutation) ResetUpdateTime() {
 	m.update_time = nil
 }
 
+// SetLocale sets the "locale" field.
+func (m *UserMutation) SetLocale(u user.Locale) {
+	m.locale = &u
+}
+
+// Locale returns the value of the "locale" field in the mutation.
+func (m *UserMutation) Locale() (r user.Locale, exists bool) {
+	v := m.locale
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLocale returns the old "locale" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldLocale(ctx context.Context) (v user.Locale, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLocale is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLocale requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLocale: %w", err)
+	}
+	return oldValue.Locale, nil
+}
+
+// ResetLocale resets all changes to the "locale" field.
+func (m *UserMutation) ResetLocale() {
+	m.locale = nil
+}
+
 // SetName sets the "name" field.
 func (m *UserMutation) SetName(s string) {
 	m.name = &s
@@ -9288,7 +9471,7 @@ func (m *UserMutation) Email() (r string, exists bool) {
 // OldEmail returns the old "email" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldEmail(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldEmail(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
 	}
@@ -9302,9 +9485,22 @@ func (m *UserMutation) OldEmail(ctx context.Context) (v string, err error) {
 	return oldValue.Email, nil
 }
 
+// ClearEmail clears the value of the "email" field.
+func (m *UserMutation) ClearEmail() {
+	m.email = nil
+	m.clearedFields[user.FieldEmail] = struct{}{}
+}
+
+// EmailCleared returns if the "email" field was cleared in this mutation.
+func (m *UserMutation) EmailCleared() bool {
+	_, ok := m.clearedFields[user.FieldEmail]
+	return ok
+}
+
 // ResetEmail resets all changes to the "email" field.
 func (m *UserMutation) ResetEmail() {
 	m.email = nil
+	delete(m.clearedFields, user.FieldEmail)
 }
 
 // SetPicture sets the "picture" field.
@@ -9356,42 +9552,6 @@ func (m *UserMutation) ResetPicture() {
 	delete(m.clearedFields, user.FieldPicture)
 }
 
-// SetAdmin sets the "admin" field.
-func (m *UserMutation) SetAdmin(b bool) {
-	m.admin = &b
-}
-
-// Admin returns the value of the "admin" field in the mutation.
-func (m *UserMutation) Admin() (r bool, exists bool) {
-	v := m.admin
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAdmin returns the old "admin" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldAdmin(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAdmin is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAdmin requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAdmin: %w", err)
-	}
-	return oldValue.Admin, nil
-}
-
-// ResetAdmin resets all changes to the "admin" field.
-func (m *UserMutation) ResetAdmin() {
-	m.admin = nil
-}
-
 // SetPasswordHash sets the "password_hash" field.
 func (m *UserMutation) SetPasswordHash(s string) {
 	m.password_hash = &s
@@ -9428,40 +9588,76 @@ func (m *UserMutation) ResetPasswordHash() {
 	m.password_hash = nil
 }
 
-// SetLocale sets the "locale" field.
-func (m *UserMutation) SetLocale(u user.Locale) {
-	m.locale = &u
+// SetAdmin sets the "admin" field.
+func (m *UserMutation) SetAdmin(b bool) {
+	m.admin = &b
 }
 
-// Locale returns the value of the "locale" field in the mutation.
-func (m *UserMutation) Locale() (r user.Locale, exists bool) {
-	v := m.locale
+// Admin returns the value of the "admin" field in the mutation.
+func (m *UserMutation) Admin() (r bool, exists bool) {
+	v := m.admin
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLocale returns the old "locale" field's value of the User entity.
+// OldAdmin returns the old "admin" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldLocale(ctx context.Context) (v user.Locale, err error) {
+func (m *UserMutation) OldAdmin(ctx context.Context) (v bool, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldLocale is only allowed on UpdateOne operations")
+		return v, errors.New("OldAdmin is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldLocale requires an ID field in the mutation")
+		return v, errors.New("OldAdmin requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldLocale: %w", err)
+		return v, fmt.Errorf("querying old value for OldAdmin: %w", err)
 	}
-	return oldValue.Locale, nil
+	return oldValue.Admin, nil
 }
 
-// ResetLocale resets all changes to the "locale" field.
-func (m *UserMutation) ResetLocale() {
-	m.locale = nil
+// ResetAdmin resets all changes to the "admin" field.
+func (m *UserMutation) ResetAdmin() {
+	m.admin = nil
+}
+
+// SetAnonymous sets the "anonymous" field.
+func (m *UserMutation) SetAnonymous(b bool) {
+	m.anonymous = &b
+}
+
+// Anonymous returns the value of the "anonymous" field in the mutation.
+func (m *UserMutation) Anonymous() (r bool, exists bool) {
+	v := m.anonymous
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAnonymous returns the old "anonymous" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldAnonymous(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAnonymous is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAnonymous requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAnonymous: %w", err)
+	}
+	return oldValue.Anonymous, nil
+}
+
+// ResetAnonymous resets all changes to the "anonymous" field.
+func (m *UserMutation) ResetAnonymous() {
+	m.anonymous = nil
 }
 
 // SetMeta sets the "meta" field.
@@ -9621,6 +9817,99 @@ func (m *UserMutation) ResetTakes() {
 	m.removedtakes = nil
 }
 
+// SetParentID sets the "parent" edge to the User entity by id.
+func (m *UserMutation) SetParentID(id uuid.UUID) {
+	m.parent = &id
+}
+
+// ClearParent clears the "parent" edge to the User entity.
+func (m *UserMutation) ClearParent() {
+	m.clearedparent = true
+}
+
+// ParentCleared reports if the "parent" edge to the User entity was cleared.
+func (m *UserMutation) ParentCleared() bool {
+	return m.clearedparent
+}
+
+// ParentID returns the "parent" edge ID in the mutation.
+func (m *UserMutation) ParentID() (id uuid.UUID, exists bool) {
+	if m.parent != nil {
+		return *m.parent, true
+	}
+	return
+}
+
+// ParentIDs returns the "parent" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ParentID instead. It exists only for internal usage by the builders.
+func (m *UserMutation) ParentIDs() (ids []uuid.UUID) {
+	if id := m.parent; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetParent resets all changes to the "parent" edge.
+func (m *UserMutation) ResetParent() {
+	m.parent = nil
+	m.clearedparent = false
+}
+
+// AddAliasIDs adds the "aliases" edge to the User entity by ids.
+func (m *UserMutation) AddAliasIDs(ids ...uuid.UUID) {
+	if m.aliases == nil {
+		m.aliases = make(map[uuid.UUID]struct{})
+	}
+	for i := range ids {
+		m.aliases[ids[i]] = struct{}{}
+	}
+}
+
+// ClearAliases clears the "aliases" edge to the User entity.
+func (m *UserMutation) ClearAliases() {
+	m.clearedaliases = true
+}
+
+// AliasesCleared reports if the "aliases" edge to the User entity was cleared.
+func (m *UserMutation) AliasesCleared() bool {
+	return m.clearedaliases
+}
+
+// RemoveAliasIDs removes the "aliases" edge to the User entity by IDs.
+func (m *UserMutation) RemoveAliasIDs(ids ...uuid.UUID) {
+	if m.removedaliases == nil {
+		m.removedaliases = make(map[uuid.UUID]struct{})
+	}
+	for i := range ids {
+		delete(m.aliases, ids[i])
+		m.removedaliases[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAliases returns the removed IDs of the "aliases" edge to the User entity.
+func (m *UserMutation) RemovedAliasesIDs() (ids []uuid.UUID) {
+	for id := range m.removedaliases {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// AliasesIDs returns the "aliases" edge IDs in the mutation.
+func (m *UserMutation) AliasesIDs() (ids []uuid.UUID) {
+	for id := range m.aliases {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetAliases resets all changes to the "aliases" edge.
+func (m *UserMutation) ResetAliases() {
+	m.aliases = nil
+	m.clearedaliases = false
+	m.removedaliases = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -9640,12 +9929,15 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
 	if m.create_time != nil {
 		fields = append(fields, user.FieldCreateTime)
 	}
 	if m.update_time != nil {
 		fields = append(fields, user.FieldUpdateTime)
+	}
+	if m.locale != nil {
+		fields = append(fields, user.FieldLocale)
 	}
 	if m.name != nil {
 		fields = append(fields, user.FieldName)
@@ -9656,14 +9948,14 @@ func (m *UserMutation) Fields() []string {
 	if m.picture != nil {
 		fields = append(fields, user.FieldPicture)
 	}
-	if m.admin != nil {
-		fields = append(fields, user.FieldAdmin)
-	}
 	if m.password_hash != nil {
 		fields = append(fields, user.FieldPasswordHash)
 	}
-	if m.locale != nil {
-		fields = append(fields, user.FieldLocale)
+	if m.admin != nil {
+		fields = append(fields, user.FieldAdmin)
+	}
+	if m.anonymous != nil {
+		fields = append(fields, user.FieldAnonymous)
 	}
 	if m.meta != nil {
 		fields = append(fields, user.FieldMeta)
@@ -9680,18 +9972,20 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.CreateTime()
 	case user.FieldUpdateTime:
 		return m.UpdateTime()
+	case user.FieldLocale:
+		return m.Locale()
 	case user.FieldName:
 		return m.Name()
 	case user.FieldEmail:
 		return m.Email()
 	case user.FieldPicture:
 		return m.Picture()
-	case user.FieldAdmin:
-		return m.Admin()
 	case user.FieldPasswordHash:
 		return m.PasswordHash()
-	case user.FieldLocale:
-		return m.Locale()
+	case user.FieldAdmin:
+		return m.Admin()
+	case user.FieldAnonymous:
+		return m.Anonymous()
 	case user.FieldMeta:
 		return m.Meta()
 	}
@@ -9707,18 +10001,20 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldCreateTime(ctx)
 	case user.FieldUpdateTime:
 		return m.OldUpdateTime(ctx)
+	case user.FieldLocale:
+		return m.OldLocale(ctx)
 	case user.FieldName:
 		return m.OldName(ctx)
 	case user.FieldEmail:
 		return m.OldEmail(ctx)
 	case user.FieldPicture:
 		return m.OldPicture(ctx)
-	case user.FieldAdmin:
-		return m.OldAdmin(ctx)
 	case user.FieldPasswordHash:
 		return m.OldPasswordHash(ctx)
-	case user.FieldLocale:
-		return m.OldLocale(ctx)
+	case user.FieldAdmin:
+		return m.OldAdmin(ctx)
+	case user.FieldAnonymous:
+		return m.OldAnonymous(ctx)
 	case user.FieldMeta:
 		return m.OldMeta(ctx)
 	}
@@ -9744,6 +10040,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUpdateTime(v)
 		return nil
+	case user.FieldLocale:
+		v, ok := value.(user.Locale)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLocale(v)
+		return nil
 	case user.FieldName:
 		v, ok := value.(string)
 		if !ok {
@@ -9765,13 +10068,6 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPicture(v)
 		return nil
-	case user.FieldAdmin:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAdmin(v)
-		return nil
 	case user.FieldPasswordHash:
 		v, ok := value.(string)
 		if !ok {
@@ -9779,12 +10075,19 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPasswordHash(v)
 		return nil
-	case user.FieldLocale:
-		v, ok := value.(user.Locale)
+	case user.FieldAdmin:
+		v, ok := value.(bool)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetLocale(v)
+		m.SetAdmin(v)
+		return nil
+	case user.FieldAnonymous:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAnonymous(v)
 		return nil
 	case user.FieldMeta:
 		v, ok := value.(map[string]interface{})
@@ -9823,6 +10126,9 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *UserMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(user.FieldEmail) {
+		fields = append(fields, user.FieldEmail)
+	}
 	if m.FieldCleared(user.FieldPicture) {
 		fields = append(fields, user.FieldPicture)
 	}
@@ -9843,6 +10149,9 @@ func (m *UserMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *UserMutation) ClearField(name string) error {
 	switch name {
+	case user.FieldEmail:
+		m.ClearEmail()
+		return nil
 	case user.FieldPicture:
 		m.ClearPicture()
 		return nil
@@ -9863,6 +10172,9 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldUpdateTime:
 		m.ResetUpdateTime()
 		return nil
+	case user.FieldLocale:
+		m.ResetLocale()
+		return nil
 	case user.FieldName:
 		m.ResetName()
 		return nil
@@ -9872,14 +10184,14 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldPicture:
 		m.ResetPicture()
 		return nil
-	case user.FieldAdmin:
-		m.ResetAdmin()
-		return nil
 	case user.FieldPasswordHash:
 		m.ResetPasswordHash()
 		return nil
-	case user.FieldLocale:
-		m.ResetLocale()
+	case user.FieldAdmin:
+		m.ResetAdmin()
+		return nil
+	case user.FieldAnonymous:
+		m.ResetAnonymous()
 		return nil
 	case user.FieldMeta:
 		m.ResetMeta()
@@ -9890,12 +10202,18 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.sessions != nil {
 		edges = append(edges, user.EdgeSessions)
 	}
 	if m.takes != nil {
 		edges = append(edges, user.EdgeTakes)
+	}
+	if m.parent != nil {
+		edges = append(edges, user.EdgeParent)
+	}
+	if m.aliases != nil {
+		edges = append(edges, user.EdgeAliases)
 	}
 	return edges
 }
@@ -9916,18 +10234,31 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeParent:
+		if id := m.parent; id != nil {
+			return []ent.Value{*id}
+		}
+	case user.EdgeAliases:
+		ids := make([]ent.Value, 0, len(m.aliases))
+		for id := range m.aliases {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.removedsessions != nil {
 		edges = append(edges, user.EdgeSessions)
 	}
 	if m.removedtakes != nil {
 		edges = append(edges, user.EdgeTakes)
+	}
+	if m.removedaliases != nil {
+		edges = append(edges, user.EdgeAliases)
 	}
 	return edges
 }
@@ -9948,18 +10279,30 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeAliases:
+		ids := make([]ent.Value, 0, len(m.removedaliases))
+		for id := range m.removedaliases {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.clearedsessions {
 		edges = append(edges, user.EdgeSessions)
 	}
 	if m.clearedtakes {
 		edges = append(edges, user.EdgeTakes)
+	}
+	if m.clearedparent {
+		edges = append(edges, user.EdgeParent)
+	}
+	if m.clearedaliases {
+		edges = append(edges, user.EdgeAliases)
 	}
 	return edges
 }
@@ -9972,6 +10315,10 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 		return m.clearedsessions
 	case user.EdgeTakes:
 		return m.clearedtakes
+	case user.EdgeParent:
+		return m.clearedparent
+	case user.EdgeAliases:
+		return m.clearedaliases
 	}
 	return false
 }
@@ -9980,6 +10327,9 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *UserMutation) ClearEdge(name string) error {
 	switch name {
+	case user.EdgeParent:
+		m.ClearParent()
+		return nil
 	}
 	return fmt.Errorf("unknown User unique edge %s", name)
 }
@@ -9993,6 +10343,12 @@ func (m *UserMutation) ResetEdge(name string) error {
 		return nil
 	case user.EdgeTakes:
 		m.ResetTakes()
+		return nil
+	case user.EdgeParent:
+		m.ResetParent()
+		return nil
+	case user.EdgeAliases:
+		m.ResetAliases()
 		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)

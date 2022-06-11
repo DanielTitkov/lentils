@@ -2,6 +2,7 @@ package domain
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 	"sort"
 )
@@ -10,6 +11,13 @@ func (t *Test) OrderQuestions() {
 	sort.Slice(t.Questions, func(i, j int) bool {
 		return t.Questions[i].Order < t.Questions[j].Order
 	})
+}
+
+func (t *Test) PageCount() int {
+	if t.Display.QuestionsPerPage < 1 {
+		return 1
+	}
+	return int(math.Ceil(float64(len(t.Questions)) / float64(t.Display.QuestionsPerPage)))
 }
 
 func (t *CreateTestArgs) ValidateTranslations() error {

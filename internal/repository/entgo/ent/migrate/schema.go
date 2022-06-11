@@ -257,7 +257,9 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1654902780},
+		{Name: "seed", Type: field.TypeInt64, Default: 1654986150},
+		{Name: "progress", Type: field.TypeInt, Default: 0},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"intro", "questions", "finish", "result"}, Default: "intro"},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "test_takes", Type: field.TypeUUID},
 		{Name: "user_takes", Type: field.TypeUUID},
@@ -270,13 +272,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "takes_tests_takes",
-				Columns:    []*schema.Column{TakesColumns[5]},
+				Columns:    []*schema.Column{TakesColumns[7]},
 				RefColumns: []*schema.Column{TestsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "takes_users_takes",
-				Columns:    []*schema.Column{TakesColumns[6]},
+				Columns:    []*schema.Column{TakesColumns[8]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -353,19 +355,29 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
+		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
 		{Name: "name", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString, Unique: true},
+		{Name: "email", Type: field.TypeString, Unique: true, Nullable: true},
 		{Name: "picture", Type: field.TypeString, Nullable: true, Default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"},
-		{Name: "admin", Type: field.TypeBool, Default: false},
 		{Name: "password_hash", Type: field.TypeString},
-		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}, Default: "ru"},
+		{Name: "admin", Type: field.TypeBool, Default: false},
+		{Name: "anonymous", Type: field.TypeBool, Default: false},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
+		{Name: "user_aliases", Type: field.TypeUUID, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
 		Name:       "users",
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "users_users_aliases",
+				Columns:    []*schema.Column{UsersColumns[11]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// UserSessionsColumns holds the columns for the "user_sessions" table.
 	UserSessionsColumns = []*schema.Column{
@@ -514,6 +526,7 @@ func init() {
 	TakesTable.ForeignKeys[1].RefTable = UsersTable
 	TestDisplaysTable.ForeignKeys[0].RefTable = TestsTable
 	TestTranslationsTable.ForeignKeys[0].RefTable = TestsTable
+	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	UserSessionsTable.ForeignKeys[0].RefTable = UsersTable
 	QuestionItemsTable.ForeignKeys[0].RefTable = QuestionsTable
 	QuestionItemsTable.ForeignKeys[1].RefTable = ItemsTable
