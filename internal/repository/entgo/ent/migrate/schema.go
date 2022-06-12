@@ -257,7 +257,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1654986150},
+		{Name: "seed", Type: field.TypeInt64, Default: 1655075495},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"intro", "questions", "finish", "result"}, Default: "intro"},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},

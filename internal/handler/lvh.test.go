@@ -15,6 +15,8 @@ import (
 const (
 	// events
 	eventBeginTest = "begin-test"
+	eventNextPage  = "next-page"
+	eventPrevPage  = "prev-page"
 	// params
 	paramTestCode = "testCode"
 	// params values
@@ -23,10 +25,11 @@ const (
 type (
 	TestInstance struct {
 		*CommonInstance
-		Test     *domain.Test
-		Take     *domain.Take
-		TestStep string
-		Page     int
+		Test             *domain.Test
+		Take             *domain.Take
+		CurrentQuestions []*domain.Question
+		TestStep         string
+		Page             int
 		// to have constants in templates
 		IntroStatus     string
 		QuestionsStatus string
@@ -38,6 +41,20 @@ type (
 func (ins *TestInstance) withError(err error) *TestInstance {
 	ins.Error = err
 	return ins
+}
+
+func (ins *TestInstance) nextPage() int {
+	if ins.Page >= ins.Test.PageCount() {
+		return ins.Page
+	}
+	return ins.Page + 1
+}
+
+func (ins *TestInstance) prevPage() int {
+	if ins.Page == 1 {
+		return ins.Page
+	}
+	return ins.Page - 1
 }
 
 func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
@@ -139,6 +156,25 @@ func (h *Handler) Test() live.Handler {
 			return instance.withError(err), nil
 		}
 		instance.Page = 1
+		instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
+
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventNextPage, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+
+		instance.Page = instance.nextPage()
+		instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
+
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventPrevPage, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+
+		instance.Page = instance.prevPage()
+		instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
 
 		return instance, nil
 	})

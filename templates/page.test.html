@@ -29,16 +29,26 @@
 
   {{ if eq .Take.Status .QuestionsStatus }}
   <div class="section">
+    <progress class="progress is-large is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
+      .Page }}%</progress>
+    <p class="header">Page {{ .Page }} of {{ .Test.PageCount }}</p>
+    <div>
+      {{ range .CurrentQuestions }}
+      <p>{{ . }}</p>
+      {{ end }}
+    </div>
     <p class="block is-size-5 has-text-centered">When you are happy please continue to the next step.</p>
     <div class="level">
       <div class="level-item has-text-centered">
         <div class="block">
-          <button class="button is-large is-primary is-danger" live-click="prev-page">Previous</button>
+          <button class="button is-large is-rounded is-danger" live-click="prev-page" {{ if le .Page 1
+            }}disabled{{end}}>Previous</button>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div class="block">
-          <button class="button is-large is-primary is-success" live-click="next-page">Next</button>
+          <button class="button is-large is-rounded is-success" live-click="next-page" {{ if ge .Page .Test.PageCount
+            }}disabled{{end}}>Next</button>
         </div>
       </div>
     </div>

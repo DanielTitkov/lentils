@@ -20,6 +20,33 @@ func (t *Test) PageCount() int {
 	return int(math.Ceil(float64(len(t.Questions)) / float64(t.Display.QuestionsPerPage)))
 }
 
+func (t *Test) QuestionsForPage(page int) []*Question {
+	if page < 1 {
+		return []*Question{}
+	}
+
+	if page > t.PageCount() {
+		return []*Question{}
+	}
+
+	// TODO: maybe pregenerate pages
+	page = page - 1 // in the app page count goes from 1
+	var pages [][]*Question
+	for i := 0; i < t.PageCount(); i++ {
+		var pq []*Question
+		for j := 0; j < t.Display.QuestionsPerPage; j++ {
+			idx := i*t.Display.QuestionsPerPage + j
+			if idx >= len(t.Questions) {
+				break
+			}
+			pq = append(pq, t.Questions[idx])
+		}
+		pages = append(pages, pq)
+	}
+
+	return pages[page]
+}
+
 func (t *CreateTestArgs) ValidateTranslations() error {
 	locs := make(map[string]struct{})
 	for _, l := range t.AvailableLocales {
