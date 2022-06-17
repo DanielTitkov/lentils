@@ -4,9 +4,11 @@ import (
 	"context"
 	"errors"
 	"html/template"
-	"log"
+
+	"github.com/DanielTitkov/lentils/internal/util"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/bradfitz/iter"
 
 	"github.com/gorilla/mux"
 	"github.com/jfyne/live"
@@ -14,13 +16,18 @@ import (
 
 const (
 	// events
-	eventBeginTest = "begin-test"
-	eventNextPage  = "next-page"
-	eventPrevPage  = "prev-page"
+	eventBeginTest      = "begin-test"
+	eventNextPage       = "next-page"
+	eventPrevPage       = "prev-page"
+	eventResponseUpdate = "response-update"
 	// params
 	paramTestCode = "testCode"
 	// params values
 )
+
+var funcMap = template.FuncMap{
+	"N": iter.N,
+}
 
 type (
 	TestInstance struct {
@@ -74,13 +81,10 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 }
 
 func (h *Handler) Test() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.test.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START
@@ -151,6 +155,7 @@ func (h *Handler) Test() live.Handler {
 	lvh.HandleEvent(eventBeginTest, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewTestInstance(s)
 
+		var err error
 		instance.Take, err = h.app.BeginTest(ctx, instance.Take)
 		if err != nil {
 			return instance.withError(err), nil
@@ -175,6 +180,23 @@ func (h *Handler) Test() live.Handler {
 
 		instance.Page = instance.prevPage()
 		instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
+
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventResponseUpdate, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+
+		for code := range p {
+			// p should always have only 1 item
+			value := p.Int(code)
+			meta := util.NewMeta()
+			meta["session"] = instance.Session
+			err := instance.Test.GetItem(code).AddResponse(instance.Take.ID, value, meta)
+			if err != nil {
+				return instance.withError(err), nil
+			}
+		}
 
 		return instance, nil
 	})

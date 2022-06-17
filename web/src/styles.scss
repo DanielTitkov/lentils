@@ -67,6 +67,20 @@ $footer-padding: 1.5rem 1.5rem 3rem;
 	--second-bg-color: #9bf6ff;
 }
 
+.question-done {
+	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$green+0,4df297+99 */
+	background: $green;
+	/* Old browsers */
+	background: -moz-linear-gradient(-45deg, $green 25%, $yellow 99%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, $green 25%, $yellow 99%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, $green 25%, $yellow 99%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$green', endColorstr='$yellow', GradientType=1);
+	/* IE6-9 fallback on horizontal gradient */
+}
+
 .challenge-card-true {
 	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$green+0,4df297+99 */
 	background: $green;

@@ -34,10 +34,9 @@
     <p class="header">Page {{ .Page }} of {{ .Test.PageCount }}</p>
     <div>
       {{ range .CurrentQuestions }}
-      <p>{{ . }}</p>
+      {{ template "question-card" . }}
       {{ end }}
     </div>
-    <p class="block is-size-5 has-text-centered">When you are happy please continue to the next step.</p>
     <div class="level">
       <div class="level-item has-text-centered">
         <div class="block">
@@ -48,11 +47,32 @@
       <div class="level-item has-text-centered">
         <div class="block">
           <button class="button is-large is-rounded is-success" live-click="next-page" {{ if ge .Page .Test.PageCount
-            }}disabled{{end}}>Next</button>
+            }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>Next</button>
         </div>
       </div>
     </div>
   </div>
   {{ end }}
 </main>
+{{ end }}
+
+{{ define "question-card" }}
+<div class="notification box {{ if .IsDone }}question-done{{end}}">
+  <p class="title is-3">{{ .Content }}</p>
+  <div>
+    {{ range $i, $item := .Items }}
+    <p class="title is-5">{{ .Content }}</p>
+    <form id="{{ $item.Code }}" live-change="response-update">
+      <div class="control">
+        {{ range $j, $s := N .Steps }}
+        <label class="radio">
+          <input type="radio" name="{{ $item.Code }}" value="{{ $j }}">
+          {{ $j }}
+        </label>
+        {{ end }}
+      </div>
+    </form>
+    {{ end }}
+  </div>
+</div>
 {{ end }}

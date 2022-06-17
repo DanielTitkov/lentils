@@ -38,6 +38,7 @@ type (
 		Steps      int    // number of stepes in response scale
 		Reverse    bool
 		// Type       string
+		Response *Response // for use in handler, not for saving
 	}
 
 	Question struct {
@@ -77,7 +78,6 @@ type (
 		CreateTime time.Time
 		UpdateTime time.Time
 		Meta       map[string]interface{}
-		// UserID     uuid.UUID // stored by Take
 	}
 
 	// Take is one instance of user taking a test

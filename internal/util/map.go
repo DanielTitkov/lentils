@@ -4,6 +4,10 @@ import (
 	"reflect"
 )
 
+func NewMeta() map[string]interface{} {
+	return make(map[string]interface{})
+}
+
 // ToMap uses json tags on struct fields to decide which fields
 // to add to the returned map.
 // inspired by https://stackoverflow.com/a/23598731/10633734

@@ -20,6 +20,21 @@ func (t *Test) PageCount() int {
 	return int(math.Ceil(float64(len(t.Questions)) / float64(t.Display.QuestionsPerPage)))
 }
 
+func (t *Test) GetItem(code string) *Item {
+	// test wont have too many items
+	// so map is not required probably
+	// TODO: but it'd better to check
+	for _, q := range t.Questions {
+		for _, i := range q.Items {
+			if i.Code == code {
+				return i
+			}
+		}
+	}
+
+	return nil
+}
+
 func (t *Test) QuestionsForPage(page int) []*Question {
 	if page < 1 {
 		return []*Question{}
@@ -45,6 +60,20 @@ func (t *Test) QuestionsForPage(page int) []*Question {
 	}
 
 	return pages[page]
+}
+
+func (t *Test) IsPageDone(page int) bool {
+	for _, q := range t.QuestionsForPage(page) {
+		if !q.IsDone() {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (t *Test) IsPageNotDone(page int) bool {
+	return !t.IsPageDone(page)
 }
 
 func (t *CreateTestArgs) ValidateTranslations() error {

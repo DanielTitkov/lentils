@@ -28,7 +28,7 @@ func (a *App) CreateUser(ctx context.Context, u *domain.User) (*domain.User, err
 	u.PasswordHash = string(hash)
 
 	if !a.IsValidLocale(u.Locale) {
-		a.log.Warn(fmt.Sprintf("got unknown locale %s, setting to default %s", u.Locale, domain.LocaleEn), "unknown locale")
+		// a.log.Warn(fmt.Sprintf("got unknown locale %s, setting to default %s", u.Locale, domain.LocaleEn), "unknown locale") // FIXME
 		u.Locale = domain.LocaleEn
 	}
 
