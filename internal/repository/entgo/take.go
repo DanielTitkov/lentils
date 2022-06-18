@@ -36,6 +36,7 @@ func (r *EntgoRepository) UpdateTake(ctx context.Context, tk *domain.Take) (*dom
 
 	t, err = t.Update().
 		SetProgress(tk.Progress).
+		SetPage(tk.Page).
 		SetStatus(take.Status(tk.Status)).
 		SetMeta(tk.Meta).
 		Save(ctx)
@@ -60,6 +61,7 @@ func entToDomainTake(t *ent.Take) *domain.Take {
 		ID:         t.ID,
 		Progress:   t.Progress,
 		Status:     t.Status.String(),
+		Page:       t.Page,
 		Meta:       t.Meta,
 		UserID:     uid,
 		TestID:     tid,

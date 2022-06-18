@@ -80,6 +80,20 @@ func (tc *TakeCreate) SetNillableProgress(i *int) *TakeCreate {
 	return tc
 }
 
+// SetPage sets the "page" field.
+func (tc *TakeCreate) SetPage(i int) *TakeCreate {
+	tc.mutation.SetPage(i)
+	return tc
+}
+
+// SetNillablePage sets the "page" field if the given value is not nil.
+func (tc *TakeCreate) SetNillablePage(i *int) *TakeCreate {
+	if i != nil {
+		tc.SetPage(*i)
+	}
+	return tc
+}
+
 // SetStatus sets the "status" field.
 func (tc *TakeCreate) SetStatus(t take.Status) *TakeCreate {
 	tc.mutation.SetStatus(t)
@@ -244,6 +258,10 @@ func (tc *TakeCreate) defaults() {
 		v := take.DefaultProgress
 		tc.mutation.SetProgress(v)
 	}
+	if _, ok := tc.mutation.Page(); !ok {
+		v := take.DefaultPage
+		tc.mutation.SetPage(v)
+	}
 	if _, ok := tc.mutation.Status(); !ok {
 		v := take.DefaultStatus
 		tc.mutation.SetStatus(v)
@@ -267,6 +285,9 @@ func (tc *TakeCreate) check() error {
 	}
 	if _, ok := tc.mutation.Progress(); !ok {
 		return &ValidationError{Name: "progress", err: errors.New(`ent: missing required field "Take.progress"`)}
+	}
+	if _, ok := tc.mutation.Page(); !ok {
+		return &ValidationError{Name: "page", err: errors.New(`ent: missing required field "Take.page"`)}
 	}
 	if _, ok := tc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Take.status"`)}
@@ -349,6 +370,14 @@ func (tc *TakeCreate) createSpec() (*Take, *sqlgraph.CreateSpec) {
 			Column: take.FieldProgress,
 		})
 		_node.Progress = value
+	}
+	if value, ok := tc.mutation.Page(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldPage,
+		})
+		_node.Page = value
 	}
 	if value, ok := tc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

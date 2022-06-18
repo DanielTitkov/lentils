@@ -88,6 +88,7 @@ type (
 		Seed       int64
 		CreateTime time.Time
 		UpdateTime time.Time
+		Page       int
 		Status     string
 		Progress   int
 		Meta       map[string]interface{}

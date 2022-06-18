@@ -17,16 +17,20 @@ import (
 const (
 	// events
 	eventBeginTest      = "begin-test"
+	eventEndTest        = "end-test"
 	eventNextPage       = "next-page"
 	eventPrevPage       = "prev-page"
 	eventResponseUpdate = "response-update"
 	// params
-	paramTestCode = "testCode"
+	paramTestCode      = "testCode"
+	paramTestItem      = "item"
+	paramTestItemValue = "val"
 	// params values
 )
 
 var funcMap = template.FuncMap{
-	"N": iter.N,
+	"N":     iter.N,
+	"Plus1": func(i int) int { return i + 1 },
 }
 
 type (
@@ -166,6 +170,20 @@ func (h *Handler) Test() live.Handler {
 		return instance, nil
 	})
 
+	lvh.HandleEvent(eventEndTest, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+
+		// var err error
+		// instance.Take, err = h.app.BeginTest(ctx, instance.Take)
+		// if err != nil {
+		// 	return instance.withError(err), nil
+		// }
+		// instance.Page = 1
+		// instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
+
+		return instance, nil
+	})
+
 	lvh.HandleEvent(eventNextPage, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewTestInstance(s)
 
@@ -187,15 +205,26 @@ func (h *Handler) Test() live.Handler {
 	lvh.HandleEvent(eventResponseUpdate, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewTestInstance(s)
 
-		for code := range p {
-			// p should always have only 1 item
-			value := p.Int(code)
-			meta := util.NewMeta()
-			meta["session"] = instance.Session
-			err := instance.Test.GetItem(code).AddResponse(instance.Take.ID, value, meta)
-			if err != nil {
-				return instance.withError(err), nil
-			}
+		itemCode := p.String(paramTestItem)
+		if itemCode == "" {
+			return instance.withError(errors.New("item code is empty")), nil
+		}
+
+		value := p.Int(paramTestItemValue)
+
+		meta := util.NewMeta()
+		meta["session"] = instance.Session
+		item := instance.Test.GetItem(itemCode)
+		err := item.AddResponse(instance.Take.ID, value, meta)
+		if err != nil {
+			return instance.withError(err), nil
+		}
+
+		// save response to db
+		instance.Take.Page = instance.Page
+		instance.Take, item.Response, err = h.app.AddResponse(ctx, instance.Take, item)
+		if err != nil {
+			return instance.withError(err), nil
 		}
 
 		return instance, nil

@@ -122,6 +122,13 @@ func Progress(v int) predicate.Take {
 	})
 }
 
+// Page applies equality check predicate on the "page" field. It's identical to PageEQ.
+func Page(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPage), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {
@@ -423,6 +430,82 @@ func ProgressLT(v int) predicate.Take {
 func ProgressLTE(v int) predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldProgress), v))
+	})
+}
+
+// PageEQ applies the EQ predicate on the "page" field.
+func PageEQ(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPage), v))
+	})
+}
+
+// PageNEQ applies the NEQ predicate on the "page" field.
+func PageNEQ(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPage), v))
+	})
+}
+
+// PageIn applies the In predicate on the "page" field.
+func PageIn(vs ...int) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPage), v...))
+	})
+}
+
+// PageNotIn applies the NotIn predicate on the "page" field.
+func PageNotIn(vs ...int) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPage), v...))
+	})
+}
+
+// PageGT applies the GT predicate on the "page" field.
+func PageGT(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPage), v))
+	})
+}
+
+// PageGTE applies the GTE predicate on the "page" field.
+func PageGTE(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPage), v))
+	})
+}
+
+// PageLT applies the LT predicate on the "page" field.
+func PageLT(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPage), v))
+	})
+}
+
+// PageLTE applies the LTE predicate on the "page" field.
+func PageLTE(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPage), v))
 	})
 }
 

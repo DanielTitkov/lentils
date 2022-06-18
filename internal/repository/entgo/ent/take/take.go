@@ -22,6 +22,8 @@ const (
 	FieldSeed = "seed"
 	// FieldProgress holds the string denoting the progress field in the database.
 	FieldProgress = "progress"
+	// FieldPage holds the string denoting the page field in the database.
+	FieldPage = "page"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// FieldMeta holds the string denoting the meta field in the database.
@@ -64,6 +66,7 @@ var Columns = []string{
 	FieldUpdateTime,
 	FieldSeed,
 	FieldProgress,
+	FieldPage,
 	FieldStatus,
 	FieldMeta,
 }
@@ -101,6 +104,8 @@ var (
 	DefaultSeed int64
 	// DefaultProgress holds the default value on creation for the "progress" field.
 	DefaultProgress int
+	// DefaultPage holds the default value on creation for the "page" field.
+	DefaultPage int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

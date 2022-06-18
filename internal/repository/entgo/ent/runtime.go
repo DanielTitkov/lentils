@@ -217,6 +217,10 @@ func init() {
 	takeDescProgress := takeFields[2].Descriptor()
 	// take.DefaultProgress holds the default value on creation for the progress field.
 	take.DefaultProgress = takeDescProgress.Default.(int)
+	// takeDescPage is the schema descriptor for page field.
+	takeDescPage := takeFields[3].Descriptor()
+	// take.DefaultPage holds the default value on creation for the page field.
+	take.DefaultPage = takeDescPage.Default.(int)
 	// takeDescID is the schema descriptor for id field.
 	takeDescID := takeFields[0].Descriptor()
 	// take.DefaultID holds the default value on creation for the id field.

@@ -8,6 +8,14 @@ import (
 	"github.com/google/uuid"
 )
 
+func (i *Item) CurrentResponseValue() int {
+	if i.Response == nil {
+		return -1
+	}
+
+	return i.Response.Value
+}
+
 func (i *Item) AddResponse(takeID uuid.UUID, value int, meta map[string]interface{}) error {
 	if takeID == uuid.Nil {
 		return errors.New("got nil take uuid")

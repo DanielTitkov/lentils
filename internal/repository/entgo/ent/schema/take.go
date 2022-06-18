@@ -23,6 +23,7 @@ func (Take) Fields() []ent.Field {
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.Int64("seed").Default(time.Now().Unix()).Immutable(),
 		field.Int("progress").Default(0),
+		field.Int("page").Default(0),
 		field.Enum("status").Values(
 			domain.TestStepIntro,
 			domain.TestStepQuestions,

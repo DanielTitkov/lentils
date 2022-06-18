@@ -76,6 +76,24 @@ func (t *Test) IsPageNotDone(page int) bool {
 	return !t.IsPageDone(page)
 }
 
+func (t *Test) IsDone() bool {
+	for _, q := range t.Questions {
+		if !q.IsDone() {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (t *Test) IsNotDone() bool {
+	return !t.IsDone()
+}
+
+func (t *Test) CalculateResult() error {
+	return nil
+}
+
 func (t *CreateTestArgs) ValidateTranslations() error {
 	locs := make(map[string]struct{})
 	for _, l := range t.AvailableLocales {

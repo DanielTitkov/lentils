@@ -6275,6 +6275,8 @@ type TakeMutation struct {
 	addseed          *int64
 	progress         *int
 	addprogress      *int
+	page             *int
+	addpage          *int
 	status           *take.Status
 	meta             *map[string]interface{}
 	clearedFields    map[string]struct{}
@@ -6578,6 +6580,62 @@ func (m *TakeMutation) ResetProgress() {
 	m.addprogress = nil
 }
 
+// SetPage sets the "page" field.
+func (m *TakeMutation) SetPage(i int) {
+	m.page = &i
+	m.addpage = nil
+}
+
+// Page returns the value of the "page" field in the mutation.
+func (m *TakeMutation) Page() (r int, exists bool) {
+	v := m.page
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPage returns the old "page" field's value of the Take entity.
+// If the Take object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TakeMutation) OldPage(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPage: %w", err)
+	}
+	return oldValue.Page, nil
+}
+
+// AddPage adds i to the "page" field.
+func (m *TakeMutation) AddPage(i int) {
+	if m.addpage != nil {
+		*m.addpage += i
+	} else {
+		m.addpage = &i
+	}
+}
+
+// AddedPage returns the value that was added to the "page" field in this mutation.
+func (m *TakeMutation) AddedPage() (r int, exists bool) {
+	v := m.addpage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPage resets all changes to the "page" field.
+func (m *TakeMutation) ResetPage() {
+	m.page = nil
+	m.addpage = nil
+}
+
 // SetStatus sets the "status" field.
 func (m *TakeMutation) SetStatus(t take.Status) {
 	m.status = &t
@@ -6814,7 +6872,7 @@ func (m *TakeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TakeMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
 	if m.create_time != nil {
 		fields = append(fields, take.FieldCreateTime)
 	}
@@ -6826,6 +6884,9 @@ func (m *TakeMutation) Fields() []string {
 	}
 	if m.progress != nil {
 		fields = append(fields, take.FieldProgress)
+	}
+	if m.page != nil {
+		fields = append(fields, take.FieldPage)
 	}
 	if m.status != nil {
 		fields = append(fields, take.FieldStatus)
@@ -6849,6 +6910,8 @@ func (m *TakeMutation) Field(name string) (ent.Value, bool) {
 		return m.Seed()
 	case take.FieldProgress:
 		return m.Progress()
+	case take.FieldPage:
+		return m.Page()
 	case take.FieldStatus:
 		return m.Status()
 	case take.FieldMeta:
@@ -6870,6 +6933,8 @@ func (m *TakeMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldSeed(ctx)
 	case take.FieldProgress:
 		return m.OldProgress(ctx)
+	case take.FieldPage:
+		return m.OldPage(ctx)
 	case take.FieldStatus:
 		return m.OldStatus(ctx)
 	case take.FieldMeta:
@@ -6911,6 +6976,13 @@ func (m *TakeMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetProgress(v)
 		return nil
+	case take.FieldPage:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPage(v)
+		return nil
 	case take.FieldStatus:
 		v, ok := value.(take.Status)
 		if !ok {
@@ -6939,6 +7011,9 @@ func (m *TakeMutation) AddedFields() []string {
 	if m.addprogress != nil {
 		fields = append(fields, take.FieldProgress)
 	}
+	if m.addpage != nil {
+		fields = append(fields, take.FieldPage)
+	}
 	return fields
 }
 
@@ -6951,6 +7026,8 @@ func (m *TakeMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedSeed()
 	case take.FieldProgress:
 		return m.AddedProgress()
+	case take.FieldPage:
+		return m.AddedPage()
 	}
 	return nil, false
 }
@@ -6973,6 +7050,13 @@ func (m *TakeMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddProgress(v)
+		return nil
+	case take.FieldPage:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPage(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Take numeric field %s", name)
@@ -7021,6 +7105,9 @@ func (m *TakeMutation) ResetField(name string) error {
 		return nil
 	case take.FieldProgress:
 		m.ResetProgress()
+		return nil
+	case take.FieldPage:
+		m.ResetPage()
 		return nil
 	case take.FieldStatus:
 		m.ResetStatus()

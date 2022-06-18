@@ -257,8 +257,9 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1655503362},
+		{Name: "seed", Type: field.TypeInt64, Default: 1655593284},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
+		{Name: "page", Type: field.TypeInt, Default: 0},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"intro", "questions", "finish", "result"}, Default: "intro"},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "test_takes", Type: field.TypeUUID},
@@ -272,13 +273,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "takes_tests_takes",
-				Columns:    []*schema.Column{TakesColumns[7]},
+				Columns:    []*schema.Column{TakesColumns[8]},
 				RefColumns: []*schema.Column{TestsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "takes_users_takes",
-				Columns:    []*schema.Column{TakesColumns[8]},
+				Columns:    []*schema.Column{TakesColumns[9]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},

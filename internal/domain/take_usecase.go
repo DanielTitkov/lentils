@@ -11,6 +11,7 @@ func (t *Take) Begin() error {
 	}
 	t.Status = TestStepQuestions
 	t.Progress = 0
+	t.Page = 1
 	t.Meta["begin"] = time.Now()
 
 	return nil

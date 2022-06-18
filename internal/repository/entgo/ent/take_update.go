@@ -59,6 +59,27 @@ func (tu *TakeUpdate) AddProgress(i int) *TakeUpdate {
 	return tu
 }
 
+// SetPage sets the "page" field.
+func (tu *TakeUpdate) SetPage(i int) *TakeUpdate {
+	tu.mutation.ResetPage()
+	tu.mutation.SetPage(i)
+	return tu
+}
+
+// SetNillablePage sets the "page" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillablePage(i *int) *TakeUpdate {
+	if i != nil {
+		tu.SetPage(*i)
+	}
+	return tu
+}
+
+// AddPage adds i to the "page" field.
+func (tu *TakeUpdate) AddPage(i int) *TakeUpdate {
+	tu.mutation.AddPage(i)
+	return tu
+}
+
 // SetStatus sets the "status" field.
 func (tu *TakeUpdate) SetStatus(t take.Status) *TakeUpdate {
 	tu.mutation.SetStatus(t)
@@ -284,6 +305,20 @@ func (tu *TakeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: take.FieldProgress,
 		})
 	}
+	if value, ok := tu.mutation.Page(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldPage,
+		})
+	}
+	if value, ok := tu.mutation.AddedPage(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldPage,
+		})
+	}
 	if value, ok := tu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
@@ -471,6 +506,27 @@ func (tuo *TakeUpdateOne) SetNillableProgress(i *int) *TakeUpdateOne {
 // AddProgress adds i to the "progress" field.
 func (tuo *TakeUpdateOne) AddProgress(i int) *TakeUpdateOne {
 	tuo.mutation.AddProgress(i)
+	return tuo
+}
+
+// SetPage sets the "page" field.
+func (tuo *TakeUpdateOne) SetPage(i int) *TakeUpdateOne {
+	tuo.mutation.ResetPage()
+	tuo.mutation.SetPage(i)
+	return tuo
+}
+
+// SetNillablePage sets the "page" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillablePage(i *int) *TakeUpdateOne {
+	if i != nil {
+		tuo.SetPage(*i)
+	}
+	return tuo
+}
+
+// AddPage adds i to the "page" field.
+func (tuo *TakeUpdateOne) AddPage(i int) *TakeUpdateOne {
+	tuo.mutation.AddPage(i)
 	return tuo
 }
 
@@ -727,6 +783,20 @@ func (tuo *TakeUpdateOne) sqlSave(ctx context.Context) (_node *Take, err error) 
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: take.FieldProgress,
+		})
+	}
+	if value, ok := tuo.mutation.Page(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldPage,
+		})
+	}
+	if value, ok := tuo.mutation.AddedPage(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldPage,
 		})
 	}
 	if value, ok := tuo.mutation.Status(); ok {

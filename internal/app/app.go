@@ -45,6 +45,9 @@ type (
 		CreateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error)
 		UpdateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error)
 
+		// response
+		AddOrUpdateResponse(ctx context.Context, takeID uuid.UUID, itm *domain.Item) (*domain.Response, error)
+
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)
 	}

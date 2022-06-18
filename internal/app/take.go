@@ -20,3 +20,17 @@ func (a *App) BeginTest(ctx context.Context, take *domain.Take) (*domain.Take, e
 
 	return take, nil
 }
+
+func (a *App) AddResponse(ctx context.Context, take *domain.Take, item *domain.Item) (*domain.Take, *domain.Response, error) {
+	take, err := a.repo.UpdateTake(ctx, take)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resp, err := a.repo.AddOrUpdateResponse(ctx, take.ID, item)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return take, resp, nil
+}

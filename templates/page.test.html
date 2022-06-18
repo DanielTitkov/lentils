@@ -32,46 +32,48 @@
     <progress class="progress is-large is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
       .Page }}%</progress>
     <p class="header">Page {{ .Page }} of {{ .Test.PageCount }}</p>
-    <div>
-      {{ range .CurrentQuestions }}
-      {{ template "question-card" . }}
-      {{ end }}
-    </div>
-    <div class="level">
-      <div class="level-item has-text-centered">
-        <div class="block">
-          <button class="button is-large is-rounded is-danger" live-click="prev-page" {{ if le .Page 1
-            }}disabled{{end}}>Previous</button>
-        </div>
+  </div>
+  <div class="section">
+    {{ range .CurrentQuestions }}
+    {{ template "question-card" . }}
+    {{ end }}
+  </div>
+  <div class="level">
+    <div class="level-item has-text-centered">
+      <div class="block">
+        <button class="button is-large is-rounded is-danger" live-click="prev-page" {{ if le .Page 1
+          }}disabled{{end}}>Previous</button>
       </div>
-      <div class="level-item has-text-centered">
-        <div class="block">
-          <button class="button is-large is-rounded is-success" live-click="next-page" {{ if ge .Page .Test.PageCount
-            }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>Next</button>
-        </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div class="block">
+        {{ if ge .Page .Test.PageCount }}
+        <button class="button is-large is-rounded is-success" live-click="end-test" {{ if .Test.IsNotDone
+          }}disabled{{end}}>Finish</button>
+        {{ else }}
+        <button class="button is-large is-rounded is-success" live-click="next-page" {{ if ge .Page .Test.PageCount
+          }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>Next</button>
+        {{ end }}
       </div>
     </div>
   </div>
   {{ end }}
+  <!-- end questions status -->
 </main>
 {{ end }}
 
 {{ define "question-card" }}
 <div class="notification box {{ if .IsDone }}question-done{{end}}">
-  <p class="title is-3">{{ .Content }}</p>
+  <p class="title is-5">{{ .Content }}</p>
   <div>
     {{ range $i, $item := .Items }}
-    <p class="title is-5">{{ .Content }}</p>
-    <form id="{{ $item.Code }}" live-change="response-update">
-      <div class="control">
-        {{ range $j, $s := N .Steps }}
-        <label class="radio">
-          <input type="radio" name="{{ $item.Code }}" value="{{ $j }}">
-          {{ $j }}
-        </label>
-        {{ end }}
-      </div>
-    </form>
+    <p class="title is-3">{{ .Content }}</p>
+    <div class="control">
+      {{ range $j, $s := N .Steps }}
+      <button class="button {{ if eq $item.CurrentResponseValue $j }}is-success{{ end }}" live-click="response-update"
+        live-value-item="{{ $item.Code }}" live-value-val="{{ $j }}">{{ $j }}</button>
+      {{ end }}
+    </div>
     {{ end }}
   </div>
 </div>

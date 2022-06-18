@@ -28,6 +28,8 @@ type Take struct {
 	Seed int64 `json:"seed,omitempty"`
 	// Progress holds the value of the "progress" field.
 	Progress int `json:"progress,omitempty"`
+	// Page holds the value of the "page" field.
+	Page int `json:"page,omitempty"`
 	// Status holds the value of the "status" field.
 	Status take.Status `json:"status,omitempty"`
 	// Meta holds the value of the "meta" field.
@@ -96,7 +98,7 @@ func (*Take) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case take.FieldMeta:
 			values[i] = new([]byte)
-		case take.FieldSeed, take.FieldProgress:
+		case take.FieldSeed, take.FieldProgress, take.FieldPage:
 			values[i] = new(sql.NullInt64)
 		case take.FieldStatus:
 			values[i] = new(sql.NullString)
@@ -152,6 +154,12 @@ func (t *Take) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field progress", values[i])
 			} else if value.Valid {
 				t.Progress = int(value.Int64)
+			}
+		case take.FieldPage:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field page", values[i])
+			} else if value.Valid {
+				t.Page = int(value.Int64)
 			}
 		case take.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -235,6 +243,9 @@ func (t *Take) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("progress=")
 	builder.WriteString(fmt.Sprintf("%v", t.Progress))
+	builder.WriteString(", ")
+	builder.WriteString("page=")
+	builder.WriteString(fmt.Sprintf("%v", t.Page))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", t.Status))
