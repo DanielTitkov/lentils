@@ -27,6 +27,15 @@ func (a *App) GetTestByCode(ctx context.Context, code string, locale string) (*d
 	return a.repo.GetTestByCode(ctx, code, locale)
 }
 
+func (a *App) PrepareTestResult(ctx context.Context, take *domain.Take, locale string) (*domain.Test, error) {
+	test, err := a.repo.GetTakeData(ctx, take, locale)
+	if err != nil {
+		return nil, err
+	}
+
+	return test, nil
+}
+
 func (a *App) PrepareTest(ctx context.Context, code string, locale string, args *domain.PrepareTestArgs) (*domain.Test, *domain.Take, error) {
 	if ok := a.IsValidLocale(locale); !ok {
 		return nil, nil, fmt.Errorf("got unknown locale: %s", locale)

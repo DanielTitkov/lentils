@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"html/template"
 
 	"github.com/DanielTitkov/lentils/internal/util"
@@ -39,6 +40,7 @@ type (
 		Test             *domain.Test
 		Take             *domain.Take
 		CurrentQuestions []*domain.Question
+		Locale           string
 		TestStep         string
 		Page             int
 		// to have constants in templates
@@ -78,6 +80,7 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 			QuestionsStatus: domain.TestStepQuestions,
 			FinishStatus:    domain.TestStepFinish,
 			ResultStatus:    domain.TestStepResult,
+			Locale:          "en", // FIXME
 		}
 	}
 
@@ -143,10 +146,10 @@ func (h *Handler) Test() live.Handler {
 			return instance.withError(errors.New("user is nil")), nil
 		}
 
-		test, take, err := h.app.PrepareTest(ctx, testCode, "en", &domain.PrepareTestArgs{
+		test, take, err := h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
 			UserID:  instance.UserID,
 			Session: instance.Session,
-		}) // FIXME
+		})
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -173,13 +176,20 @@ func (h *Handler) Test() live.Handler {
 	lvh.HandleEvent(eventEndTest, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewTestInstance(s)
 
-		// var err error
-		// instance.Take, err = h.app.BeginTest(ctx, instance.Take)
-		// if err != nil {
-		// 	return instance.withError(err), nil
-		// }
-		// instance.Page = 1
-		// instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
+		var err error
+		instance.Take, err = h.app.EndTest(ctx, instance.Take)
+		if err != nil {
+			return instance.withError(err), nil
+		}
+
+		fmt.Printf("TAKE %+v\n", instance.Take) // FIXME
+
+		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Take, instance.Locale)
+		if err != nil {
+			return instance.withError(err), nil
+		}
+
+		fmt.Printf("TEST %+v\n", instance.Test) // FIXME
 
 		return instance, nil
 	})

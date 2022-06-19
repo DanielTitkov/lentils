@@ -21,7 +21,7 @@ func (r *EntgoRepository) CreateTake(ctx context.Context, tk *domain.Take) (*dom
 		return nil, err
 	}
 
-	return entToDomainTake(t), nil
+	return entToDomainTake(t, tk.UserID, tk.TestID), nil
 }
 
 func (r *EntgoRepository) UpdateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error) {
@@ -44,11 +44,10 @@ func (r *EntgoRepository) UpdateTake(ctx context.Context, tk *domain.Take) (*dom
 		return nil, err
 	}
 
-	return entToDomainTake(t), nil
+	return entToDomainTake(t, tk.UserID, tk.TestID), nil
 }
 
-func entToDomainTake(t *ent.Take) *domain.Take {
-	var uid, tid uuid.UUID
+func entToDomainTake(t *ent.Take, uid, tid uuid.UUID) *domain.Take {
 	if t.Edges.User != nil {
 		uid = t.Edges.User.ID
 	}

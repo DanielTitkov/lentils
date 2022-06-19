@@ -60,8 +60,8 @@ type (
 		Title           string // translatable
 		Description     string // translatable
 		Global          bool   // if scale can be used by more than one test
-		Items           []Item
-		Interpretations []Interpretation
+		Items           []*Item
+		Interpretations []*Interpretation
 	}
 
 	Interpretation struct {

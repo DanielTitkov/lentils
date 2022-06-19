@@ -40,6 +40,7 @@ type (
 		CreateOrUpdateTestFromArgs(context.Context, *domain.CreateTestArgs) error
 		GetTests(ctx context.Context, locale string) ([]*domain.Test, error)
 		GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error)
+		GetTakeData(ctx context.Context, tk *domain.Take, locale string) (*domain.Test, error)
 
 		// take
 		CreateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error)

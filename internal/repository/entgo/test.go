@@ -6,6 +6,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
+
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
@@ -17,6 +22,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
 	"github.com/DanielTitkov/lentils/internal/util"
+	"github.com/google/uuid"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
 )
@@ -74,6 +80,48 @@ func (r *EntgoRepository) GetTestByCode(ctx context.Context, code string, locale
 	// TODO
 
 	return entToDomainTest(tst, locale), nil
+}
+
+func (r *EntgoRepository) GetTakeData(ctx context.Context, tk *domain.Take, locale string) (*domain.Test, error) {
+	if tk.ID == uuid.Nil {
+		return nil, errors.New("take id is nil")
+	}
+
+	if tk.TestID == uuid.Nil {
+		return nil, errors.New("test id is nil")
+	}
+
+	test, err := r.client.Test.Query().
+		Where(test.IDEQ(tk.TestID)).
+		WithDisplay().
+		WithTranslations(func(q *ent.TestTranslationQuery) {
+			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
+		}).
+		WithScales(func(sq *ent.ScaleQuery) {
+			sq.WithItems(func(iq *ent.ItemQuery) {
+				iq.WithResponses(func(rq *ent.ResponseQuery) {
+					rq.Where(response.HasTakeWith(take.IDEQ(tk.ID)))
+				})
+				iq.WithTranslations(func(itq *ent.ItemTranslationQuery) {
+					itq.Where(itemtranslation.LocaleEQ(itemtranslation.Locale(locale)))
+				})
+				iq.WithScaleItem() // FIXME: what if item belongs to multiple scales?
+			})
+			sq.WithTranslations(func(stq *ent.ScaleTranslationQuery) {
+				stq.Where(scaletranslation.LocaleEQ(scaletranslation.Locale(locale)))
+			})
+			sq.WithInterpretations(func(nq *ent.InterpretationQuery) {
+				nq.WithTranslations(func(ntq *ent.InterpretationTranslationQuery) {
+					ntq.Where(interpretationtranslation.LocaleEQ(interpretationtranslation.Locale(locale)))
+				})
+			})
+		}).
+		Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return entToDomainTest(test, locale), nil
 }
 
 // TODO: function too long, refactor please
@@ -403,6 +451,13 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		}
 	}
 
+	var scales []*domain.Scale
+	if t.Edges.Scales != nil {
+		for _, s := range t.Edges.Scales {
+			scales = append(scales, entToDomainScale(s, locale))
+		}
+	}
+
 	return &domain.Test{
 		ID:               t.ID,
 		Code:             t.Code,
@@ -413,6 +468,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Instruction:      instruction,
 		Display:          display,
 		Questions:        questions,
+		Scales:           scales,
 	}
 }
 
