@@ -189,7 +189,7 @@ var (
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true},
 		{Name: "global", Type: field.TypeBool, Default: false},
-		{Name: "type", Type: field.TypeEnum, Enums: []string{"sten"}, Default: "sten"},
+		{Name: "type", Type: field.TypeEnum, Enums: []string{"sten", "mean", "sum", "zscore"}, Default: "sten"},
 	}
 	// ScalesTable holds the schema information for the "scales" table.
 	ScalesTable = &schema.Table{
@@ -257,7 +257,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1655672956},
+		{Name: "seed", Type: field.TypeInt64, Default: 1655842866},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
 		{Name: "page", Type: field.TypeInt, Default: 0},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"intro", "questions", "finish", "result"}, Default: "intro"},

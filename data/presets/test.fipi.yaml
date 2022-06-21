@@ -13,7 +13,7 @@ translations:
     instruction: Ответьте на все вопросы (их всего 5!)
 scales: 
   - code: fipi-scale-1-extraversion
-    type: sten
+    type: mean
     translations:
       - locale: en
         title: FIPI-Extraversion
@@ -31,7 +31,7 @@ scales:
           - locale: ru
             content: Экстраверт, полный энтузиазма.
   - code: fipi-scale-2-agreeableness
-    type: sten
+    type: mean
     translations:
       - locale: en
         title: FIPI-Agreeableness
@@ -49,7 +49,7 @@ scales:
           - locale: ru
             content: Критичный, придирчивый.
   - code: fipi-scale-3-conscientiousness
-    type: sten
+    type: mean
     translations:
       - locale: en
         title: FIPI-Conscientiousness
@@ -67,7 +67,7 @@ scales:
           - locale: ru
             content: Надежный, дисциплинированный.
   - code: fipi-scale-4-stability
-    type: sten
+    type: mean
     translations:
       - locale: en
         title: FIPI-Emotional Stability
@@ -85,7 +85,7 @@ scales:
           - locale: ru
             content: Тревожный, легко расстраиваемый.
   - code: fipi-scale-5-openness
-    type: sten
+    type: mean
     translations:
       - locale: en
         title: FIPI-Openness to Experience

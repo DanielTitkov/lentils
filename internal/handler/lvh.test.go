@@ -177,6 +177,7 @@ func (h *Handler) Test() live.Handler {
 		instance := h.NewTestInstance(s)
 
 		var err error
+		// update test status
 		instance.Take, err = h.app.EndTest(ctx, instance.Take)
 		if err != nil {
 			return instance.withError(err), nil
@@ -184,12 +185,17 @@ func (h *Handler) Test() live.Handler {
 
 		fmt.Printf("TAKE %+v\n", instance.Take) // FIXME
 
+		// load all test data from the db
 		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Take, instance.Locale)
 		if err != nil {
 			return instance.withError(err), nil
 		}
 
 		fmt.Printf("TEST %+v\n", instance.Test) // FIXME
+		// calculate test results
+		if err := instance.Test.CalculateResult(); err != nil {
+			return instance.withError(err), nil
+		}
 
 		return instance, nil
 	})

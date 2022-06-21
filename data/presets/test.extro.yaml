@@ -1,0 +1,82 @@
+code: extro
+published: true
+availableLocales: ["en", "ru"]
+forceUpdate: true
+translations:
+  - locale: en
+    title: EXTRO
+    description: Sample extraversion test of 3 questions
+    instruction: Answer all the questions (there's only 3 of them!)
+  - locale: ru
+    title: ТИПИ
+    description: Дурацкий тест экстраверсии из 3 вопросов. 
+    instruction: Ответьте на все вопросы (их всего 3!)
+scales: 
+  - code: extro-scale-1-extraversion
+    type: zscore
+    translations:
+      - locale: en
+        title: EXTRO-Extraversion
+        description: Extraversion scale
+      - locale: ru
+        title: ТИПИ-Экстраверсия
+        description: Шкала экстраверсии
+    items:
+      - code: extro-item-1
+        steps: 7
+        reverse: false
+        translations: 
+          - locale: en
+            content: Extraverted, enthusiastic.
+          - locale: ru
+            content: Экстраверт, полный энтузиазма.
+      - code: extro-item-2
+        steps: 7
+        reverse: true
+        translations: 
+          - locale: en
+            content: Reserved, quiet.
+          - locale: ru
+            content: Сдержанный, тихий.
+      - code: extro-item-3
+        steps: 7
+        reverse: false
+        translations: 
+          - locale: en
+            content: Outgoing, always active.
+          - locale: ru
+            content: Общительный, постоянно активный.
+questions: 
+  - code: extro-question-1
+    order: 10
+    type: simple
+    items: 
+      - code: extro-item-1
+    translations: 
+      - locale: en
+        content: "How well this describes you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"
+  - code: extro-question-2
+    order: 20
+    type: simple
+    items: 
+      - code: extro-item-2
+    translations: 
+      - locale: en
+        content: "How well this describes you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"
+  - code: extro-question-3
+    order: 30
+    type: simple
+    items: 
+      - code: extro-item-3
+    translations: 
+      - locale: en
+        content: "How well this describes you?"
+      - locale: ru
+        content: "Оцените, насколько вам это подходит?"
+display:
+  questionsPerPage: 1
+  randomizeOrder: true

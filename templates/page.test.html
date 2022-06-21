@@ -59,6 +59,14 @@
 
   {{ if eq .Take.Status .FinishStatus }}
   <p>test result will be here</p>
+  <div>
+    {{ range $i, $scale := .Test.Scales }}
+    <div class="block">
+      <p>{{ $scale.Title }}</p>
+      <p>{{ $scale.Result }}</p>
+    </div>
+    {{ end }}
+  </div>
   {{ end }}
 </main>
 {{ end }}

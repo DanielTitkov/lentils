@@ -8,7 +8,10 @@ const (
 	GenerateQuestionsNone     = "none"
 	GenerateQuestionsEachItem = "each-item"
 	// scale types
-	ScaleTypeSten = "sten"
+	ScaleTypeSten   = "sten"
+	ScaleTypeSum    = "sum"
+	ScaleTypeZScore = "zscore"
+	ScaleTypeMean   = "mean"
 	// question types
 	QuestionTypeSimple = "simple"
 	// test steps

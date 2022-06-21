@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
 	"gopkg.in/yaml.v2"
@@ -46,15 +47,13 @@ func (a *App) PrepareTest(ctx context.Context, code string, locale string, args 
 		return nil, nil, err
 	}
 
-	// TODO: probably move to test usecase
-	if test.Display.RandomizeOrder {
-	} else {
-		test.OrderQuestions()
-	}
+	// TODO: in take is loaded from db, use old seed
+	seed := time.Now().Unix()
 
 	takeMeta := make(map[string]interface{})
 	takeMeta["session"] = args.Session
 	take, err := a.repo.CreateTake(ctx, &domain.Take{
+		Seed:   seed,
 		UserID: args.UserID,
 		TestID: test.ID,
 		Meta:   takeMeta,
@@ -62,6 +61,9 @@ func (a *App) PrepareTest(ctx context.Context, code string, locale string, args 
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// establish questions order (random or fixed)
+	test.OrderQuestions(seed)
 
 	return test, take, nil
 }

@@ -3,14 +3,22 @@ package domain
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"reflect"
 	"sort"
 )
 
-func (t *Test) OrderQuestions() {
-	sort.Slice(t.Questions, func(i, j int) bool {
-		return t.Questions[i].Order < t.Questions[j].Order
-	})
+func (t *Test) OrderQuestions(seed int64) {
+	if t.Display.RandomizeOrder {
+		rand.Seed(seed)
+		rand.Shuffle(len(t.Questions), func(i, j int) {
+			t.Questions[i], t.Questions[j] = t.Questions[j], t.Questions[i]
+		})
+	} else {
+		sort.Slice(t.Questions, func(i, j int) bool {
+			return t.Questions[i].Order < t.Questions[j].Order
+		})
+	}
 }
 
 func (t *Test) PageCount() int {
@@ -91,6 +99,13 @@ func (t *Test) IsNotDone() bool {
 }
 
 func (t *Test) CalculateResult() error {
+	for _, s := range t.Scales {
+		err := s.CalculateResult()
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

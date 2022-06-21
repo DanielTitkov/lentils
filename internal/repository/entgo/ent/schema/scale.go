@@ -23,6 +23,9 @@ func (Scale) Fields() []ent.Field {
 		field.Bool("global").Default(false),
 		field.Enum("type").Values(
 			domain.ScaleTypeSten,
+			domain.ScaleTypeMean,
+			domain.ScaleTypeSum,
+			domain.ScaleTypeZScore,
 		).Default(domain.ScaleTypeSten),
 	}
 }

@@ -62,6 +62,23 @@ type (
 		Global          bool   // if scale can be used by more than one test
 		Items           []*Item
 		Interpretations []*Interpretation
+		Result          *ScaleResult // not save in db as yet
+	}
+
+	Norm struct {
+		ID    uuid.UUID
+		Mean  float64
+		Sigma float64
+	}
+
+	ScaleResult struct {
+		Value          float64
+		Min            float64
+		Max            float64
+		Interpretation *Interpretation
+		Formula        string
+		Elaplsed       time.Duration
+		Meta           map[string]interface{}
 	}
 
 	Interpretation struct {
