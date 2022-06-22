@@ -66,9 +66,24 @@ type (
 	}
 
 	Norm struct {
-		ID    uuid.UUID
-		Mean  float64
-		Sigma float64
+		ID       uuid.UUID
+		SampleID uuid.UUID
+		ScaleID  uuid.UUID
+		Name     string
+		Base     int
+		Mean     float64
+		Sigma    float64
+		Meta     map[string]interface{}
+	}
+
+	Sample struct {
+		ID       uuid.UUID
+		Code     string
+		Criteria SampleCriteria
+	}
+
+	SampleCriteria struct {
+		NotSuspicious bool `json:"notSuspicious,omitempty"`
 	}
 
 	ScaleResult struct {

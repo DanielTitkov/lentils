@@ -28,9 +28,11 @@ type hooks struct {
 	InterpretationTranslation []ent.Hook
 	Item                      []ent.Hook
 	ItemTranslation           []ent.Hook
+	Norm                      []ent.Hook
 	Question                  []ent.Hook
 	QuestionTranslation       []ent.Hook
 	Response                  []ent.Hook
+	Sample                    []ent.Hook
 	Scale                     []ent.Hook
 	ScaleItem                 []ent.Hook
 	ScaleTranslation          []ent.Hook

@@ -18,6 +18,9 @@ type Item func(*sql.Selector)
 // ItemTranslation is the predicate function for itemtranslation builders.
 type ItemTranslation func(*sql.Selector)
 
+// Norm is the predicate function for norm builders.
+type Norm func(*sql.Selector)
+
 // Question is the predicate function for question builders.
 type Question func(*sql.Selector)
 
@@ -26,6 +29,9 @@ type QuestionTranslation func(*sql.Selector)
 
 // Response is the predicate function for response builders.
 type Response func(*sql.Selector)
+
+// Sample is the predicate function for sample builders.
+type Sample func(*sql.Selector)
 
 // Scale is the predicate function for scale builders.
 type Scale func(*sql.Selector)

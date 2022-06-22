@@ -49,6 +49,12 @@ type (
 		// response
 		AddOrUpdateResponse(ctx context.Context, takeID uuid.UUID, itm *domain.Item) (*domain.Response, error)
 
+		// sample
+		CreateOrUpdateSample(ctx context.Context, smp *domain.Sample) (*domain.Sample, error)
+
+		// norm
+		CreateOrUpdateNorm(ctx context.Context, nrm *domain.Norm) (*domain.Norm, error)
+
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)
 	}
@@ -78,6 +84,11 @@ func New(
 	}
 
 	err = app.loadTestPresets()
+	if err != nil {
+		return nil, err
+	}
+
+	err = app.initSamples()
 	if err != nil {
 		return nil, err
 	}

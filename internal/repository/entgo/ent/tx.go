@@ -20,12 +20,16 @@ type Tx struct {
 	Item *ItemClient
 	// ItemTranslation is the client for interacting with the ItemTranslation builders.
 	ItemTranslation *ItemTranslationClient
+	// Norm is the client for interacting with the Norm builders.
+	Norm *NormClient
 	// Question is the client for interacting with the Question builders.
 	Question *QuestionClient
 	// QuestionTranslation is the client for interacting with the QuestionTranslation builders.
 	QuestionTranslation *QuestionTranslationClient
 	// Response is the client for interacting with the Response builders.
 	Response *ResponseClient
+	// Sample is the client for interacting with the Sample builders.
+	Sample *SampleClient
 	// Scale is the client for interacting with the Scale builders.
 	Scale *ScaleClient
 	// ScaleItem is the client for interacting with the ScaleItem builders.
@@ -183,9 +187,11 @@ func (tx *Tx) init() {
 	tx.InterpretationTranslation = NewInterpretationTranslationClient(tx.config)
 	tx.Item = NewItemClient(tx.config)
 	tx.ItemTranslation = NewItemTranslationClient(tx.config)
+	tx.Norm = NewNormClient(tx.config)
 	tx.Question = NewQuestionClient(tx.config)
 	tx.QuestionTranslation = NewQuestionTranslationClient(tx.config)
 	tx.Response = NewResponseClient(tx.config)
+	tx.Sample = NewSampleClient(tx.config)
 	tx.Scale = NewScaleClient(tx.config)
 	tx.ScaleItem = NewScaleItemClient(tx.config)
 	tx.ScaleTranslation = NewScaleTranslationClient(tx.config)

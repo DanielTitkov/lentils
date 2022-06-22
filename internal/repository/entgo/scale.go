@@ -1,9 +1,23 @@
 package entgo
 
 import (
+	"context"
+
 	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 )
+
+func (r *EntgoRepository) GetDataForNormCalculation(ctx context.Context, crit domain.SampleCriteria) error {
+
+	// select s.id as scale_id, t.id as take_id, r.value, si.reverse, t.status from scales s
+	// join scale_items si on si.scale_id = s.id
+	// join responses r on si.item_id  = r.item_responses
+	// join takes t on r.take_responses = t.id
+	// where t.status = 'finish'
+	// order by s.id, t.id
+
+	return nil
+}
 
 func entToDomainScale(s *ent.Scale, locale string) *domain.Scale {
 	title := "no title for this locale: " + locale

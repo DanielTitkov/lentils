@@ -14,9 +14,11 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
@@ -50,9 +52,11 @@ func columnChecker(table string) func(string) error {
 		interpretationtranslation.Table: interpretationtranslation.ValidColumn,
 		item.Table:                      item.ValidColumn,
 		itemtranslation.Table:           itemtranslation.ValidColumn,
+		norm.Table:                      norm.ValidColumn,
 		question.Table:                  question.ValidColumn,
 		questiontranslation.Table:       questiontranslation.ValidColumn,
 		response.Table:                  response.ValidColumn,
+		sample.Table:                    sample.ValidColumn,
 		scale.Table:                     scale.ValidColumn,
 		scaleitem.Table:                 scaleitem.ValidColumn,
 		scaletranslation.Table:          scaletranslation.ValidColumn,

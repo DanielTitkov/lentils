@@ -14,9 +14,11 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
@@ -45,12 +47,16 @@ type Client struct {
 	Item *ItemClient
 	// ItemTranslation is the client for interacting with the ItemTranslation builders.
 	ItemTranslation *ItemTranslationClient
+	// Norm is the client for interacting with the Norm builders.
+	Norm *NormClient
 	// Question is the client for interacting with the Question builders.
 	Question *QuestionClient
 	// QuestionTranslation is the client for interacting with the QuestionTranslation builders.
 	QuestionTranslation *QuestionTranslationClient
 	// Response is the client for interacting with the Response builders.
 	Response *ResponseClient
+	// Sample is the client for interacting with the Sample builders.
+	Sample *SampleClient
 	// Scale is the client for interacting with the Scale builders.
 	Scale *ScaleClient
 	// ScaleItem is the client for interacting with the ScaleItem builders.
@@ -86,9 +92,11 @@ func (c *Client) init() {
 	c.InterpretationTranslation = NewInterpretationTranslationClient(c.config)
 	c.Item = NewItemClient(c.config)
 	c.ItemTranslation = NewItemTranslationClient(c.config)
+	c.Norm = NewNormClient(c.config)
 	c.Question = NewQuestionClient(c.config)
 	c.QuestionTranslation = NewQuestionTranslationClient(c.config)
 	c.Response = NewResponseClient(c.config)
+	c.Sample = NewSampleClient(c.config)
 	c.Scale = NewScaleClient(c.config)
 	c.ScaleItem = NewScaleItemClient(c.config)
 	c.ScaleTranslation = NewScaleTranslationClient(c.config)
@@ -135,9 +143,11 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		InterpretationTranslation: NewInterpretationTranslationClient(cfg),
 		Item:                      NewItemClient(cfg),
 		ItemTranslation:           NewItemTranslationClient(cfg),
+		Norm:                      NewNormClient(cfg),
 		Question:                  NewQuestionClient(cfg),
 		QuestionTranslation:       NewQuestionTranslationClient(cfg),
 		Response:                  NewResponseClient(cfg),
+		Sample:                    NewSampleClient(cfg),
 		Scale:                     NewScaleClient(cfg),
 		ScaleItem:                 NewScaleItemClient(cfg),
 		ScaleTranslation:          NewScaleTranslationClient(cfg),
@@ -170,9 +180,11 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		InterpretationTranslation: NewInterpretationTranslationClient(cfg),
 		Item:                      NewItemClient(cfg),
 		ItemTranslation:           NewItemTranslationClient(cfg),
+		Norm:                      NewNormClient(cfg),
 		Question:                  NewQuestionClient(cfg),
 		QuestionTranslation:       NewQuestionTranslationClient(cfg),
 		Response:                  NewResponseClient(cfg),
+		Sample:                    NewSampleClient(cfg),
 		Scale:                     NewScaleClient(cfg),
 		ScaleItem:                 NewScaleItemClient(cfg),
 		ScaleTranslation:          NewScaleTranslationClient(cfg),
@@ -215,9 +227,11 @@ func (c *Client) Use(hooks ...Hook) {
 	c.InterpretationTranslation.Use(hooks...)
 	c.Item.Use(hooks...)
 	c.ItemTranslation.Use(hooks...)
+	c.Norm.Use(hooks...)
 	c.Question.Use(hooks...)
 	c.QuestionTranslation.Use(hooks...)
 	c.Response.Use(hooks...)
+	c.Sample.Use(hooks...)
 	c.Scale.Use(hooks...)
 	c.ScaleItem.Use(hooks...)
 	c.ScaleTranslation.Use(hooks...)
@@ -733,6 +747,128 @@ func (c *ItemTranslationClient) Hooks() []Hook {
 	return c.hooks.ItemTranslation
 }
 
+// NormClient is a client for the Norm schema.
+type NormClient struct {
+	config
+}
+
+// NewNormClient returns a client for the Norm from the given config.
+func NewNormClient(c config) *NormClient {
+	return &NormClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `norm.Hooks(f(g(h())))`.
+func (c *NormClient) Use(hooks ...Hook) {
+	c.hooks.Norm = append(c.hooks.Norm, hooks...)
+}
+
+// Create returns a builder for creating a Norm entity.
+func (c *NormClient) Create() *NormCreate {
+	mutation := newNormMutation(c.config, OpCreate)
+	return &NormCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Norm entities.
+func (c *NormClient) CreateBulk(builders ...*NormCreate) *NormCreateBulk {
+	return &NormCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Norm.
+func (c *NormClient) Update() *NormUpdate {
+	mutation := newNormMutation(c.config, OpUpdate)
+	return &NormUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *NormClient) UpdateOne(n *Norm) *NormUpdateOne {
+	mutation := newNormMutation(c.config, OpUpdateOne, withNorm(n))
+	return &NormUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *NormClient) UpdateOneID(id uuid.UUID) *NormUpdateOne {
+	mutation := newNormMutation(c.config, OpUpdateOne, withNormID(id))
+	return &NormUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Norm.
+func (c *NormClient) Delete() *NormDelete {
+	mutation := newNormMutation(c.config, OpDelete)
+	return &NormDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *NormClient) DeleteOne(n *Norm) *NormDeleteOne {
+	return c.DeleteOneID(n.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *NormClient) DeleteOneID(id uuid.UUID) *NormDeleteOne {
+	builder := c.Delete().Where(norm.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &NormDeleteOne{builder}
+}
+
+// Query returns a query builder for Norm.
+func (c *NormClient) Query() *NormQuery {
+	return &NormQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Norm entity by its id.
+func (c *NormClient) Get(ctx context.Context, id uuid.UUID) (*Norm, error) {
+	return c.Query().Where(norm.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *NormClient) GetX(ctx context.Context, id uuid.UUID) *Norm {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QuerySample queries the sample edge of a Norm.
+func (c *NormClient) QuerySample(n *Norm) *SampleQuery {
+	query := &SampleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := n.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(norm.Table, norm.FieldID, id),
+			sqlgraph.To(sample.Table, sample.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, norm.SampleTable, norm.SampleColumn),
+		)
+		fromV = sqlgraph.Neighbors(n.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryScale queries the scale edge of a Norm.
+func (c *NormClient) QueryScale(n *Norm) *ScaleQuery {
+	query := &ScaleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := n.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(norm.Table, norm.FieldID, id),
+			sqlgraph.To(scale.Table, scale.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, norm.ScaleTable, norm.ScaleColumn),
+		)
+		fromV = sqlgraph.Neighbors(n.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *NormClient) Hooks() []Hook {
+	return c.hooks.Norm
+}
+
 // QuestionClient is a client for the Question schema.
 type QuestionClient struct {
 	config
@@ -1099,6 +1235,112 @@ func (c *ResponseClient) Hooks() []Hook {
 	return c.hooks.Response
 }
 
+// SampleClient is a client for the Sample schema.
+type SampleClient struct {
+	config
+}
+
+// NewSampleClient returns a client for the Sample from the given config.
+func NewSampleClient(c config) *SampleClient {
+	return &SampleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sample.Hooks(f(g(h())))`.
+func (c *SampleClient) Use(hooks ...Hook) {
+	c.hooks.Sample = append(c.hooks.Sample, hooks...)
+}
+
+// Create returns a builder for creating a Sample entity.
+func (c *SampleClient) Create() *SampleCreate {
+	mutation := newSampleMutation(c.config, OpCreate)
+	return &SampleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Sample entities.
+func (c *SampleClient) CreateBulk(builders ...*SampleCreate) *SampleCreateBulk {
+	return &SampleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Sample.
+func (c *SampleClient) Update() *SampleUpdate {
+	mutation := newSampleMutation(c.config, OpUpdate)
+	return &SampleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SampleClient) UpdateOne(s *Sample) *SampleUpdateOne {
+	mutation := newSampleMutation(c.config, OpUpdateOne, withSample(s))
+	return &SampleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SampleClient) UpdateOneID(id uuid.UUID) *SampleUpdateOne {
+	mutation := newSampleMutation(c.config, OpUpdateOne, withSampleID(id))
+	return &SampleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Sample.
+func (c *SampleClient) Delete() *SampleDelete {
+	mutation := newSampleMutation(c.config, OpDelete)
+	return &SampleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SampleClient) DeleteOne(s *Sample) *SampleDeleteOne {
+	return c.DeleteOneID(s.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *SampleClient) DeleteOneID(id uuid.UUID) *SampleDeleteOne {
+	builder := c.Delete().Where(sample.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SampleDeleteOne{builder}
+}
+
+// Query returns a query builder for Sample.
+func (c *SampleClient) Query() *SampleQuery {
+	return &SampleQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Sample entity by its id.
+func (c *SampleClient) Get(ctx context.Context, id uuid.UUID) (*Sample, error) {
+	return c.Query().Where(sample.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SampleClient) GetX(ctx context.Context, id uuid.UUID) *Sample {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryNorms queries the norms edge of a Sample.
+func (c *SampleClient) QueryNorms(s *Sample) *NormQuery {
+	query := &NormQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sample.Table, sample.FieldID, id),
+			sqlgraph.To(norm.Table, norm.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sample.NormsTable, sample.NormsColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *SampleClient) Hooks() []Hook {
+	return c.hooks.Sample
+}
+
 // ScaleClient is a client for the Scale schema.
 type ScaleClient struct {
 	config
@@ -1225,6 +1467,22 @@ func (c *ScaleClient) QueryTranslations(s *Scale) *ScaleTranslationQuery {
 			sqlgraph.From(scale.Table, scale.FieldID, id),
 			sqlgraph.To(scaletranslation.Table, scaletranslation.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, scale.TranslationsTable, scale.TranslationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryNorms queries the norms edge of a Scale.
+func (c *ScaleClient) QueryNorms(s *Scale) *NormQuery {
+	query := &NormQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, id),
+			sqlgraph.To(norm.Table, norm.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, scale.NormsTable, scale.NormsColumn),
 		)
 		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
 		return fromV, nil

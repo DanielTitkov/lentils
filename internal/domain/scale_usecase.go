@@ -56,9 +56,14 @@ func resolveScaleSum(s *Scale, norm *Norm) (*ScaleResult, error) {
 		if itm.Response == nil {
 			continue
 		}
-		sum += float64(itm.Response.Value)
+		if itm.Reverse {
+			sum += float64(itm.Steps - 1 - itm.Response.Value)
+			vals = append(vals, fmt.Sprintf("(%d-%d)", itm.Steps-1, itm.Response.Value))
+		} else {
+			sum += float64(itm.Response.Value)
+			vals = append(vals, strconv.Itoa(itm.Response.Value))
+		}
 		max += float64(itm.Steps - 1)
-		vals = append(vals, strconv.Itoa(itm.Response.Value))
 	}
 
 	formula := fmt.Sprintf("Sum=%s=%.3f", strings.Join(vals, "+"), sum)
@@ -72,20 +77,14 @@ func resolveScaleSum(s *Scale, norm *Norm) (*ScaleResult, error) {
 }
 
 func resolveScaleMean(s *Scale, norm *Norm) (*ScaleResult, error) {
-	var sum, sumMax float64
-	var vals []string
-	for _, itm := range s.Items {
-		if itm.Response == nil {
-			continue
-		}
-		sum += float64(itm.Response.Value)
-		sumMax += float64(itm.Steps - 1)
-		vals = append(vals, strconv.Itoa(itm.Response.Value))
+	sumRes, err := resolveScaleSum(s, norm)
+	if err != nil {
+		return nil, err
 	}
 
-	mean := sum / float64(len(s.Items))
-	max := sumMax / float64(len(s.Items))
-	formula := fmt.Sprintf("M=(%s)/%d=%.3f", strings.Join(vals, "+"), len(s.Items), mean)
+	mean := sumRes.Value / float64(len(s.Items))
+	max := sumRes.Max / float64(len(s.Items))
+	formula := fmt.Sprintf("%s; M=%.3f/%d=%.3f", sumRes.Formula, sumRes.Value, len(s.Items), mean)
 
 	return &ScaleResult{
 		Value:   mean,

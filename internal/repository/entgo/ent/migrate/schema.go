@@ -100,6 +100,46 @@ var (
 			},
 		},
 	}
+	// NormsColumns holds the columns for the "norms" table.
+	NormsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString},
+		{Name: "base", Type: field.TypeInt, Default: 0},
+		{Name: "mean", Type: field.TypeFloat64},
+		{Name: "sigma", Type: field.TypeFloat64},
+		{Name: "meta", Type: field.TypeJSON, Nullable: true},
+		{Name: "sample_norms", Type: field.TypeUUID},
+		{Name: "scale_norms", Type: field.TypeUUID},
+	}
+	// NormsTable holds the schema information for the "norms" table.
+	NormsTable = &schema.Table{
+		Name:       "norms",
+		Columns:    NormsColumns,
+		PrimaryKey: []*schema.Column{NormsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "norms_samples_norms",
+				Columns:    []*schema.Column{NormsColumns[8]},
+				RefColumns: []*schema.Column{SamplesColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "norms_scales_norms",
+				Columns:    []*schema.Column{NormsColumns[9]},
+				RefColumns: []*schema.Column{ScalesColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "norm_sample_norms_scale_norms",
+				Unique:  true,
+				Columns: []*schema.Column{NormsColumns[8], NormsColumns[9]},
+			},
+		},
+	}
 	// QuestionsColumns holds the columns for the "questions" table.
 	QuestionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -182,6 +222,20 @@ var (
 			},
 		},
 	}
+	// SamplesColumns holds the columns for the "samples" table.
+	SamplesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "criteria", Type: field.TypeJSON},
+	}
+	// SamplesTable holds the schema information for the "samples" table.
+	SamplesTable = &schema.Table{
+		Name:       "samples",
+		Columns:    SamplesColumns,
+		PrimaryKey: []*schema.Column{SamplesColumns[0]},
+	}
 	// ScalesColumns holds the columns for the "scales" table.
 	ScalesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -257,7 +311,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1655842866},
+		{Name: "seed", Type: field.TypeInt64, Default: 1655931649},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
 		{Name: "page", Type: field.TypeInt, Default: 0},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"intro", "questions", "finish", "result"}, Default: "intro"},
@@ -495,9 +549,11 @@ var (
 		InterpretationTranslationsTable,
 		ItemsTable,
 		ItemTranslationsTable,
+		NormsTable,
 		QuestionsTable,
 		QuestionTranslationsTable,
 		ResponsesTable,
+		SamplesTable,
 		ScalesTable,
 		ScaleItemsTable,
 		ScaleTranslationsTable,
@@ -517,6 +573,8 @@ func init() {
 	InterpretationsTable.ForeignKeys[0].RefTable = ScalesTable
 	InterpretationTranslationsTable.ForeignKeys[0].RefTable = InterpretationsTable
 	ItemTranslationsTable.ForeignKeys[0].RefTable = ItemsTable
+	NormsTable.ForeignKeys[0].RefTable = SamplesTable
+	NormsTable.ForeignKeys[1].RefTable = ScalesTable
 	QuestionTranslationsTable.ForeignKeys[0].RefTable = QuestionsTable
 	ResponsesTable.ForeignKeys[0].RefTable = ItemsTable
 	ResponsesTable.ForeignKeys[1].RefTable = TakesTable

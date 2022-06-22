@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
@@ -34,6 +35,7 @@ type ScaleQuery struct {
 	withItems           *ItemQuery
 	withInterpretations *InterpretationQuery
 	withTranslations    *ScaleTranslationQuery
+	withNorms           *NormQuery
 	withTest            *TestQuery
 	withScaleItem       *ScaleItemQuery
 	// intermediate query (i.e. traversal path).
@@ -131,6 +133,28 @@ func (sq *ScaleQuery) QueryTranslations() *ScaleTranslationQuery {
 			sqlgraph.From(scale.Table, scale.FieldID, selector),
 			sqlgraph.To(scaletranslation.Table, scaletranslation.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, scale.TranslationsTable, scale.TranslationsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryNorms chains the current query on the "norms" edge.
+func (sq *ScaleQuery) QueryNorms() *NormQuery {
+	query := &NormQuery{config: sq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, selector),
+			sqlgraph.To(norm.Table, norm.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, scale.NormsTable, scale.NormsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
 		return fromU, nil
@@ -366,6 +390,7 @@ func (sq *ScaleQuery) Clone() *ScaleQuery {
 		withItems:           sq.withItems.Clone(),
 		withInterpretations: sq.withInterpretations.Clone(),
 		withTranslations:    sq.withTranslations.Clone(),
+		withNorms:           sq.withNorms.Clone(),
 		withTest:            sq.withTest.Clone(),
 		withScaleItem:       sq.withScaleItem.Clone(),
 		// clone intermediate query.
@@ -405,6 +430,17 @@ func (sq *ScaleQuery) WithTranslations(opts ...func(*ScaleTranslationQuery)) *Sc
 		opt(query)
 	}
 	sq.withTranslations = query
+	return sq
+}
+
+// WithNorms tells the query-builder to eager-load the nodes that are connected to
+// the "norms" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *ScaleQuery) WithNorms(opts ...func(*NormQuery)) *ScaleQuery {
+	query := &NormQuery{config: sq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withNorms = query
 	return sq
 }
 
@@ -500,10 +536,11 @@ func (sq *ScaleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Scale,
 	var (
 		nodes       = []*Scale{}
 		_spec       = sq.querySpec()
-		loadedTypes = [5]bool{
+		loadedTypes = [6]bool{
 			sq.withItems != nil,
 			sq.withInterpretations != nil,
 			sq.withTranslations != nil,
+			sq.withNorms != nil,
 			sq.withTest != nil,
 			sq.withScaleItem != nil,
 		}
@@ -635,6 +672,35 @@ func (sq *ScaleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Scale,
 				return nil, fmt.Errorf(`unexpected foreign-key "scale_translations" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Translations = append(node.Edges.Translations, n)
+		}
+	}
+
+	if query := sq.withNorms; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[uuid.UUID]*Scale)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Norms = []*Norm{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Norm(func(s *sql.Selector) {
+			s.Where(sql.InValues(scale.NormsColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.scale_norms
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "scale_norms" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "scale_norms" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Norms = append(node.Edges.Norms, n)
 		}
 	}
 

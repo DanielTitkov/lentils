@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
@@ -112,6 +113,21 @@ func (su *ScaleUpdate) AddTranslations(s ...*ScaleTranslation) *ScaleUpdate {
 	return su.AddTranslationIDs(ids...)
 }
 
+// AddNormIDs adds the "norms" edge to the Norm entity by IDs.
+func (su *ScaleUpdate) AddNormIDs(ids ...uuid.UUID) *ScaleUpdate {
+	su.mutation.AddNormIDs(ids...)
+	return su
+}
+
+// AddNorms adds the "norms" edges to the Norm entity.
+func (su *ScaleUpdate) AddNorms(n ...*Norm) *ScaleUpdate {
+	ids := make([]uuid.UUID, len(n))
+	for i := range n {
+		ids[i] = n[i].ID
+	}
+	return su.AddNormIDs(ids...)
+}
+
 // AddTestIDs adds the "test" edge to the Test entity by IDs.
 func (su *ScaleUpdate) AddTestIDs(ids ...uuid.UUID) *ScaleUpdate {
 	su.mutation.AddTestIDs(ids...)
@@ -193,6 +209,27 @@ func (su *ScaleUpdate) RemoveTranslations(s ...*ScaleTranslation) *ScaleUpdate {
 		ids[i] = s[i].ID
 	}
 	return su.RemoveTranslationIDs(ids...)
+}
+
+// ClearNorms clears all "norms" edges to the Norm entity.
+func (su *ScaleUpdate) ClearNorms() *ScaleUpdate {
+	su.mutation.ClearNorms()
+	return su
+}
+
+// RemoveNormIDs removes the "norms" edge to Norm entities by IDs.
+func (su *ScaleUpdate) RemoveNormIDs(ids ...uuid.UUID) *ScaleUpdate {
+	su.mutation.RemoveNormIDs(ids...)
+	return su
+}
+
+// RemoveNorms removes "norms" edges to Norm entities.
+func (su *ScaleUpdate) RemoveNorms(n ...*Norm) *ScaleUpdate {
+	ids := make([]uuid.UUID, len(n))
+	for i := range n {
+		ids[i] = n[i].ID
+	}
+	return su.RemoveNormIDs(ids...)
 }
 
 // ClearTest clears all "test" edges to the Test entity.
@@ -508,6 +545,60 @@ func (su *ScaleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if su.mutation.NormsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   scale.NormsTable,
+			Columns: []string{scale.NormsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: norm.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.RemovedNormsIDs(); len(nodes) > 0 && !su.mutation.NormsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   scale.NormsTable,
+			Columns: []string{scale.NormsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: norm.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.NormsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   scale.NormsTable,
+			Columns: []string{scale.NormsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: norm.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if su.mutation.TestCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -660,6 +751,21 @@ func (suo *ScaleUpdateOne) AddTranslations(s ...*ScaleTranslation) *ScaleUpdateO
 	return suo.AddTranslationIDs(ids...)
 }
 
+// AddNormIDs adds the "norms" edge to the Norm entity by IDs.
+func (suo *ScaleUpdateOne) AddNormIDs(ids ...uuid.UUID) *ScaleUpdateOne {
+	suo.mutation.AddNormIDs(ids...)
+	return suo
+}
+
+// AddNorms adds the "norms" edges to the Norm entity.
+func (suo *ScaleUpdateOne) AddNorms(n ...*Norm) *ScaleUpdateOne {
+	ids := make([]uuid.UUID, len(n))
+	for i := range n {
+		ids[i] = n[i].ID
+	}
+	return suo.AddNormIDs(ids...)
+}
+
 // AddTestIDs adds the "test" edge to the Test entity by IDs.
 func (suo *ScaleUpdateOne) AddTestIDs(ids ...uuid.UUID) *ScaleUpdateOne {
 	suo.mutation.AddTestIDs(ids...)
@@ -741,6 +847,27 @@ func (suo *ScaleUpdateOne) RemoveTranslations(s ...*ScaleTranslation) *ScaleUpda
 		ids[i] = s[i].ID
 	}
 	return suo.RemoveTranslationIDs(ids...)
+}
+
+// ClearNorms clears all "norms" edges to the Norm entity.
+func (suo *ScaleUpdateOne) ClearNorms() *ScaleUpdateOne {
+	suo.mutation.ClearNorms()
+	return suo
+}
+
+// RemoveNormIDs removes the "norms" edge to Norm entities by IDs.
+func (suo *ScaleUpdateOne) RemoveNormIDs(ids ...uuid.UUID) *ScaleUpdateOne {
+	suo.mutation.RemoveNormIDs(ids...)
+	return suo
+}
+
+// RemoveNorms removes "norms" edges to Norm entities.
+func (suo *ScaleUpdateOne) RemoveNorms(n ...*Norm) *ScaleUpdateOne {
+	ids := make([]uuid.UUID, len(n))
+	for i := range n {
+		ids[i] = n[i].ID
+	}
+	return suo.RemoveNormIDs(ids...)
 }
 
 // ClearTest clears all "test" edges to the Test entity.
@@ -1078,6 +1205,60 @@ func (suo *ScaleUpdateOne) sqlSave(ctx context.Context) (_node *Scale, err error
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: scaletranslation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suo.mutation.NormsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   scale.NormsTable,
+			Columns: []string{scale.NormsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: norm.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.RemovedNormsIDs(); len(nodes) > 0 && !suo.mutation.NormsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   scale.NormsTable,
+			Columns: []string{scale.NormsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: norm.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.NormsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   scale.NormsTable,
+			Columns: []string{scale.NormsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: norm.FieldID,
 				},
 			},
 		}

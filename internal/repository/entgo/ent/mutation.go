@@ -9,14 +9,17 @@ import (
 	"sync"
 	"time"
 
+	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
@@ -44,9 +47,11 @@ const (
 	TypeInterpretationTranslation = "InterpretationTranslation"
 	TypeItem                      = "Item"
 	TypeItemTranslation           = "ItemTranslation"
+	TypeNorm                      = "Norm"
 	TypeQuestion                  = "Question"
 	TypeQuestionTranslation       = "QuestionTranslation"
 	TypeResponse                  = "Response"
+	TypeSample                    = "Sample"
 	TypeScale                     = "Scale"
 	TypeScaleItem                 = "ScaleItem"
 	TypeScaleTranslation          = "ScaleTranslation"
@@ -2372,6 +2377,899 @@ func (m *ItemTranslationMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown ItemTranslation edge %s", name)
 }
 
+// NormMutation represents an operation that mutates the Norm nodes in the graph.
+type NormMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *uuid.UUID
+	create_time   *time.Time
+	update_time   *time.Time
+	name          *string
+	base          *int
+	addbase       *int
+	mean          *float64
+	addmean       *float64
+	sigma         *float64
+	addsigma      *float64
+	meta          *map[string]interface{}
+	clearedFields map[string]struct{}
+	sample        *uuid.UUID
+	clearedsample bool
+	scale         *uuid.UUID
+	clearedscale  bool
+	done          bool
+	oldValue      func(context.Context) (*Norm, error)
+	predicates    []predicate.Norm
+}
+
+var _ ent.Mutation = (*NormMutation)(nil)
+
+// normOption allows management of the mutation configuration using functional options.
+type normOption func(*NormMutation)
+
+// newNormMutation creates new mutation for the Norm entity.
+func newNormMutation(c config, op Op, opts ...normOption) *NormMutation {
+	m := &NormMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeNorm,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withNormID sets the ID field of the mutation.
+func withNormID(id uuid.UUID) normOption {
+	return func(m *NormMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Norm
+		)
+		m.oldValue = func(ctx context.Context) (*Norm, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Norm.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withNorm sets the old Norm of the mutation.
+func withNorm(node *Norm) normOption {
+	return func(m *NormMutation) {
+		m.oldValue = func(context.Context) (*Norm, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m NormMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m NormMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Norm entities.
+func (m *NormMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *NormMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *NormMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uuid.UUID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Norm.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *NormMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *NormMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *NormMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *NormMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *NormMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *NormMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
+// SetName sets the "name" field.
+func (m *NormMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *NormMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *NormMutation) ResetName() {
+	m.name = nil
+}
+
+// SetBase sets the "base" field.
+func (m *NormMutation) SetBase(i int) {
+	m.base = &i
+	m.addbase = nil
+}
+
+// Base returns the value of the "base" field in the mutation.
+func (m *NormMutation) Base() (r int, exists bool) {
+	v := m.base
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBase returns the old "base" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldBase(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBase is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBase requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBase: %w", err)
+	}
+	return oldValue.Base, nil
+}
+
+// AddBase adds i to the "base" field.
+func (m *NormMutation) AddBase(i int) {
+	if m.addbase != nil {
+		*m.addbase += i
+	} else {
+		m.addbase = &i
+	}
+}
+
+// AddedBase returns the value that was added to the "base" field in this mutation.
+func (m *NormMutation) AddedBase() (r int, exists bool) {
+	v := m.addbase
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetBase resets all changes to the "base" field.
+func (m *NormMutation) ResetBase() {
+	m.base = nil
+	m.addbase = nil
+}
+
+// SetMean sets the "mean" field.
+func (m *NormMutation) SetMean(f float64) {
+	m.mean = &f
+	m.addmean = nil
+}
+
+// Mean returns the value of the "mean" field in the mutation.
+func (m *NormMutation) Mean() (r float64, exists bool) {
+	v := m.mean
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMean returns the old "mean" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldMean(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMean is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMean requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMean: %w", err)
+	}
+	return oldValue.Mean, nil
+}
+
+// AddMean adds f to the "mean" field.
+func (m *NormMutation) AddMean(f float64) {
+	if m.addmean != nil {
+		*m.addmean += f
+	} else {
+		m.addmean = &f
+	}
+}
+
+// AddedMean returns the value that was added to the "mean" field in this mutation.
+func (m *NormMutation) AddedMean() (r float64, exists bool) {
+	v := m.addmean
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetMean resets all changes to the "mean" field.
+func (m *NormMutation) ResetMean() {
+	m.mean = nil
+	m.addmean = nil
+}
+
+// SetSigma sets the "sigma" field.
+func (m *NormMutation) SetSigma(f float64) {
+	m.sigma = &f
+	m.addsigma = nil
+}
+
+// Sigma returns the value of the "sigma" field in the mutation.
+func (m *NormMutation) Sigma() (r float64, exists bool) {
+	v := m.sigma
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSigma returns the old "sigma" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldSigma(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSigma is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSigma requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSigma: %w", err)
+	}
+	return oldValue.Sigma, nil
+}
+
+// AddSigma adds f to the "sigma" field.
+func (m *NormMutation) AddSigma(f float64) {
+	if m.addsigma != nil {
+		*m.addsigma += f
+	} else {
+		m.addsigma = &f
+	}
+}
+
+// AddedSigma returns the value that was added to the "sigma" field in this mutation.
+func (m *NormMutation) AddedSigma() (r float64, exists bool) {
+	v := m.addsigma
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSigma resets all changes to the "sigma" field.
+func (m *NormMutation) ResetSigma() {
+	m.sigma = nil
+	m.addsigma = nil
+}
+
+// SetMeta sets the "meta" field.
+func (m *NormMutation) SetMeta(value map[string]interface{}) {
+	m.meta = &value
+}
+
+// Meta returns the value of the "meta" field in the mutation.
+func (m *NormMutation) Meta() (r map[string]interface{}, exists bool) {
+	v := m.meta
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMeta returns the old "meta" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldMeta(ctx context.Context) (v map[string]interface{}, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMeta is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMeta requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMeta: %w", err)
+	}
+	return oldValue.Meta, nil
+}
+
+// ClearMeta clears the value of the "meta" field.
+func (m *NormMutation) ClearMeta() {
+	m.meta = nil
+	m.clearedFields[norm.FieldMeta] = struct{}{}
+}
+
+// MetaCleared returns if the "meta" field was cleared in this mutation.
+func (m *NormMutation) MetaCleared() bool {
+	_, ok := m.clearedFields[norm.FieldMeta]
+	return ok
+}
+
+// ResetMeta resets all changes to the "meta" field.
+func (m *NormMutation) ResetMeta() {
+	m.meta = nil
+	delete(m.clearedFields, norm.FieldMeta)
+}
+
+// SetSampleID sets the "sample" edge to the Sample entity by id.
+func (m *NormMutation) SetSampleID(id uuid.UUID) {
+	m.sample = &id
+}
+
+// ClearSample clears the "sample" edge to the Sample entity.
+func (m *NormMutation) ClearSample() {
+	m.clearedsample = true
+}
+
+// SampleCleared reports if the "sample" edge to the Sample entity was cleared.
+func (m *NormMutation) SampleCleared() bool {
+	return m.clearedsample
+}
+
+// SampleID returns the "sample" edge ID in the mutation.
+func (m *NormMutation) SampleID() (id uuid.UUID, exists bool) {
+	if m.sample != nil {
+		return *m.sample, true
+	}
+	return
+}
+
+// SampleIDs returns the "sample" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SampleID instead. It exists only for internal usage by the builders.
+func (m *NormMutation) SampleIDs() (ids []uuid.UUID) {
+	if id := m.sample; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSample resets all changes to the "sample" edge.
+func (m *NormMutation) ResetSample() {
+	m.sample = nil
+	m.clearedsample = false
+}
+
+// SetScaleID sets the "scale" edge to the Scale entity by id.
+func (m *NormMutation) SetScaleID(id uuid.UUID) {
+	m.scale = &id
+}
+
+// ClearScale clears the "scale" edge to the Scale entity.
+func (m *NormMutation) ClearScale() {
+	m.clearedscale = true
+}
+
+// ScaleCleared reports if the "scale" edge to the Scale entity was cleared.
+func (m *NormMutation) ScaleCleared() bool {
+	return m.clearedscale
+}
+
+// ScaleID returns the "scale" edge ID in the mutation.
+func (m *NormMutation) ScaleID() (id uuid.UUID, exists bool) {
+	if m.scale != nil {
+		return *m.scale, true
+	}
+	return
+}
+
+// ScaleIDs returns the "scale" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ScaleID instead. It exists only for internal usage by the builders.
+func (m *NormMutation) ScaleIDs() (ids []uuid.UUID) {
+	if id := m.scale; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetScale resets all changes to the "scale" edge.
+func (m *NormMutation) ResetScale() {
+	m.scale = nil
+	m.clearedscale = false
+}
+
+// Where appends a list predicates to the NormMutation builder.
+func (m *NormMutation) Where(ps ...predicate.Norm) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *NormMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Norm).
+func (m *NormMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *NormMutation) Fields() []string {
+	fields := make([]string, 0, 7)
+	if m.create_time != nil {
+		fields = append(fields, norm.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, norm.FieldUpdateTime)
+	}
+	if m.name != nil {
+		fields = append(fields, norm.FieldName)
+	}
+	if m.base != nil {
+		fields = append(fields, norm.FieldBase)
+	}
+	if m.mean != nil {
+		fields = append(fields, norm.FieldMean)
+	}
+	if m.sigma != nil {
+		fields = append(fields, norm.FieldSigma)
+	}
+	if m.meta != nil {
+		fields = append(fields, norm.FieldMeta)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *NormMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case norm.FieldCreateTime:
+		return m.CreateTime()
+	case norm.FieldUpdateTime:
+		return m.UpdateTime()
+	case norm.FieldName:
+		return m.Name()
+	case norm.FieldBase:
+		return m.Base()
+	case norm.FieldMean:
+		return m.Mean()
+	case norm.FieldSigma:
+		return m.Sigma()
+	case norm.FieldMeta:
+		return m.Meta()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *NormMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case norm.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case norm.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case norm.FieldName:
+		return m.OldName(ctx)
+	case norm.FieldBase:
+		return m.OldBase(ctx)
+	case norm.FieldMean:
+		return m.OldMean(ctx)
+	case norm.FieldSigma:
+		return m.OldSigma(ctx)
+	case norm.FieldMeta:
+		return m.OldMeta(ctx)
+	}
+	return nil, fmt.Errorf("unknown Norm field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *NormMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case norm.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case norm.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case norm.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case norm.FieldBase:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBase(v)
+		return nil
+	case norm.FieldMean:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMean(v)
+		return nil
+	case norm.FieldSigma:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSigma(v)
+		return nil
+	case norm.FieldMeta:
+		v, ok := value.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMeta(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Norm field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *NormMutation) AddedFields() []string {
+	var fields []string
+	if m.addbase != nil {
+		fields = append(fields, norm.FieldBase)
+	}
+	if m.addmean != nil {
+		fields = append(fields, norm.FieldMean)
+	}
+	if m.addsigma != nil {
+		fields = append(fields, norm.FieldSigma)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *NormMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case norm.FieldBase:
+		return m.AddedBase()
+	case norm.FieldMean:
+		return m.AddedMean()
+	case norm.FieldSigma:
+		return m.AddedSigma()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *NormMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case norm.FieldBase:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBase(v)
+		return nil
+	case norm.FieldMean:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddMean(v)
+		return nil
+	case norm.FieldSigma:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSigma(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Norm numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *NormMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(norm.FieldMeta) {
+		fields = append(fields, norm.FieldMeta)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *NormMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *NormMutation) ClearField(name string) error {
+	switch name {
+	case norm.FieldMeta:
+		m.ClearMeta()
+		return nil
+	}
+	return fmt.Errorf("unknown Norm nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *NormMutation) ResetField(name string) error {
+	switch name {
+	case norm.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case norm.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case norm.FieldName:
+		m.ResetName()
+		return nil
+	case norm.FieldBase:
+		m.ResetBase()
+		return nil
+	case norm.FieldMean:
+		m.ResetMean()
+		return nil
+	case norm.FieldSigma:
+		m.ResetSigma()
+		return nil
+	case norm.FieldMeta:
+		m.ResetMeta()
+		return nil
+	}
+	return fmt.Errorf("unknown Norm field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *NormMutation) AddedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.sample != nil {
+		edges = append(edges, norm.EdgeSample)
+	}
+	if m.scale != nil {
+		edges = append(edges, norm.EdgeScale)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *NormMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case norm.EdgeSample:
+		if id := m.sample; id != nil {
+			return []ent.Value{*id}
+		}
+	case norm.EdgeScale:
+		if id := m.scale; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *NormMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 2)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *NormMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *NormMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.clearedsample {
+		edges = append(edges, norm.EdgeSample)
+	}
+	if m.clearedscale {
+		edges = append(edges, norm.EdgeScale)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *NormMutation) EdgeCleared(name string) bool {
+	switch name {
+	case norm.EdgeSample:
+		return m.clearedsample
+	case norm.EdgeScale:
+		return m.clearedscale
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *NormMutation) ClearEdge(name string) error {
+	switch name {
+	case norm.EdgeSample:
+		m.ClearSample()
+		return nil
+	case norm.EdgeScale:
+		m.ClearScale()
+		return nil
+	}
+	return fmt.Errorf("unknown Norm unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *NormMutation) ResetEdge(name string) error {
+	switch name {
+	case norm.EdgeSample:
+		m.ResetSample()
+		return nil
+	case norm.EdgeScale:
+		m.ResetScale()
+		return nil
+	}
+	return fmt.Errorf("unknown Norm edge %s", name)
+}
+
 // QuestionMutation represents an operation that mutates the Question nodes in the graph.
 type QuestionMutation struct {
 	config
@@ -4473,6 +5371,578 @@ func (m *ResponseMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Response edge %s", name)
 }
 
+// SampleMutation represents an operation that mutates the Sample nodes in the graph.
+type SampleMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *uuid.UUID
+	create_time   *time.Time
+	update_time   *time.Time
+	code          *string
+	criteria      *domain.SampleCriteria
+	clearedFields map[string]struct{}
+	norms         map[uuid.UUID]struct{}
+	removednorms  map[uuid.UUID]struct{}
+	clearednorms  bool
+	done          bool
+	oldValue      func(context.Context) (*Sample, error)
+	predicates    []predicate.Sample
+}
+
+var _ ent.Mutation = (*SampleMutation)(nil)
+
+// sampleOption allows management of the mutation configuration using functional options.
+type sampleOption func(*SampleMutation)
+
+// newSampleMutation creates new mutation for the Sample entity.
+func newSampleMutation(c config, op Op, opts ...sampleOption) *SampleMutation {
+	m := &SampleMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSample,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSampleID sets the ID field of the mutation.
+func withSampleID(id uuid.UUID) sampleOption {
+	return func(m *SampleMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Sample
+		)
+		m.oldValue = func(ctx context.Context) (*Sample, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Sample.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSample sets the old Sample of the mutation.
+func withSample(node *Sample) sampleOption {
+	return func(m *SampleMutation) {
+		m.oldValue = func(context.Context) (*Sample, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SampleMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SampleMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Sample entities.
+func (m *SampleMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SampleMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SampleMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uuid.UUID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Sample.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *SampleMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *SampleMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the Sample entity.
+// If the Sample object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SampleMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *SampleMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *SampleMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *SampleMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the Sample entity.
+// If the Sample object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SampleMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *SampleMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
+// SetCode sets the "code" field.
+func (m *SampleMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *SampleMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Sample entity.
+// If the Sample object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SampleMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *SampleMutation) ResetCode() {
+	m.code = nil
+}
+
+// SetCriteria sets the "criteria" field.
+func (m *SampleMutation) SetCriteria(dc domain.SampleCriteria) {
+	m.criteria = &dc
+}
+
+// Criteria returns the value of the "criteria" field in the mutation.
+func (m *SampleMutation) Criteria() (r domain.SampleCriteria, exists bool) {
+	v := m.criteria
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCriteria returns the old "criteria" field's value of the Sample entity.
+// If the Sample object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SampleMutation) OldCriteria(ctx context.Context) (v domain.SampleCriteria, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCriteria is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCriteria requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCriteria: %w", err)
+	}
+	return oldValue.Criteria, nil
+}
+
+// ResetCriteria resets all changes to the "criteria" field.
+func (m *SampleMutation) ResetCriteria() {
+	m.criteria = nil
+}
+
+// AddNormIDs adds the "norms" edge to the Norm entity by ids.
+func (m *SampleMutation) AddNormIDs(ids ...uuid.UUID) {
+	if m.norms == nil {
+		m.norms = make(map[uuid.UUID]struct{})
+	}
+	for i := range ids {
+		m.norms[ids[i]] = struct{}{}
+	}
+}
+
+// ClearNorms clears the "norms" edge to the Norm entity.
+func (m *SampleMutation) ClearNorms() {
+	m.clearednorms = true
+}
+
+// NormsCleared reports if the "norms" edge to the Norm entity was cleared.
+func (m *SampleMutation) NormsCleared() bool {
+	return m.clearednorms
+}
+
+// RemoveNormIDs removes the "norms" edge to the Norm entity by IDs.
+func (m *SampleMutation) RemoveNormIDs(ids ...uuid.UUID) {
+	if m.removednorms == nil {
+		m.removednorms = make(map[uuid.UUID]struct{})
+	}
+	for i := range ids {
+		delete(m.norms, ids[i])
+		m.removednorms[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedNorms returns the removed IDs of the "norms" edge to the Norm entity.
+func (m *SampleMutation) RemovedNormsIDs() (ids []uuid.UUID) {
+	for id := range m.removednorms {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// NormsIDs returns the "norms" edge IDs in the mutation.
+func (m *SampleMutation) NormsIDs() (ids []uuid.UUID) {
+	for id := range m.norms {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetNorms resets all changes to the "norms" edge.
+func (m *SampleMutation) ResetNorms() {
+	m.norms = nil
+	m.clearednorms = false
+	m.removednorms = nil
+}
+
+// Where appends a list predicates to the SampleMutation builder.
+func (m *SampleMutation) Where(ps ...predicate.Sample) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *SampleMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Sample).
+func (m *SampleMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SampleMutation) Fields() []string {
+	fields := make([]string, 0, 4)
+	if m.create_time != nil {
+		fields = append(fields, sample.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, sample.FieldUpdateTime)
+	}
+	if m.code != nil {
+		fields = append(fields, sample.FieldCode)
+	}
+	if m.criteria != nil {
+		fields = append(fields, sample.FieldCriteria)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SampleMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sample.FieldCreateTime:
+		return m.CreateTime()
+	case sample.FieldUpdateTime:
+		return m.UpdateTime()
+	case sample.FieldCode:
+		return m.Code()
+	case sample.FieldCriteria:
+		return m.Criteria()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SampleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sample.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case sample.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case sample.FieldCode:
+		return m.OldCode(ctx)
+	case sample.FieldCriteria:
+		return m.OldCriteria(ctx)
+	}
+	return nil, fmt.Errorf("unknown Sample field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SampleMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sample.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case sample.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case sample.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
+	case sample.FieldCriteria:
+		v, ok := value.(domain.SampleCriteria)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCriteria(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Sample field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SampleMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SampleMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SampleMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Sample numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SampleMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SampleMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SampleMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Sample nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SampleMutation) ResetField(name string) error {
+	switch name {
+	case sample.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case sample.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case sample.FieldCode:
+		m.ResetCode()
+		return nil
+	case sample.FieldCriteria:
+		m.ResetCriteria()
+		return nil
+	}
+	return fmt.Errorf("unknown Sample field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SampleMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.norms != nil {
+		edges = append(edges, sample.EdgeNorms)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SampleMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case sample.EdgeNorms:
+		ids := make([]ent.Value, 0, len(m.norms))
+		for id := range m.norms {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SampleMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.removednorms != nil {
+		edges = append(edges, sample.EdgeNorms)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SampleMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case sample.EdgeNorms:
+		ids := make([]ent.Value, 0, len(m.removednorms))
+		for id := range m.removednorms {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SampleMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearednorms {
+		edges = append(edges, sample.EdgeNorms)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SampleMutation) EdgeCleared(name string) bool {
+	switch name {
+	case sample.EdgeNorms:
+		return m.clearednorms
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SampleMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Sample unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SampleMutation) ResetEdge(name string) error {
+	switch name {
+	case sample.EdgeNorms:
+		m.ResetNorms()
+		return nil
+	}
+	return fmt.Errorf("unknown Sample edge %s", name)
+}
+
 // ScaleMutation represents an operation that mutates the Scale nodes in the graph.
 type ScaleMutation struct {
 	config
@@ -4494,6 +5964,9 @@ type ScaleMutation struct {
 	translations           map[uuid.UUID]struct{}
 	removedtranslations    map[uuid.UUID]struct{}
 	clearedtranslations    bool
+	norms                  map[uuid.UUID]struct{}
+	removednorms           map[uuid.UUID]struct{}
+	clearednorms           bool
 	test                   map[uuid.UUID]struct{}
 	removedtest            map[uuid.UUID]struct{}
 	clearedtest            bool
@@ -4948,6 +6421,60 @@ func (m *ScaleMutation) ResetTranslations() {
 	m.removedtranslations = nil
 }
 
+// AddNormIDs adds the "norms" edge to the Norm entity by ids.
+func (m *ScaleMutation) AddNormIDs(ids ...uuid.UUID) {
+	if m.norms == nil {
+		m.norms = make(map[uuid.UUID]struct{})
+	}
+	for i := range ids {
+		m.norms[ids[i]] = struct{}{}
+	}
+}
+
+// ClearNorms clears the "norms" edge to the Norm entity.
+func (m *ScaleMutation) ClearNorms() {
+	m.clearednorms = true
+}
+
+// NormsCleared reports if the "norms" edge to the Norm entity was cleared.
+func (m *ScaleMutation) NormsCleared() bool {
+	return m.clearednorms
+}
+
+// RemoveNormIDs removes the "norms" edge to the Norm entity by IDs.
+func (m *ScaleMutation) RemoveNormIDs(ids ...uuid.UUID) {
+	if m.removednorms == nil {
+		m.removednorms = make(map[uuid.UUID]struct{})
+	}
+	for i := range ids {
+		delete(m.norms, ids[i])
+		m.removednorms[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedNorms returns the removed IDs of the "norms" edge to the Norm entity.
+func (m *ScaleMutation) RemovedNormsIDs() (ids []uuid.UUID) {
+	for id := range m.removednorms {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// NormsIDs returns the "norms" edge IDs in the mutation.
+func (m *ScaleMutation) NormsIDs() (ids []uuid.UUID) {
+	for id := range m.norms {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetNorms resets all changes to the "norms" edge.
+func (m *ScaleMutation) ResetNorms() {
+	m.norms = nil
+	m.clearednorms = false
+	m.removednorms = nil
+}
+
 // AddTestIDs adds the "test" edge to the Test entity by ids.
 func (m *ScaleMutation) AddTestIDs(ids ...uuid.UUID) {
 	if m.test == nil {
@@ -5188,7 +6715,7 @@ func (m *ScaleMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ScaleMutation) AddedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.items != nil {
 		edges = append(edges, scale.EdgeItems)
 	}
@@ -5197,6 +6724,9 @@ func (m *ScaleMutation) AddedEdges() []string {
 	}
 	if m.translations != nil {
 		edges = append(edges, scale.EdgeTranslations)
+	}
+	if m.norms != nil {
+		edges = append(edges, scale.EdgeNorms)
 	}
 	if m.test != nil {
 		edges = append(edges, scale.EdgeTest)
@@ -5226,6 +6756,12 @@ func (m *ScaleMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case scale.EdgeNorms:
+		ids := make([]ent.Value, 0, len(m.norms))
+		for id := range m.norms {
+			ids = append(ids, id)
+		}
+		return ids
 	case scale.EdgeTest:
 		ids := make([]ent.Value, 0, len(m.test))
 		for id := range m.test {
@@ -5238,7 +6774,7 @@ func (m *ScaleMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ScaleMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.removeditems != nil {
 		edges = append(edges, scale.EdgeItems)
 	}
@@ -5247,6 +6783,9 @@ func (m *ScaleMutation) RemovedEdges() []string {
 	}
 	if m.removedtranslations != nil {
 		edges = append(edges, scale.EdgeTranslations)
+	}
+	if m.removednorms != nil {
+		edges = append(edges, scale.EdgeNorms)
 	}
 	if m.removedtest != nil {
 		edges = append(edges, scale.EdgeTest)
@@ -5276,6 +6815,12 @@ func (m *ScaleMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case scale.EdgeNorms:
+		ids := make([]ent.Value, 0, len(m.removednorms))
+		for id := range m.removednorms {
+			ids = append(ids, id)
+		}
+		return ids
 	case scale.EdgeTest:
 		ids := make([]ent.Value, 0, len(m.removedtest))
 		for id := range m.removedtest {
@@ -5288,7 +6833,7 @@ func (m *ScaleMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ScaleMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.cleareditems {
 		edges = append(edges, scale.EdgeItems)
 	}
@@ -5297,6 +6842,9 @@ func (m *ScaleMutation) ClearedEdges() []string {
 	}
 	if m.clearedtranslations {
 		edges = append(edges, scale.EdgeTranslations)
+	}
+	if m.clearednorms {
+		edges = append(edges, scale.EdgeNorms)
 	}
 	if m.clearedtest {
 		edges = append(edges, scale.EdgeTest)
@@ -5314,6 +6862,8 @@ func (m *ScaleMutation) EdgeCleared(name string) bool {
 		return m.clearedinterpretations
 	case scale.EdgeTranslations:
 		return m.clearedtranslations
+	case scale.EdgeNorms:
+		return m.clearednorms
 	case scale.EdgeTest:
 		return m.clearedtest
 	}
@@ -5340,6 +6890,9 @@ func (m *ScaleMutation) ResetEdge(name string) error {
 		return nil
 	case scale.EdgeTranslations:
 		m.ResetTranslations()
+		return nil
+	case scale.EdgeNorms:
+		m.ResetNorms()
 		return nil
 	case scale.EdgeTest:
 		m.ResetTest()

@@ -9,9 +9,11 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
@@ -95,6 +97,35 @@ func init() {
 	itemtranslationDescID := itemtranslationFields[0].Descriptor()
 	// itemtranslation.DefaultID holds the default value on creation for the id field.
 	itemtranslation.DefaultID = itemtranslationDescID.Default.(func() uuid.UUID)
+	normMixin := schema.Norm{}.Mixin()
+	normMixinFields0 := normMixin[0].Fields()
+	_ = normMixinFields0
+	normFields := schema.Norm{}.Fields()
+	_ = normFields
+	// normDescCreateTime is the schema descriptor for create_time field.
+	normDescCreateTime := normMixinFields0[0].Descriptor()
+	// norm.DefaultCreateTime holds the default value on creation for the create_time field.
+	norm.DefaultCreateTime = normDescCreateTime.Default.(func() time.Time)
+	// normDescUpdateTime is the schema descriptor for update_time field.
+	normDescUpdateTime := normMixinFields0[1].Descriptor()
+	// norm.DefaultUpdateTime holds the default value on creation for the update_time field.
+	norm.DefaultUpdateTime = normDescUpdateTime.Default.(func() time.Time)
+	// norm.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	norm.UpdateDefaultUpdateTime = normDescUpdateTime.UpdateDefault.(func() time.Time)
+	// normDescName is the schema descriptor for name field.
+	normDescName := normFields[1].Descriptor()
+	// norm.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	norm.NameValidator = normDescName.Validators[0].(func(string) error)
+	// normDescBase is the schema descriptor for base field.
+	normDescBase := normFields[2].Descriptor()
+	// norm.DefaultBase holds the default value on creation for the base field.
+	norm.DefaultBase = normDescBase.Default.(int)
+	// norm.BaseValidator is a validator for the "base" field. It is called by the builders before save.
+	norm.BaseValidator = normDescBase.Validators[0].(func(int) error)
+	// normDescID is the schema descriptor for id field.
+	normDescID := normFields[0].Descriptor()
+	// norm.DefaultID holds the default value on creation for the id field.
+	norm.DefaultID = normDescID.Default.(func() uuid.UUID)
 	questionMixin := schema.Question{}.Mixin()
 	questionMixinFields0 := questionMixin[0].Fields()
 	_ = questionMixinFields0
@@ -151,6 +182,29 @@ func init() {
 	responseDescID := responseFields[0].Descriptor()
 	// response.DefaultID holds the default value on creation for the id field.
 	response.DefaultID = responseDescID.Default.(func() uuid.UUID)
+	sampleMixin := schema.Sample{}.Mixin()
+	sampleMixinFields0 := sampleMixin[0].Fields()
+	_ = sampleMixinFields0
+	sampleFields := schema.Sample{}.Fields()
+	_ = sampleFields
+	// sampleDescCreateTime is the schema descriptor for create_time field.
+	sampleDescCreateTime := sampleMixinFields0[0].Descriptor()
+	// sample.DefaultCreateTime holds the default value on creation for the create_time field.
+	sample.DefaultCreateTime = sampleDescCreateTime.Default.(func() time.Time)
+	// sampleDescUpdateTime is the schema descriptor for update_time field.
+	sampleDescUpdateTime := sampleMixinFields0[1].Descriptor()
+	// sample.DefaultUpdateTime holds the default value on creation for the update_time field.
+	sample.DefaultUpdateTime = sampleDescUpdateTime.Default.(func() time.Time)
+	// sample.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	sample.UpdateDefaultUpdateTime = sampleDescUpdateTime.UpdateDefault.(func() time.Time)
+	// sampleDescCode is the schema descriptor for code field.
+	sampleDescCode := sampleFields[1].Descriptor()
+	// sample.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	sample.CodeValidator = sampleDescCode.Validators[0].(func(string) error)
+	// sampleDescID is the schema descriptor for id field.
+	sampleDescID := sampleFields[0].Descriptor()
+	// sample.DefaultID holds the default value on creation for the id field.
+	sample.DefaultID = sampleDescID.Default.(func() uuid.UUID)
 	scaleMixin := schema.Scale{}.Mixin()
 	scaleMixinFields0 := scaleMixin[0].Fields()
 	_ = scaleMixinFields0

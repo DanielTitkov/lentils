@@ -19,4 +19,9 @@ const (
 	TestStepQuestions = "questions"
 	TestStepFinish    = "finish"
 	TestStepResult    = "result"
+	// samples
+	SampleAllCode              = "all"
+	SampleAllNonSuspiciousCode = "all-not-suspicious"
+	// norms
+	NormMinBase = 5 // FIXME
 )

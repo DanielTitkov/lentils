@@ -37,6 +37,7 @@ func (Scale) Edges() []ent.Edge {
 		edge.To("items", Item.Type).Through("scale_item", ScaleItem.Type),
 		edge.To("interpretations", Interpretation.Type),
 		edge.To("translations", ScaleTranslation.Type),
+		edge.To("norms", Norm.Type),
 		// belongs to
 		edge.From("test", Test.Type).Ref("scales"),
 	}

@@ -61,6 +61,19 @@ func (f ItemTranslationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Va
 	return f(ctx, mv)
 }
 
+// The NormFunc type is an adapter to allow the use of ordinary
+// function as Norm mutator.
+type NormFunc func(context.Context, *ent.NormMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f NormFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.NormMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.NormMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The QuestionFunc type is an adapter to allow the use of ordinary
 // function as Question mutator.
 type QuestionFunc func(context.Context, *ent.QuestionMutation) (ent.Value, error)
@@ -96,6 +109,19 @@ func (f ResponseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 	mv, ok := m.(*ent.ResponseMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ResponseMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The SampleFunc type is an adapter to allow the use of ordinary
+// function as Sample mutator.
+type SampleFunc func(context.Context, *ent.SampleMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SampleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SampleMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SampleMutation", m)
 	}
 	return f(ctx, mv)
 }
