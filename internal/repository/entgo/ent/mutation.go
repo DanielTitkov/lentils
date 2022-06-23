@@ -2394,6 +2394,8 @@ type NormMutation struct {
 	addmean       *float64
 	sigma         *float64
 	addsigma      *float64
+	rank          *int
+	addrank       *int
 	meta          *map[string]interface{}
 	clearedFields map[string]struct{}
 	sample        *uuid.UUID
@@ -2785,6 +2787,62 @@ func (m *NormMutation) ResetSigma() {
 	m.addsigma = nil
 }
 
+// SetRank sets the "rank" field.
+func (m *NormMutation) SetRank(i int) {
+	m.rank = &i
+	m.addrank = nil
+}
+
+// Rank returns the value of the "rank" field in the mutation.
+func (m *NormMutation) Rank() (r int, exists bool) {
+	v := m.rank
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRank returns the old "rank" field's value of the Norm entity.
+// If the Norm object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NormMutation) OldRank(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRank is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRank requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRank: %w", err)
+	}
+	return oldValue.Rank, nil
+}
+
+// AddRank adds i to the "rank" field.
+func (m *NormMutation) AddRank(i int) {
+	if m.addrank != nil {
+		*m.addrank += i
+	} else {
+		m.addrank = &i
+	}
+}
+
+// AddedRank returns the value that was added to the "rank" field in this mutation.
+func (m *NormMutation) AddedRank() (r int, exists bool) {
+	v := m.addrank
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetRank resets all changes to the "rank" field.
+func (m *NormMutation) ResetRank() {
+	m.rank = nil
+	m.addrank = nil
+}
+
 // SetMeta sets the "meta" field.
 func (m *NormMutation) SetMeta(value map[string]interface{}) {
 	m.meta = &value
@@ -2931,7 +2989,7 @@ func (m *NormMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *NormMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 8)
 	if m.create_time != nil {
 		fields = append(fields, norm.FieldCreateTime)
 	}
@@ -2949,6 +3007,9 @@ func (m *NormMutation) Fields() []string {
 	}
 	if m.sigma != nil {
 		fields = append(fields, norm.FieldSigma)
+	}
+	if m.rank != nil {
+		fields = append(fields, norm.FieldRank)
 	}
 	if m.meta != nil {
 		fields = append(fields, norm.FieldMeta)
@@ -2973,6 +3034,8 @@ func (m *NormMutation) Field(name string) (ent.Value, bool) {
 		return m.Mean()
 	case norm.FieldSigma:
 		return m.Sigma()
+	case norm.FieldRank:
+		return m.Rank()
 	case norm.FieldMeta:
 		return m.Meta()
 	}
@@ -2996,6 +3059,8 @@ func (m *NormMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldMean(ctx)
 	case norm.FieldSigma:
 		return m.OldSigma(ctx)
+	case norm.FieldRank:
+		return m.OldRank(ctx)
 	case norm.FieldMeta:
 		return m.OldMeta(ctx)
 	}
@@ -3049,6 +3114,13 @@ func (m *NormMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetSigma(v)
 		return nil
+	case norm.FieldRank:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRank(v)
+		return nil
 	case norm.FieldMeta:
 		v, ok := value.(map[string]interface{})
 		if !ok {
@@ -3073,6 +3145,9 @@ func (m *NormMutation) AddedFields() []string {
 	if m.addsigma != nil {
 		fields = append(fields, norm.FieldSigma)
 	}
+	if m.addrank != nil {
+		fields = append(fields, norm.FieldRank)
+	}
 	return fields
 }
 
@@ -3087,6 +3162,8 @@ func (m *NormMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedMean()
 	case norm.FieldSigma:
 		return m.AddedSigma()
+	case norm.FieldRank:
+		return m.AddedRank()
 	}
 	return nil, false
 }
@@ -3116,6 +3193,13 @@ func (m *NormMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSigma(v)
+		return nil
+	case norm.FieldRank:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddRank(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Norm numeric field %s", name)
@@ -3170,6 +3254,9 @@ func (m *NormMutation) ResetField(name string) error {
 		return nil
 	case norm.FieldSigma:
 		m.ResetSigma()
+		return nil
+	case norm.FieldRank:
+		m.ResetRank()
 		return nil
 	case norm.FieldMeta:
 		m.ResetMeta()

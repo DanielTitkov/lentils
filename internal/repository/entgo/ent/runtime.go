@@ -123,6 +123,10 @@ func init() {
 	norm.DefaultBase = normDescBase.Default.(int)
 	// norm.BaseValidator is a validator for the "base" field. It is called by the builders before save.
 	norm.BaseValidator = normDescBase.Validators[0].(func(int) error)
+	// normDescRank is the schema descriptor for rank field.
+	normDescRank := normFields[5].Descriptor()
+	// norm.DefaultRank holds the default value on creation for the rank field.
+	norm.DefaultRank = normDescRank.Default.(int)
 	// normDescID is the schema descriptor for id field.
 	normDescID := normFields[0].Descriptor()
 	// norm.DefaultID holds the default value on creation for the id field.

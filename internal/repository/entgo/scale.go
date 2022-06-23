@@ -3,20 +3,47 @@ package entgo
 import (
 	"context"
 
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
+
 	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 )
 
-func (r *EntgoRepository) GetDataForNormCalculation(ctx context.Context, crit domain.SampleCriteria) error {
+// GetDataForNormCalculation return data for 1 norm for all scales
+func (r *EntgoRepository) GetDataForNormCalculation(ctx context.Context, crit domain.SampleCriteria) ([]*domain.NormCalculationData, error) {
+	scales, err := r.client.Scale.Query().
+		WithResults(func(q *ent.ResultQuery) {
+			if crit.NotSuspicious {
+				q.Where(result.HasTakeWith(take.SuspiciousEQ(false)))
+			}
+		}).
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
 
-	// select s.id as scale_id, t.id as take_id, r.value, si.reverse, t.status from scales s
-	// join scale_items si on si.scale_id = s.id
-	// join responses r on si.item_id  = r.item_responses
-	// join takes t on r.take_responses = t.id
-	// where t.status = 'finish'
-	// order by s.id, t.id
+	var res []*domain.NormCalculationData
+	for _, scale := range scales {
+		res = append(res, entToDomainNormCalculationData(scale))
+	}
 
-	return nil
+	return res, nil
+}
+
+func entToDomainNormCalculationData(s *ent.Scale) *domain.NormCalculationData {
+	var results []float64
+	if s.Edges.Results != nil {
+		for _, r := range s.Edges.Results {
+			results = append(results, r.RawScore)
+		}
+	}
+
+	return &domain.NormCalculationData{
+		ScaleID:   s.ID,
+		ScaleCode: s.Code,
+		Results:   results,
+	}
 }
 
 func entToDomainScale(s *ent.Scale, locale string) *domain.Scale {

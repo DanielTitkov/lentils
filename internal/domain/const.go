@@ -27,8 +27,10 @@ const (
 	SampleAllCode              = "all"
 	SampleAllNonSuspiciousCode = "all-not-suspicious"
 	// norms
-	NormMinBase = 5 // FIXME
+	NormMinBase  = 10
+	NormOKBase   = 50
+	NormGoodBase = 100
 	// take
-	TakeMinTime = 9 * time.Second // FIXME
+	TakeMinTime = 8 * time.Second
 	TakeMaxTime = 2 * time.Hour
 )

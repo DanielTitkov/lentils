@@ -109,6 +109,7 @@ var (
 		{Name: "base", Type: field.TypeInt, Default: 0},
 		{Name: "mean", Type: field.TypeFloat64},
 		{Name: "sigma", Type: field.TypeFloat64},
+		{Name: "rank", Type: field.TypeInt, Default: 0},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "sample_norms", Type: field.TypeUUID},
 		{Name: "scale_norms", Type: field.TypeUUID},
@@ -121,13 +122,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "norms_samples_norms",
-				Columns:    []*schema.Column{NormsColumns[8]},
+				Columns:    []*schema.Column{NormsColumns[9]},
 				RefColumns: []*schema.Column{SamplesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "norms_scales_norms",
-				Columns:    []*schema.Column{NormsColumns[9]},
+				Columns:    []*schema.Column{NormsColumns[10]},
 				RefColumns: []*schema.Column{ScalesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -136,7 +137,7 @@ var (
 			{
 				Name:    "norm_sample_norms_scale_norms",
 				Unique:  true,
-				Columns: []*schema.Column{NormsColumns[8], NormsColumns[9]},
+				Columns: []*schema.Column{NormsColumns[9], NormsColumns[10]},
 			},
 		},
 	}
@@ -349,7 +350,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1656011930},
+		{Name: "seed", Type: field.TypeInt64, Default: 1656021440},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
 		{Name: "page", Type: field.TypeInt, Default: 0},
 		{Name: "start_time", Type: field.TypeTime, Nullable: true},

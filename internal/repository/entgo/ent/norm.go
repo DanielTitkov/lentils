@@ -32,6 +32,8 @@ type Norm struct {
 	Mean float64 `json:"mean,omitempty"`
 	// Sigma holds the value of the "sigma" field.
 	Sigma float64 `json:"sigma,omitempty"`
+	// Rank holds the value of the "rank" field.
+	Rank int `json:"rank,omitempty"`
 	// Meta holds the value of the "meta" field.
 	Meta map[string]interface{} `json:"meta,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -89,7 +91,7 @@ func (*Norm) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new([]byte)
 		case norm.FieldMean, norm.FieldSigma:
 			values[i] = new(sql.NullFloat64)
-		case norm.FieldBase:
+		case norm.FieldBase, norm.FieldRank:
 			values[i] = new(sql.NullInt64)
 		case norm.FieldName:
 			values[i] = new(sql.NullString)
@@ -157,6 +159,12 @@ func (n *Norm) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field sigma", values[i])
 			} else if value.Valid {
 				n.Sigma = value.Float64
+			}
+		case norm.FieldRank:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field rank", values[i])
+			} else if value.Valid {
+				n.Rank = int(value.Int64)
 			}
 		case norm.FieldMeta:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -235,6 +243,9 @@ func (n *Norm) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("sigma=")
 	builder.WriteString(fmt.Sprintf("%v", n.Sigma))
+	builder.WriteString(", ")
+	builder.WriteString("rank=")
+	builder.WriteString(fmt.Sprintf("%v", n.Rank))
 	builder.WriteString(", ")
 	builder.WriteString("meta=")
 	builder.WriteString(fmt.Sprintf("%v", n.Meta))

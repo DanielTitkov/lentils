@@ -64,6 +64,7 @@ type (
 		Items           []*Item
 		Interpretations []*Interpretation
 		Result          *ScaleResult // not save in db as yet
+		Norm            *Norm        // to use in calculation
 	}
 
 	Norm struct {
@@ -74,6 +75,7 @@ type (
 		Base     int
 		Mean     float64
 		Sigma    float64
+		Rank     int
 		Meta     map[string]interface{}
 	}
 

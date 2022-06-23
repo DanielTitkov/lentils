@@ -13,7 +13,7 @@ translations:
     instruction: Ответьте на все вопросы (их всего 3!)
 scales: 
   - code: extro-scale-1-extraversion
-    type: zscore
+    type: sten
     translations:
       - locale: en
         title: EXTRO-Extraversion

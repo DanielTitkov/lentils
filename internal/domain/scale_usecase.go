@@ -19,7 +19,7 @@ func (s *Scale) CalculateResult() error {
 
 	start := time.Now()
 	// TODO: select norm
-	res, err := resolveFunc(s, nil)
+	res, err := resolveFunc(s, s.Norm)
 	if err != nil {
 		return err
 	}
@@ -97,30 +97,33 @@ func resolveScaleMean(s *Scale, norm *Norm) (*ScaleResult, error) {
 }
 
 func resolveScaleZScore(s *Scale, norm *Norm) (*ScaleResult, error) {
-	meanRes, err := resolveScaleMean(s, norm)
+	sumRes, err := resolveScaleSum(s, norm)
 	if err != nil {
 		return nil, err
 	}
 
 	var mean, sigma float64
+	var base int
 	var normName string
-	if norm != nil {
-		normName = norm.ID.String()
+	if norm != nil && norm.Base >= NormMinBase {
+		normName = norm.Name
 		mean = norm.Mean
 		sigma = norm.Sigma
+		base = norm.Base
 	} else {
 		normName = "theoretical"
-		mean = meanRes.Max / 2  // theoretical mean value
-		sigma = meanRes.Max / 5 // split scale to five parts // FIXME
+		mean = sumRes.Max / 2  // theoretical mean value
+		sigma = sumRes.Max / 5 // split scale in five parts // FIXME
+		base = 0
 	}
 
-	z := (meanRes.Score - mean) / sigma
-	usedNorm := fmt.Sprintf("used norm: %s (M=%.3f S=%.3f)", normName, mean, sigma)
-	formula := fmt.Sprintf("%s; z=(%.3f-%.3f)/%.3f=%.3f; %s", meanRes.Formula, meanRes.Score, mean, sigma, z, usedNorm)
+	z := (sumRes.Score - mean) / sigma
+	usedNorm := fmt.Sprintf("used norm: %s (M=%.3f S=%.3f, n=%d)", normName, mean, sigma, base)
+	formula := fmt.Sprintf("%s; z=(%.3f-%.3f)/%.3f=%.3f; %s", sumRes.Formula, sumRes.Score, mean, sigma, z, usedNorm)
 
 	return &ScaleResult{
 		Score:    z,
-		RawScore: meanRes.RawScore,
+		RawScore: sumRes.RawScore,
 		Min:      -99,
 		Max:      99,
 		Formula:  formula,
@@ -128,11 +131,26 @@ func resolveScaleZScore(s *Scale, norm *Norm) (*ScaleResult, error) {
 }
 
 func resolveScaleSten(s *Scale, norm *Norm) (*ScaleResult, error) {
+	zRes, err := resolveScaleZScore(s, norm)
+	if err != nil {
+		return nil, err
+	}
+
+	sten := (zRes.Score)*2 + 5.5
+	restrictedSten := sten
+	if sten > 10 {
+		restrictedSten = 10
+	}
+	if sten < 1 {
+		restrictedSten = 1
+	}
+	formula := fmt.Sprintf("%s; Sten(raw)=%.1f; Sten=%.1f", zRes.Formula, sten, restrictedSten)
 
 	return &ScaleResult{
-		Score:   0,
-		Min:     1,
-		Max:     10,
-		Formula: "",
+		Score:    restrictedSten,
+		RawScore: zRes.RawScore,
+		Min:      1,
+		Max:      10,
+		Formula:  formula,
 	}, nil
 }

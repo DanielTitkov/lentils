@@ -8,6 +8,20 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 )
 
+func (r *EntgoRepository) GetSamples(ctx context.Context) ([]*domain.Sample, error) {
+	samples, err := r.client.Sample.Query().All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []*domain.Sample
+	for _, s := range samples {
+		res = append(res, entToDomainSample(s))
+	}
+
+	return res, nil
+}
+
 func (r *EntgoRepository) CreateOrUpdateSample(ctx context.Context, smp *domain.Sample) (*domain.Sample, error) {
 	s, err := r.client.Sample.Query().
 		Where(sample.CodeEQ(smp.Code)).

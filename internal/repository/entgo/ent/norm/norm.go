@@ -25,6 +25,8 @@ const (
 	FieldMean = "mean"
 	// FieldSigma holds the string denoting the sigma field in the database.
 	FieldSigma = "sigma"
+	// FieldRank holds the string denoting the rank field in the database.
+	FieldRank = "rank"
 	// FieldMeta holds the string denoting the meta field in the database.
 	FieldMeta = "meta"
 	// EdgeSample holds the string denoting the sample edge name in mutations.
@@ -58,6 +60,7 @@ var Columns = []string{
 	FieldBase,
 	FieldMean,
 	FieldSigma,
+	FieldRank,
 	FieldMeta,
 }
 
@@ -96,6 +99,8 @@ var (
 	DefaultBase int
 	// BaseValidator is a validator for the "base" field. It is called by the builders before save.
 	BaseValidator func(int) error
+	// DefaultRank holds the default value on creation for the "rank" field.
+	DefaultRank int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

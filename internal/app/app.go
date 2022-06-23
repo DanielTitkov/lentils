@@ -51,9 +51,12 @@ type (
 
 		// sample
 		CreateOrUpdateSample(ctx context.Context, sample *domain.Sample) (*domain.Sample, error)
+		GetSamples(ctx context.Context) ([]*domain.Sample, error)
 
 		// norm
 		CreateOrUpdateNorm(ctx context.Context, norm *domain.Norm) (*domain.Norm, error)
+		GetDataForNormCalculation(ctx context.Context, criteria domain.SampleCriteria) ([]*domain.NormCalculationData, error)
+		GetScaleNorms(ctx context.Context, scaleID uuid.UUID) ([]*domain.Norm, error)
 
 		// result
 		CreateOrUpdateResult(ctx context.Context, result *domain.Result) (*domain.Result, error)
@@ -91,12 +94,17 @@ func New(
 		return nil, err
 	}
 
+	app.log.Info("finished loading presets", "")
+
 	err = app.initSamples()
 	if err != nil {
 		return nil, err
 	}
 
-	app.log.Info("finished loading presets", "")
+	err = app.UpdateNorms(context.TODO())
+	if err != nil {
+		return nil, err
+	}
 
 	// init app jobs, caches and preload data (if any)
 	go app.UpdateSystemSummaryJob() // TODO: move to jobs?

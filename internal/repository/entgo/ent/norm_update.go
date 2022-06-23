@@ -90,6 +90,27 @@ func (nu *NormUpdate) AddSigma(f float64) *NormUpdate {
 	return nu
 }
 
+// SetRank sets the "rank" field.
+func (nu *NormUpdate) SetRank(i int) *NormUpdate {
+	nu.mutation.ResetRank()
+	nu.mutation.SetRank(i)
+	return nu
+}
+
+// SetNillableRank sets the "rank" field if the given value is not nil.
+func (nu *NormUpdate) SetNillableRank(i *int) *NormUpdate {
+	if i != nil {
+		nu.SetRank(*i)
+	}
+	return nu
+}
+
+// AddRank adds i to the "rank" field.
+func (nu *NormUpdate) AddRank(i int) *NormUpdate {
+	nu.mutation.AddRank(i)
+	return nu
+}
+
 // SetMeta sets the "meta" field.
 func (nu *NormUpdate) SetMeta(m map[string]interface{}) *NormUpdate {
 	nu.mutation.SetMeta(m)
@@ -305,6 +326,20 @@ func (nu *NormUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: norm.FieldSigma,
 		})
 	}
+	if value, ok := nu.mutation.Rank(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: norm.FieldRank,
+		})
+	}
+	if value, ok := nu.mutation.AddedRank(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: norm.FieldRank,
+		})
+	}
 	if value, ok := nu.mutation.Meta(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeJSON,
@@ -463,6 +498,27 @@ func (nuo *NormUpdateOne) SetSigma(f float64) *NormUpdateOne {
 // AddSigma adds f to the "sigma" field.
 func (nuo *NormUpdateOne) AddSigma(f float64) *NormUpdateOne {
 	nuo.mutation.AddSigma(f)
+	return nuo
+}
+
+// SetRank sets the "rank" field.
+func (nuo *NormUpdateOne) SetRank(i int) *NormUpdateOne {
+	nuo.mutation.ResetRank()
+	nuo.mutation.SetRank(i)
+	return nuo
+}
+
+// SetNillableRank sets the "rank" field if the given value is not nil.
+func (nuo *NormUpdateOne) SetNillableRank(i *int) *NormUpdateOne {
+	if i != nil {
+		nuo.SetRank(*i)
+	}
+	return nuo
+}
+
+// AddRank adds i to the "rank" field.
+func (nuo *NormUpdateOne) AddRank(i int) *NormUpdateOne {
+	nuo.mutation.AddRank(i)
 	return nuo
 }
 
@@ -709,6 +765,20 @@ func (nuo *NormUpdateOne) sqlSave(ctx context.Context) (_node *Norm, err error) 
 			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: norm.FieldSigma,
+		})
+	}
+	if value, ok := nuo.mutation.Rank(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: norm.FieldRank,
+		})
+	}
+	if value, ok := nuo.mutation.AddedRank(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: norm.FieldRank,
 		})
 	}
 	if value, ok := nuo.mutation.Meta(); ok {

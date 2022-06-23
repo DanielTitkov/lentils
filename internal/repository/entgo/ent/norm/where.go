@@ -136,6 +136,13 @@ func Sigma(v float64) predicate.Norm {
 	})
 }
 
+// Rank applies equality check predicate on the "rank" field. It's identical to RankEQ.
+func Rank(v int) predicate.Norm {
+	return predicate.Norm(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRank), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Norm {
 	return predicate.Norm(func(s *sql.Selector) {
@@ -624,6 +631,82 @@ func SigmaLT(v float64) predicate.Norm {
 func SigmaLTE(v float64) predicate.Norm {
 	return predicate.Norm(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldSigma), v))
+	})
+}
+
+// RankEQ applies the EQ predicate on the "rank" field.
+func RankEQ(v int) predicate.Norm {
+	return predicate.Norm(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRank), v))
+	})
+}
+
+// RankNEQ applies the NEQ predicate on the "rank" field.
+func RankNEQ(v int) predicate.Norm {
+	return predicate.Norm(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldRank), v))
+	})
+}
+
+// RankIn applies the In predicate on the "rank" field.
+func RankIn(vs ...int) predicate.Norm {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Norm(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldRank), v...))
+	})
+}
+
+// RankNotIn applies the NotIn predicate on the "rank" field.
+func RankNotIn(vs ...int) predicate.Norm {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Norm(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldRank), v...))
+	})
+}
+
+// RankGT applies the GT predicate on the "rank" field.
+func RankGT(v int) predicate.Norm {
+	return predicate.Norm(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldRank), v))
+	})
+}
+
+// RankGTE applies the GTE predicate on the "rank" field.
+func RankGTE(v int) predicate.Norm {
+	return predicate.Norm(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldRank), v))
+	})
+}
+
+// RankLT applies the LT predicate on the "rank" field.
+func RankLT(v int) predicate.Norm {
+	return predicate.Norm(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldRank), v))
+	})
+}
+
+// RankLTE applies the LTE predicate on the "rank" field.
+func RankLTE(v int) predicate.Norm {
+	return predicate.Norm(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldRank), v))
 	})
 }
 

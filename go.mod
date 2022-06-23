@@ -11,6 +11,7 @@ require (
 	github.com/jfyne/live v0.14.1
 	github.com/lib/pq v1.10.5
 	github.com/markbates/goth v1.69.0
+	github.com/montanaflynn/stats v0.6.6 // indirect
 	github.com/sendinblue/APIv3-go-library v2.0.0+incompatible
 	github.com/sethvargo/go-password v0.2.0
 	go.uber.org/zap v1.21.0

@@ -22,6 +22,7 @@ func (Norm) Fields() []ent.Field {
 		field.Int("base").Default(0).NonNegative(),
 		field.Float("mean"),
 		field.Float("sigma"),
+		field.Int("rank").Default(0),
 		field.JSON("meta", make(map[string]interface{})).Optional(),
 	}
 }

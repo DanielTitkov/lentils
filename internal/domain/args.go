@@ -83,15 +83,9 @@ type (
 // norm calculation args
 type (
 	NormCalculationData struct {
-		ScaleID uuid.UUID
-		Takes   []struct { // takes must be complete
-			// values will be summed up to get raw value
-			// them get mean and sigma from them
-			Responses []struct {
-				Value   int
-				Reverse bool
-			}
-		}
+		ScaleID   uuid.UUID
+		ScaleCode string
+		Results   []float64
 	}
 )
 

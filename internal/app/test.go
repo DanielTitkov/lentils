@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/DanielTitkov/lentils/internal/util"
+
 	"github.com/DanielTitkov/lentils/internal/domain"
 	"gopkg.in/yaml.v2"
 )
@@ -69,12 +71,33 @@ func (a *App) PrepareTestResult(ctx context.Context, test *domain.Test, locale s
 		return nil, err
 	}
 
+	// select aplicable samples for the user? // TODO
+	// for now we will use just "all" norms, so it doesn't depend on user
+
+	// load norms for each scale?
+	for _, scale := range test.Scales {
+		norms, err := a.repo.GetScaleNorms(ctx, scale.ID)
+		if err != nil {
+			a.log.Error("failed to load scale norms", err)
+			continue
+		}
+
+		if len(norms) > 0 {
+			// select the best norm // TODO
+			// assign norm to scale for further processing
+			scale.Norm = norms[0]
+		}
+	}
+
 	if err := test.CalculateResult(); err != nil {
 		a.log.Error("prepare test results failed (calculate)", err)
 		return nil, err
 	}
 
 	// save results to db for further use in norm calculation
+	if err := a.SaveTestResults(ctx, test); err != nil {
+		return nil, err
+	}
 
 	return test, nil
 }
@@ -160,6 +183,22 @@ func (a *App) SaveTestResults(ctx context.Context, test *domain.Test) error {
 		if s.Result == nil {
 			a.log.Warn("got scale with nil result with is unexpected", fmt.Sprintf("%+v", s))
 			continue
+		}
+
+		meta := util.NewMeta()
+		meta["formula"] = s.Result.Formula
+		meta["calculation_took"] = s.Result.Elaplsed
+
+		_, err := a.repo.CreateOrUpdateResult(ctx, &domain.Result{
+			TakeID:     test.Take.ID,
+			ScaleID:    s.ID,
+			RawScore:   s.Result.RawScore,
+			FinalScore: s.Result.Score,
+			Meta:       meta,
+		})
+
+		if err != nil {
+			a.log.Error("saving result failed", err)
 		}
 	}
 

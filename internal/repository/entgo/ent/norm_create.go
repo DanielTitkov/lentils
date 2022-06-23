@@ -83,6 +83,20 @@ func (nc *NormCreate) SetSigma(f float64) *NormCreate {
 	return nc
 }
 
+// SetRank sets the "rank" field.
+func (nc *NormCreate) SetRank(i int) *NormCreate {
+	nc.mutation.SetRank(i)
+	return nc
+}
+
+// SetNillableRank sets the "rank" field if the given value is not nil.
+func (nc *NormCreate) SetNillableRank(i *int) *NormCreate {
+	if i != nil {
+		nc.SetRank(*i)
+	}
+	return nc
+}
+
 // SetMeta sets the "meta" field.
 func (nc *NormCreate) SetMeta(m map[string]interface{}) *NormCreate {
 	nc.mutation.SetMeta(m)
@@ -214,6 +228,10 @@ func (nc *NormCreate) defaults() {
 		v := norm.DefaultBase
 		nc.mutation.SetBase(v)
 	}
+	if _, ok := nc.mutation.Rank(); !ok {
+		v := norm.DefaultRank
+		nc.mutation.SetRank(v)
+	}
 	if _, ok := nc.mutation.ID(); !ok {
 		v := norm.DefaultID()
 		nc.mutation.SetID(v)
@@ -249,6 +267,9 @@ func (nc *NormCreate) check() error {
 	}
 	if _, ok := nc.mutation.Sigma(); !ok {
 		return &ValidationError{Name: "sigma", err: errors.New(`ent: missing required field "Norm.sigma"`)}
+	}
+	if _, ok := nc.mutation.Rank(); !ok {
+		return &ValidationError{Name: "rank", err: errors.New(`ent: missing required field "Norm.rank"`)}
 	}
 	if _, ok := nc.mutation.SampleID(); !ok {
 		return &ValidationError{Name: "sample", err: errors.New(`ent: missing required edge "Norm.sample"`)}
@@ -339,6 +360,14 @@ func (nc *NormCreate) createSpec() (*Norm, *sqlgraph.CreateSpec) {
 			Column: norm.FieldSigma,
 		})
 		_node.Sigma = value
+	}
+	if value, ok := nc.mutation.Rank(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: norm.FieldRank,
+		})
+		_node.Rank = value
 	}
 	if value, ok := nc.mutation.Meta(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

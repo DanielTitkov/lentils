@@ -13,6 +13,27 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 )
 
+func (r *EntgoRepository) GetScaleNorms(ctx context.Context, scaleID uuid.UUID) ([]*domain.Norm, error) {
+	norms, err := r.client.Norm.Query().
+		Where(
+			norm.HasScaleWith(scale.IDEQ(scaleID)),
+			norm.BaseGTE(domain.NormMinBase),
+		).
+		WithSample().
+		Order(ent.Desc(norm.FieldRank)). // we want norms with greater rank
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []*domain.Norm
+	for _, n := range norms {
+		res = append(res, entToDomainNorm(n, scaleID, uuid.Nil))
+	}
+
+	return res, nil
+}
+
 func (r *EntgoRepository) CreateOrUpdateNorm(ctx context.Context, nrm *domain.Norm) (*domain.Norm, error) {
 	n, err := r.client.Norm.Query().
 		Where(
@@ -31,6 +52,7 @@ func (r *EntgoRepository) CreateOrUpdateNorm(ctx context.Context, nrm *domain.No
 			SetSampleID(nrm.SampleID).
 			SetName(nrm.Name).
 			SetBase(nrm.Base).
+			SetRank(nrm.Rank).
 			SetMean(nrm.Mean).
 			SetSigma(nrm.Sigma).
 			Save(ctx)
@@ -46,6 +68,7 @@ func (r *EntgoRepository) CreateOrUpdateNorm(ctx context.Context, nrm *domain.No
 		SetName(nrm.Name).
 		SetBase(nrm.Base).
 		SetMean(nrm.Mean).
+		SetRank(nrm.Rank).
 		SetSigma(nrm.Sigma).
 		Save(ctx)
 	if err != nil {
@@ -72,6 +95,7 @@ func entToDomainNorm(n *ent.Norm, scaleID, sampleID uuid.UUID) *domain.Norm {
 		Base:     n.Base,
 		Mean:     n.Mean,
 		Sigma:    n.Sigma,
+		Rank:     n.Rank,
 		Meta:     n.Meta,
 	}
 }
