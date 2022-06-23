@@ -24,12 +24,20 @@ const (
 	FieldProgress = "progress"
 	// FieldPage holds the string denoting the page field in the database.
 	FieldPage = "page"
+	// FieldStartTime holds the string denoting the start_time field in the database.
+	FieldStartTime = "start_time"
+	// FieldEndTime holds the string denoting the end_time field in the database.
+	FieldEndTime = "end_time"
+	// FieldSuspicious holds the string denoting the suspicious field in the database.
+	FieldSuspicious = "suspicious"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// FieldMeta holds the string denoting the meta field in the database.
 	FieldMeta = "meta"
 	// EdgeResponses holds the string denoting the responses edge name in mutations.
 	EdgeResponses = "responses"
+	// EdgeResults holds the string denoting the results edge name in mutations.
+	EdgeResults = "results"
 	// EdgeTest holds the string denoting the test edge name in mutations.
 	EdgeTest = "test"
 	// EdgeUser holds the string denoting the user edge name in mutations.
@@ -43,6 +51,13 @@ const (
 	ResponsesInverseTable = "responses"
 	// ResponsesColumn is the table column denoting the responses relation/edge.
 	ResponsesColumn = "take_responses"
+	// ResultsTable is the table that holds the results relation/edge.
+	ResultsTable = "results"
+	// ResultsInverseTable is the table name for the Result entity.
+	// It exists in this package in order to avoid circular dependency with the "result" package.
+	ResultsInverseTable = "results"
+	// ResultsColumn is the table column denoting the results relation/edge.
+	ResultsColumn = "take_results"
 	// TestTable is the table that holds the test relation/edge.
 	TestTable = "takes"
 	// TestInverseTable is the table name for the Test entity.
@@ -67,6 +82,9 @@ var Columns = []string{
 	FieldSeed,
 	FieldProgress,
 	FieldPage,
+	FieldStartTime,
+	FieldEndTime,
+	FieldSuspicious,
 	FieldStatus,
 	FieldMeta,
 }
@@ -106,6 +124,8 @@ var (
 	DefaultProgress int
 	// DefaultPage holds the default value on creation for the "page" field.
 	DefaultPage int
+	// DefaultSuspicious holds the default value on creation for the "suspicious" field.
+	DefaultSuspicious bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

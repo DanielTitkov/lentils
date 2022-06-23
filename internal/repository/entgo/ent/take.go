@@ -30,6 +30,12 @@ type Take struct {
 	Progress int `json:"progress,omitempty"`
 	// Page holds the value of the "page" field.
 	Page int `json:"page,omitempty"`
+	// StartTime holds the value of the "start_time" field.
+	StartTime *time.Time `json:"start_time,omitempty"`
+	// EndTime holds the value of the "end_time" field.
+	EndTime *time.Time `json:"end_time,omitempty"`
+	// Suspicious holds the value of the "suspicious" field.
+	Suspicious bool `json:"suspicious,omitempty"`
 	// Status holds the value of the "status" field.
 	Status take.Status `json:"status,omitempty"`
 	// Meta holds the value of the "meta" field.
@@ -45,13 +51,15 @@ type Take struct {
 type TakeEdges struct {
 	// Responses holds the value of the responses edge.
 	Responses []*Response `json:"responses,omitempty"`
+	// Results holds the value of the results edge.
+	Results []*Result `json:"results,omitempty"`
 	// Test holds the value of the test edge.
 	Test *Test `json:"test,omitempty"`
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 }
 
 // ResponsesOrErr returns the Responses value or an error if the edge
@@ -63,10 +71,19 @@ func (e TakeEdges) ResponsesOrErr() ([]*Response, error) {
 	return nil, &NotLoadedError{edge: "responses"}
 }
 
+// ResultsOrErr returns the Results value or an error if the edge
+// was not loaded in eager-loading.
+func (e TakeEdges) ResultsOrErr() ([]*Result, error) {
+	if e.loadedTypes[1] {
+		return e.Results, nil
+	}
+	return nil, &NotLoadedError{edge: "results"}
+}
+
 // TestOrErr returns the Test value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e TakeEdges) TestOrErr() (*Test, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[2] {
 		if e.Test == nil {
 			// The edge test was loaded in eager-loading,
 			// but was not found.
@@ -80,7 +97,7 @@ func (e TakeEdges) TestOrErr() (*Test, error) {
 // UserOrErr returns the User value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e TakeEdges) UserOrErr() (*User, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[3] {
 		if e.User == nil {
 			// The edge user was loaded in eager-loading,
 			// but was not found.
@@ -98,11 +115,13 @@ func (*Take) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case take.FieldMeta:
 			values[i] = new([]byte)
+		case take.FieldSuspicious:
+			values[i] = new(sql.NullBool)
 		case take.FieldSeed, take.FieldProgress, take.FieldPage:
 			values[i] = new(sql.NullInt64)
 		case take.FieldStatus:
 			values[i] = new(sql.NullString)
-		case take.FieldCreateTime, take.FieldUpdateTime:
+		case take.FieldCreateTime, take.FieldUpdateTime, take.FieldStartTime, take.FieldEndTime:
 			values[i] = new(sql.NullTime)
 		case take.FieldID:
 			values[i] = new(uuid.UUID)
@@ -161,6 +180,26 @@ func (t *Take) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				t.Page = int(value.Int64)
 			}
+		case take.FieldStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field start_time", values[i])
+			} else if value.Valid {
+				t.StartTime = new(time.Time)
+				*t.StartTime = value.Time
+			}
+		case take.FieldEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field end_time", values[i])
+			} else if value.Valid {
+				t.EndTime = new(time.Time)
+				*t.EndTime = value.Time
+			}
+		case take.FieldSuspicious:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field suspicious", values[i])
+			} else if value.Valid {
+				t.Suspicious = value.Bool
+			}
 		case take.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
@@ -197,6 +236,11 @@ func (t *Take) assignValues(columns []string, values []interface{}) error {
 // QueryResponses queries the "responses" edge of the Take entity.
 func (t *Take) QueryResponses() *ResponseQuery {
 	return (&TakeClient{config: t.config}).QueryResponses(t)
+}
+
+// QueryResults queries the "results" edge of the Take entity.
+func (t *Take) QueryResults() *ResultQuery {
+	return (&TakeClient{config: t.config}).QueryResults(t)
 }
 
 // QueryTest queries the "test" edge of the Take entity.
@@ -246,6 +290,19 @@ func (t *Take) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("page=")
 	builder.WriteString(fmt.Sprintf("%v", t.Page))
+	builder.WriteString(", ")
+	if v := t.StartTime; v != nil {
+		builder.WriteString("start_time=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := t.EndTime; v != nil {
+		builder.WriteString("end_time=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("suspicious=")
+	builder.WriteString(fmt.Sprintf("%v", t.Suspicious))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", t.Status))

@@ -559,6 +559,34 @@ func HasNormsWith(preds ...predicate.Norm) predicate.Scale {
 	})
 }
 
+// HasResults applies the HasEdge predicate on the "results" edge.
+func HasResults() predicate.Scale {
+	return predicate.Scale(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ResultsTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ResultsTable, ResultsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasResultsWith applies the HasEdge predicate on the "results" edge with a given conditions (other predicates).
+func HasResultsWith(preds ...predicate.Result) predicate.Scale {
+	return predicate.Scale(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ResultsInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ResultsTable, ResultsColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasTest applies the HasEdge predicate on the "test" edge.
 func HasTest() predicate.Scale {
 	return predicate.Scale(func(s *sql.Selector) {

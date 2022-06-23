@@ -18,6 +18,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
@@ -55,6 +56,8 @@ type Client struct {
 	QuestionTranslation *QuestionTranslationClient
 	// Response is the client for interacting with the Response builders.
 	Response *ResponseClient
+	// Result is the client for interacting with the Result builders.
+	Result *ResultClient
 	// Sample is the client for interacting with the Sample builders.
 	Sample *SampleClient
 	// Scale is the client for interacting with the Scale builders.
@@ -96,6 +99,7 @@ func (c *Client) init() {
 	c.Question = NewQuestionClient(c.config)
 	c.QuestionTranslation = NewQuestionTranslationClient(c.config)
 	c.Response = NewResponseClient(c.config)
+	c.Result = NewResultClient(c.config)
 	c.Sample = NewSampleClient(c.config)
 	c.Scale = NewScaleClient(c.config)
 	c.ScaleItem = NewScaleItemClient(c.config)
@@ -147,6 +151,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Question:                  NewQuestionClient(cfg),
 		QuestionTranslation:       NewQuestionTranslationClient(cfg),
 		Response:                  NewResponseClient(cfg),
+		Result:                    NewResultClient(cfg),
 		Sample:                    NewSampleClient(cfg),
 		Scale:                     NewScaleClient(cfg),
 		ScaleItem:                 NewScaleItemClient(cfg),
@@ -184,6 +189,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Question:                  NewQuestionClient(cfg),
 		QuestionTranslation:       NewQuestionTranslationClient(cfg),
 		Response:                  NewResponseClient(cfg),
+		Result:                    NewResultClient(cfg),
 		Sample:                    NewSampleClient(cfg),
 		Scale:                     NewScaleClient(cfg),
 		ScaleItem:                 NewScaleItemClient(cfg),
@@ -231,6 +237,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Question.Use(hooks...)
 	c.QuestionTranslation.Use(hooks...)
 	c.Response.Use(hooks...)
+	c.Result.Use(hooks...)
 	c.Sample.Use(hooks...)
 	c.Scale.Use(hooks...)
 	c.ScaleItem.Use(hooks...)
@@ -1235,6 +1242,128 @@ func (c *ResponseClient) Hooks() []Hook {
 	return c.hooks.Response
 }
 
+// ResultClient is a client for the Result schema.
+type ResultClient struct {
+	config
+}
+
+// NewResultClient returns a client for the Result from the given config.
+func NewResultClient(c config) *ResultClient {
+	return &ResultClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `result.Hooks(f(g(h())))`.
+func (c *ResultClient) Use(hooks ...Hook) {
+	c.hooks.Result = append(c.hooks.Result, hooks...)
+}
+
+// Create returns a builder for creating a Result entity.
+func (c *ResultClient) Create() *ResultCreate {
+	mutation := newResultMutation(c.config, OpCreate)
+	return &ResultCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Result entities.
+func (c *ResultClient) CreateBulk(builders ...*ResultCreate) *ResultCreateBulk {
+	return &ResultCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Result.
+func (c *ResultClient) Update() *ResultUpdate {
+	mutation := newResultMutation(c.config, OpUpdate)
+	return &ResultUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ResultClient) UpdateOne(r *Result) *ResultUpdateOne {
+	mutation := newResultMutation(c.config, OpUpdateOne, withResult(r))
+	return &ResultUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ResultClient) UpdateOneID(id uuid.UUID) *ResultUpdateOne {
+	mutation := newResultMutation(c.config, OpUpdateOne, withResultID(id))
+	return &ResultUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Result.
+func (c *ResultClient) Delete() *ResultDelete {
+	mutation := newResultMutation(c.config, OpDelete)
+	return &ResultDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ResultClient) DeleteOne(r *Result) *ResultDeleteOne {
+	return c.DeleteOneID(r.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *ResultClient) DeleteOneID(id uuid.UUID) *ResultDeleteOne {
+	builder := c.Delete().Where(result.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ResultDeleteOne{builder}
+}
+
+// Query returns a query builder for Result.
+func (c *ResultClient) Query() *ResultQuery {
+	return &ResultQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Result entity by its id.
+func (c *ResultClient) Get(ctx context.Context, id uuid.UUID) (*Result, error) {
+	return c.Query().Where(result.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ResultClient) GetX(ctx context.Context, id uuid.UUID) *Result {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryScale queries the scale edge of a Result.
+func (c *ResultClient) QueryScale(r *Result) *ScaleQuery {
+	query := &ScaleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(result.Table, result.FieldID, id),
+			sqlgraph.To(scale.Table, scale.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, result.ScaleTable, result.ScaleColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTake queries the take edge of a Result.
+func (c *ResultClient) QueryTake(r *Result) *TakeQuery {
+	query := &TakeQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(result.Table, result.FieldID, id),
+			sqlgraph.To(take.Table, take.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, result.TakeTable, result.TakeColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ResultClient) Hooks() []Hook {
+	return c.hooks.Result
+}
+
 // SampleClient is a client for the Sample schema.
 type SampleClient struct {
 	config
@@ -1483,6 +1612,22 @@ func (c *ScaleClient) QueryNorms(s *Scale) *NormQuery {
 			sqlgraph.From(scale.Table, scale.FieldID, id),
 			sqlgraph.To(norm.Table, norm.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, scale.NormsTable, scale.NormsColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryResults queries the results edge of a Scale.
+func (c *ScaleClient) QueryResults(s *Scale) *ResultQuery {
+	query := &ResultQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, id),
+			sqlgraph.To(result.Table, result.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, scale.ResultsTable, scale.ResultsColumn),
 		)
 		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
 		return fromV, nil
@@ -1799,6 +1944,22 @@ func (c *TakeClient) QueryResponses(t *Take) *ResponseQuery {
 			sqlgraph.From(take.Table, take.FieldID, id),
 			sqlgraph.To(response.Table, response.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, take.ResponsesTable, take.ResponsesColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryResults queries the results edge of a Take.
+func (c *TakeClient) QueryResults(t *Take) *ResultQuery {
+	query := &ResultQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(take.Table, take.FieldID, id),
+			sqlgraph.To(result.Table, result.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, take.ResultsTable, take.ResultsColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil

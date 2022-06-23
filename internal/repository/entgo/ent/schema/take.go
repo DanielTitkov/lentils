@@ -24,6 +24,9 @@ func (Take) Fields() []ent.Field {
 		field.Int64("seed").Default(time.Now().Unix()).Immutable(),
 		field.Int("progress").Default(0),
 		field.Int("page").Default(0),
+		field.Time("start_time").Optional().Nillable(),
+		field.Time("end_time").Optional().Nillable(),
+		field.Bool("suspicious").Default(false),
 		field.Enum("status").Values(
 			domain.TestStepIntro,
 			domain.TestStepQuestions,
@@ -39,6 +42,7 @@ func (Take) Edges() []ent.Edge {
 	return []ent.Edge{
 		// has
 		edge.To("responses", Response.Type),
+		edge.To("results", Result.Type),
 		// belongs to
 		edge.From("test", Test.Type).Ref("takes").Unique().Required(),
 		edge.From("user", User.Type).Ref("takes").Unique().Required(),

@@ -21,6 +21,7 @@ type (
 		Questions         []*Question
 		Scales            []*Scale
 		Display           TestDisplay
+		Take              *Take // for use in handler
 	}
 
 	TestDisplay struct {
@@ -87,13 +88,27 @@ type (
 	}
 
 	ScaleResult struct {
-		Value          float64
+		RawScore       float64
+		Score          float64
 		Min            float64
 		Max            float64
 		Interpretation *Interpretation
 		Formula        string
 		Elaplsed       time.Duration
 		Meta           map[string]interface{}
+	}
+
+	// Result is saved to db and used for norms calculation
+	// there's no need as yet to save calculatable data like min, max, etc.
+	Result struct {
+		ID         uuid.UUID
+		TakeID     uuid.UUID
+		ScaleID    uuid.UUID
+		RawScore   float64
+		FinalScore float64
+		CreateTime time.Time
+		UpdateTime time.Time
+		Meta       map[string]interface{}
 	}
 
 	Interpretation struct {
@@ -118,6 +133,9 @@ type (
 		UserID     uuid.UUID
 		TestID     uuid.UUID
 		Seed       int64
+		StartTime  *time.Time
+		EndTime    *time.Time
+		Suspicious bool
 		CreateTime time.Time
 		UpdateTime time.Time
 		Page       int

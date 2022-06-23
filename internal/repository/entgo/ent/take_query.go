@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
@@ -30,6 +31,7 @@ type TakeQuery struct {
 	predicates []predicate.Take
 	// eager-loading edges.
 	withResponses *ResponseQuery
+	withResults   *ResultQuery
 	withTest      *TestQuery
 	withUser      *UserQuery
 	withFKs       bool
@@ -84,6 +86,28 @@ func (tq *TakeQuery) QueryResponses() *ResponseQuery {
 			sqlgraph.From(take.Table, take.FieldID, selector),
 			sqlgraph.To(response.Table, response.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, take.ResponsesTable, take.ResponsesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryResults chains the current query on the "results" edge.
+func (tq *TakeQuery) QueryResults() *ResultQuery {
+	query := &ResultQuery{config: tq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(take.Table, take.FieldID, selector),
+			sqlgraph.To(result.Table, result.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, take.ResultsTable, take.ResultsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -317,6 +341,7 @@ func (tq *TakeQuery) Clone() *TakeQuery {
 		order:         append([]OrderFunc{}, tq.order...),
 		predicates:    append([]predicate.Take{}, tq.predicates...),
 		withResponses: tq.withResponses.Clone(),
+		withResults:   tq.withResults.Clone(),
 		withTest:      tq.withTest.Clone(),
 		withUser:      tq.withUser.Clone(),
 		// clone intermediate query.
@@ -334,6 +359,17 @@ func (tq *TakeQuery) WithResponses(opts ...func(*ResponseQuery)) *TakeQuery {
 		opt(query)
 	}
 	tq.withResponses = query
+	return tq
+}
+
+// WithResults tells the query-builder to eager-load the nodes that are connected to
+// the "results" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TakeQuery) WithResults(opts ...func(*ResultQuery)) *TakeQuery {
+	query := &ResultQuery{config: tq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withResults = query
 	return tq
 }
 
@@ -430,8 +466,9 @@ func (tq *TakeQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Take, e
 		nodes       = []*Take{}
 		withFKs     = tq.withFKs
 		_spec       = tq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			tq.withResponses != nil,
+			tq.withResults != nil,
 			tq.withTest != nil,
 			tq.withUser != nil,
 		}
@@ -487,6 +524,35 @@ func (tq *TakeQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Take, e
 				return nil, fmt.Errorf(`unexpected foreign-key "take_responses" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Responses = append(node.Edges.Responses, n)
+		}
+	}
+
+	if query := tq.withResults; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[uuid.UUID]*Take)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Results = []*Result{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Result(func(s *sql.Selector) {
+			s.Where(sql.InValues(take.ResultsColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.take_results
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "take_results" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "take_results" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Results = append(node.Edges.Results, n)
 		}
 	}
 

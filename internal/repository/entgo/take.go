@@ -16,6 +16,8 @@ func (r *EntgoRepository) CreateTake(ctx context.Context, tk *domain.Take) (*dom
 		SetTestID(tk.TestID).
 		SetUserID(tk.UserID).
 		SetMeta(tk.Meta).
+		SetNillableStartTime(tk.StartTime).
+		SetSeed(tk.Seed).
 		Save(ctx)
 	if err != nil {
 		return nil, err
@@ -34,12 +36,19 @@ func (r *EntgoRepository) UpdateTake(ctx context.Context, tk *domain.Take) (*dom
 		return nil, err
 	}
 
-	t, err = t.Update().
+	updatedQuery := t.Update().
 		SetProgress(tk.Progress).
 		SetPage(tk.Page).
 		SetStatus(take.Status(tk.Status)).
+		SetNillableStartTime(tk.StartTime).
 		SetMeta(tk.Meta).
-		Save(ctx)
+		SetSuspicious(tk.Suspicious)
+
+	if tk.EndTime != nil && !tk.EndTime.IsZero() {
+		updatedQuery.SetNillableEndTime(tk.EndTime)
+	}
+
+	t, err = updatedQuery.Save(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +70,14 @@ func entToDomainTake(t *ent.Take, uid, tid uuid.UUID) *domain.Take {
 		Progress:   t.Progress,
 		Status:     t.Status.String(),
 		Page:       t.Page,
-		Meta:       t.Meta,
+		Seed:       t.Seed,
 		UserID:     uid,
 		TestID:     tid,
+		StartTime:  t.StartTime,
+		EndTime:    t.EndTime,
+		Suspicious: t.Suspicious,
 		CreateTime: t.CreateTime,
 		UpdateTime: t.UpdateTime,
+		Meta:       t.Meta,
 	}
 }

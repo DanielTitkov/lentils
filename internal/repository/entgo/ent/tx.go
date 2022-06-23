@@ -28,6 +28,8 @@ type Tx struct {
 	QuestionTranslation *QuestionTranslationClient
 	// Response is the client for interacting with the Response builders.
 	Response *ResponseClient
+	// Result is the client for interacting with the Result builders.
+	Result *ResultClient
 	// Sample is the client for interacting with the Sample builders.
 	Sample *SampleClient
 	// Scale is the client for interacting with the Scale builders.
@@ -191,6 +193,7 @@ func (tx *Tx) init() {
 	tx.Question = NewQuestionClient(tx.config)
 	tx.QuestionTranslation = NewQuestionTranslationClient(tx.config)
 	tx.Response = NewResponseClient(tx.config)
+	tx.Result = NewResultClient(tx.config)
 	tx.Sample = NewSampleClient(tx.config)
 	tx.Scale = NewScaleClient(tx.config)
 	tx.ScaleItem = NewScaleItemClient(tx.config)

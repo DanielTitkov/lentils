@@ -10,6 +10,39 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+func (a *App) BeginTest(ctx context.Context, test *domain.Test) (*domain.Test, error) {
+	// change take status to questions
+	err := test.Take.Begin()
+	if err != nil {
+		a.log.Error("begin test failed (begin test)", err)
+		return nil, err
+	}
+
+	test.Take, err = a.repo.UpdateTake(ctx, test.Take)
+	if err != nil {
+		a.log.Error("begin test failed (update take)", err)
+		return nil, err
+	}
+
+	return test, nil
+}
+
+func (a *App) EndTest(ctx context.Context, test *domain.Test) (*domain.Test, error) {
+	err := test.Take.End()
+	if err != nil {
+		a.log.Error("end test failed (end test)", err)
+		return nil, err
+	}
+
+	test.Take, err = a.repo.UpdateTake(ctx, test.Take)
+	if err != nil {
+		a.log.Error("end test failed (update take)", err)
+		return nil, err
+	}
+
+	return test, nil
+}
+
 func (a *App) CreateOrUpdateTestFromArgs(ctx context.Context, args domain.CreateTestArgs) error {
 	return a.repo.CreateOrUpdateTestFromArgs(ctx, &args)
 }
@@ -17,6 +50,7 @@ func (a *App) CreateOrUpdateTestFromArgs(ctx context.Context, args domain.Create
 func (a *App) GetTestsForLocale(ctx context.Context, locale string) ([]*domain.Test, error) {
 	tests, err := a.repo.GetTests(ctx, locale)
 	if err != nil {
+		a.log.Error("get tests for locale failed", err)
 		return nil, err
 	}
 
@@ -28,23 +62,31 @@ func (a *App) GetTestByCode(ctx context.Context, code string, locale string) (*d
 	return a.repo.GetTestByCode(ctx, code, locale)
 }
 
-func (a *App) PrepareTestResult(ctx context.Context, take *domain.Take, locale string) (*domain.Test, error) {
-	test, err := a.repo.GetTakeData(ctx, take, locale)
+func (a *App) PrepareTestResult(ctx context.Context, test *domain.Test, locale string) (*domain.Test, error) {
+	test, err := a.repo.GetTakeData(ctx, test.Take, locale)
 	if err != nil {
+		a.log.Error("prepare test results failed (get data)", err)
 		return nil, err
 	}
+
+	if err := test.CalculateResult(); err != nil {
+		a.log.Error("prepare test results failed (calculate)", err)
+		return nil, err
+	}
+
+	// save results to db for further use in norm calculation
 
 	return test, nil
 }
 
-func (a *App) PrepareTest(ctx context.Context, code string, locale string, args *domain.PrepareTestArgs) (*domain.Test, *domain.Take, error) {
+func (a *App) PrepareTest(ctx context.Context, code string, locale string, args *domain.PrepareTestArgs) (*domain.Test, error) {
 	if ok := a.IsValidLocale(locale); !ok {
-		return nil, nil, fmt.Errorf("got unknown locale: %s", locale)
+		return nil, fmt.Errorf("got unknown locale: %s", locale)
 	}
 
 	test, err := a.repo.GetTestByCode(ctx, code, locale)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	// TODO: in take is loaded from db, use old seed
@@ -59,13 +101,16 @@ func (a *App) PrepareTest(ctx context.Context, code string, locale string, args 
 		Meta:   takeMeta,
 	})
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
+
+	// assign take
+	test.Take = take
 
 	// establish questions order (random or fixed)
 	test.OrderQuestions(seed)
 
-	return test, take, nil
+	return test, nil
 }
 
 func (a *App) loadTestPresets() error {
@@ -105,6 +150,17 @@ func (a *App) loadTestPresets() error {
 		}
 
 		a.log.Debug("loaded test", fmt.Sprintf("%+v", test.Code))
+	}
+
+	return nil
+}
+
+func (a *App) SaveTestResults(ctx context.Context, test *domain.Test) error {
+	for _, s := range test.Scales {
+		if s.Result == nil {
+			a.log.Warn("got scale with nil result with is unexpected", fmt.Sprintf("%+v", s))
+			continue
+		}
 	}
 
 	return nil

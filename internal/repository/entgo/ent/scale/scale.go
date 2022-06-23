@@ -32,6 +32,8 @@ const (
 	EdgeTranslations = "translations"
 	// EdgeNorms holds the string denoting the norms edge name in mutations.
 	EdgeNorms = "norms"
+	// EdgeResults holds the string denoting the results edge name in mutations.
+	EdgeResults = "results"
 	// EdgeTest holds the string denoting the test edge name in mutations.
 	EdgeTest = "test"
 	// EdgeScaleItem holds the string denoting the scale_item edge name in mutations.
@@ -64,6 +66,13 @@ const (
 	NormsInverseTable = "norms"
 	// NormsColumn is the table column denoting the norms relation/edge.
 	NormsColumn = "scale_norms"
+	// ResultsTable is the table that holds the results relation/edge.
+	ResultsTable = "results"
+	// ResultsInverseTable is the table name for the Result entity.
+	// It exists in this package in order to avoid circular dependency with the "result" package.
+	ResultsInverseTable = "results"
+	// ResultsColumn is the table column denoting the results relation/edge.
+	ResultsColumn = "scale_results"
 	// TestTable is the table that holds the test relation/edge. The primary key declared below.
 	TestTable = "test_scales"
 	// TestInverseTable is the table name for the Test entity.

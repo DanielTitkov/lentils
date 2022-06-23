@@ -32,6 +32,7 @@ type hooks struct {
 	Question                  []ent.Hook
 	QuestionTranslation       []ent.Hook
 	Response                  []ent.Hook
+	Result                    []ent.Hook
 	Sample                    []ent.Hook
 	Scale                     []ent.Hook
 	ScaleItem                 []ent.Hook

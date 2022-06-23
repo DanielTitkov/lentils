@@ -129,6 +129,27 @@ func Page(v int) predicate.Take {
 	})
 }
 
+// StartTime applies equality check predicate on the "start_time" field. It's identical to StartTimeEQ.
+func StartTime(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldStartTime), v))
+	})
+}
+
+// EndTime applies equality check predicate on the "end_time" field. It's identical to EndTimeEQ.
+func EndTime(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldEndTime), v))
+	})
+}
+
+// Suspicious applies equality check predicate on the "suspicious" field. It's identical to SuspiciousEQ.
+func Suspicious(v bool) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSuspicious), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {
@@ -509,6 +530,200 @@ func PageLTE(v int) predicate.Take {
 	})
 }
 
+// StartTimeEQ applies the EQ predicate on the "start_time" field.
+func StartTimeEQ(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldStartTime), v))
+	})
+}
+
+// StartTimeNEQ applies the NEQ predicate on the "start_time" field.
+func StartTimeNEQ(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldStartTime), v))
+	})
+}
+
+// StartTimeIn applies the In predicate on the "start_time" field.
+func StartTimeIn(vs ...time.Time) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldStartTime), v...))
+	})
+}
+
+// StartTimeNotIn applies the NotIn predicate on the "start_time" field.
+func StartTimeNotIn(vs ...time.Time) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldStartTime), v...))
+	})
+}
+
+// StartTimeGT applies the GT predicate on the "start_time" field.
+func StartTimeGT(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldStartTime), v))
+	})
+}
+
+// StartTimeGTE applies the GTE predicate on the "start_time" field.
+func StartTimeGTE(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldStartTime), v))
+	})
+}
+
+// StartTimeLT applies the LT predicate on the "start_time" field.
+func StartTimeLT(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldStartTime), v))
+	})
+}
+
+// StartTimeLTE applies the LTE predicate on the "start_time" field.
+func StartTimeLTE(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldStartTime), v))
+	})
+}
+
+// StartTimeIsNil applies the IsNil predicate on the "start_time" field.
+func StartTimeIsNil() predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldStartTime)))
+	})
+}
+
+// StartTimeNotNil applies the NotNil predicate on the "start_time" field.
+func StartTimeNotNil() predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldStartTime)))
+	})
+}
+
+// EndTimeEQ applies the EQ predicate on the "end_time" field.
+func EndTimeEQ(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldEndTime), v))
+	})
+}
+
+// EndTimeNEQ applies the NEQ predicate on the "end_time" field.
+func EndTimeNEQ(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldEndTime), v))
+	})
+}
+
+// EndTimeIn applies the In predicate on the "end_time" field.
+func EndTimeIn(vs ...time.Time) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldEndTime), v...))
+	})
+}
+
+// EndTimeNotIn applies the NotIn predicate on the "end_time" field.
+func EndTimeNotIn(vs ...time.Time) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldEndTime), v...))
+	})
+}
+
+// EndTimeGT applies the GT predicate on the "end_time" field.
+func EndTimeGT(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldEndTime), v))
+	})
+}
+
+// EndTimeGTE applies the GTE predicate on the "end_time" field.
+func EndTimeGTE(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldEndTime), v))
+	})
+}
+
+// EndTimeLT applies the LT predicate on the "end_time" field.
+func EndTimeLT(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldEndTime), v))
+	})
+}
+
+// EndTimeLTE applies the LTE predicate on the "end_time" field.
+func EndTimeLTE(v time.Time) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldEndTime), v))
+	})
+}
+
+// EndTimeIsNil applies the IsNil predicate on the "end_time" field.
+func EndTimeIsNil() predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldEndTime)))
+	})
+}
+
+// EndTimeNotNil applies the NotNil predicate on the "end_time" field.
+func EndTimeNotNil() predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldEndTime)))
+	})
+}
+
+// SuspiciousEQ applies the EQ predicate on the "suspicious" field.
+func SuspiciousEQ(v bool) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSuspicious), v))
+	})
+}
+
+// SuspiciousNEQ applies the NEQ predicate on the "suspicious" field.
+func SuspiciousNEQ(v bool) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSuspicious), v))
+	})
+}
+
 // StatusEQ applies the EQ predicate on the "status" field.
 func StatusEQ(v Status) predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {
@@ -590,6 +805,34 @@ func HasResponsesWith(preds ...predicate.Response) predicate.Take {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(ResponsesInverseTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, ResponsesTable, ResponsesColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasResults applies the HasEdge predicate on the "results" edge.
+func HasResults() predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ResultsTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ResultsTable, ResultsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasResultsWith applies the HasEdge predicate on the "results" edge with a given conditions (other predicates).
+func HasResultsWith(preds ...predicate.Result) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ResultsInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ResultsTable, ResultsColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

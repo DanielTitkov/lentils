@@ -222,6 +222,44 @@ var (
 			},
 		},
 	}
+	// ResultsColumns holds the columns for the "results" table.
+	ResultsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "raw_score", Type: field.TypeFloat64},
+		{Name: "final_score", Type: field.TypeFloat64},
+		{Name: "meta", Type: field.TypeJSON, Nullable: true},
+		{Name: "scale_results", Type: field.TypeUUID},
+		{Name: "take_results", Type: field.TypeUUID},
+	}
+	// ResultsTable holds the schema information for the "results" table.
+	ResultsTable = &schema.Table{
+		Name:       "results",
+		Columns:    ResultsColumns,
+		PrimaryKey: []*schema.Column{ResultsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "results_scales_results",
+				Columns:    []*schema.Column{ResultsColumns[6]},
+				RefColumns: []*schema.Column{ScalesColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "results_takes_results",
+				Columns:    []*schema.Column{ResultsColumns[7]},
+				RefColumns: []*schema.Column{TakesColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "result_scale_results_take_results",
+				Unique:  true,
+				Columns: []*schema.Column{ResultsColumns[6], ResultsColumns[7]},
+			},
+		},
+	}
 	// SamplesColumns holds the columns for the "samples" table.
 	SamplesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -311,9 +349,12 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1655931649},
+		{Name: "seed", Type: field.TypeInt64, Default: 1656011930},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
 		{Name: "page", Type: field.TypeInt, Default: 0},
+		{Name: "start_time", Type: field.TypeTime, Nullable: true},
+		{Name: "end_time", Type: field.TypeTime, Nullable: true},
+		{Name: "suspicious", Type: field.TypeBool, Default: false},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"intro", "questions", "finish", "result"}, Default: "intro"},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "test_takes", Type: field.TypeUUID},
@@ -327,13 +368,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "takes_tests_takes",
-				Columns:    []*schema.Column{TakesColumns[8]},
+				Columns:    []*schema.Column{TakesColumns[11]},
 				RefColumns: []*schema.Column{TestsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "takes_users_takes",
-				Columns:    []*schema.Column{TakesColumns[9]},
+				Columns:    []*schema.Column{TakesColumns[12]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -553,6 +594,7 @@ var (
 		QuestionsTable,
 		QuestionTranslationsTable,
 		ResponsesTable,
+		ResultsTable,
 		SamplesTable,
 		ScalesTable,
 		ScaleItemsTable,
@@ -578,6 +620,8 @@ func init() {
 	QuestionTranslationsTable.ForeignKeys[0].RefTable = QuestionsTable
 	ResponsesTable.ForeignKeys[0].RefTable = ItemsTable
 	ResponsesTable.ForeignKeys[1].RefTable = TakesTable
+	ResultsTable.ForeignKeys[0].RefTable = ScalesTable
+	ResultsTable.ForeignKeys[1].RefTable = TakesTable
 	ScaleItemsTable.ForeignKeys[0].RefTable = ItemsTable
 	ScaleItemsTable.ForeignKeys[1].RefTable = ScalesTable
 	ScaleTranslationsTable.ForeignKeys[0].RefTable = ScalesTable

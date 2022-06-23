@@ -66,13 +66,14 @@ func resolveScaleSum(s *Scale, norm *Norm) (*ScaleResult, error) {
 		max += float64(itm.Steps - 1)
 	}
 
-	formula := fmt.Sprintf("Sum=%s=%.3f", strings.Join(vals, "+"), sum)
+	formula := fmt.Sprintf("Raw(sum)=%s=%.3f", strings.Join(vals, "+"), sum)
 
 	return &ScaleResult{
-		Value:   sum,
-		Min:     0,
-		Max:     max,
-		Formula: formula,
+		Score:    sum,
+		RawScore: sum,
+		Min:      0,
+		Max:      max,
+		Formula:  formula,
 	}, nil
 }
 
@@ -82,15 +83,16 @@ func resolveScaleMean(s *Scale, norm *Norm) (*ScaleResult, error) {
 		return nil, err
 	}
 
-	mean := sumRes.Value / float64(len(s.Items))
+	mean := sumRes.Score / float64(len(s.Items))
 	max := sumRes.Max / float64(len(s.Items))
-	formula := fmt.Sprintf("%s; M=%.3f/%d=%.3f", sumRes.Formula, sumRes.Value, len(s.Items), mean)
+	formula := fmt.Sprintf("%s; M=%.3f/%d=%.3f", sumRes.Formula, sumRes.Score, len(s.Items), mean)
 
 	return &ScaleResult{
-		Value:   mean,
-		Min:     0,
-		Max:     max,
-		Formula: formula,
+		Score:    mean,
+		RawScore: sumRes.RawScore,
+		Min:      0,
+		Max:      max,
+		Formula:  formula,
 	}, nil
 }
 
@@ -112,22 +114,23 @@ func resolveScaleZScore(s *Scale, norm *Norm) (*ScaleResult, error) {
 		sigma = meanRes.Max / 5 // split scale to five parts // FIXME
 	}
 
-	z := (meanRes.Value - mean) / sigma
+	z := (meanRes.Score - mean) / sigma
 	usedNorm := fmt.Sprintf("used norm: %s (M=%.3f S=%.3f)", normName, mean, sigma)
-	formula := fmt.Sprintf("%s; z=(%.3f-%.3f)/%.3f=%.3f; %s", meanRes.Formula, meanRes.Value, mean, sigma, z, usedNorm)
+	formula := fmt.Sprintf("%s; z=(%.3f-%.3f)/%.3f=%.3f; %s", meanRes.Formula, meanRes.Score, mean, sigma, z, usedNorm)
 
 	return &ScaleResult{
-		Value:   z,
-		Min:     -99,
-		Max:     99,
-		Formula: formula,
+		Score:    z,
+		RawScore: meanRes.RawScore,
+		Min:      -99,
+		Max:      99,
+		Formula:  formula,
 	}, nil
 }
 
 func resolveScaleSten(s *Scale, norm *Norm) (*ScaleResult, error) {
 
 	return &ScaleResult{
-		Value:   0,
+		Score:   0,
 		Min:     1,
 		Max:     10,
 		Formula: "",

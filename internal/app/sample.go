@@ -25,6 +25,7 @@ func (a *App) initSamples() error {
 		smp, err := a.repo.CreateOrUpdateSample(context.TODO(), s)
 		a.log.Info("created sample", fmt.Sprintf("%+v", smp))
 		if err != nil {
+			a.log.Error("init samples failes", err)
 			return err
 		}
 	}

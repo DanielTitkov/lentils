@@ -15,6 +15,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
@@ -36,6 +37,7 @@ type ScaleQuery struct {
 	withInterpretations *InterpretationQuery
 	withTranslations    *ScaleTranslationQuery
 	withNorms           *NormQuery
+	withResults         *ResultQuery
 	withTest            *TestQuery
 	withScaleItem       *ScaleItemQuery
 	// intermediate query (i.e. traversal path).
@@ -155,6 +157,28 @@ func (sq *ScaleQuery) QueryNorms() *NormQuery {
 			sqlgraph.From(scale.Table, scale.FieldID, selector),
 			sqlgraph.To(norm.Table, norm.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, scale.NormsTable, scale.NormsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryResults chains the current query on the "results" edge.
+func (sq *ScaleQuery) QueryResults() *ResultQuery {
+	query := &ResultQuery{config: sq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(scale.Table, scale.FieldID, selector),
+			sqlgraph.To(result.Table, result.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, scale.ResultsTable, scale.ResultsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
 		return fromU, nil
@@ -391,6 +415,7 @@ func (sq *ScaleQuery) Clone() *ScaleQuery {
 		withInterpretations: sq.withInterpretations.Clone(),
 		withTranslations:    sq.withTranslations.Clone(),
 		withNorms:           sq.withNorms.Clone(),
+		withResults:         sq.withResults.Clone(),
 		withTest:            sq.withTest.Clone(),
 		withScaleItem:       sq.withScaleItem.Clone(),
 		// clone intermediate query.
@@ -441,6 +466,17 @@ func (sq *ScaleQuery) WithNorms(opts ...func(*NormQuery)) *ScaleQuery {
 		opt(query)
 	}
 	sq.withNorms = query
+	return sq
+}
+
+// WithResults tells the query-builder to eager-load the nodes that are connected to
+// the "results" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *ScaleQuery) WithResults(opts ...func(*ResultQuery)) *ScaleQuery {
+	query := &ResultQuery{config: sq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withResults = query
 	return sq
 }
 
@@ -536,11 +572,12 @@ func (sq *ScaleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Scale,
 	var (
 		nodes       = []*Scale{}
 		_spec       = sq.querySpec()
-		loadedTypes = [6]bool{
+		loadedTypes = [7]bool{
 			sq.withItems != nil,
 			sq.withInterpretations != nil,
 			sq.withTranslations != nil,
 			sq.withNorms != nil,
+			sq.withResults != nil,
 			sq.withTest != nil,
 			sq.withScaleItem != nil,
 		}
@@ -701,6 +738,35 @@ func (sq *ScaleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Scale,
 				return nil, fmt.Errorf(`unexpected foreign-key "scale_norms" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Norms = append(node.Edges.Norms, n)
+		}
+	}
+
+	if query := sq.withResults; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[uuid.UUID]*Scale)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Results = []*Result{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Result(func(s *sql.Selector) {
+			s.Where(sql.InValues(scale.ResultsColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.scale_results
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "scale_results" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "scale_results" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Results = append(node.Edges.Results, n)
 		}
 	}
 

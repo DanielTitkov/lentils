@@ -18,6 +18,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
@@ -56,6 +57,7 @@ func columnChecker(table string) func(string) error {
 		question.Table:                  question.ValidColumn,
 		questiontranslation.Table:       questiontranslation.ValidColumn,
 		response.Table:                  response.ValidColumn,
+		result.Table:                    result.ValidColumn,
 		sample.Table:                    sample.ValidColumn,
 		scale.Table:                     scale.ValidColumn,
 		scaleitem.Table:                 scaleitem.ValidColumn,

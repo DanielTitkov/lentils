@@ -42,13 +42,15 @@ type ScaleEdges struct {
 	Translations []*ScaleTranslation `json:"translations,omitempty"`
 	// Norms holds the value of the norms edge.
 	Norms []*Norm `json:"norms,omitempty"`
+	// Results holds the value of the results edge.
+	Results []*Result `json:"results,omitempty"`
 	// Test holds the value of the test edge.
 	Test []*Test `json:"test,omitempty"`
 	// ScaleItem holds the value of the scale_item edge.
 	ScaleItem []*ScaleItem `json:"scale_item,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [6]bool
+	loadedTypes [7]bool
 }
 
 // ItemsOrErr returns the Items value or an error if the edge
@@ -87,10 +89,19 @@ func (e ScaleEdges) NormsOrErr() ([]*Norm, error) {
 	return nil, &NotLoadedError{edge: "norms"}
 }
 
+// ResultsOrErr returns the Results value or an error if the edge
+// was not loaded in eager-loading.
+func (e ScaleEdges) ResultsOrErr() ([]*Result, error) {
+	if e.loadedTypes[4] {
+		return e.Results, nil
+	}
+	return nil, &NotLoadedError{edge: "results"}
+}
+
 // TestOrErr returns the Test value or an error if the edge
 // was not loaded in eager-loading.
 func (e ScaleEdges) TestOrErr() ([]*Test, error) {
-	if e.loadedTypes[4] {
+	if e.loadedTypes[5] {
 		return e.Test, nil
 	}
 	return nil, &NotLoadedError{edge: "test"}
@@ -99,7 +110,7 @@ func (e ScaleEdges) TestOrErr() ([]*Test, error) {
 // ScaleItemOrErr returns the ScaleItem value or an error if the edge
 // was not loaded in eager-loading.
 func (e ScaleEdges) ScaleItemOrErr() ([]*ScaleItem, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[6] {
 		return e.ScaleItem, nil
 	}
 	return nil, &NotLoadedError{edge: "scale_item"}
@@ -192,6 +203,11 @@ func (s *Scale) QueryTranslations() *ScaleTranslationQuery {
 // QueryNorms queries the "norms" edge of the Scale entity.
 func (s *Scale) QueryNorms() *NormQuery {
 	return (&ScaleClient{config: s.config}).QueryNorms(s)
+}
+
+// QueryResults queries the "results" edge of the Scale entity.
+func (s *Scale) QueryResults() *ResultQuery {
+	return (&ScaleClient{config: s.config}).QueryResults(s)
 }
 
 // QueryTest queries the "test" edge of the Scale entity.

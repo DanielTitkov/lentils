@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
@@ -80,6 +81,60 @@ func (tu *TakeUpdate) AddPage(i int) *TakeUpdate {
 	return tu
 }
 
+// SetStartTime sets the "start_time" field.
+func (tu *TakeUpdate) SetStartTime(t time.Time) *TakeUpdate {
+	tu.mutation.SetStartTime(t)
+	return tu
+}
+
+// SetNillableStartTime sets the "start_time" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillableStartTime(t *time.Time) *TakeUpdate {
+	if t != nil {
+		tu.SetStartTime(*t)
+	}
+	return tu
+}
+
+// ClearStartTime clears the value of the "start_time" field.
+func (tu *TakeUpdate) ClearStartTime() *TakeUpdate {
+	tu.mutation.ClearStartTime()
+	return tu
+}
+
+// SetEndTime sets the "end_time" field.
+func (tu *TakeUpdate) SetEndTime(t time.Time) *TakeUpdate {
+	tu.mutation.SetEndTime(t)
+	return tu
+}
+
+// SetNillableEndTime sets the "end_time" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillableEndTime(t *time.Time) *TakeUpdate {
+	if t != nil {
+		tu.SetEndTime(*t)
+	}
+	return tu
+}
+
+// ClearEndTime clears the value of the "end_time" field.
+func (tu *TakeUpdate) ClearEndTime() *TakeUpdate {
+	tu.mutation.ClearEndTime()
+	return tu
+}
+
+// SetSuspicious sets the "suspicious" field.
+func (tu *TakeUpdate) SetSuspicious(b bool) *TakeUpdate {
+	tu.mutation.SetSuspicious(b)
+	return tu
+}
+
+// SetNillableSuspicious sets the "suspicious" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillableSuspicious(b *bool) *TakeUpdate {
+	if b != nil {
+		tu.SetSuspicious(*b)
+	}
+	return tu
+}
+
 // SetStatus sets the "status" field.
 func (tu *TakeUpdate) SetStatus(t take.Status) *TakeUpdate {
 	tu.mutation.SetStatus(t)
@@ -119,6 +174,21 @@ func (tu *TakeUpdate) AddResponses(r ...*Response) *TakeUpdate {
 		ids[i] = r[i].ID
 	}
 	return tu.AddResponseIDs(ids...)
+}
+
+// AddResultIDs adds the "results" edge to the Result entity by IDs.
+func (tu *TakeUpdate) AddResultIDs(ids ...uuid.UUID) *TakeUpdate {
+	tu.mutation.AddResultIDs(ids...)
+	return tu
+}
+
+// AddResults adds the "results" edges to the Result entity.
+func (tu *TakeUpdate) AddResults(r ...*Result) *TakeUpdate {
+	ids := make([]uuid.UUID, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return tu.AddResultIDs(ids...)
 }
 
 // SetTestID sets the "test" edge to the Test entity by ID.
@@ -167,6 +237,27 @@ func (tu *TakeUpdate) RemoveResponses(r ...*Response) *TakeUpdate {
 		ids[i] = r[i].ID
 	}
 	return tu.RemoveResponseIDs(ids...)
+}
+
+// ClearResults clears all "results" edges to the Result entity.
+func (tu *TakeUpdate) ClearResults() *TakeUpdate {
+	tu.mutation.ClearResults()
+	return tu
+}
+
+// RemoveResultIDs removes the "results" edge to Result entities by IDs.
+func (tu *TakeUpdate) RemoveResultIDs(ids ...uuid.UUID) *TakeUpdate {
+	tu.mutation.RemoveResultIDs(ids...)
+	return tu
+}
+
+// RemoveResults removes "results" edges to Result entities.
+func (tu *TakeUpdate) RemoveResults(r ...*Result) *TakeUpdate {
+	ids := make([]uuid.UUID, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return tu.RemoveResultIDs(ids...)
 }
 
 // ClearTest clears the "test" edge to the Test entity.
@@ -319,6 +410,39 @@ func (tu *TakeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: take.FieldPage,
 		})
 	}
+	if value, ok := tu.mutation.StartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: take.FieldStartTime,
+		})
+	}
+	if tu.mutation.StartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: take.FieldStartTime,
+		})
+	}
+	if value, ok := tu.mutation.EndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: take.FieldEndTime,
+		})
+	}
+	if tu.mutation.EndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: take.FieldEndTime,
+		})
+	}
+	if value, ok := tu.mutation.Suspicious(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: take.FieldSuspicious,
+		})
+	}
 	if value, ok := tu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
@@ -385,6 +509,60 @@ func (tu *TakeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: response.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.ResultsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   take.ResultsTable,
+			Columns: []string{take.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedResultsIDs(); len(nodes) > 0 && !tu.mutation.ResultsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   take.ResultsTable,
+			Columns: []string{take.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.ResultsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   take.ResultsTable,
+			Columns: []string{take.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
 				},
 			},
 		}
@@ -530,6 +708,60 @@ func (tuo *TakeUpdateOne) AddPage(i int) *TakeUpdateOne {
 	return tuo
 }
 
+// SetStartTime sets the "start_time" field.
+func (tuo *TakeUpdateOne) SetStartTime(t time.Time) *TakeUpdateOne {
+	tuo.mutation.SetStartTime(t)
+	return tuo
+}
+
+// SetNillableStartTime sets the "start_time" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillableStartTime(t *time.Time) *TakeUpdateOne {
+	if t != nil {
+		tuo.SetStartTime(*t)
+	}
+	return tuo
+}
+
+// ClearStartTime clears the value of the "start_time" field.
+func (tuo *TakeUpdateOne) ClearStartTime() *TakeUpdateOne {
+	tuo.mutation.ClearStartTime()
+	return tuo
+}
+
+// SetEndTime sets the "end_time" field.
+func (tuo *TakeUpdateOne) SetEndTime(t time.Time) *TakeUpdateOne {
+	tuo.mutation.SetEndTime(t)
+	return tuo
+}
+
+// SetNillableEndTime sets the "end_time" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillableEndTime(t *time.Time) *TakeUpdateOne {
+	if t != nil {
+		tuo.SetEndTime(*t)
+	}
+	return tuo
+}
+
+// ClearEndTime clears the value of the "end_time" field.
+func (tuo *TakeUpdateOne) ClearEndTime() *TakeUpdateOne {
+	tuo.mutation.ClearEndTime()
+	return tuo
+}
+
+// SetSuspicious sets the "suspicious" field.
+func (tuo *TakeUpdateOne) SetSuspicious(b bool) *TakeUpdateOne {
+	tuo.mutation.SetSuspicious(b)
+	return tuo
+}
+
+// SetNillableSuspicious sets the "suspicious" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillableSuspicious(b *bool) *TakeUpdateOne {
+	if b != nil {
+		tuo.SetSuspicious(*b)
+	}
+	return tuo
+}
+
 // SetStatus sets the "status" field.
 func (tuo *TakeUpdateOne) SetStatus(t take.Status) *TakeUpdateOne {
 	tuo.mutation.SetStatus(t)
@@ -569,6 +801,21 @@ func (tuo *TakeUpdateOne) AddResponses(r ...*Response) *TakeUpdateOne {
 		ids[i] = r[i].ID
 	}
 	return tuo.AddResponseIDs(ids...)
+}
+
+// AddResultIDs adds the "results" edge to the Result entity by IDs.
+func (tuo *TakeUpdateOne) AddResultIDs(ids ...uuid.UUID) *TakeUpdateOne {
+	tuo.mutation.AddResultIDs(ids...)
+	return tuo
+}
+
+// AddResults adds the "results" edges to the Result entity.
+func (tuo *TakeUpdateOne) AddResults(r ...*Result) *TakeUpdateOne {
+	ids := make([]uuid.UUID, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return tuo.AddResultIDs(ids...)
 }
 
 // SetTestID sets the "test" edge to the Test entity by ID.
@@ -617,6 +864,27 @@ func (tuo *TakeUpdateOne) RemoveResponses(r ...*Response) *TakeUpdateOne {
 		ids[i] = r[i].ID
 	}
 	return tuo.RemoveResponseIDs(ids...)
+}
+
+// ClearResults clears all "results" edges to the Result entity.
+func (tuo *TakeUpdateOne) ClearResults() *TakeUpdateOne {
+	tuo.mutation.ClearResults()
+	return tuo
+}
+
+// RemoveResultIDs removes the "results" edge to Result entities by IDs.
+func (tuo *TakeUpdateOne) RemoveResultIDs(ids ...uuid.UUID) *TakeUpdateOne {
+	tuo.mutation.RemoveResultIDs(ids...)
+	return tuo
+}
+
+// RemoveResults removes "results" edges to Result entities.
+func (tuo *TakeUpdateOne) RemoveResults(r ...*Result) *TakeUpdateOne {
+	ids := make([]uuid.UUID, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return tuo.RemoveResultIDs(ids...)
 }
 
 // ClearTest clears the "test" edge to the Test entity.
@@ -799,6 +1067,39 @@ func (tuo *TakeUpdateOne) sqlSave(ctx context.Context) (_node *Take, err error) 
 			Column: take.FieldPage,
 		})
 	}
+	if value, ok := tuo.mutation.StartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: take.FieldStartTime,
+		})
+	}
+	if tuo.mutation.StartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: take.FieldStartTime,
+		})
+	}
+	if value, ok := tuo.mutation.EndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: take.FieldEndTime,
+		})
+	}
+	if tuo.mutation.EndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: take.FieldEndTime,
+		})
+	}
+	if value, ok := tuo.mutation.Suspicious(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: take.FieldSuspicious,
+		})
+	}
 	if value, ok := tuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
@@ -865,6 +1166,60 @@ func (tuo *TakeUpdateOne) sqlSave(ctx context.Context) (_node *Take, err error) 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: response.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.ResultsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   take.ResultsTable,
+			Columns: []string{take.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedResultsIDs(); len(nodes) > 0 && !tuo.mutation.ResultsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   take.ResultsTable,
+			Columns: []string{take.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.ResultsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   take.ResultsTable,
+			Columns: []string{take.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
 				},
 			},
 		}

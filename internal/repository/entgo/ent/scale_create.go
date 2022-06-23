@@ -13,6 +13,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
@@ -160,6 +161,21 @@ func (sc *ScaleCreate) AddNorms(n ...*Norm) *ScaleCreate {
 		ids[i] = n[i].ID
 	}
 	return sc.AddNormIDs(ids...)
+}
+
+// AddResultIDs adds the "results" edge to the Result entity by IDs.
+func (sc *ScaleCreate) AddResultIDs(ids ...uuid.UUID) *ScaleCreate {
+	sc.mutation.AddResultIDs(ids...)
+	return sc
+}
+
+// AddResults adds the "results" edges to the Result entity.
+func (sc *ScaleCreate) AddResults(r ...*Result) *ScaleCreate {
+	ids := make([]uuid.UUID, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return sc.AddResultIDs(ids...)
 }
 
 // AddTestIDs adds the "test" edge to the Test entity by IDs.
@@ -451,6 +467,25 @@ func (sc *ScaleCreate) createSpec() (*Scale, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: norm.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.ResultsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   scale.ResultsTable,
+			Columns: []string{scale.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
 				},
 			},
 		}

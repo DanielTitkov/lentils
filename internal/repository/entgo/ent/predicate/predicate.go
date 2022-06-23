@@ -30,6 +30,9 @@ type QuestionTranslation func(*sql.Selector)
 // Response is the predicate function for response builders.
 type Response func(*sql.Selector)
 
+// Result is the predicate function for result builders.
+type Result func(*sql.Selector)
+
 // Sample is the predicate function for sample builders.
 type Sample func(*sql.Selector)
 

@@ -40,20 +40,23 @@ type (
 		CreateOrUpdateTestFromArgs(context.Context, *domain.CreateTestArgs) error
 		GetTests(ctx context.Context, locale string) ([]*domain.Test, error)
 		GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error)
-		GetTakeData(ctx context.Context, tk *domain.Take, locale string) (*domain.Test, error)
+		GetTakeData(ctx context.Context, take *domain.Take, locale string) (*domain.Test, error)
 
 		// take
-		CreateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error)
-		UpdateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error)
+		CreateTake(ctx context.Context, take *domain.Take) (*domain.Take, error)
+		UpdateTake(ctx context.Context, take *domain.Take) (*domain.Take, error)
 
 		// response
 		AddOrUpdateResponse(ctx context.Context, takeID uuid.UUID, itm *domain.Item) (*domain.Response, error)
 
 		// sample
-		CreateOrUpdateSample(ctx context.Context, smp *domain.Sample) (*domain.Sample, error)
+		CreateOrUpdateSample(ctx context.Context, sample *domain.Sample) (*domain.Sample, error)
 
 		// norm
-		CreateOrUpdateNorm(ctx context.Context, nrm *domain.Norm) (*domain.Norm, error)
+		CreateOrUpdateNorm(ctx context.Context, norm *domain.Norm) (*domain.Norm, error)
+
+		// result
+		CreateOrUpdateResult(ctx context.Context, result *domain.Result) (*domain.Result, error)
 
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)

@@ -13,6 +13,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
@@ -182,6 +183,25 @@ func init() {
 	responseDescID := responseFields[0].Descriptor()
 	// response.DefaultID holds the default value on creation for the id field.
 	response.DefaultID = responseDescID.Default.(func() uuid.UUID)
+	resultMixin := schema.Result{}.Mixin()
+	resultMixinFields0 := resultMixin[0].Fields()
+	_ = resultMixinFields0
+	resultFields := schema.Result{}.Fields()
+	_ = resultFields
+	// resultDescCreateTime is the schema descriptor for create_time field.
+	resultDescCreateTime := resultMixinFields0[0].Descriptor()
+	// result.DefaultCreateTime holds the default value on creation for the create_time field.
+	result.DefaultCreateTime = resultDescCreateTime.Default.(func() time.Time)
+	// resultDescUpdateTime is the schema descriptor for update_time field.
+	resultDescUpdateTime := resultMixinFields0[1].Descriptor()
+	// result.DefaultUpdateTime holds the default value on creation for the update_time field.
+	result.DefaultUpdateTime = resultDescUpdateTime.Default.(func() time.Time)
+	// result.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	result.UpdateDefaultUpdateTime = resultDescUpdateTime.UpdateDefault.(func() time.Time)
+	// resultDescID is the schema descriptor for id field.
+	resultDescID := resultFields[0].Descriptor()
+	// result.DefaultID holds the default value on creation for the id field.
+	result.DefaultID = resultDescID.Default.(func() uuid.UUID)
 	sampleMixin := schema.Sample{}.Mixin()
 	sampleMixinFields0 := sampleMixin[0].Fields()
 	_ = sampleMixinFields0
@@ -275,6 +295,10 @@ func init() {
 	takeDescPage := takeFields[3].Descriptor()
 	// take.DefaultPage holds the default value on creation for the page field.
 	take.DefaultPage = takeDescPage.Default.(int)
+	// takeDescSuspicious is the schema descriptor for suspicious field.
+	takeDescSuspicious := takeFields[6].Descriptor()
+	// take.DefaultSuspicious holds the default value on creation for the suspicious field.
+	take.DefaultSuspicious = takeDescSuspicious.Default.(bool)
 	// takeDescID is the schema descriptor for id field.
 	takeDescID := takeFields[0].Descriptor()
 	// take.DefaultID holds the default value on creation for the id field.

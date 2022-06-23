@@ -1,5 +1,9 @@
 package domain
 
+import (
+	"time"
+)
+
 const (
 	// locales
 	LocaleRu = "ru"
@@ -24,4 +28,7 @@ const (
 	SampleAllNonSuspiciousCode = "all-not-suspicious"
 	// norms
 	NormMinBase = 5 // FIXME
+	// take
+	TakeMinTime = 9 * time.Second // FIXME
+	TakeMaxTime = 2 * time.Hour
 )

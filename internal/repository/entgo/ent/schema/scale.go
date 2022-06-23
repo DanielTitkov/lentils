@@ -38,6 +38,7 @@ func (Scale) Edges() []ent.Edge {
 		edge.To("interpretations", Interpretation.Type),
 		edge.To("translations", ScaleTranslation.Type),
 		edge.To("norms", Norm.Type),
+		edge.To("results", Result.Type),
 		// belongs to
 		edge.From("test", Test.Type).Ref("scales"),
 	}

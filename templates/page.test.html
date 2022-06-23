@@ -6,9 +6,9 @@
     <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
   </div>
   <div>
-    {{ .Take }}
+    {{ .Test.Take }}
   </div>
-  {{ if eq .Take.Status .IntroStatus }}
+  {{ if eq .Test.Take.Status .IntroStatus }}
   <div class="section">
     <p>{{ .Test.Instruction }}</p>
   </div>
@@ -24,7 +24,7 @@
   </div>
   {{ end }}
 
-  {{ if eq .Take.Status .QuestionsStatus }}
+  {{ if eq .Test.Take.Status .QuestionsStatus }}
   <div class="section">
     <progress class="progress is-large is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
       .Page }}%</progress>
@@ -57,7 +57,7 @@
   {{ end }}
   <!-- end questions status -->
 
-  {{ if eq .Take.Status .FinishStatus }}
+  {{ if eq .Test.Take.Status .FinishStatus }}
   <p>test result will be here</p>
   <div>
     {{ range $i, $scale := .Test.Scales }}

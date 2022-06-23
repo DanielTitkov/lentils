@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
@@ -94,6 +95,48 @@ func (tc *TakeCreate) SetNillablePage(i *int) *TakeCreate {
 	return tc
 }
 
+// SetStartTime sets the "start_time" field.
+func (tc *TakeCreate) SetStartTime(t time.Time) *TakeCreate {
+	tc.mutation.SetStartTime(t)
+	return tc
+}
+
+// SetNillableStartTime sets the "start_time" field if the given value is not nil.
+func (tc *TakeCreate) SetNillableStartTime(t *time.Time) *TakeCreate {
+	if t != nil {
+		tc.SetStartTime(*t)
+	}
+	return tc
+}
+
+// SetEndTime sets the "end_time" field.
+func (tc *TakeCreate) SetEndTime(t time.Time) *TakeCreate {
+	tc.mutation.SetEndTime(t)
+	return tc
+}
+
+// SetNillableEndTime sets the "end_time" field if the given value is not nil.
+func (tc *TakeCreate) SetNillableEndTime(t *time.Time) *TakeCreate {
+	if t != nil {
+		tc.SetEndTime(*t)
+	}
+	return tc
+}
+
+// SetSuspicious sets the "suspicious" field.
+func (tc *TakeCreate) SetSuspicious(b bool) *TakeCreate {
+	tc.mutation.SetSuspicious(b)
+	return tc
+}
+
+// SetNillableSuspicious sets the "suspicious" field if the given value is not nil.
+func (tc *TakeCreate) SetNillableSuspicious(b *bool) *TakeCreate {
+	if b != nil {
+		tc.SetSuspicious(*b)
+	}
+	return tc
+}
+
 // SetStatus sets the "status" field.
 func (tc *TakeCreate) SetStatus(t take.Status) *TakeCreate {
 	tc.mutation.SetStatus(t)
@@ -141,6 +184,21 @@ func (tc *TakeCreate) AddResponses(r ...*Response) *TakeCreate {
 		ids[i] = r[i].ID
 	}
 	return tc.AddResponseIDs(ids...)
+}
+
+// AddResultIDs adds the "results" edge to the Result entity by IDs.
+func (tc *TakeCreate) AddResultIDs(ids ...uuid.UUID) *TakeCreate {
+	tc.mutation.AddResultIDs(ids...)
+	return tc
+}
+
+// AddResults adds the "results" edges to the Result entity.
+func (tc *TakeCreate) AddResults(r ...*Result) *TakeCreate {
+	ids := make([]uuid.UUID, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return tc.AddResultIDs(ids...)
 }
 
 // SetTestID sets the "test" edge to the Test entity by ID.
@@ -262,6 +320,10 @@ func (tc *TakeCreate) defaults() {
 		v := take.DefaultPage
 		tc.mutation.SetPage(v)
 	}
+	if _, ok := tc.mutation.Suspicious(); !ok {
+		v := take.DefaultSuspicious
+		tc.mutation.SetSuspicious(v)
+	}
 	if _, ok := tc.mutation.Status(); !ok {
 		v := take.DefaultStatus
 		tc.mutation.SetStatus(v)
@@ -288,6 +350,9 @@ func (tc *TakeCreate) check() error {
 	}
 	if _, ok := tc.mutation.Page(); !ok {
 		return &ValidationError{Name: "page", err: errors.New(`ent: missing required field "Take.page"`)}
+	}
+	if _, ok := tc.mutation.Suspicious(); !ok {
+		return &ValidationError{Name: "suspicious", err: errors.New(`ent: missing required field "Take.suspicious"`)}
 	}
 	if _, ok := tc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Take.status"`)}
@@ -379,6 +444,30 @@ func (tc *TakeCreate) createSpec() (*Take, *sqlgraph.CreateSpec) {
 		})
 		_node.Page = value
 	}
+	if value, ok := tc.mutation.StartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: take.FieldStartTime,
+		})
+		_node.StartTime = &value
+	}
+	if value, ok := tc.mutation.EndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: take.FieldEndTime,
+		})
+		_node.EndTime = &value
+	}
+	if value, ok := tc.mutation.Suspicious(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: take.FieldSuspicious,
+		})
+		_node.Suspicious = value
+	}
 	if value, ok := tc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
@@ -406,6 +495,25 @@ func (tc *TakeCreate) createSpec() (*Take, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: response.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.ResultsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   take.ResultsTable,
+			Columns: []string{take.ResultsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: result.FieldID,
 				},
 			},
 		}

@@ -3,8 +3,8 @@ package handler
 import (
 	"context"
 	"errors"
-	"fmt"
 	"html/template"
+	"net/http"
 
 	"github.com/DanielTitkov/lentils/internal/util"
 
@@ -38,7 +38,6 @@ type (
 	TestInstance struct {
 		*CommonInstance
 		Test             *domain.Test
-		Take             *domain.Take
 		CurrentQuestions []*domain.Question
 		Locale           string
 		TestStep         string
@@ -146,7 +145,7 @@ func (h *Handler) Test() live.Handler {
 			return instance.withError(errors.New("user is nil")), nil
 		}
 
-		test, take, err := h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
+		test, err := h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
 			UserID:  instance.UserID,
 			Session: instance.Session,
 		})
@@ -154,7 +153,6 @@ func (h *Handler) Test() live.Handler {
 			return instance.withError(err), nil
 		}
 		instance.Test = test
-		instance.Take = take
 
 		return instance, nil
 	})
@@ -163,7 +161,7 @@ func (h *Handler) Test() live.Handler {
 		instance := h.NewTestInstance(s)
 
 		var err error
-		instance.Take, err = h.app.BeginTest(ctx, instance.Take)
+		instance.Test, err = h.app.BeginTest(ctx, instance.Test)
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -178,22 +176,14 @@ func (h *Handler) Test() live.Handler {
 
 		var err error
 		// update test status
-		instance.Take, err = h.app.EndTest(ctx, instance.Take)
+		instance.Test, err = h.app.EndTest(ctx, instance.Test)
 		if err != nil {
 			return instance.withError(err), nil
 		}
 
-		fmt.Printf("TAKE %+v\n", instance.Take) // FIXME
-
-		// load all test data from the db
-		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Take, instance.Locale)
+		// load all test data from the db and calculate result
+		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale)
 		if err != nil {
-			return instance.withError(err), nil
-		}
-
-		fmt.Printf("TEST %+v\n", instance.Test) // FIXME
-		// calculate test results
-		if err := instance.Test.CalculateResult(); err != nil {
 			return instance.withError(err), nil
 		}
 
@@ -218,6 +208,12 @@ func (h *Handler) Test() live.Handler {
 		return instance, nil
 	})
 
+	lvh.HandleError(func(ctx context.Context, err error) {
+		w := live.Writer(ctx)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("this is a bad request: " + err.Error()))
+	})
+
 	lvh.HandleEvent(eventResponseUpdate, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewTestInstance(s)
 
@@ -231,14 +227,14 @@ func (h *Handler) Test() live.Handler {
 		meta := util.NewMeta()
 		meta["session"] = instance.Session
 		item := instance.Test.GetItem(itemCode)
-		err := item.AddResponse(instance.Take.ID, value, meta)
+		err := item.AddResponse(instance.Test.Take.ID, value, meta)
 		if err != nil {
 			return instance.withError(err), nil
 		}
 
 		// save response to db
-		instance.Take.Page = instance.Page
-		instance.Take, item.Response, err = h.app.AddResponse(ctx, instance.Take, item)
+		instance.Test.Take.Page = instance.Page
+		instance.Test.Take, item.Response, err = h.app.AddResponse(ctx, instance.Test.Take, item)
 		if err != nil {
 			return instance.withError(err), nil
 		}

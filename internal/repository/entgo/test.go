@@ -97,6 +97,10 @@ func (r *EntgoRepository) GetTakeData(ctx context.Context, tk *domain.Take, loca
 		WithTranslations(func(q *ent.TestTranslationQuery) {
 			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
 		}).
+		WithTakes(func(q *ent.TakeQuery) {
+			q.Where(take.IDEQ(tk.ID))
+			q.WithUser()
+		}).
 		WithScales(func(sq *ent.ScaleQuery) {
 			sq.WithItems(func(iq *ent.ItemQuery) {
 				iq.WithResponses(func(rq *ent.ResponseQuery) {
@@ -458,6 +462,13 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		}
 	}
 
+	var take *domain.Take
+	if t.Edges.Takes != nil {
+		if len(t.Edges.Takes) == 1 {
+			take = entToDomainTake(t.Edges.Takes[0], uuid.Nil, t.ID)
+		}
+	}
+
 	return &domain.Test{
 		ID:               t.ID,
 		Code:             t.Code,
@@ -469,6 +480,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Display:          display,
 		Questions:        questions,
 		Scales:           scales,
+		Take:             take,
 	}
 }
 
