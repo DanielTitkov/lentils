@@ -7,6 +7,8 @@ type AppConfig struct {
 	HomeChallengePageLimit    int    `yaml:"homeChallengePageLimit"`
 	SystemSummaryInterval     int    `yaml:"systemSummaryInterval"`
 	SystemSummaryTimeout      int    `yaml:"systemSummaryTimeout"`
+	UpdateNormsInterval       int    `yaml:"updateNormsInterval"`
+	UpdateNormTimeout         int    `yaml:"updateNormsTimeout"`
 	DefaultTimeLayout         string `yaml:"defaultTimeLayout"`
 	MinProofCount             int    `yaml:"minProofCount"`
 	Version                   string `yaml:"version"`

@@ -3,7 +3,7 @@ package job
 import (
 	"github.com/DanielTitkov/lentils/internal/app"
 	"github.com/DanielTitkov/lentils/internal/configs"
-	"github.com/DanielTitkov/lentils/logger"
+	"github.com/DanielTitkov/lentils/internal/logger"
 )
 
 type Job struct {

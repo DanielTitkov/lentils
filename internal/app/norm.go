@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -70,4 +71,27 @@ func (a *App) UpdateNorms(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (a *App) UpdateNormsJob() {
+	for {
+		time.Sleep(time.Minute * time.Duration(a.Cfg.App.UpdateNormsInterval))
+		ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*time.Duration(a.Cfg.App.UpdateNormTimeout))
+		processDone := make(chan bool)
+		go func() {
+			err := a.UpdateNorms(ctx)
+			if err != nil {
+				a.log.Error("failed to update norms", err)
+			}
+			processDone <- true
+		}()
+
+		select {
+		case <-ctx.Done():
+			a.log.Error("failed to update norms", errors.New("timeout reached"))
+		case <-processDone:
+		}
+
+		cancel()
+	}
 }

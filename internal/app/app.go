@@ -107,7 +107,9 @@ func New(
 	}
 
 	// init app jobs, caches and preload data (if any)
-	go app.UpdateSystemSummaryJob() // TODO: move to jobs?
+	// TODO: move to jobs
+	go app.UpdateSystemSummaryJob()
+	go app.UpdateNormsJob()
 
 	return &app, nil
 }

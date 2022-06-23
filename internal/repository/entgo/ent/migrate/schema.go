@@ -350,7 +350,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1656021440},
+		{Name: "seed", Type: field.TypeInt64, Default: 1656022140},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
 		{Name: "page", Type: field.TypeInt, Default: 0},
 		{Name: "start_time", Type: field.TypeTime, Nullable: true},
