@@ -5,9 +5,7 @@
     <h1 class="title is-1">{{ .Test.Code }}</h1>
     <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
   </div>
-  <div>
-    {{ .Test.Take }}
-  </div>
+
   {{ if eq .Test.Take.Status .IntroStatus }}
   <div class="section">
     <p>{{ .Test.Instruction }}</p>
@@ -58,13 +56,36 @@
   <!-- end questions status -->
 
   {{ if eq .Test.Take.Status .FinishStatus }}
-  <p>test result will be here</p>
   <div>
     {{ range $i, $scale := .Test.Scales }}
-    <div class="block">
-      <p>{{ $scale.Title }}</p>
-      <p>{{ $scale.Result }}</p>
-      <p class="heading">{{ $scale.Result.Formula }}</p>
+    <div class="notification box">
+      <p class="title is-3">{{ $scale.Title }}</p>
+      <p class="subtitle is-5">{{ $scale.Description }}</p>
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">{{ $scale.Result.Min }}</div>
+        </div>
+        <div class="level-item has-text-centered">{{ Mean $scale.Result.Min $scale.Result.Max }}</div>
+        <div class="level-right">
+          <div class="level-item">{{ $scale.Result.Max }}</div>
+        </div>
+      </div>
+      <progress class="progress is-large is-success" value="{{ $scale.Result.Score }}"
+        max="{{ Sum $scale.Result.Max $scale.Result.Min }}">
+        {{ $scale.Result.Score }}
+      </progress>
+      <div>
+        <p class="heading">{{ $scale.Result.Formula }}</p>
+        <p class="title is-2">Score: {{printf "%.1f" $scale.Result.Score }}</p>
+      </div>
+      <hr>
+      <div class="content">
+        {{ if $scale.Result.Interpretation }}
+        {{ $scale.Result.Interpretation.Content }}
+        {{ else }}
+        <p>Interpretation not found. This problem is reported.</p>
+        {{ end }}
+      </div>
     </div>
     {{ end }}
   </div>

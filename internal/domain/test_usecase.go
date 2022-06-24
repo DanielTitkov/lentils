@@ -135,6 +135,17 @@ func (t *CreateTestArgs) ValidateTranslations() error {
 			return fmt.Errorf("scale '%s' translations are not full: expected %v but got %v", scale.Code, locs, scaleLocs)
 		}
 
+		// check interpretations
+		for _, interp := range scale.Interpretations {
+			interpLocs := make(map[string]struct{})
+			for _, trans := range interp.Translations {
+				interpLocs[trans.Locale] = struct{}{}
+			}
+			if eq := reflect.DeepEqual(locs, interpLocs); !eq {
+				return fmt.Errorf("interpretation '%v' translations are not full: expected %v but got %v", interp.Range, locs, interpLocs)
+			}
+		}
+
 		// check items
 		for _, itm := range scale.Items {
 			itemLocs := make(map[string]struct{})

@@ -118,8 +118,6 @@ var (
 	DefaultUpdateTime func() time.Time
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
-	// DefaultSeed holds the default value on creation for the "seed" field.
-	DefaultSeed int64
 	// DefaultProgress holds the default value on creation for the "progress" field.
 	DefaultProgress int
 	// DefaultPage holds the default value on creation for the "page" field.

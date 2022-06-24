@@ -15,7 +15,7 @@
 <body has-navbar-fixed-bottom>
   <!-- debug start -->
   {{ if .Env }}
-  {{ if eq .Env "dev" }}
+  {{ if eq .Env "dev1" }}
   <div class="box">
     <p class="heading">Debug info</p>
     <p><b>Session: </b>{{ .Session }}</p>
@@ -25,8 +25,10 @@
   {{ end }}
   {{ end }}
   <!-- debug end -->
+  {{ if ne .CurrentView "test" }}
   {{ template "navigation" . }}
   {{ template "navigation-mobile" . }}
+  {{ end }}
   <section class="section">
     {{ if .Error }}
     {{ template "alert-warning" .Error }}

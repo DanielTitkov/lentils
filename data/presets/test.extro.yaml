@@ -21,6 +21,25 @@ scales:
       - locale: ru
         title: ТИПИ-Экстраверсия
         description: Шкала экстраверсии
+    interpretations:
+      - range: [1.0, 4.5]
+        translations:
+          - locale: en
+            content: You are introverted!
+          - locale: ru
+            content: Вы интроверт!
+      - range: [4.5, 6.5]
+        translations:
+          - locale: en
+            content: <h1>You are ambiverted!</h1><p>Ururur</p>
+          - locale: ru
+            content: Вы амбиверт!
+      - range: [6.5, 10.0]
+        translations:
+          - locale: en
+            content: You are extraverted!
+          - locale: ru
+            content: Вы экстраверт!
     items:
       - code: extro-item-1
         steps: 7

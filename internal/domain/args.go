@@ -55,16 +55,27 @@ type (
 	}
 
 	CreateScaleArgs struct {
-		Type         string
-		Code         string
-		Translations []ScaleTranslation
-		Items        []CreateItemArgs
+		Type            string
+		Code            string
+		Translations    []ScaleTranslation
+		Items           []CreateItemArgs
+		Interpretations []CreateInterpretationArgs
 	}
 
 	ScaleTranslation struct {
 		Locale      string
 		Title       string
 		Description string
+	}
+
+	CreateInterpretationArgs struct {
+		Range        [2]float64
+		Translations []InterpretationTranslation
+	}
+
+	InterpretationTranslation struct {
+		Locale  string
+		Content string
 	}
 
 	CreateItemArgs struct {

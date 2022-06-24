@@ -1,8 +1,6 @@
 package schema
 
 import (
-	"time"
-
 	"github.com/DanielTitkov/lentils/internal/domain"
 
 	"entgo.io/ent"
@@ -21,7 +19,7 @@ type Take struct {
 func (Take) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
-		field.Int64("seed").Default(time.Now().Unix()).Immutable(),
+		field.Int64("seed").Immutable(),
 		field.Int("progress").Default(0),
 		field.Int("page").Default(0),
 		field.Time("start_time").Optional().Nillable(),

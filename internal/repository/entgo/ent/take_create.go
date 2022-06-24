@@ -59,14 +59,6 @@ func (tc *TakeCreate) SetSeed(i int64) *TakeCreate {
 	return tc
 }
 
-// SetNillableSeed sets the "seed" field if the given value is not nil.
-func (tc *TakeCreate) SetNillableSeed(i *int64) *TakeCreate {
-	if i != nil {
-		tc.SetSeed(*i)
-	}
-	return tc
-}
-
 // SetProgress sets the "progress" field.
 func (tc *TakeCreate) SetProgress(i int) *TakeCreate {
 	tc.mutation.SetProgress(i)
@@ -307,10 +299,6 @@ func (tc *TakeCreate) defaults() {
 	if _, ok := tc.mutation.UpdateTime(); !ok {
 		v := take.DefaultUpdateTime()
 		tc.mutation.SetUpdateTime(v)
-	}
-	if _, ok := tc.mutation.Seed(); !ok {
-		v := take.DefaultSeed
-		tc.mutation.SetSeed(v)
 	}
 	if _, ok := tc.mutation.Progress(); !ok {
 		v := take.DefaultProgress

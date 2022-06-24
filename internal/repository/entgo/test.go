@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 
@@ -272,6 +273,47 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 				Save(ctx)
 			if err != nil {
 				return rollback(tx, err)
+			}
+		}
+
+		// delete old interpretations
+		// they are not bound to any data
+		// so there's no reason to persist ids
+		// translations are cascade deleted
+		_, err = tx.Interpretation.Delete().
+			Where(interpretation.HasScaleWith(scale.IDEQ(scl.ID))).
+			Exec(ctx)
+		if err != nil {
+			return rollback(tx, err)
+		}
+
+		// TODO: because cascade delete doesn't work for some reason!!!
+		_, err = tx.InterpretationTranslation.Delete().
+			Where(interpretationtranslation.Not(interpretationtranslation.HasInterpretation())).
+			Exec(ctx)
+		if err != nil {
+			return rollback(tx, err)
+		}
+
+		// create interpretations with translations
+		for _, inArgs := range sArgs.Interpretations {
+			interp, err := tx.Interpretation.Create().
+				SetScaleID(scl.ID).
+				SetRange(inArgs.Range).
+				Save(ctx)
+			if err != nil {
+				return rollback(tx, err)
+			}
+
+			for _, t := range inArgs.Translations {
+				_, err = tx.InterpretationTranslation.Create().
+					SetLocale(interpretationtranslation.Locale(t.Locale)).
+					SetContent(t.Content).
+					SetInterpretationID(interp.ID).
+					Save(ctx)
+				if err != nil {
+					return rollback(tx, err)
+				}
 			}
 		}
 

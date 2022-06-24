@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"html/template"
 	"time"
 
 	"github.com/google/uuid"
@@ -115,7 +116,7 @@ type (
 
 	Interpretation struct {
 		ID      uuid.UUID
-		Content string // translatable
+		Content template.HTML // translatable
 		Range   [2]float64
 	}
 

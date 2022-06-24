@@ -32,6 +32,26 @@ const (
 var funcMap = template.FuncMap{
 	"N":     iter.N,
 	"Plus1": func(i int) int { return i + 1 },
+	"Sum": func(data ...float64) float64 {
+		var res float64
+		for _, n := range data {
+			res += n
+		}
+		return res
+	},
+	"Sub": func(f1, f2 float64) float64 {
+		return f1 - f2
+	},
+	"Mean": func(data ...float64) float64 {
+		if len(data) == 0 {
+			return 0
+		}
+		var sum float64
+		for _, n := range data {
+			sum += n
+		}
+		return sum / float64(len(data))
+	},
 }
 
 type (

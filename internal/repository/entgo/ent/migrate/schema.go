@@ -47,7 +47,7 @@ var (
 				Symbol:     "interpretation_translations_interpretations_translations",
 				Columns:    []*schema.Column{InterpretationTranslationsColumns[3]},
 				RefColumns: []*schema.Column{InterpretationsColumns[0]},
-				OnDelete:   schema.SetNull,
+				OnDelete:   schema.Cascade,
 			},
 		},
 		Indexes: []*schema.Index{
@@ -350,7 +350,7 @@ var (
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
-		{Name: "seed", Type: field.TypeInt64, Default: 1656022140},
+		{Name: "seed", Type: field.TypeInt64},
 		{Name: "progress", Type: field.TypeInt, Default: 0},
 		{Name: "page", Type: field.TypeInt, Default: 0},
 		{Name: "start_time", Type: field.TypeTime, Nullable: true},

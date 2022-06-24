@@ -287,10 +287,6 @@ func init() {
 	take.DefaultUpdateTime = takeDescUpdateTime.Default.(func() time.Time)
 	// take.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	take.UpdateDefaultUpdateTime = takeDescUpdateTime.UpdateDefault.(func() time.Time)
-	// takeDescSeed is the schema descriptor for seed field.
-	takeDescSeed := takeFields[1].Descriptor()
-	// take.DefaultSeed holds the default value on creation for the seed field.
-	take.DefaultSeed = takeDescSeed.Default.(int64)
 	// takeDescProgress is the schema descriptor for progress field.
 	takeDescProgress := takeFields[2].Descriptor()
 	// take.DefaultProgress holds the default value on creation for the progress field.

@@ -28,8 +28,20 @@ func (s *Scale) CalculateResult() error {
 	meta["timestamp"] = time.Now().UnixNano()
 	res.Elaplsed = time.Since(start)
 	res.Meta = meta
+	res.Interpretation = s.chooseInterpretation(res.Score)
 
 	s.Result = res
+
+	return nil
+}
+
+func (s *Scale) chooseInterpretation(score float64) *Interpretation {
+	for _, interp := range s.Interpretations {
+		// FIXME this can be umbigious in case of random order
+		if score >= interp.Range[0] && score <= interp.Range[1] {
+			return interp
+		}
+	}
 
 	return nil
 }

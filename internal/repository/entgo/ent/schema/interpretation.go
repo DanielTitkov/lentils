@@ -2,6 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
@@ -26,7 +27,9 @@ func (Interpretation) Fields() []ent.Field {
 func (Interpretation) Edges() []ent.Edge {
 	return []ent.Edge{
 		// has
-		edge.To("translations", InterpretationTranslation.Type),
+		edge.To("translations", InterpretationTranslation.Type).Annotations(
+			entsql.Annotation{OnDelete: entsql.Cascade},
+		),
 		// belongs to
 		edge.From("scale", Scale.Type).Ref("interpretations").Unique(),
 	}
