@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/DanielTitkov/lentils/internal/util"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
@@ -71,19 +73,31 @@ func (a *App) PrepareTestResult(ctx context.Context, test *domain.Test, locale s
 		return nil, err
 	}
 
-	// select aplicable samples for the user? // TODO
 	// for now we will use just "all" norms, so it doesn't depend on user
+	samples, err := a.repo.GetSamples(ctx)
+	if err != nil {
+		a.log.Error("prepare test results failed (get samples)", err)
+		return nil, err
+	}
+	// select applicable samples for the user and take
+	var applicableSamplesIDs []uuid.UUID
+	for _, s := range samples {
+		if s.Criteria.Locale == test.Take.InLocale || s.Criteria.Locale == "" {
+			applicableSamplesIDs = append(applicableSamplesIDs, s.ID)
+		}
+	}
 
-	// load norms for each scale?
+	// load norms for each scale
 	for _, scale := range test.Scales {
-		norms, err := a.repo.GetScaleNorms(ctx, scale.ID)
+		norms, err := a.repo.GetScaleNorms(ctx, scale.ID, applicableSamplesIDs)
 		if err != nil {
 			a.log.Error("failed to load scale norms", err)
 			continue
 		}
 
 		if len(norms) > 0 {
-			// select the best norm // TODO
+			// norms are ordered by rank
+			// so first norm is the best
 			// assign norm to scale for further processing
 			scale.Norm = norms[0]
 		}

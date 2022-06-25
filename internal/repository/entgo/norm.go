@@ -13,11 +13,12 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 )
 
-func (r *EntgoRepository) GetScaleNorms(ctx context.Context, scaleID uuid.UUID) ([]*domain.Norm, error) {
+func (r *EntgoRepository) GetScaleNorms(ctx context.Context, scaleID uuid.UUID, sampleIDs []uuid.UUID) ([]*domain.Norm, error) {
 	norms, err := r.client.Norm.Query().
 		Where(
 			norm.HasScaleWith(scale.IDEQ(scaleID)),
 			norm.BaseGTE(domain.NormMinBase),
+			norm.HasSampleWith(sample.IDIn(sampleIDs...)),
 		).
 		WithSample().
 		Order(ent.Desc(norm.FieldRank)). // we want norms with greater rank

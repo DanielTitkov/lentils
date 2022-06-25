@@ -65,3 +65,14 @@ func AreValidLocales(locales []string) bool {
 
 	return true
 }
+
+func LocaleIcon(locale string) string {
+	switch locale {
+	case LocaleEn:
+		return "🇬🇧"
+	case LocaleRu:
+		return "🇷🇺"
+	default:
+		return locale
+	}
+}

@@ -87,7 +87,8 @@ type (
 	}
 
 	SampleCriteria struct {
-		NotSuspicious bool `json:"notSuspicious,omitempty"`
+		NotSuspicious bool   `json:"notSuspicious,omitempty"`
+		Locale        string `json:"locale,omitempty"`
 	}
 
 	ScaleResult struct {

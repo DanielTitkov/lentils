@@ -17,6 +17,10 @@ func (r *EntgoRepository) GetDataForNormCalculation(ctx context.Context, crit do
 			if crit.NotSuspicious {
 				q.Where(result.HasTakeWith(take.SuspiciousEQ(false)))
 			}
+
+			if crit.Locale != "" {
+				q.Where(result.HasTakeWith(take.InLocaleEQ(take.InLocale(crit.Locale))))
+			}
 		}).
 		All(ctx)
 	if err != nil {

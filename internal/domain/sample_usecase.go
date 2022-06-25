@@ -14,6 +14,10 @@ func (s *Sample) NormRank(n *Norm) int {
 		rank++
 	}
 
+	if s.Criteria.Locale != "" {
+		rank++
+	}
+
 	if s.Criteria.NotSuspicious {
 		rank += 2 // so that suspicious results with bigger samples won't intervene
 	}

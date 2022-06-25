@@ -8,7 +8,7 @@ translations:
     description: Sample extraversion test of 3 questions
     instruction: Answer all the questions (there's only 3 of them!)
   - locale: ru
-    title: ТИПИ
+    title: ЭКСТРО
     description: Дурацкий тест экстраверсии из 3 вопросов. 
     instruction: Ответьте на все вопросы (их всего 3!)
 scales: 
@@ -16,10 +16,10 @@ scales:
     type: sten
     translations:
       - locale: en
-        title: EXTRO-Extraversion
+        title: Extraversion
         description: Extraversion scale
       - locale: ru
-        title: ТИПИ-Экстраверсия
+        title: Экстраверсия
         description: Шкала экстраверсии
     interpretations:
       - range: [1.0, 4.5]

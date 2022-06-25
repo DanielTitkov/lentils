@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -22,10 +23,12 @@ const (
 	eventNextPage       = "next-page"
 	eventPrevPage       = "prev-page"
 	eventResponseUpdate = "response-update"
+	eventSetLocale      = "set-locale"
 	// params
 	paramTestCode      = "testCode"
 	paramTestItem      = "item"
 	paramTestItemValue = "val"
+	paramTestLocale    = "locale"
 	// params values
 )
 
@@ -52,6 +55,7 @@ var funcMap = template.FuncMap{
 		}
 		return sum / float64(len(data))
 	},
+	"LocaleIcon": domain.LocaleIcon,
 }
 
 type (
@@ -99,7 +103,7 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 			QuestionsStatus: domain.TestStepQuestions,
 			FinishStatus:    domain.TestStepFinish,
 			ResultStatus:    domain.TestStepResult,
-			Locale:          "en", // FIXME
+			Locale:          domain.LocaleEn,
 		}
 	}
 
@@ -151,7 +155,7 @@ func (h *Handler) Test() live.Handler {
 	}
 	// COMMON BLOCK END
 
-	lvh.HandleMount(func(ctx context.Context, s live.Socket) (interface{}, error) {
+	lvh.HandleMount(func(ctx context.Context, s live.Socket) (i interface{}, err error) {
 		r := live.Request(ctx)
 		testCode, ok := mux.Vars(r)[paramTestCode]
 		if !ok {
@@ -165,14 +169,38 @@ func (h *Handler) Test() live.Handler {
 			return instance.withError(errors.New("user is nil")), nil
 		}
 
-		test, err := h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
+		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
 			UserID:  instance.UserID,
 			Session: instance.Session,
 		})
 		if err != nil {
 			return instance.withError(err), nil
 		}
-		instance.Test = test
+
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
+		r := live.Request(ctx)
+		testCode, ok := mux.Vars(r)[paramTestCode]
+		if !ok {
+			return nil, errors.New("test code is required")
+		}
+		instance := h.NewTestInstance(s)
+
+		locale := p.String(paramTestLocale)
+		if !domain.IsValidLocale(locale) {
+			return instance.withError(fmt.Errorf("unknown locale: %s", locale)), nil
+		}
+
+		instance.Locale = locale
+		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
+			UserID:  instance.UserID,
+			Session: instance.Session,
+		})
+		if err != nil {
+			return instance.withError(err), nil
+		}
 
 		return instance, nil
 	})

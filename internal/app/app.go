@@ -56,7 +56,7 @@ type (
 		// norm
 		CreateOrUpdateNorm(ctx context.Context, norm *domain.Norm) (*domain.Norm, error)
 		GetDataForNormCalculation(ctx context.Context, criteria domain.SampleCriteria) ([]*domain.NormCalculationData, error)
-		GetScaleNorms(ctx context.Context, scaleID uuid.UUID) ([]*domain.Norm, error)
+		GetScaleNorms(ctx context.Context, scaleID uuid.UUID, sampleIDs []uuid.UUID) ([]*domain.Norm, error)
 
 		// result
 		CreateOrUpdateResult(ctx context.Context, result *domain.Result) (*domain.Result, error)
