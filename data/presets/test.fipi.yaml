@@ -1,7 +1,7 @@
 code: fipi
 published: true
 availableLocales: ["en", "ru"]
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: FIPI
@@ -23,7 +23,7 @@ scales:
         description: Шкала экстраверсии
     items:
       - code: fipi-item-ex-1
-        steps: 7
+        steps: 9
         reverse: false
         translations: 
           - locale: en
@@ -41,7 +41,7 @@ scales:
         description: Шкала доброжелательности
     items:
       - code: fipi-item-agr-1
-        steps: 7
+        steps: 9
         reverse: true
         translations: 
           - locale: en
@@ -59,7 +59,7 @@ scales:
         description: Шкала сознательнольсти
     items:
       - code: fipi-item-cons-1
-        steps: 7
+        steps: 9
         reverse: false
         translations: 
           - locale: en
@@ -77,7 +77,7 @@ scales:
         description: Шкала эмоциональной стабильности
     items:
       - code: fipi-item-stab-1
-        steps: 7
+        steps: 9
         reverse: true
         translations: 
           - locale: en
@@ -95,7 +95,7 @@ scales:
         description: Шкала открытости новому опыту
     items:
       - code: fipi-item-op-1
-        steps: 7
+        steps: 9
         reverse: false
         translations: 
           - locale: en

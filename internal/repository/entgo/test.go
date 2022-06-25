@@ -8,6 +8,8 @@ import (
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/result"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
@@ -219,9 +221,16 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 	// create or update scales for test
 	updateTst := tst.Update()
 	for _, sArgs := range args.Scales {
+		// if items number have changed
+		// or any item's steps changed
+		// we need to invalidate old norms
+		var invalidateNorms bool
 		// check if scale exists by code
 		// TODO: what if different tests use one scale?
-		scl, err := tx.Scale.Query().Where(scale.CodeEQ(sArgs.Code)).Only(ctx)
+		scl, err := tx.Scale.Query().
+			Where(scale.CodeEQ(sArgs.Code)).
+			WithItems().
+			Only(ctx)
 		if err != nil {
 			if !ent.IsNotFound(err) {
 				return rollback(tx, err)
@@ -241,6 +250,17 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 				r.logger.Error("trying to update global scale", errors.New("not allowed to update global scale from test constructor"))
 				updateTst.AddScaleIDs(scl.ID)
 				continue
+			}
+
+			// check if we need to invalidate norms based on item number
+			if scl.Edges.Items != nil {
+				if len(scl.Edges.Items) != len(sArgs.Items) {
+					r.logger.Info(
+						"set to invalidate norms",
+						fmt.Sprintf("item number was %d but now is %d", len(scl.Edges.Items), len(sArgs.Items)),
+					)
+					invalidateNorms = true
+				}
 			}
 
 			scl, err = scl.Update().
@@ -334,8 +354,22 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 				if err != nil {
 					return rollback(tx, err)
 				}
+
+				// new item added, invalidate norms
+				invalidateNorms = true
+				// TODO: what if item text is changed?
 			} else {
 				// items exists, update if allowed
+
+				// check if we need to invalidate norms based on item steps
+				if itm.Steps != iArgs.Steps {
+					r.logger.Info(
+						"set to invalidate norms",
+						fmt.Sprintf("item steps was %d but now is %d", itm.Steps, iArgs.Steps),
+					)
+					invalidateNorms = true
+				}
+
 				itm, err = itm.Update().
 					SetSteps(iArgs.Steps).
 					Save(ctx)
@@ -345,7 +379,6 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 			}
 
 			// delete old translations if exist
-			// TODO: maybe change this to bulk upsert
 			_, err = tx.ItemTranslation.Delete().
 				Where(itemtranslation.HasItemWith(item.IDEQ(itm.ID))).
 				Exec(ctx)
@@ -381,6 +414,13 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 
 		// add scale to test
 		updateTst.AddScaleIDs(scl.ID)
+		// invalidate norms if neccessary
+		if invalidateNorms {
+			err = r.invalidateNorms(tx, ctx, scl.ID)
+			if err != nil {
+				return err // no need to rollback, already rollbacked in the function
+			}
+		}
 		// finished creating a scale
 	}
 
@@ -469,6 +509,24 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 	}
 
 	return tx.Commit()
+}
+
+func (r *EntgoRepository) invalidateNorms(tx *ent.Tx, ctx context.Context, scaleID uuid.UUID) error {
+	_, err := tx.Norm.Delete().
+		Where(norm.HasScaleWith(scale.IDEQ(scaleID))).
+		Exec(ctx)
+	if err != nil {
+		return rollback(tx, err)
+	}
+
+	_, err = tx.Result.Delete().
+		Where(result.HasScaleWith(scale.IDEQ(scaleID))).
+		Exec(ctx)
+	if err != nil {
+		return rollback(tx, err)
+	}
+
+	return nil
 }
 
 func entToDomainTest(t *ent.Test, locale string) *domain.Test {
