@@ -31,6 +31,7 @@ func (Take) Fields() []ent.Field {
 			domain.TestStepFinish,
 			domain.TestStepResult,
 		).Default(domain.TestStepIntro),
+		field.Enum("in_locale").Values(domain.Locales()...).Default(domain.DefaultLocale()),
 		field.JSON("meta", make(map[string]interface{})).Optional(),
 	}
 }

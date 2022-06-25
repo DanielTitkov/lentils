@@ -74,14 +74,11 @@ func New(
 ) (*App, error) {
 	defer util.InfoExecutionTime(time.Now(), "app.New", logger)
 	app := App{
-		Cfg:   cfg,
-		log:   logger,
-		repo:  repo,
-		Store: store,
-		locales: []string{
-			domain.LocaleEn,
-			domain.LocaleRu,
-		},
+		Cfg:     cfg,
+		log:     logger,
+		repo:    repo,
+		Store:   store,
+		locales: domain.Locales(),
 	}
 
 	err := app.loadUserPresets()
@@ -112,24 +109,4 @@ func New(
 	go app.UpdateNormsJob()
 
 	return &app, nil
-}
-
-func (a *App) IsValidLocale(locale string) bool {
-	for _, l := range a.locales {
-		if l == locale {
-			return true
-		}
-	}
-
-	return false
-}
-
-func (a *App) AreValidLocales(locales []string) bool {
-	for _, l := range locales {
-		if ok := a.IsValidLocale(l); !ok {
-			return false
-		}
-	}
-
-	return true
 }

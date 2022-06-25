@@ -103,7 +103,7 @@ func (a *App) PrepareTestResult(ctx context.Context, test *domain.Test, locale s
 }
 
 func (a *App) PrepareTest(ctx context.Context, code string, locale string, args *domain.PrepareTestArgs) (*domain.Test, error) {
-	if ok := a.IsValidLocale(locale); !ok {
+	if ok := domain.IsValidLocale(locale); !ok {
 		return nil, fmt.Errorf("got unknown locale: %s", locale)
 	}
 
@@ -118,10 +118,11 @@ func (a *App) PrepareTest(ctx context.Context, code string, locale string, args 
 	takeMeta := make(map[string]interface{})
 	takeMeta["session"] = args.Session
 	take, err := a.repo.CreateTake(ctx, &domain.Take{
-		Seed:   seed,
-		UserID: args.UserID,
-		TestID: test.ID,
-		Meta:   takeMeta,
+		Seed:     seed,
+		UserID:   args.UserID,
+		TestID:   test.ID,
+		Meta:     takeMeta,
+		InLocale: locale,
 	})
 	if err != nil {
 		return nil, err
@@ -152,7 +153,7 @@ func (a *App) loadTestPresets() error {
 			return err
 		}
 
-		if ok := a.AreValidLocales(test.AvailableLocales); !ok {
+		if ok := domain.AreValidLocales(test.AvailableLocales); !ok {
 			return fmt.Errorf("locales are not valid: %v", test.AvailableLocales)
 		}
 

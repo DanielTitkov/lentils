@@ -38,6 +38,8 @@ type Take struct {
 	Suspicious bool `json:"suspicious,omitempty"`
 	// Status holds the value of the "status" field.
 	Status take.Status `json:"status,omitempty"`
+	// InLocale holds the value of the "in_locale" field.
+	InLocale take.InLocale `json:"in_locale,omitempty"`
 	// Meta holds the value of the "meta" field.
 	Meta map[string]interface{} `json:"meta,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -119,7 +121,7 @@ func (*Take) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case take.FieldSeed, take.FieldProgress, take.FieldPage:
 			values[i] = new(sql.NullInt64)
-		case take.FieldStatus:
+		case take.FieldStatus, take.FieldInLocale:
 			values[i] = new(sql.NullString)
 		case take.FieldCreateTime, take.FieldUpdateTime, take.FieldStartTime, take.FieldEndTime:
 			values[i] = new(sql.NullTime)
@@ -205,6 +207,12 @@ func (t *Take) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				t.Status = take.Status(value.String)
+			}
+		case take.FieldInLocale:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field in_locale", values[i])
+			} else if value.Valid {
+				t.InLocale = take.InLocale(value.String)
 			}
 		case take.FieldMeta:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -306,6 +314,9 @@ func (t *Take) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", t.Status))
+	builder.WriteString(", ")
+	builder.WriteString("in_locale=")
+	builder.WriteString(fmt.Sprintf("%v", t.InLocale))
 	builder.WriteString(", ")
 	builder.WriteString("meta=")
 	builder.WriteString(fmt.Sprintf("%v", t.Meta))

@@ -139,6 +139,7 @@ type (
 		StartTime  *time.Time
 		EndTime    *time.Time
 		Suspicious bool
+		InLocale   string
 		CreateTime time.Time
 		UpdateTime time.Time
 		Page       int

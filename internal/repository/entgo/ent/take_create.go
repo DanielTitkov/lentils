@@ -143,6 +143,20 @@ func (tc *TakeCreate) SetNillableStatus(t *take.Status) *TakeCreate {
 	return tc
 }
 
+// SetInLocale sets the "in_locale" field.
+func (tc *TakeCreate) SetInLocale(tl take.InLocale) *TakeCreate {
+	tc.mutation.SetInLocale(tl)
+	return tc
+}
+
+// SetNillableInLocale sets the "in_locale" field if the given value is not nil.
+func (tc *TakeCreate) SetNillableInLocale(tl *take.InLocale) *TakeCreate {
+	if tl != nil {
+		tc.SetInLocale(*tl)
+	}
+	return tc
+}
+
 // SetMeta sets the "meta" field.
 func (tc *TakeCreate) SetMeta(m map[string]interface{}) *TakeCreate {
 	tc.mutation.SetMeta(m)
@@ -316,6 +330,10 @@ func (tc *TakeCreate) defaults() {
 		v := take.DefaultStatus
 		tc.mutation.SetStatus(v)
 	}
+	if _, ok := tc.mutation.InLocale(); !ok {
+		v := take.DefaultInLocale
+		tc.mutation.SetInLocale(v)
+	}
 	if _, ok := tc.mutation.ID(); !ok {
 		v := take.DefaultID()
 		tc.mutation.SetID(v)
@@ -348,6 +366,14 @@ func (tc *TakeCreate) check() error {
 	if v, ok := tc.mutation.Status(); ok {
 		if err := take.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
+		}
+	}
+	if _, ok := tc.mutation.InLocale(); !ok {
+		return &ValidationError{Name: "in_locale", err: errors.New(`ent: missing required field "Take.in_locale"`)}
+	}
+	if v, ok := tc.mutation.InLocale(); ok {
+		if err := take.InLocaleValidator(v); err != nil {
+			return &ValidationError{Name: "in_locale", err: fmt.Errorf(`ent: validator failed for field "Take.in_locale": %w`, err)}
 		}
 	}
 	if _, ok := tc.mutation.TestID(); !ok {
@@ -463,6 +489,14 @@ func (tc *TakeCreate) createSpec() (*Take, *sqlgraph.CreateSpec) {
 			Column: take.FieldStatus,
 		})
 		_node.Status = value
+	}
+	if value, ok := tc.mutation.InLocale(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: take.FieldInLocale,
+		})
+		_node.InLocale = value
 	}
 	if value, ok := tc.mutation.Meta(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

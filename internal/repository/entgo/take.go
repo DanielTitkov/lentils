@@ -17,6 +17,7 @@ func (r *EntgoRepository) CreateTake(ctx context.Context, tk *domain.Take) (*dom
 		SetUserID(tk.UserID).
 		SetMeta(tk.Meta).
 		SetNillableStartTime(tk.StartTime).
+		SetInLocale(take.InLocale(tk.InLocale)).
 		SetSeed(tk.Seed).
 		Save(ctx)
 	if err != nil {
@@ -39,6 +40,7 @@ func (r *EntgoRepository) UpdateTake(ctx context.Context, tk *domain.Take) (*dom
 	updatedQuery := t.Update().
 		SetProgress(tk.Progress).
 		SetPage(tk.Page).
+		SetInLocale(take.InLocale(tk.InLocale)).
 		SetStatus(take.Status(tk.Status)).
 		SetNillableStartTime(tk.StartTime).
 		SetMeta(tk.Meta).
@@ -73,6 +75,7 @@ func entToDomainTake(t *ent.Take, uid, tid uuid.UUID) *domain.Take {
 		Seed:       t.Seed,
 		UserID:     uid,
 		TestID:     tid,
+		InLocale:   t.InLocale.String(),
 		StartTime:  t.StartTime,
 		EndTime:    t.EndTime,
 		Suspicious: t.Suspicious,

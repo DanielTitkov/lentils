@@ -32,6 +32,8 @@ const (
 	FieldSuspicious = "suspicious"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldInLocale holds the string denoting the in_locale field in the database.
+	FieldInLocale = "in_locale"
 	// FieldMeta holds the string denoting the meta field in the database.
 	FieldMeta = "meta"
 	// EdgeResponses holds the string denoting the responses edge name in mutations.
@@ -86,6 +88,7 @@ var Columns = []string{
 	FieldEndTime,
 	FieldSuspicious,
 	FieldStatus,
+	FieldInLocale,
 	FieldMeta,
 }
 
@@ -153,5 +156,31 @@ func StatusValidator(s Status) error {
 		return nil
 	default:
 		return fmt.Errorf("take: invalid enum value for status field: %q", s)
+	}
+}
+
+// InLocale defines the type for the "in_locale" enum field.
+type InLocale string
+
+// InLocaleEn is the default value of the InLocale enum.
+const DefaultInLocale = InLocaleEn
+
+// InLocale values.
+const (
+	InLocaleEn InLocale = "en"
+	InLocaleRu InLocale = "ru"
+)
+
+func (il InLocale) String() string {
+	return string(il)
+}
+
+// InLocaleValidator is a validator for the "in_locale" field enum values. It is called by the builders before save.
+func InLocaleValidator(il InLocale) error {
+	switch il {
+	case InLocaleEn, InLocaleRu:
+		return nil
+	default:
+		return fmt.Errorf("take: invalid enum value for in_locale field: %q", il)
 	}
 }

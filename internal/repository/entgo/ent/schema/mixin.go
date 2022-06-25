@@ -16,8 +16,7 @@ type LocaleMixin struct {
 func (LocaleMixin) Fields() []ent.Field {
 	return []ent.Field{
 		field.Enum("locale").Values(
-			domain.LocaleEn,
-			domain.LocaleRu,
+			domain.Locales()...,
 		).Immutable(),
 	}
 }

@@ -149,6 +149,20 @@ func (tu *TakeUpdate) SetNillableStatus(t *take.Status) *TakeUpdate {
 	return tu
 }
 
+// SetInLocale sets the "in_locale" field.
+func (tu *TakeUpdate) SetInLocale(tl take.InLocale) *TakeUpdate {
+	tu.mutation.SetInLocale(tl)
+	return tu
+}
+
+// SetNillableInLocale sets the "in_locale" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillableInLocale(tl *take.InLocale) *TakeUpdate {
+	if tl != nil {
+		tu.SetInLocale(*tl)
+	}
+	return tu
+}
+
 // SetMeta sets the "meta" field.
 func (tu *TakeUpdate) SetMeta(m map[string]interface{}) *TakeUpdate {
 	tu.mutation.SetMeta(m)
@@ -348,6 +362,11 @@ func (tu *TakeUpdate) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
 		}
 	}
+	if v, ok := tu.mutation.InLocale(); ok {
+		if err := take.InLocaleValidator(v); err != nil {
+			return &ValidationError{Name: "in_locale", err: fmt.Errorf(`ent: validator failed for field "Take.in_locale": %w`, err)}
+		}
+	}
 	if _, ok := tu.mutation.TestID(); tu.mutation.TestCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Take.test"`)
 	}
@@ -448,6 +467,13 @@ func (tu *TakeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeEnum,
 			Value:  value,
 			Column: take.FieldStatus,
+		})
+	}
+	if value, ok := tu.mutation.InLocale(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: take.FieldInLocale,
 		})
 	}
 	if value, ok := tu.mutation.Meta(); ok {
@@ -776,6 +802,20 @@ func (tuo *TakeUpdateOne) SetNillableStatus(t *take.Status) *TakeUpdateOne {
 	return tuo
 }
 
+// SetInLocale sets the "in_locale" field.
+func (tuo *TakeUpdateOne) SetInLocale(tl take.InLocale) *TakeUpdateOne {
+	tuo.mutation.SetInLocale(tl)
+	return tuo
+}
+
+// SetNillableInLocale sets the "in_locale" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillableInLocale(tl *take.InLocale) *TakeUpdateOne {
+	if tl != nil {
+		tuo.SetInLocale(*tl)
+	}
+	return tuo
+}
+
 // SetMeta sets the "meta" field.
 func (tuo *TakeUpdateOne) SetMeta(m map[string]interface{}) *TakeUpdateOne {
 	tuo.mutation.SetMeta(m)
@@ -988,6 +1028,11 @@ func (tuo *TakeUpdateOne) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
 		}
 	}
+	if v, ok := tuo.mutation.InLocale(); ok {
+		if err := take.InLocaleValidator(v); err != nil {
+			return &ValidationError{Name: "in_locale", err: fmt.Errorf(`ent: validator failed for field "Take.in_locale": %w`, err)}
+		}
+	}
 	if _, ok := tuo.mutation.TestID(); tuo.mutation.TestCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Take.test"`)
 	}
@@ -1105,6 +1150,13 @@ func (tuo *TakeUpdateOne) sqlSave(ctx context.Context) (_node *Take, err error) 
 			Type:   field.TypeEnum,
 			Value:  value,
 			Column: take.FieldStatus,
+		})
+	}
+	if value, ok := tuo.mutation.InLocale(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: take.FieldInLocale,
 		})
 	}
 	if value, ok := tuo.mutation.Meta(); ok {

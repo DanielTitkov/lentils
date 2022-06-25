@@ -772,6 +772,54 @@ func StatusNotIn(vs ...Status) predicate.Take {
 	})
 }
 
+// InLocaleEQ applies the EQ predicate on the "in_locale" field.
+func InLocaleEQ(v InLocale) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInLocale), v))
+	})
+}
+
+// InLocaleNEQ applies the NEQ predicate on the "in_locale" field.
+func InLocaleNEQ(v InLocale) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldInLocale), v))
+	})
+}
+
+// InLocaleIn applies the In predicate on the "in_locale" field.
+func InLocaleIn(vs ...InLocale) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldInLocale), v...))
+	})
+}
+
+// InLocaleNotIn applies the NotIn predicate on the "in_locale" field.
+func InLocaleNotIn(vs ...InLocale) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldInLocale), v...))
+	})
+}
+
 // MetaIsNil applies the IsNil predicate on the "meta" field.
 func MetaIsNil() predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {

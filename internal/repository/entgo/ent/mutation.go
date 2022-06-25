@@ -8758,6 +8758,7 @@ type TakeMutation struct {
 	end_time         *time.Time
 	suspicious       *bool
 	status           *take.Status
+	in_locale        *take.InLocale
 	meta             *map[string]interface{}
 	clearedFields    map[string]struct{}
 	responses        map[uuid.UUID]struct{}
@@ -9289,6 +9290,42 @@ func (m *TakeMutation) ResetStatus() {
 	m.status = nil
 }
 
+// SetInLocale sets the "in_locale" field.
+func (m *TakeMutation) SetInLocale(tl take.InLocale) {
+	m.in_locale = &tl
+}
+
+// InLocale returns the value of the "in_locale" field in the mutation.
+func (m *TakeMutation) InLocale() (r take.InLocale, exists bool) {
+	v := m.in_locale
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInLocale returns the old "in_locale" field's value of the Take entity.
+// If the Take object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TakeMutation) OldInLocale(ctx context.Context) (v take.InLocale, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInLocale is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInLocale requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInLocale: %w", err)
+	}
+	return oldValue.InLocale, nil
+}
+
+// ResetInLocale resets all changes to the "in_locale" field.
+func (m *TakeMutation) ResetInLocale() {
+	m.in_locale = nil
+}
+
 // SetMeta sets the "meta" field.
 func (m *TakeMutation) SetMeta(value map[string]interface{}) {
 	m.meta = &value
@@ -9543,7 +9580,7 @@ func (m *TakeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TakeMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.create_time != nil {
 		fields = append(fields, take.FieldCreateTime)
 	}
@@ -9570,6 +9607,9 @@ func (m *TakeMutation) Fields() []string {
 	}
 	if m.status != nil {
 		fields = append(fields, take.FieldStatus)
+	}
+	if m.in_locale != nil {
+		fields = append(fields, take.FieldInLocale)
 	}
 	if m.meta != nil {
 		fields = append(fields, take.FieldMeta)
@@ -9600,6 +9640,8 @@ func (m *TakeMutation) Field(name string) (ent.Value, bool) {
 		return m.Suspicious()
 	case take.FieldStatus:
 		return m.Status()
+	case take.FieldInLocale:
+		return m.InLocale()
 	case take.FieldMeta:
 		return m.Meta()
 	}
@@ -9629,6 +9671,8 @@ func (m *TakeMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldSuspicious(ctx)
 	case take.FieldStatus:
 		return m.OldStatus(ctx)
+	case take.FieldInLocale:
+		return m.OldInLocale(ctx)
 	case take.FieldMeta:
 		return m.OldMeta(ctx)
 	}
@@ -9702,6 +9746,13 @@ func (m *TakeMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
+		return nil
+	case take.FieldInLocale:
+		v, ok := value.(take.InLocale)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInLocale(v)
 		return nil
 	case take.FieldMeta:
 		v, ok := value.(map[string]interface{})
@@ -9845,6 +9896,9 @@ func (m *TakeMutation) ResetField(name string) error {
 		return nil
 	case take.FieldStatus:
 		m.ResetStatus()
+		return nil
+	case take.FieldInLocale:
+		m.ResetInLocale()
 		return nil
 	case take.FieldMeta:
 		m.ResetMeta()
