@@ -2,23 +2,25 @@
 
 // Import a Google Font
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans:100,400,700");
+@function tint($color, $percentage) {
+	@return mix(white, $color, $percentage);
+}
 
 // Set your brand colors
 // https://coolors.co/palette/ffadad-ffd6a5-fdffb6-caffbf-9bf6ff-a0c4ff-bdb2ff-ffc6ff-fffffc
-$red: #ffadad;
-$red-dark: #ff7070;
-$red-darker: #ff3333;
-$orange: #ffd6a5;
-$yellow: #fdffb6;
-$green: #caffbf;
-$green-dark: #93ff7d;
-$green-darker: #44ff1e;
-$blue: #9bf6ff;
-$azur: #a0c4ff;
-$azur-dark: #639fff;
-$azur-darker: #287aff;
-$purple: #bdb2ff;
-$pink: #ffc6ff;
+
+// brand colors
+$red: #FF5765;
+$yellow: #FFC527;
+$green: #03D930;
+$green2: #AAE23B;
+$purple: #8A6FDF;
+$blue: #287aff;
+
+// for gradient in items
+
+$left: tint($green, 60%);
+$right: lighten($green2, 5%);
 
 // Update Bulma's global variables
 $family-sans-serif: "Noto Sans", sans-serif;
@@ -26,9 +28,11 @@ $radius-large: 55px;
 // $grey-dark: $brown;
 // $grey-light: $beige-light;
 $primary: $blue;
-$link: $azur-darker;
-$success: $green-darker;
-$danger: $red-darker;
+$link: $primary;
+$success: $green;
+$danger: $red;
+$warning: $yellow;
+$info: $purple;
 // $widescreen-enabled: false;
 // $fullhd-enabled: false;
 
@@ -62,79 +66,21 @@ $footer-padding: 1.5rem 1.5rem 3rem;
 @import "~bulma/bulma";
 
 // custom classes
-:root {
-	--main-bg-color: #287aff;
-	--second-bg-color: #9bf6ff;
-	--form-control-color: rebeccapurple;
-}
-
-// item scale 
-
-// item scale end
 
 .question-done {
 	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$green+0,4df297+99 */
-	background: $green;
+	background: $left;
 	/* Old browsers */
-	background: -moz-linear-gradient(-45deg, $green 25%, $yellow 99%);
+	background: -moz-linear-gradient(-45deg, $left 25%, $right 99%);
 	/* FF3.6-15 */
-	background: -webkit-linear-gradient(-45deg, $green 25%, $yellow 99%);
+	background: -webkit-linear-gradient(-45deg, $left 25%, $right 99%);
 	/* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(135deg, $green 25%, $yellow 99%);
+	background: linear-gradient(135deg, $left 25%, $right 99%);
 	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$green', endColorstr='$yellow', GradientType=1);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$left', endColorstr='$right', GradientType=1);
 	/* IE6-9 fallback on horizontal gradient */
 }
 
-.challenge-card-true {
-	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$green+0,4df297+99 */
-	background: $green;
-	/* Old browsers */
-	background: -moz-linear-gradient(-45deg, $green 25%, $yellow 99%);
-	/* FF3.6-15 */
-	background: -webkit-linear-gradient(-45deg, $green 25%, $yellow 99%);
-	/* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(135deg, $green 25%, $yellow 99%);
-	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$green', endColorstr='$yellow', GradientType=1);
-	/* IE6-9 fallback on horizontal gradient */
-}
-
-.challenge-card-false {
-	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$red+0,ea83d4+99 */
-	background: $red;
-	/* Old browsers */
-	background: -moz-linear-gradient(-45deg, $red 25%, $pink 99%);
-	/* FF3.6-15 */
-	background: -webkit-linear-gradient(-45deg, $red 25%, $pink 99%);
-	/* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(135deg, $red 25%, $pink 99%);
-	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$red', endColorstr='$pink', GradientType=1);
-	/* IE6-9 fallback on horizontal gradient */
-}
-
-.challenge-card-unknown {
-	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$azur+0,c7d7f9+99 */
-	background: $azur;
-	/* Old browsers */
-	background: -moz-linear-gradient(-45deg, $azur 25%, $blue 99%);
-	/* FF3.6-15 */
-	background: -webkit-linear-gradient(-45deg, $azur 25%, $blue 99%);
-	/* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(135deg, $azur 25%, $blue 99%);
-	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$azur', endColorstr='$blue', GradientType=1);
-	/* IE6-9 fallback on horizontal gradient */
-}
-
-.challenge-card-unpublished {
-	background: $grey-light;
-	background: -moz-linear-gradient(-45deg, $grey-light 25%, $light 99%);
-	background: -webkit-linear-gradient(-45deg, $grey-light 25%, $light 99%);
-	background: linear-gradient(135deg, $grey-light 25%, $light 99%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$grey-light', endColorstr='$light', GradientType=1);
-}
 
 input[type="checkbox"] {
 	-webkit-appearance: none;
@@ -152,159 +98,6 @@ input[type="checkbox"]:checked {
 input[type="checkbox"]:disabled {
 	border: 4px solid #b5b5b5;
 	background: white;
-}
-
-.user-summary-meter {
-	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$red+0,ea83d4+99 */
-	color: $green-dark;
-	color: -moz-linear-gradient(-45deg, $green-dark 25%, $green 99%);
-	color: -webkit-linear-gradient(-45deg, $green-dark 25%, $green 99%);
-	color: linear-gradient(135deg, $green-dark 25%, $green 99%);
-	background: $red;
-	background: -moz-linear-gradient(-45deg, $red 25%, $red-dark 99%);
-	background: -webkit-linear-gradient(-45deg, $red 25%, $red-dark 99%);
-	background: linear-gradient(135deg, $red 25%, $red-dark 99%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$red', endColorstr='$red-dark', GradientType=1);
-}
-
-.user-summary-meter::-moz-progress-bar {
-	background: $green-dark;
-	background: -moz-linear-gradient(-45deg, $green-dark 25%, $green 99%);
-	background: -webkit-linear-gradient(-45deg, $green-dark 25%, $green 99%);
-	background: linear-gradient(135deg, $green-dark 25%, $green 99%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$green-dark', endColorstr='$green', GradientType=1);
-}
-.user-summary-meter::-webkit-progress-value {
-	background: $green-dark;
-	background: -moz-linear-gradient(-45deg, $green-dark 25%, $green 99%);
-	background: -webkit-linear-gradient(-45deg, $green-dark 25%, $green 99%);
-	background: linear-gradient(135deg, $green-dark 25%, $green 99%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$green-dark', endColorstr='$green', GradientType=1);
-}
-
-.prognosis-tag-true {
-	background: $yellow;
-	background: -moz-linear-gradient(45deg, $yellow 5%, $green 90%);
-	background: -webkit-linear-gradient(45deg, $yellow 5%, $green 90%);
-	background: linear-gradient(45deg, $yellow 5%, $green 90%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$yellow', endColorstr='$green', GradientType=1);
-}
-
-.prognosis-tag-false {
-	background: $pink;
-	background: -moz-linear-gradient(45deg, $pink 5%, $red 90%);
-	background: -webkit-linear-gradient(45deg, $pink 5%, $red 90%);
-	background: linear-gradient(45deg, $pink 5%, $red 90%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$pink', endColorstr='$red', GradientType=1);
-}
-
-/* Badges */
-
-// badge-starter
-$badgeStarterCircleWidth: 170px;
-$badgeStarterColor: $azur-darker;
-
-.badge-starter {
-	width: ($badgeStarterCircleWidth) * 2;
-	.top,
-	.bottom {
-		height: 60px;
-		overflow: hidden;
-		position: relative;
-		width: $badgeStarterCircleWidth;
-		margin: 0 auto;
-		.ring {
-			border-radius: 100%;
-			position: absolute;
-			width: $badgeStarterCircleWidth;
-			height: $badgeStarterCircleWidth;
-			border: 3px solid $badgeStarterColor;
-			border-width: 8px;
-			&:nth-child(2) {
-				border-width: 4px;
-				width: ($badgeStarterCircleWidth)-16;
-			}
-			&:nth-child(3) {
-				border-width: 2px;
-				width: ($badgeStarterCircleWidth)-31;
-				&:after {
-					content: "";
-					width: 18px;
-					position: absolute;
-					border-top: 1px solid $badgeStarterColor;
-					left: 50%;
-					margin-left: -9px;
-				}
-				&:before {
-					content: "";
-					width: 32px;
-					position: absolute;
-					border-top: 1px solid $badgeStarterColor;
-					margin-left: -16px;
-					left: 50%;
-				}
-			}
-		}
-	}
-	.top {
-		.ring {
-			&:nth-child(1) {
-				top: 0;
-				left: 0;
-			}
-			&:nth-child(2) {
-				top: 10px;
-				left: 8px;
-			}
-			&:nth-child(3) {
-				top: 20px;
-				left: 16px;
-				&:after {
-					top: 17px;
-				}
-				&:before {
-					top: 22px;
-				}
-			}
-		}
-	}
-	.bottom {
-		.ring {
-			&:nth-child(1) {
-				bottom: 0;
-				left: 0;
-			}
-			&:nth-child(2) {
-				bottom: 10px;
-				left: 8px;
-			}
-			&:nth-child(3) {
-				bottom: 20px;
-				left: 16px;
-				&:after {
-					bottom: 17px;
-				}
-				&:before {
-					bottom: 22px;
-				}
-			}
-		}
-	}
-	.text {
-		text-align: center;
-		text-transform: uppercase;
-		font-family: "Raleway", sans-serif;
-		font-size: 42px;
-		font-weight: 900;
-		color: $badgeStarterColor;
-		height: 55px;
-		vertical-align: middle;
-		display: table-cell;
-		width: ($badgeStarterCircleWidth) * 2;
-		position: relative;
-		left: 7px;
-		letter-spacing: 14px;
-	}
 }
 
 /* Loading */

@@ -9,8 +9,10 @@
   {{ if eq .Test.Take.Status .IntroStatus }}
   <div class="block has-text-centered">
     {{ range .Test.AvailableLocales }}
-    <button class="m-2 p-5 button is-rounded is-large {{ if eq . $.Locale }}is-success{{else}}is-light{{ end }}" live-click="set-locale"
-      live-value-locale="{{.}}" title="{{.}}">{{ LocaleIcon . }}</button>
+    <button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
+      live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">
+      <p class="title is-3">{{ LocaleIcon . }}</p>
+    </button>
     {{end}}
   </div>
   <div class="section">
