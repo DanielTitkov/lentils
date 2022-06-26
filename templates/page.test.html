@@ -2,7 +2,7 @@
 {{ define "view" }}
 <main>
   <div class="section">
-    <h1 class="title is-1">{{ .Test.Code }}</h1>
+    <h1 class="title is-1">{{ .Test.Title }}</h1>
     <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
   </div>
 
@@ -67,6 +67,7 @@
   <div>
     {{ range $i, $scale := .Test.Scales }}
     <div class="notification box">
+      <p class="heading">{{ $scale.Code }}</p>
       <p class="title is-3">{{ $scale.Title }}</p>
       <p class="subtitle is-5">{{ $scale.Description }}</p>
       <div class="level">
@@ -110,7 +111,7 @@
     <div class="control">
       {{ range $j, $s := N .Steps }}
       <button class="button {{ if eq $item.CurrentResponseValue $j }}is-success{{ end }}" live-click="response-update"
-        live-value-item="{{ $item.Code }}" live-value-val="{{ $j }}">{{ $j }}</button>
+        live-value-item="{{ $item.Code }}" live-value-val="{{ $j }}">{{ Plus1 $j }}</button>
       {{ end }}
     </div>
     {{ end }}

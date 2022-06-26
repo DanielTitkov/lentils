@@ -1,0 +1,85 @@
+code: fipi
+locales: ["en", "ru"]
+en:  # title, decsriptions, instruction
+  - "FIPI"
+  - "Five-Item Personality Inventory (for testing only)" 
+  - "Answer all the questions (there's only 5 of them!)"
+ru: # title, decsriptions, instruction
+  - "ПИПИ"
+  - "Краткий тест личности (для тестов)"
+  - "Ответьте на все вопросы (их всего 5!)"
+type: sten
+steps: 9 # item steps
+randomize: false
+intervals: 3 # interpretation intervals
+question:
+  en: "How this is about you?" # content
+  ru: "Оцените, насколько вам это подходит?" #content
+  page: 1
+scales: 
+  extraversion: 
+    en: ["Extraversion", "Extraversion scale"] # title, description
+    ru: ["Экстраверсия", "Шкала экстраверсии"] # title, description
+    interpretations: 
+      - en: "en1"
+        ru: "ru1"
+      - en: "en2"
+        ru: "ru2"
+      - en: "en3"
+        ru: "ru3"
+  agreeableness:
+    en: ["Agreeableness", "Agreeableness scale"] # title, description
+    ru: ["Доброжелательность", "Шкала доброжелательности"] # title, description
+    interpretations: 
+      - en: "en1"
+        ru: "ru1"
+      - en: "en2"
+        ru: "ru2"
+      - en: "en3"
+        ru: "ru3"
+  conscientiousness:
+    en: ["Conscientiousness", "Conscientiousness scale"] # title, description
+    ru: ["Сознательность", "Шкала сознательнольсти"] # title, description
+    interpretations: 
+      - en: "en1"
+        ru: "ru1"
+      - en: "en2"
+        ru: "ru2"
+      - en: "en3"
+        ru: "ru3"
+  stability:
+    en: ["Emotional Stability", "Emotional stability scale"] # title, description
+    ru: ["Эмоциональная стабильность", "Шкала эмоциональной стабильности"] # title, description
+    interpretations: 
+      - en: "en1"
+        ru: "ru1"
+      - en: "en2"
+        ru: "ru2"
+      - en: "en3"
+        ru: "ru3"
+  openness:
+    en: ["Openness to experience", "Openness to experience scale"] # title, description
+    ru: ["Открытость новому опыту", "Шкала открытости новому опыту"] # title, description
+    interpretations: 
+      - en: "en1"
+        ru: "ru1"
+      - en: "en2"
+        ru: "ru2"
+      - en: "en3"
+        ru: "ru3"
+items:
+  - en: "Extraverted, enthusiastic." # content
+    ru: "Экстраверт, полный энтузиазма." # content
+    scale: "extraversion"
+  - en: "Critical, quarrelsome." # content
+    ru: "Критичный, придирчивый." # content
+    scale: "-agreeableness" # reverse
+  - en: "Dependable, self-disciplined." # content
+    ru: "Надежный, дисциплинированный." # content
+    scale: "conscientiousness"
+  - en: "Anxious, easily upset." # content
+    ru: "Тревожный, легко расстраиваемый." # content
+    scale: "-stability"
+  - en: "Open to new experiences, complex." # content
+    ru: "Открытый опыту, многоуровневый." # content
+    scale: "openness"

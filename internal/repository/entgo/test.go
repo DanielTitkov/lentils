@@ -122,6 +122,7 @@ func (r *EntgoRepository) GetTakeData(ctx context.Context, tk *domain.Take, loca
 					ntq.Where(interpretationtranslation.LocaleEQ(interpretationtranslation.Locale(locale)))
 				})
 			})
+			sq.Order(ent.Asc(scale.FieldCode)) // this should work fine until test doesn't have >99 scales which would be crazy
 		}).
 		Only(ctx)
 	if err != nil {

@@ -1,6 +1,12 @@
+# generated, try not to edit
+# by: CTT-v1.0.0
+# at: 2022-06-27 00:22:44
+# template: ../data/templates/ctt-v1.0.0/fipi.yaml
 code: fipi
-published: true
-availableLocales: ["en", "ru"]
+published: false
+availableLocales:
+  - en
+  - ru
 forceUpdate: true
 translations:
   - locale: en
@@ -8,153 +14,276 @@ translations:
     description: Five-Item Personality Inventory (for testing only)
     instruction: Answer all the questions (there's only 5 of them!)
   - locale: ru
-    title: ТИПИ
+    title: ПИПИ
     description: Краткий тест личности (для тестов)
     instruction: Ответьте на все вопросы (их всего 5!)
-scales: 
-  - code: fipi-scale-1-extraversion
-    type: mean
+scales:
+  - code: fipi-01-extraversion
+    type: sten
     translations:
       - locale: en
-        title: FIPI-Extraversion
+        title: Extraversion
         description: Extraversion scale
       - locale: ru
-        title: ТИПИ-Экстраверсия
+        title: Экстраверсия
         description: Шкала экстраверсии
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: fipi-item-ex-1
+      - code: fipi-01-extraversion-001
         steps: 9
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Extraverted, enthusiastic.
           - locale: ru
             content: Экстраверт, полный энтузиазма.
-  - code: fipi-scale-2-agreeableness
-    type: mean
+  - code: fipi-02-agreeableness
+    type: sten
     translations:
       - locale: en
-        title: FIPI-Agreeableness
+        title: Agreeableness
         description: Agreeableness scale
       - locale: ru
-        title: ТИПИ-Доброжелательность
+        title: Доброжелательность
         description: Шкала доброжелательности
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: fipi-item-agr-1
+      - code: fipi-02-agreeableness-001
         steps: 9
         reverse: true
-        translations: 
+        translations:
           - locale: en
             content: Critical, quarrelsome.
           - locale: ru
             content: Критичный, придирчивый.
-  - code: fipi-scale-3-conscientiousness
-    type: mean
+  - code: fipi-03-conscientiousness
+    type: sten
     translations:
       - locale: en
-        title: FIPI-Conscientiousness
+        title: Conscientiousness
         description: Conscientiousness scale
       - locale: ru
-        title: ТИПИ-Сознательность
+        title: Сознательность
         description: Шкала сознательнольсти
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: fipi-item-cons-1
+      - code: fipi-03-conscientiousness-001
         steps: 9
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Dependable, self-disciplined.
           - locale: ru
             content: Надежный, дисциплинированный.
-  - code: fipi-scale-4-stability
-    type: mean
+  - code: fipi-04-stability
+    type: sten
     translations:
       - locale: en
-        title: FIPI-Emotional Stability
-        description: Emotional Stability scale
+        title: Emotional Stability
+        description: Emotional stability scale
       - locale: ru
-        title: ТИПИ-Эмоциональная стабильность
+        title: Эмоциональная стабильность
         description: Шкала эмоциональной стабильности
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: fipi-item-stab-1
+      - code: fipi-04-stability-001
         steps: 9
         reverse: true
-        translations: 
+        translations:
           - locale: en
             content: Anxious, easily upset.
           - locale: ru
             content: Тревожный, легко расстраиваемый.
-  - code: fipi-scale-5-openness
-    type: mean
+  - code: fipi-05-openness
+    type: sten
     translations:
       - locale: en
-        title: FIPI-Openness to Experience
-        description: Openness to Experience scale
+        title: Openness to experience
+        description: Openness to experience scale
       - locale: ru
-        title: ТИПИ-Открытость новому опыту
+        title: Открытость новому опыту
         description: Шкала открытости новому опыту
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: fipi-item-op-1
+      - code: fipi-05-openness-001
         steps: 9
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Open to new experiences, complex.
           - locale: ru
             content: Открытый опыту, многоуровневый.
-questions: 
-  - code: fipi-question-1
+questions:
+  - code: fipi-001
     order: 10
     type: simple
-    items: 
-      - code: fipi-item-op-1
-    translations: 
+    items:
+      - code: fipi-01-extraversion-001
+    translations:
       - locale: en
-        content: "How this is about you?"
+        content: How this is about you?
       - locale: ru
-        content: "Оцените, насколько вам это подходит?"
-  - code: fipi-question-2
+        content: Оцените, насколько вам это подходит?
+  - code: fipi-002
     order: 20
     type: simple
-    items: 
-      - code: fipi-item-stab-1
-    translations: 
+    items:
+      - code: fipi-02-agreeableness-001
+    translations:
       - locale: en
-        content: "How this is about you?"
+        content: How this is about you?
       - locale: ru
-        content: "Оцените, насколько вам это подходит?"
-  - code: fipi-question-3
+        content: Оцените, насколько вам это подходит?
+  - code: fipi-003
     order: 30
     type: simple
-    items: 
-      - code: fipi-item-cons-1
-    translations: 
+    items:
+      - code: fipi-03-conscientiousness-001
+    translations:
       - locale: en
-        content: "How this is about you?"
+        content: How this is about you?
       - locale: ru
-        content: "Оцените, насколько вам это подходит?"
-  - code: fipi-question-4
+        content: Оцените, насколько вам это подходит?
+  - code: fipi-004
     order: 40
     type: simple
-    items: 
-      - code: fipi-item-agr-1
-    translations: 
+    items:
+      - code: fipi-04-stability-001
+    translations:
       - locale: en
-        content: "How this is about you?"
+        content: How this is about you?
       - locale: ru
-        content: "Оцените, насколько вам это подходит?"
-  - code: fipi-question-5
+        content: Оцените, насколько вам это подходит?
+  - code: fipi-005
     order: 50
     type: simple
-    items: 
-      - code: fipi-item-ex-1
-    translations: 
+    items:
+      - code: fipi-05-openness-001
+    translations:
       - locale: en
-        content: "How this is about you?"
+        content: How this is about you?
       - locale: ru
-        content: "Оцените, насколько вам это подходит?"
-generate: 
-  method: none
+        content: Оцените, насколько вам это подходит?
 display:
-  questionsPerPage: 2
+  questionsPerPage: 1
   randomizeOrder: false
