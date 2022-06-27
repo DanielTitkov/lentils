@@ -38,6 +38,10 @@ type Tx struct {
 	ScaleItem *ScaleItemClient
 	// ScaleTranslation is the client for interacting with the ScaleTranslation builders.
 	ScaleTranslation *ScaleTranslationClient
+	// Tag is the client for interacting with the Tag builders.
+	Tag *TagClient
+	// TagTranslation is the client for interacting with the TagTranslation builders.
+	TagTranslation *TagTranslationClient
 	// Take is the client for interacting with the Take builders.
 	Take *TakeClient
 	// Test is the client for interacting with the Test builders.
@@ -198,6 +202,8 @@ func (tx *Tx) init() {
 	tx.Scale = NewScaleClient(tx.config)
 	tx.ScaleItem = NewScaleItemClient(tx.config)
 	tx.ScaleTranslation = NewScaleTranslationClient(tx.config)
+	tx.Tag = NewTagClient(tx.config)
+	tx.TagTranslation = NewTagTranslationClient(tx.config)
 	tx.Take = NewTakeClient(tx.config)
 	tx.Test = NewTestClient(tx.config)
 	tx.TestDisplay = NewTestDisplayClient(tx.config)

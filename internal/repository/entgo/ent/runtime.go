@@ -19,6 +19,8 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/schema"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tagtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
@@ -272,6 +274,39 @@ func init() {
 	scaletranslationDescID := scaletranslationFields[0].Descriptor()
 	// scaletranslation.DefaultID holds the default value on creation for the id field.
 	scaletranslation.DefaultID = scaletranslationDescID.Default.(func() uuid.UUID)
+	tagMixin := schema.Tag{}.Mixin()
+	tagMixinFields0 := tagMixin[0].Fields()
+	_ = tagMixinFields0
+	tagFields := schema.Tag{}.Fields()
+	_ = tagFields
+	// tagDescCreateTime is the schema descriptor for create_time field.
+	tagDescCreateTime := tagMixinFields0[0].Descriptor()
+	// tag.DefaultCreateTime holds the default value on creation for the create_time field.
+	tag.DefaultCreateTime = tagDescCreateTime.Default.(func() time.Time)
+	// tagDescUpdateTime is the schema descriptor for update_time field.
+	tagDescUpdateTime := tagMixinFields0[1].Descriptor()
+	// tag.DefaultUpdateTime holds the default value on creation for the update_time field.
+	tag.DefaultUpdateTime = tagDescUpdateTime.Default.(func() time.Time)
+	// tag.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	tag.UpdateDefaultUpdateTime = tagDescUpdateTime.UpdateDefault.(func() time.Time)
+	// tagDescCode is the schema descriptor for code field.
+	tagDescCode := tagFields[1].Descriptor()
+	// tag.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	tag.CodeValidator = tagDescCode.Validators[0].(func(string) error)
+	// tagDescID is the schema descriptor for id field.
+	tagDescID := tagFields[0].Descriptor()
+	// tag.DefaultID holds the default value on creation for the id field.
+	tag.DefaultID = tagDescID.Default.(func() uuid.UUID)
+	tagtranslationFields := schema.TagTranslation{}.Fields()
+	_ = tagtranslationFields
+	// tagtranslationDescContent is the schema descriptor for content field.
+	tagtranslationDescContent := tagtranslationFields[1].Descriptor()
+	// tagtranslation.ContentValidator is a validator for the "content" field. It is called by the builders before save.
+	tagtranslation.ContentValidator = tagtranslationDescContent.Validators[0].(func(string) error)
+	// tagtranslationDescID is the schema descriptor for id field.
+	tagtranslationDescID := tagtranslationFields[0].Descriptor()
+	// tagtranslation.DefaultID holds the default value on creation for the id field.
+	tagtranslation.DefaultID = tagtranslationDescID.Default.(func() uuid.UUID)
 	takeMixin := schema.Take{}.Mixin()
 	takeMixinFields0 := takeMixin[0].Fields()
 	_ = takeMixinFields0

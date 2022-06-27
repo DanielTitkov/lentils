@@ -178,6 +178,32 @@ func (f ScaleTranslationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.V
 	return f(ctx, mv)
 }
 
+// The TagFunc type is an adapter to allow the use of ordinary
+// function as Tag mutator.
+type TagFunc func(context.Context, *ent.TagMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TagFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.TagMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TagMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The TagTranslationFunc type is an adapter to allow the use of ordinary
+// function as TagTranslation mutator.
+type TagTranslationFunc func(context.Context, *ent.TagTranslationMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TagTranslationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.TagTranslationMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TagTranslationMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The TakeFunc type is an adapter to allow the use of ordinary
 // function as Take mutator.
 type TakeFunc func(context.Context, *ent.TakeMutation) (ent.Value, error)

@@ -7,5 +7,6 @@ type (
 	PresetsConfig struct {
 		UserPresetsPaths []string `yaml:"userPresetsPaths"`
 		TestPresetsPaths []string `yaml:"testPresetsPaths"`
+		TagPresetsPaths  []string `yaml:"tagPresetsPaths"`
 	}
 )

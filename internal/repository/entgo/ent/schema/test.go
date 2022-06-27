@@ -33,6 +33,7 @@ func (Test) Edges() []ent.Edge {
 		edge.To("translations", TestTranslation.Type),
 		edge.To("scales", Scale.Type),
 		edge.To("display", TestDisplay.Type).Unique(),
+		edge.To("tags", Tag.Type),
 		// belongs to
 		// edge.From("author", User.Type).Ref("tests").Unique(), // not needed for now
 	}

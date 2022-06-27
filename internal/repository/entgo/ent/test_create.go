@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
@@ -171,6 +172,21 @@ func (tc *TestCreate) SetNillableDisplayID(id *uuid.UUID) *TestCreate {
 // SetDisplay sets the "display" edge to the TestDisplay entity.
 func (tc *TestCreate) SetDisplay(t *TestDisplay) *TestCreate {
 	return tc.SetDisplayID(t.ID)
+}
+
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tc *TestCreate) AddTagIDs(ids ...uuid.UUID) *TestCreate {
+	tc.mutation.AddTagIDs(ids...)
+	return tc
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tc *TestCreate) AddTags(t ...*Tag) *TestCreate {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tc.AddTagIDs(ids...)
 }
 
 // Mutation returns the TestMutation object of the builder.
@@ -450,6 +466,25 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: testdisplay.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.TagsTable,
+			Columns: test.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: tag.FieldID,
 				},
 			},
 		}

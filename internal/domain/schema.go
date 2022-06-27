@@ -21,6 +21,7 @@ type (
 		Published         bool
 		Questions         []*Question
 		Scales            []*Scale
+		Tags              []*Tag
 		Display           TestDisplay
 		Take              *Take // for use in handler
 	}
@@ -147,6 +148,13 @@ type (
 		Status     string
 		Progress   int
 		Meta       map[string]interface{}
+	}
+
+	Tag struct {
+		ID      uuid.UUID
+		Code    string
+		Type    string
+		Content string
 	}
 )
 

@@ -1,0 +1,49 @@
+- type: theme
+  code: politics
+  translations:
+    - locale: en
+      content: politics
+    - locale: ru
+      content: политика
+- type: theme
+  code: psychology
+  translations:
+    - locale: en
+      content: psychology
+    - locale: ru
+      content: психология
+- type: len
+  code: short
+  translations:
+    - locale: en
+      content: short (<11 questions)
+    - locale: ru
+      content: короткие (до 10 вопросов)
+- type: len
+  code: medium
+  translations:
+    - locale: en
+      content: medium (11-50 questions)
+    - locale: ru
+      content: средние (11-50 вопросов)
+- type: len
+  code: long 
+  translations:
+    - locale: en
+      content: long (>50 questions)
+    - locale: ru
+      content: длинные (от 50 вопросов)
+- type: feature
+  code: funny
+  translations: 
+    - locale: en
+      content: funny
+    - locale: ru
+      content: забавные
+- type: feature
+  code: testing
+  translations:
+    - locale: en
+      content: testing
+    - locale: ru
+      content: тестовые

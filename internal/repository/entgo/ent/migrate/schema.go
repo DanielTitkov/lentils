@@ -345,6 +345,48 @@ var (
 			},
 		},
 	}
+	// TagsColumns holds the columns for the "tags" table.
+	TagsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "type", Type: field.TypeEnum, Enums: []string{"theme", "len", "feature"}, Default: "feature"},
+	}
+	// TagsTable holds the schema information for the "tags" table.
+	TagsTable = &schema.Table{
+		Name:       "tags",
+		Columns:    TagsColumns,
+		PrimaryKey: []*schema.Column{TagsColumns[0]},
+	}
+	// TagTranslationsColumns holds the columns for the "tag_translations" table.
+	TagTranslationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
+		{Name: "content", Type: field.TypeString},
+		{Name: "tag_translations", Type: field.TypeUUID, Nullable: true},
+	}
+	// TagTranslationsTable holds the schema information for the "tag_translations" table.
+	TagTranslationsTable = &schema.Table{
+		Name:       "tag_translations",
+		Columns:    TagTranslationsColumns,
+		PrimaryKey: []*schema.Column{TagTranslationsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "tag_translations_tags_translations",
+				Columns:    []*schema.Column{TagTranslationsColumns[3]},
+				RefColumns: []*schema.Column{TagsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "tagtranslation_locale_tag_translations",
+				Unique:  true,
+				Columns: []*schema.Column{TagTranslationsColumns[1], TagTranslationsColumns[3]},
+			},
+		},
+	}
 	// TakesColumns holds the columns for the "takes" table.
 	TakesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -586,6 +628,31 @@ var (
 			},
 		},
 	}
+	// TestTagsColumns holds the columns for the "test_tags" table.
+	TestTagsColumns = []*schema.Column{
+		{Name: "test_id", Type: field.TypeUUID},
+		{Name: "tag_id", Type: field.TypeUUID},
+	}
+	// TestTagsTable holds the schema information for the "test_tags" table.
+	TestTagsTable = &schema.Table{
+		Name:       "test_tags",
+		Columns:    TestTagsColumns,
+		PrimaryKey: []*schema.Column{TestTagsColumns[0], TestTagsColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "test_tags_test_id",
+				Columns:    []*schema.Column{TestTagsColumns[0]},
+				RefColumns: []*schema.Column{TestsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "test_tags_tag_id",
+				Columns:    []*schema.Column{TestTagsColumns[1]},
+				RefColumns: []*schema.Column{TagsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		InterpretationsTable,
@@ -601,6 +668,8 @@ var (
 		ScalesTable,
 		ScaleItemsTable,
 		ScaleTranslationsTable,
+		TagsTable,
+		TagTranslationsTable,
 		TakesTable,
 		TestsTable,
 		TestDisplaysTable,
@@ -610,6 +679,7 @@ var (
 		QuestionItemsTable,
 		TestQuestionsTable,
 		TestScalesTable,
+		TestTagsTable,
 	}
 )
 
@@ -627,6 +697,7 @@ func init() {
 	ScaleItemsTable.ForeignKeys[0].RefTable = ItemsTable
 	ScaleItemsTable.ForeignKeys[1].RefTable = ScalesTable
 	ScaleTranslationsTable.ForeignKeys[0].RefTable = ScalesTable
+	TagTranslationsTable.ForeignKeys[0].RefTable = TagsTable
 	TakesTable.ForeignKeys[0].RefTable = TestsTable
 	TakesTable.ForeignKeys[1].RefTable = UsersTable
 	TestDisplaysTable.ForeignKeys[0].RefTable = TestsTable
@@ -639,4 +710,6 @@ func init() {
 	TestQuestionsTable.ForeignKeys[1].RefTable = QuestionsTable
 	TestScalesTable.ForeignKeys[0].RefTable = TestsTable
 	TestScalesTable.ForeignKeys[1].RefTable = ScalesTable
+	TestTagsTable.ForeignKeys[0].RefTable = TestsTable
+	TestTagsTable.ForeignKeys[1].RefTable = TagsTable
 }

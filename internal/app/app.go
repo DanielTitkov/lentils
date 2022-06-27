@@ -63,6 +63,11 @@ type (
 
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)
+
+		// tag
+		CreateOrUpdateTagFromArgs(ctx context.Context, args *domain.CreateTagArgs) error
+		GetTagsByCodes(ctx context.Context, locale string, codes ...string) ([]*domain.Tag, error)
+		GetTagIDsByCodes(ctx context.Context, codes ...string) ([]uuid.UUID, error)
 	}
 )
 
@@ -81,7 +86,12 @@ func New(
 		locales: domain.Locales(),
 	}
 
-	err := app.loadUserPresets()
+	err := app.loadTagPresets()
+	if err != nil {
+		return nil, err
+	}
+
+	err = app.loadUserPresets()
 	if err != nil {
 		return nil, err
 	}

@@ -33,6 +33,8 @@ const (
 	EdgeScales = "scales"
 	// EdgeDisplay holds the string denoting the display edge name in mutations.
 	EdgeDisplay = "display"
+	// EdgeTags holds the string denoting the tags edge name in mutations.
+	EdgeTags = "tags"
 	// Table holds the table name of the test in the database.
 	Table = "tests"
 	// TakesTable is the table that holds the takes relation/edge.
@@ -66,6 +68,11 @@ const (
 	DisplayInverseTable = "test_displays"
 	// DisplayColumn is the table column denoting the display relation/edge.
 	DisplayColumn = "test_display"
+	// TagsTable is the table that holds the tags relation/edge. The primary key declared below.
+	TagsTable = "test_tags"
+	// TagsInverseTable is the table name for the Tag entity.
+	// It exists in this package in order to avoid circular dependency with the "tag" package.
+	TagsInverseTable = "tags"
 )
 
 // Columns holds all SQL columns for test fields.
@@ -85,6 +92,9 @@ var (
 	// ScalesPrimaryKey and ScalesColumn2 are the table columns denoting the
 	// primary key for the scales relation (M2M).
 	ScalesPrimaryKey = []string{"test_id", "scale_id"}
+	// TagsPrimaryKey and TagsColumn2 are the table columns denoting the
+	// primary key for the tags relation (M2M).
+	TagsPrimaryKey = []string{"test_id", "tag_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).

@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tagtranslation"
+
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
@@ -32,10 +34,16 @@ import (
 
 func (r *EntgoRepository) GetTests(ctx context.Context, locale string) ([]*domain.Test, error) {
 	tests, err := r.client.Test.Query().
-		WithTranslations(
-			func(q *ent.TestTranslationQuery) {
-				q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
-			}).
+		WithTranslations(func(q *ent.TestTranslationQuery) {
+			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
+		}).
+		WithTags(func(q *ent.TagQuery) {
+			q.WithTranslations(
+				func(tgtq *ent.TagTranslationQuery) {
+					tgtq.Where(tagtranslation.LocaleEQ(tagtranslation.Locale(locale)))
+				},
+			)
+		}).
 		All(ctx)
 	if err != nil {
 		return nil, err
@@ -53,6 +61,13 @@ func (r *EntgoRepository) GetTestByCode(ctx context.Context, code string, locale
 	tst, err := r.client.Test.Query().
 		Where(test.CodeEQ(code)).
 		WithDisplay().
+		WithTags(func(q *ent.TagQuery) {
+			q.WithTranslations(
+				func(tgtq *ent.TagTranslationQuery) {
+					tgtq.Where(tagtranslation.LocaleEQ(tagtranslation.Locale(locale)))
+				},
+			)
+		}).
 		WithQuestions(
 			func(q *ent.QuestionQuery) {
 				q.WithTranslations(
@@ -100,6 +115,13 @@ func (r *EntgoRepository) GetTakeData(ctx context.Context, tk *domain.Take, loca
 		WithTranslations(func(q *ent.TestTranslationQuery) {
 			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
 		}).
+		WithTags(func(q *ent.TagQuery) {
+			q.WithTranslations(
+				func(tgtq *ent.TagTranslationQuery) {
+					tgtq.Where(tagtranslation.LocaleEQ(tagtranslation.Locale(locale)))
+				},
+			)
+		}).
 		WithTakes(func(q *ent.TakeQuery) {
 			q.Where(take.IDEQ(tk.ID))
 			q.WithUser()
@@ -135,6 +157,7 @@ func (r *EntgoRepository) GetTakeData(ctx context.Context, tk *domain.Take, loca
 // TODO: function too long, refactor please
 func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *domain.CreateTestArgs) error {
 	defer util.DebugExecutionTime(time.Now(), "entgo.CreateOrUpdateTestFromArgs", r.logger)
+
 	tx, err := r.client.Tx(ctx)
 	if err != nil {
 		return fmt.Errorf("starting a transaction: %w", err)
@@ -503,6 +526,15 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		// finished creating a question
 	}
 
+	// get tags for test
+	if len(args.Tags) != 0 {
+		tagIDs, err := r.GetTagIDsByCodes(ctx, args.Tags...)
+		if err != nil {
+			return err
+		}
+		updateTst.ClearTags().AddTagIDs(tagIDs...)
+	}
+
 	// save test updates (adds scales with items and stuff)
 	_, err = updateTst.Save(ctx)
 	if err != nil {
@@ -563,6 +595,13 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		}
 	}
 
+	var tags []*domain.Tag
+	if t.Edges.Tags != nil {
+		for _, tag := range t.Edges.Tags {
+			tags = append(tags, entToDomainTag(tag, locale))
+		}
+	}
+
 	var take *domain.Take
 	if t.Edges.Takes != nil {
 		if len(t.Edges.Takes) == 1 {
@@ -581,6 +620,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Display:          display,
 		Questions:        questions,
 		Scales:           scales,
+		Tags:             tags,
 		Take:             take,
 	}
 }

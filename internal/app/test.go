@@ -175,12 +175,6 @@ func (a *App) loadTestPresets() error {
 			return err
 		}
 
-		// switch test.Generate.Method {
-		// case domain.GenerateQuestionsNone:
-		// case domain.GenerateQuestionsEachItem:
-		// default:
-		// }
-
 		err = a.CreateOrUpdateTestFromArgs(context.Background(), test)
 		if err != nil {
 			a.log.Error("failed to load test", err)

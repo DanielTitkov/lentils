@@ -37,6 +37,8 @@ type hooks struct {
 	Scale                     []ent.Hook
 	ScaleItem                 []ent.Hook
 	ScaleTranslation          []ent.Hook
+	Tag                       []ent.Hook
+	TagTranslation            []ent.Hook
 	Take                      []ent.Hook
 	Test                      []ent.Hook
 	TestDisplay               []ent.Hook

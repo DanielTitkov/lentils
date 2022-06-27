@@ -46,9 +46,11 @@ type TestEdges struct {
 	Scales []*Scale `json:"scales,omitempty"`
 	// Display holds the value of the display edge.
 	Display *TestDisplay `json:"display,omitempty"`
+	// Tags holds the value of the tags edge.
+	Tags []*Tag `json:"tags,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [5]bool
+	loadedTypes [6]bool
 }
 
 // TakesOrErr returns the Takes value or an error if the edge
@@ -99,6 +101,15 @@ func (e TestEdges) DisplayOrErr() (*TestDisplay, error) {
 		return e.Display, nil
 	}
 	return nil, &NotLoadedError{edge: "display"}
+}
+
+// TagsOrErr returns the Tags value or an error if the edge
+// was not loaded in eager-loading.
+func (e TestEdges) TagsOrErr() ([]*Tag, error) {
+	if e.loadedTypes[5] {
+		return e.Tags, nil
+	}
+	return nil, &NotLoadedError{edge: "tags"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -197,6 +208,11 @@ func (t *Test) QueryScales() *ScaleQuery {
 // QueryDisplay queries the "display" edge of the Test entity.
 func (t *Test) QueryDisplay() *TestDisplayQuery {
 	return (&TestClient{config: t.config}).QueryDisplay(t)
+}
+
+// QueryTags queries the "tags" edge of the Test entity.
+func (t *Test) QueryTags() *TagQuery {
+	return (&TestClient{config: t.config}).QueryTags(t)
 }
 
 // Update returns a builder for updating this Test.

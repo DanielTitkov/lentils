@@ -23,6 +23,8 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaleitem"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tagtranslation"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
@@ -66,6 +68,10 @@ type Client struct {
 	ScaleItem *ScaleItemClient
 	// ScaleTranslation is the client for interacting with the ScaleTranslation builders.
 	ScaleTranslation *ScaleTranslationClient
+	// Tag is the client for interacting with the Tag builders.
+	Tag *TagClient
+	// TagTranslation is the client for interacting with the TagTranslation builders.
+	TagTranslation *TagTranslationClient
 	// Take is the client for interacting with the Take builders.
 	Take *TakeClient
 	// Test is the client for interacting with the Test builders.
@@ -104,6 +110,8 @@ func (c *Client) init() {
 	c.Scale = NewScaleClient(c.config)
 	c.ScaleItem = NewScaleItemClient(c.config)
 	c.ScaleTranslation = NewScaleTranslationClient(c.config)
+	c.Tag = NewTagClient(c.config)
+	c.TagTranslation = NewTagTranslationClient(c.config)
 	c.Take = NewTakeClient(c.config)
 	c.Test = NewTestClient(c.config)
 	c.TestDisplay = NewTestDisplayClient(c.config)
@@ -156,6 +164,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Scale:                     NewScaleClient(cfg),
 		ScaleItem:                 NewScaleItemClient(cfg),
 		ScaleTranslation:          NewScaleTranslationClient(cfg),
+		Tag:                       NewTagClient(cfg),
+		TagTranslation:            NewTagTranslationClient(cfg),
 		Take:                      NewTakeClient(cfg),
 		Test:                      NewTestClient(cfg),
 		TestDisplay:               NewTestDisplayClient(cfg),
@@ -194,6 +204,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Scale:                     NewScaleClient(cfg),
 		ScaleItem:                 NewScaleItemClient(cfg),
 		ScaleTranslation:          NewScaleTranslationClient(cfg),
+		Tag:                       NewTagClient(cfg),
+		TagTranslation:            NewTagTranslationClient(cfg),
 		Take:                      NewTakeClient(cfg),
 		Test:                      NewTestClient(cfg),
 		TestDisplay:               NewTestDisplayClient(cfg),
@@ -242,6 +254,8 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Scale.Use(hooks...)
 	c.ScaleItem.Use(hooks...)
 	c.ScaleTranslation.Use(hooks...)
+	c.Tag.Use(hooks...)
+	c.TagTranslation.Use(hooks...)
 	c.Take.Use(hooks...)
 	c.Test.Use(hooks...)
 	c.TestDisplay.Use(hooks...)
@@ -1850,6 +1864,234 @@ func (c *ScaleTranslationClient) Hooks() []Hook {
 	return c.hooks.ScaleTranslation
 }
 
+// TagClient is a client for the Tag schema.
+type TagClient struct {
+	config
+}
+
+// NewTagClient returns a client for the Tag from the given config.
+func NewTagClient(c config) *TagClient {
+	return &TagClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tag.Hooks(f(g(h())))`.
+func (c *TagClient) Use(hooks ...Hook) {
+	c.hooks.Tag = append(c.hooks.Tag, hooks...)
+}
+
+// Create returns a builder for creating a Tag entity.
+func (c *TagClient) Create() *TagCreate {
+	mutation := newTagMutation(c.config, OpCreate)
+	return &TagCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Tag entities.
+func (c *TagClient) CreateBulk(builders ...*TagCreate) *TagCreateBulk {
+	return &TagCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Tag.
+func (c *TagClient) Update() *TagUpdate {
+	mutation := newTagMutation(c.config, OpUpdate)
+	return &TagUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TagClient) UpdateOne(t *Tag) *TagUpdateOne {
+	mutation := newTagMutation(c.config, OpUpdateOne, withTag(t))
+	return &TagUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TagClient) UpdateOneID(id uuid.UUID) *TagUpdateOne {
+	mutation := newTagMutation(c.config, OpUpdateOne, withTagID(id))
+	return &TagUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Tag.
+func (c *TagClient) Delete() *TagDelete {
+	mutation := newTagMutation(c.config, OpDelete)
+	return &TagDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TagClient) DeleteOne(t *Tag) *TagDeleteOne {
+	return c.DeleteOneID(t.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *TagClient) DeleteOneID(id uuid.UUID) *TagDeleteOne {
+	builder := c.Delete().Where(tag.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TagDeleteOne{builder}
+}
+
+// Query returns a query builder for Tag.
+func (c *TagClient) Query() *TagQuery {
+	return &TagQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Tag entity by its id.
+func (c *TagClient) Get(ctx context.Context, id uuid.UUID) (*Tag, error) {
+	return c.Query().Where(tag.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TagClient) GetX(ctx context.Context, id uuid.UUID) *Tag {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryTranslations queries the translations edge of a Tag.
+func (c *TagClient) QueryTranslations(t *Tag) *TagTranslationQuery {
+	query := &TagTranslationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tag.Table, tag.FieldID, id),
+			sqlgraph.To(tagtranslation.Table, tagtranslation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, tag.TranslationsTable, tag.TranslationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTest queries the test edge of a Tag.
+func (c *TagClient) QueryTest(t *Tag) *TestQuery {
+	query := &TestQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tag.Table, tag.FieldID, id),
+			sqlgraph.To(test.Table, test.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, tag.TestTable, tag.TestPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *TagClient) Hooks() []Hook {
+	return c.hooks.Tag
+}
+
+// TagTranslationClient is a client for the TagTranslation schema.
+type TagTranslationClient struct {
+	config
+}
+
+// NewTagTranslationClient returns a client for the TagTranslation from the given config.
+func NewTagTranslationClient(c config) *TagTranslationClient {
+	return &TagTranslationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tagtranslation.Hooks(f(g(h())))`.
+func (c *TagTranslationClient) Use(hooks ...Hook) {
+	c.hooks.TagTranslation = append(c.hooks.TagTranslation, hooks...)
+}
+
+// Create returns a builder for creating a TagTranslation entity.
+func (c *TagTranslationClient) Create() *TagTranslationCreate {
+	mutation := newTagTranslationMutation(c.config, OpCreate)
+	return &TagTranslationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of TagTranslation entities.
+func (c *TagTranslationClient) CreateBulk(builders ...*TagTranslationCreate) *TagTranslationCreateBulk {
+	return &TagTranslationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for TagTranslation.
+func (c *TagTranslationClient) Update() *TagTranslationUpdate {
+	mutation := newTagTranslationMutation(c.config, OpUpdate)
+	return &TagTranslationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TagTranslationClient) UpdateOne(tt *TagTranslation) *TagTranslationUpdateOne {
+	mutation := newTagTranslationMutation(c.config, OpUpdateOne, withTagTranslation(tt))
+	return &TagTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TagTranslationClient) UpdateOneID(id uuid.UUID) *TagTranslationUpdateOne {
+	mutation := newTagTranslationMutation(c.config, OpUpdateOne, withTagTranslationID(id))
+	return &TagTranslationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for TagTranslation.
+func (c *TagTranslationClient) Delete() *TagTranslationDelete {
+	mutation := newTagTranslationMutation(c.config, OpDelete)
+	return &TagTranslationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TagTranslationClient) DeleteOne(tt *TagTranslation) *TagTranslationDeleteOne {
+	return c.DeleteOneID(tt.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *TagTranslationClient) DeleteOneID(id uuid.UUID) *TagTranslationDeleteOne {
+	builder := c.Delete().Where(tagtranslation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TagTranslationDeleteOne{builder}
+}
+
+// Query returns a query builder for TagTranslation.
+func (c *TagTranslationClient) Query() *TagTranslationQuery {
+	return &TagTranslationQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a TagTranslation entity by its id.
+func (c *TagTranslationClient) Get(ctx context.Context, id uuid.UUID) (*TagTranslation, error) {
+	return c.Query().Where(tagtranslation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TagTranslationClient) GetX(ctx context.Context, id uuid.UUID) *TagTranslation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryTag queries the tag edge of a TagTranslation.
+func (c *TagTranslationClient) QueryTag(tt *TagTranslation) *TagQuery {
+	query := &TagQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := tt.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tagtranslation.Table, tagtranslation.FieldID, id),
+			sqlgraph.To(tag.Table, tag.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tagtranslation.TagTable, tagtranslation.TagColumn),
+		)
+		fromV = sqlgraph.Neighbors(tt.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *TagTranslationClient) Hooks() []Hook {
+	return c.hooks.TagTranslation
+}
+
 // TakeClient is a client for the Take schema.
 type TakeClient struct {
 	config
@@ -2162,6 +2404,22 @@ func (c *TestClient) QueryDisplay(t *Test) *TestDisplayQuery {
 			sqlgraph.From(test.Table, test.FieldID, id),
 			sqlgraph.To(testdisplay.Table, testdisplay.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, test.DisplayTable, test.DisplayColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTags queries the tags edge of a Test.
+func (c *TestClient) QueryTags(t *Test) *TagQuery {
+	query := &TagQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, id),
+			sqlgraph.To(tag.Table, tag.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, test.TagsTable, test.TagsPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil

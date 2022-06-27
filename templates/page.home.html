@@ -22,5 +22,6 @@
 <div class="box notification">
   <p class="title is-3"><a href="/test/{{ .Code }}">{{ .Title }}</a></p>
   <p class="subtitle is-5">{{ .Description }}</p>
+  {{ template "test-tags" . }}
 </div>
 {{ end }}

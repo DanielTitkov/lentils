@@ -376,3 +376,11 @@
   <a id="go-back-link" href="/"><i class="bi-arrow-left"></i> Назад</a>
 </h3>
 {{ end }}
+
+{{ define "test-tags" }}
+<div class="block">
+  {{ range .Tags }}
+  <button class="button is-info is-rounded is-small mr-2">{{ .Content }}</button>
+  {{ end }}
+</div>
+{{ end }}

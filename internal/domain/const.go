@@ -33,6 +33,10 @@ const (
 	// take
 	TakeMinTime = 8 * time.Second
 	TakeMaxTime = 2 * time.Hour
+	// tags
+	TagTypeTheme   = "theme"
+	TagTypeLen     = "len"
+	TagTypeFeature = "feature"
 )
 
 func Locales() []string {

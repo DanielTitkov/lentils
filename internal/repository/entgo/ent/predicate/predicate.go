@@ -45,6 +45,12 @@ type ScaleItem func(*sql.Selector)
 // ScaleTranslation is the predicate function for scaletranslation builders.
 type ScaleTranslation func(*sql.Selector)
 
+// Tag is the predicate function for tag builders.
+type Tag func(*sql.Selector)
+
+// TagTranslation is the predicate function for tagtranslation builders.
+type TagTranslation func(*sql.Selector)
+
 // Take is the predicate function for take builders.
 type Take func(*sql.Selector)
 

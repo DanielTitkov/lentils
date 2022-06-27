@@ -12,6 +12,7 @@ type (
 		AvailableLocales []string `yaml:"availableLocales"`
 		ForceUpdate      bool     `yaml:"forceUpdate"`
 		Generate         GenerateQuestionsArgs
+		Tags             []string
 		Translations     []TestTranslation
 		Questions        []CreateQuestionArgs
 		Scales           []CreateScaleArgs
@@ -26,10 +27,6 @@ type (
 	GenerateQuestionsArgs struct {
 		Method   string
 		Template CreateQuestionArgs
-		// TODO:
-		// for each user
-		// force generate
-		// randomize items
 	}
 
 	TestTranslation struct {
@@ -86,6 +83,17 @@ type (
 	}
 
 	ItemTranslation struct {
+		Locale  string
+		Content string
+	}
+
+	CreateTagArgs struct {
+		Code         string
+		Type         string
+		Translations []TagTranslation
+	}
+
+	TagTranslation struct {
 		Locale  string
 		Content string
 	}

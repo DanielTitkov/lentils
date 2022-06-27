@@ -14,6 +14,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
@@ -145,6 +146,21 @@ func (tu *TestUpdate) SetDisplay(t *TestDisplay) *TestUpdate {
 	return tu.SetDisplayID(t.ID)
 }
 
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tu *TestUpdate) AddTagIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.AddTagIDs(ids...)
+	return tu
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tu *TestUpdate) AddTags(t ...*Tag) *TestUpdate {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.AddTagIDs(ids...)
+}
+
 // Mutation returns the TestMutation object of the builder.
 func (tu *TestUpdate) Mutation() *TestMutation {
 	return tu.mutation
@@ -238,6 +254,27 @@ func (tu *TestUpdate) RemoveScales(s ...*Scale) *TestUpdate {
 func (tu *TestUpdate) ClearDisplay() *TestUpdate {
 	tu.mutation.ClearDisplay()
 	return tu
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (tu *TestUpdate) ClearTags() *TestUpdate {
+	tu.mutation.ClearTags()
+	return tu
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (tu *TestUpdate) RemoveTagIDs(ids ...uuid.UUID) *TestUpdate {
+	tu.mutation.RemoveTagIDs(ids...)
+	return tu
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (tu *TestUpdate) RemoveTags(t ...*Tag) *TestUpdate {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.RemoveTagIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -599,6 +636,60 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if tu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.TagsTable,
+			Columns: test.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: tag.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedTagsIDs(); len(nodes) > 0 && !tu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.TagsTable,
+			Columns: test.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: tag.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.TagsTable,
+			Columns: test.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: tag.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{test.Label}
@@ -729,6 +820,21 @@ func (tuo *TestUpdateOne) SetDisplay(t *TestDisplay) *TestUpdateOne {
 	return tuo.SetDisplayID(t.ID)
 }
 
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tuo *TestUpdateOne) AddTagIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.AddTagIDs(ids...)
+	return tuo
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tuo *TestUpdateOne) AddTags(t ...*Tag) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.AddTagIDs(ids...)
+}
+
 // Mutation returns the TestMutation object of the builder.
 func (tuo *TestUpdateOne) Mutation() *TestMutation {
 	return tuo.mutation
@@ -822,6 +928,27 @@ func (tuo *TestUpdateOne) RemoveScales(s ...*Scale) *TestUpdateOne {
 func (tuo *TestUpdateOne) ClearDisplay() *TestUpdateOne {
 	tuo.mutation.ClearDisplay()
 	return tuo
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (tuo *TestUpdateOne) ClearTags() *TestUpdateOne {
+	tuo.mutation.ClearTags()
+	return tuo
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (tuo *TestUpdateOne) RemoveTagIDs(ids ...uuid.UUID) *TestUpdateOne {
+	tuo.mutation.RemoveTagIDs(ids...)
+	return tuo
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (tuo *TestUpdateOne) RemoveTags(t ...*Tag) *TestUpdateOne {
+	ids := make([]uuid.UUID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.RemoveTagIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -1205,6 +1332,60 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeUUID,
 					Column: testdisplay.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.TagsTable,
+			Columns: test.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: tag.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedTagsIDs(); len(nodes) > 0 && !tuo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.TagsTable,
+			Columns: test.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: tag.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   test.TagsTable,
+			Columns: test.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeUUID,
+					Column: tag.FieldID,
 				},
 			},
 		}

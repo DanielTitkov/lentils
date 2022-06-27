@@ -14,6 +14,7 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
@@ -36,6 +37,7 @@ type TestQuery struct {
 	withTranslations *TestTranslationQuery
 	withScales       *ScaleQuery
 	withDisplay      *TestDisplayQuery
+	withTags         *TagQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -175,6 +177,28 @@ func (tq *TestQuery) QueryDisplay() *TestDisplayQuery {
 			sqlgraph.From(test.Table, test.FieldID, selector),
 			sqlgraph.To(testdisplay.Table, testdisplay.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, test.DisplayTable, test.DisplayColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTags chains the current query on the "tags" edge.
+func (tq *TestQuery) QueryTags() *TagQuery {
+	query := &TagQuery{config: tq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(test.Table, test.FieldID, selector),
+			sqlgraph.To(tag.Table, tag.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, test.TagsTable, test.TagsPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -368,6 +392,7 @@ func (tq *TestQuery) Clone() *TestQuery {
 		withTranslations: tq.withTranslations.Clone(),
 		withScales:       tq.withScales.Clone(),
 		withDisplay:      tq.withDisplay.Clone(),
+		withTags:         tq.withTags.Clone(),
 		// clone intermediate query.
 		sql:    tq.sql.Clone(),
 		path:   tq.path,
@@ -427,6 +452,17 @@ func (tq *TestQuery) WithDisplay(opts ...func(*TestDisplayQuery)) *TestQuery {
 		opt(query)
 	}
 	tq.withDisplay = query
+	return tq
+}
+
+// WithTags tells the query-builder to eager-load the nodes that are connected to
+// the "tags" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TestQuery) WithTags(opts ...func(*TagQuery)) *TestQuery {
+	query := &TagQuery{config: tq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withTags = query
 	return tq
 }
 
@@ -500,12 +536,13 @@ func (tq *TestQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Test, e
 	var (
 		nodes       = []*Test{}
 		_spec       = tq.querySpec()
-		loadedTypes = [5]bool{
+		loadedTypes = [6]bool{
 			tq.withTakes != nil,
 			tq.withQuestions != nil,
 			tq.withTranslations != nil,
 			tq.withScales != nil,
 			tq.withDisplay != nil,
+			tq.withTags != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -716,6 +753,59 @@ func (tq *TestQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Test, e
 				return nil, fmt.Errorf(`unexpected foreign-key "test_display" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Display = n
+		}
+	}
+
+	if query := tq.withTags; query != nil {
+		edgeids := make([]driver.Value, len(nodes))
+		byid := make(map[uuid.UUID]*Test)
+		nids := make(map[uuid.UUID]map[*Test]struct{})
+		for i, node := range nodes {
+			edgeids[i] = node.ID
+			byid[node.ID] = node
+			node.Edges.Tags = []*Tag{}
+		}
+		query.Where(func(s *sql.Selector) {
+			joinT := sql.Table(test.TagsTable)
+			s.Join(joinT).On(s.C(tag.FieldID), joinT.C(test.TagsPrimaryKey[1]))
+			s.Where(sql.InValues(joinT.C(test.TagsPrimaryKey[0]), edgeids...))
+			columns := s.SelectedColumns()
+			s.Select(joinT.C(test.TagsPrimaryKey[0]))
+			s.AppendSelect(columns...)
+			s.SetDistinct(false)
+		})
+		neighbors, err := query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]interface{}, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]interface{}{new(uuid.UUID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []interface{}) error {
+				outValue := *values[0].(*uuid.UUID)
+				inValue := *values[1].(*uuid.UUID)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*Test]struct{}{byid[outValue]: struct{}{}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byid[outValue]] = struct{}{}
+				return nil
+			}
+		})
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected "tags" node returned %v`, n.ID)
+			}
+			for kn := range nodes {
+				kn.Edges.Tags = append(kn.Edges.Tags, n)
+			}
 		}
 	}
 
