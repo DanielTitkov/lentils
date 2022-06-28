@@ -37,6 +37,11 @@ const (
 	TagTypeTheme   = "theme"
 	TagTypeLen     = "len"
 	TagTypeFeature = "feature"
+	TagCodeShort   = "short"
+	TagCodeMedium  = "medium"
+	TagCodeLong    = "long"
+	TagLenShort    = 10
+	TagLenLong     = 50
 )
 
 func Locales() []string {

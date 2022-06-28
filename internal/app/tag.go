@@ -13,6 +13,10 @@ func (a *App) CreateOrUpdateTagFromArgs(ctx context.Context, args domain.CreateT
 	return a.repo.CreateOrUpdateTagFromArgs(ctx, &args)
 }
 
+func (a *App) GetTags(ctx context.Context, locale string) ([]*domain.Tag, error) {
+	return a.repo.GetTagsByCodes(ctx, locale)
+}
+
 func (a *App) loadTagPresets() error {
 	a.log.Info("loading tag presets", fmt.Sprint(a.Cfg.Data.Presets.TestPresetsPaths))
 	for _, path := range a.Cfg.Data.Presets.TagPresetsPaths {

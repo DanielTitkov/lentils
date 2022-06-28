@@ -87,6 +87,7 @@ func (h *Handler) NewCommon(s live.Socket, currentView string) *CommonInstance {
 		ShowLogoutModal: false,
 		CurrentView:     currentView,
 		Version:         h.app.Cfg.App.Version,
+		Locale:          domain.DefaultLocale(),
 	}
 }
 

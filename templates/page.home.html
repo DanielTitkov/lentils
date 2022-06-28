@@ -6,6 +6,46 @@
     <h3 class="subtitle is-3">Психологические тесты и всё такое</h3>
   </div>
   <div class="section">
+    <div class="columns">
+      <div class="column is-4">
+        <p class="title is-4">Themes</p>
+        {{ range .Tags }}
+        {{ if eq .Type "theme" }}
+        {{ if CodeInTags .Code $.ActiveTags }}
+        {{ template "filter-tag-inactive" . }}
+        {{ else }}
+        {{ template "filter-tag-active" . }}
+        {{ end }}
+        {{ end }}
+        {{ end }}
+      </div>
+      <div class="column is-4">
+        <p class="title is-4">Size</p>
+        {{ range .Tags }}
+        {{ if eq .Type "len" }}
+        {{ if CodeInTags .Code $.ActiveTags }}
+        {{ template "filter-tag-inactive" . }}
+        {{ else }}
+        {{ template "filter-tag-active" . }}
+        {{ end }}
+        {{ end }}
+        {{ end }}
+      </div>
+      <div class="column is-4">
+        <p class="title is-4">Features</p>
+        {{ range .Tags }}
+        {{ if eq .Type "feature" }}
+        {{ if CodeInTags .Code $.ActiveTags }}
+        {{ template "filter-tag-inactive" . }}
+        {{ else }}
+        {{ template "filter-tag-active" . }}
+        {{ end }}
+        {{ end }}
+        {{ end }}
+      </div>
+    </div>
+  </div>
+  <div class="section">
     {{ range $i, $test := .Tests }}
     {{ template "test-card" $test }}
     {{ end }}
@@ -24,4 +64,18 @@
   <p class="subtitle is-5">{{ .Description }}</p>
   {{ template "test-tags" . }}
 </div>
+{{ end }}
+
+{{ define "filter-tag-active" }}
+<button class='button is-outlined {{ template "tag-button-style" . }} is-rounded is-small mr-2 mb-1'
+  live-click="toggle-tag" live-value-tag="{{ .Code }}">
+  {{ .Content }}
+</button>
+{{ end }}
+
+{{ define "filter-tag-inactive" }}
+<button class='button {{ template "tag-button-style" . }} is-rounded is-small mr-2 mb-1'
+  live-click="toggle-tag" live-value-tag="{{ .Code }}">
+  {{ .Content }}
+</button>
 {{ end }}

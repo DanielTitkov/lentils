@@ -38,7 +38,7 @@ type (
 
 		// test
 		CreateOrUpdateTestFromArgs(context.Context, *domain.CreateTestArgs) error
-		GetTests(ctx context.Context, locale string) ([]*domain.Test, error)
+		GetTests(ctx context.Context, locale string, tagIDs []uuid.UUID) ([]*domain.Test, error)
 		GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error)
 		GetTakeData(ctx context.Context, take *domain.Take, locale string) (*domain.Test, error)
 

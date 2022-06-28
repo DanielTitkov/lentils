@@ -32,7 +32,7 @@ const (
 	// params values
 )
 
-var funcMap = template.FuncMap{
+var testFuncMap = template.FuncMap{
 	"N":     iter.N,
 	"Plus1": func(i int) int { return i + 1 },
 	"Sum": func(data ...float64) float64 {
@@ -111,7 +111,7 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 }
 
 func (h *Handler) Test() live.Handler {
-	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(testFuncMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.test.html",
 	))

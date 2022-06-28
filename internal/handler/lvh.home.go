@@ -3,18 +3,40 @@ package handler
 import (
 	"context"
 	"html/template"
-	"log"
 
 	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/bradfitz/iter"
 
 	"github.com/jfyne/live"
 )
 
+const (
+	// events
+	eventHomeToggleTag = "toggle-tag"
+	// params
+	paramHomeTag = "tag"
+)
+
+var homeFuncMap = template.FuncMap{
+	"N":          iter.N,
+	"LocaleIcon": domain.LocaleIcon,
+	"CodeInTags": func(code string, tags []*domain.Tag) bool {
+		for _, t := range tags {
+			if t.Code == code {
+				return true
+			}
+		}
+		return false
+	},
+}
+
 type (
 	HomeInstance struct {
 		*CommonInstance
-		Tests   []*domain.Test
-		Summary *domain.SystemSymmary
+		Tests      []*domain.Test
+		Summary    *domain.SystemSymmary
+		Tags       []*domain.Tag
+		ActiveTags []*domain.Tag
 	}
 )
 
@@ -34,15 +56,48 @@ func (ins *HomeInstance) withError(err error) *HomeInstance {
 	return ins
 }
 
+func (ins *HomeInstance) isTagActive(code string) bool {
+	for _, t := range ins.ActiveTags {
+		if t.Code == code {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (ins *HomeInstance) tagToActive(code string) {
+	for _, t := range ins.Tags {
+		if t.Code == code {
+			ins.ActiveTags = append(ins.ActiveTags, t)
+		}
+	}
+}
+
+func (ins *HomeInstance) tagToInactive(code string) {
+	for i, t := range ins.ActiveTags {
+		if t.Code == code {
+			ins.ActiveTags = append(ins.ActiveTags[:i], ins.ActiveTags[i+1:]...)
+		}
+	}
+}
+
+func (ins *HomeInstance) toggleTag(code string) error {
+	if ins.isTagActive(code) {
+		ins.tagToInactive(code)
+	} else {
+		ins.tagToActive(code)
+	}
+
+	return nil
+}
+
 func (h *Handler) Home() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(homeFuncMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.home.html",
 		h.t+"part.system_summary.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START
@@ -84,22 +139,42 @@ func (h *Handler) Home() live.Handler {
 	// COMMON BLOCK END
 
 	// Set the mount function for this handler.
-	lvh.HandleMount(func(ctx context.Context, s live.Socket) (interface{}, error) {
+	lvh.HandleMount(func(ctx context.Context, s live.Socket) (i interface{}, err error) {
 		instance := h.NewHomeInstance(s)
 		instance.fromContext(ctx)
 
-		// tests
-		tests, err := h.app.GetTestsForLocale(ctx, "en") // FIXME
+		// tags
+		instance.Tags, err = h.app.GetTags(ctx, instance.Locale)
 		if err != nil {
-			instance.Error = err
+			return instance.withError(err), nil
 		}
-		instance.Tests = tests
+
+		// tests
+		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale, instance.ActiveTags)
+		if err != nil {
+			return instance.withError(err), nil
+		}
 
 		// summary
-		summary, err := h.app.GetSystemSummary(ctx)
-		instance.Summary = summary
+		instance.Summary, err = h.app.GetSystemSummary(ctx)
+		if err != nil {
+			return instance.withError(err), nil
+		}
 
 		return instance.withError(err), nil
+	})
+
+	lvh.HandleEvent(eventHomeToggleTag, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
+		instance := h.NewHomeInstance(s)
+		tagCode := p.String(paramHomeTag)
+		instance.toggleTag(tagCode)
+		// update tests
+		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale, instance.ActiveTags)
+		if err != nil {
+			return instance.withError(err), nil
+		}
+
+		return instance, nil
 	})
 
 	return lvh

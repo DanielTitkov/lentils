@@ -48,11 +48,28 @@ func (a *App) EndTest(ctx context.Context, test *domain.Test) (*domain.Test, err
 }
 
 func (a *App) CreateOrUpdateTestFromArgs(ctx context.Context, args domain.CreateTestArgs) error {
+	if len(args.Questions) <= domain.TagLenShort {
+		args.Tags = append(args.Tags, domain.TagCodeShort)
+	}
+
+	if len(args.Questions) > domain.TagLenLong {
+		args.Tags = append(args.Tags, domain.TagCodeLong)
+	}
+
+	if len(args.Questions) > domain.TagLenShort && len(args.Questions) <= domain.TagLenLong {
+		args.Tags = append(args.Tags, domain.TagCodeMedium)
+	}
+
 	return a.repo.CreateOrUpdateTestFromArgs(ctx, &args)
 }
 
-func (a *App) GetTestsForLocale(ctx context.Context, locale string) ([]*domain.Test, error) {
-	tests, err := a.repo.GetTests(ctx, locale)
+func (a *App) GetTestsForLocale(ctx context.Context, locale string, tags []*domain.Tag) ([]*domain.Test, error) {
+	var tagIDs []uuid.UUID
+	for _, tag := range tags {
+		tagIDs = append(tagIDs, tag.ID)
+	}
+
+	tests, err := a.repo.GetTests(ctx, locale, tagIDs)
 	if err != nil {
 		a.log.Error("get tests for locale failed", err)
 		return nil, err

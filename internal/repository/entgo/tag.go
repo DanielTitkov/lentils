@@ -12,7 +12,10 @@ import (
 )
 
 func (r *EntgoRepository) GetTagsByCodes(ctx context.Context, locale string, codes ...string) ([]*domain.Tag, error) {
-	query := r.client.Tag.Query().WithTranslations()
+	query := r.client.Tag.Query().
+		WithTranslations(func(q *ent.TagTranslationQuery) {
+			q.Where(tagtranslation.LocaleEQ(tagtranslation.Locale(locale)))
+		})
 	if len(codes) != 0 {
 		query.Where(tag.CodeIn(codes...))
 	}
@@ -107,6 +110,7 @@ func entToDomainTag(t *ent.Tag, locale string) *domain.Tag {
 	return &domain.Tag{
 		ID:      t.ID,
 		Code:    t.Code,
+		Type:    t.Type.String(),
 		Content: content,
 	}
 }

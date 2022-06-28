@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
+
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tagtranslation"
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretation"
@@ -32,8 +34,8 @@ import (
 	"github.com/DanielTitkov/lentils/internal/domain"
 )
 
-func (r *EntgoRepository) GetTests(ctx context.Context, locale string) ([]*domain.Test, error) {
-	tests, err := r.client.Test.Query().
+func (r *EntgoRepository) GetTests(ctx context.Context, locale string, tagIDs []uuid.UUID) ([]*domain.Test, error) {
+	query := r.client.Test.Query().
 		WithTranslations(func(q *ent.TestTranslationQuery) {
 			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
 		}).
@@ -44,7 +46,13 @@ func (r *EntgoRepository) GetTests(ctx context.Context, locale string) ([]*domai
 				},
 			)
 		}).
-		All(ctx)
+		Where(test.PublishedEQ(true))
+
+	if len(tagIDs) != 0 {
+		query.Where(test.HasTagsWith(tag.IDIn(tagIDs...)))
+	}
+
+	tests, err := query.All(ctx)
 	if err != nil {
 		return nil, err
 	}
