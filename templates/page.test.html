@@ -17,7 +17,12 @@
     {{end}}
   </div>
   <div class="section">
-    <p>{{ .Test.Instruction }}</p>
+    <div class="notification box">
+      <p class="title is-3">Instructions</p>
+      <div class="content is-medium">
+        {{ .Test.Instruction }}
+      </div>
+    </div>
   </div>
   <div class="section">
     <p class="block is-size-5 has-text-centered">When you are happy please continue to the next step.</p>
@@ -89,7 +94,7 @@
         <p class="title is-2">Score: {{printf "%.1f" $scale.Result.Score }}</p>
       </div>
       <hr>
-      <div class="content">
+      <div class="content is-large">
         {{ if $scale.Result.Interpretation }}
         {{ $scale.Result.Interpretation.Content }}
         {{ else }}

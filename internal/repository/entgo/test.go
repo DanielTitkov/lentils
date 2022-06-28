@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"html/template"
 	"time"
 
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
@@ -624,7 +625,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		AvailableLocales: t.AvailableLocales,
 		Title:            title,
 		Description:      description,
-		Instruction:      instruction,
+		Instruction:      template.HTML(instruction),
 		Display:          display,
 		Questions:        questions,
 		Scales:           scales,

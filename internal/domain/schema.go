@@ -11,10 +11,10 @@ import (
 type (
 	Test struct {
 		ID                uuid.UUID
-		Code              string // unique code for url
-		Title             string // translatable
-		Description       string // translatable
-		Instruction       string // translatable
+		Code              string        // unique code for url
+		Title             string        // translatable
+		Description       string        // translatable
+		Instruction       template.HTML // translatable
 		Locale            string
 		AvailableLocales  []string
 		GenerateQuestions string

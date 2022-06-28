@@ -1,21 +1,29 @@
-code: fipi
+code: tipi
 locales: ["en", "ru"]
-tags: ["psychology", "short", "testing"]
+tags: ["psychology", "short"]
 en:  # title, decsriptions, instruction
-  - "FIPI"
-  - "Five-Item Personality Inventory (for testing only)" 
-  - "Answer all the questions (there's only 5 of them!)"
+  - TIPI
+  - Ten-Item Personality Inventory by Gosling, Rentfrow and Swan (2003)
+  - <p>You'll see a number of personality traits that may or may not apply to you. 
+    Please select a number next to each statement to indicate the extent to which you agree or disagree with that statement.</p>
+    <p>You should rate the extent to which the pair of traits applies to you, 
+    even if one characteristic applies more strongly than the other.</p>
+    <p>1 means the pair of traits doesn't apply to you at all, 7 means it fully applies.</p>
 ru: # title, decsriptions, instruction
-  - "ПИПИ"
-  - "Краткий тест личности (для тестов)"
-  - "Ответьте на все вопросы (их всего 5!)"
+  - ТИПИ
+  - Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
+  - <p>Вы увидите разные черты личности, которые могу подходить или не подходить вам.
+    Пожалуйста укажите, насколько вы согласны с каждым из утверждений.</p>
+    <p>Выберите, насколько каждая пара черт подходит вам, 
+    даже если одна черта подходит больше, чем другая.</p>
+    <p>1 означает, что пара черт вам совершенно не подходит, 7 означает что подходит полностью.</p>
 type: sten
-steps: 9 # item steps
+steps: 7 # item steps
 randomize: false
 intervals: 3 # interpretation intervals
 question:
-  en: "How this is about you?" # content
-  ru: "Оцените, насколько вам это подходит?" #content
+  en: "I see myself as..." # content
+  ru: "На мой взгляд я..." #content
   page: 1
 scales: 
   extraversion: 
@@ -84,3 +92,18 @@ items:
   - en: "Open to new experiences, complex." # content
     ru: "Открытый опыту, многоуровневый." # content
     scale: "openness"
+  - en: "Reserved, quiet." # content
+    ru: "Сдержанный, тихий." # content
+    scale: "-extraversion"
+  - en: "Sympathetic, warm." # content
+    ru: "Сочувствующий, сердечный." # content
+    scale: "agreeableness" # reverse
+  - en: "Disorganized, careless." # content
+    ru: "Неорганизованный, беззаботный." # content
+    scale: "-conscientiousness"
+  - en: "Calm, emotionally stable." # content
+    ru: "Спокойный, эмоционально стабильный." # content
+    scale: "stability"
+  - en: "Conventional, uncreative." # content
+    ru: "Консервативный, далекий от творчества." # content
+    scale: "-openness"

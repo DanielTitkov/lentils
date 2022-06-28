@@ -1,157 +1,391 @@
+# generated, try not to edit
+# by: CTT-v1
+# at: 2022-06-29 01:07:21
+# template: ../data/templates/ctt-v1/tipi.yaml
 code: tipi
 published: true
-availableLocales: ["en", "ru"]
-forceUpdate: false
+availableLocales:
+  - en
+  - ru
+tags:
+  - psychology
+  - short
+forceUpdate: true
 translations:
   - locale: en
     title: TIPI
     description: Ten-Item Personality Inventory by Gosling, Rentfrow and Swan (2003)
-    instruction: Answer all the questions (there's only 10 of them!)
+    instruction: <p>You'll see a number of personality traits that may or may not
+      apply to you. Please select a number next to each statement to indicate the
+      extent to which you agree or disagree with that statement.</p> <p>You should
+      rate the extent to which the pair of traits applies to you, even if one characteristic
+      applies more strongly than the other.</p> <p>1 means the pair of traits doesn't
+      apply to you at all, 7 means it fully applies.</p>
   - locale: ru
     title: ТИПИ
     description: Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
-    instruction: Ответьте на все вопросы (их всего 10!)
-scales: 
-  - code: tipi-scale-1-extraversion
+    instruction: <p>Вы увидите разные черты личности, которые могу подходить или не
+      подходить вам. Пожалуйста укажите, насколько вы согласны с каждым из утверждений.</p>
+      <p>Выберите, насколько каждая пара черт подходит вам, даже если одна черта подходит
+      больше, чем другая.</p> <p>1 означает, что пара черт вам совершенно не подходит,
+      7 означает что подходит полностью.</p>
+scales:
+  - code: tipi-01-extraversion
     type: sten
     translations:
       - locale: en
-        title: TIPI-Extraversion
+        title: Extraversion
         description: Extraversion scale
       - locale: ru
-        title: ТИПИ-Экстраверсия
+        title: Экстраверсия
         description: Шкала экстраверсии
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: tipi-item-ex-1
+      - code: tipi-01-extraversion-001
         steps: 7
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Extraverted, enthusiastic.
           - locale: ru
             content: Экстраверт, полный энтузиазма.
-      - code: tipi-item-ex-2
+      - code: tipi-01-extraversion-002
         steps: 7
         reverse: true
-        translations: 
+        translations:
           - locale: en
             content: Reserved, quiet.
           - locale: ru
             content: Сдержанный, тихий.
-  - code: tipi-scale-2-agreeableness
+  - code: tipi-02-agreeableness
     type: sten
     translations:
       - locale: en
-        title: TIPI-Agreeableness
+        title: Agreeableness
         description: Agreeableness scale
       - locale: ru
-        title: ТИПИ-Доброжелательность
+        title: Доброжелательность
         description: Шкала доброжелательности
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: tipi-item-agr-1
+      - code: tipi-02-agreeableness-001
         steps: 7
         reverse: true
-        translations: 
+        translations:
           - locale: en
             content: Critical, quarrelsome.
           - locale: ru
             content: Критичный, придирчивый.
-      - code: tipi-item-arg-2
+      - code: tipi-02-agreeableness-002
         steps: 7
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Sympathetic, warm.
           - locale: ru
             content: Сочувствующий, сердечный.
-  - code: tipi-scale-3-conscientiousness
+  - code: tipi-03-conscientiousness
     type: sten
     translations:
       - locale: en
-        title: TIPI-Conscientiousness
+        title: Conscientiousness
         description: Conscientiousness scale
       - locale: ru
-        title: ТИПИ-Сознательность
+        title: Сознательность
         description: Шкала сознательнольсти
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: tipi-item-cons-1
+      - code: tipi-03-conscientiousness-001
         steps: 7
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Dependable, self-disciplined.
           - locale: ru
             content: Надежный, дисциплинированный.
-      - code: tipi-item-cons-2
+      - code: tipi-03-conscientiousness-002
         steps: 7
         reverse: true
-        translations: 
+        translations:
           - locale: en
             content: Disorganized, careless.
           - locale: ru
             content: Неорганизованный, беззаботный.
-  - code: tipi-scale-4-stability
+  - code: tipi-04-stability
     type: sten
     translations:
       - locale: en
-        title: TIPI-Emotional Stability
-        description: Emotional Stability scale
+        title: Emotional Stability
+        description: Emotional stability scale
       - locale: ru
-        title: ТИПИ-Эмоциональная стабильность
+        title: Эмоциональная стабильность
         description: Шкала эмоциональной стабильности
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: tipi-item-stab-1
+      - code: tipi-04-stability-001
         steps: 7
         reverse: true
-        translations: 
+        translations:
           - locale: en
             content: Anxious, easily upset.
           - locale: ru
             content: Тревожный, легко расстраиваемый.
-      - code: tipi-item-stab-2
+      - code: tipi-04-stability-002
         steps: 7
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Calm, emotionally stable.
           - locale: ru
             content: Спокойный, эмоционально стабильный.
-  - code: tipi-scale-5-openness
+  - code: tipi-05-openness
     type: sten
     translations:
       - locale: en
-        title: TIPI-Openness to Experience
-        description: Openness to Experience scale
+        title: Openness to experience
+        description: Openness to experience scale
       - locale: ru
-        title: ТИПИ-Открытость новому опыту
+        title: Открытость новому опыту
         description: Шкала открытости новому опыту
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: en1
+          - locale: ru
+            content: ru1
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: en2
+          - locale: ru
+            content: ru2
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: en3
+          - locale: ru
+            content: ru3
     items:
-      - code: tipi-item-op-1
+      - code: tipi-05-openness-001
         steps: 7
         reverse: false
-        translations: 
+        translations:
           - locale: en
             content: Open to new experiences, complex.
           - locale: ru
             content: Открытый опыту, многоуровневый.
-      - code: tipi-item-op-2
+      - code: tipi-05-openness-002
         steps: 7
         reverse: true
-        translations: 
+        translations:
           - locale: en
             content: Conventional, uncreative.
           - locale: ru
             content: Консервативный, далекий от творчества.
-generate: 
-  method: each-item
-  template:
+questions:
+  - code: tipi-001
+    order: 10
     type: simple
-    code: tipi-question
-    translations: 
+    items:
+      - code: tipi-01-extraversion-001
+    translations:
       - locale: en
-        content: "How this is about you?"
+        content: I see myself as...
       - locale: ru
-        content: "Оцените, насколько вам это подходит?"
+        content: На мой взгляд я...
+  - code: tipi-002
+    order: 20
+    type: simple
+    items:
+      - code: tipi-02-agreeableness-001
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-003
+    order: 30
+    type: simple
+    items:
+      - code: tipi-03-conscientiousness-001
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-004
+    order: 40
+    type: simple
+    items:
+      - code: tipi-04-stability-001
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-005
+    order: 50
+    type: simple
+    items:
+      - code: tipi-05-openness-001
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-006
+    order: 60
+    type: simple
+    items:
+      - code: tipi-01-extraversion-002
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-007
+    order: 70
+    type: simple
+    items:
+      - code: tipi-02-agreeableness-002
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-008
+    order: 80
+    type: simple
+    items:
+      - code: tipi-03-conscientiousness-002
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-009
+    order: 90
+    type: simple
+    items:
+      - code: tipi-04-stability-002
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
+  - code: tipi-010
+    order: 100
+    type: simple
+    items:
+      - code: tipi-05-openness-002
+    translations:
+      - locale: en
+        content: I see myself as...
+      - locale: ru
+        content: На мой взгляд я...
 display:
   questionsPerPage: 1
   randomizeOrder: false
