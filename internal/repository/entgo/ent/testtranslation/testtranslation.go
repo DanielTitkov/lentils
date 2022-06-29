@@ -19,6 +19,8 @@ const (
 	FieldTitle = "title"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
+	// FieldDetails holds the string denoting the details field in the database.
+	FieldDetails = "details"
 	// FieldInstruction holds the string denoting the instruction field in the database.
 	FieldInstruction = "instruction"
 	// EdgeTest holds the string denoting the test edge name in mutations.
@@ -40,6 +42,7 @@ var Columns = []string{
 	FieldLocale,
 	FieldTitle,
 	FieldDescription,
+	FieldDetails,
 	FieldInstruction,
 }
 

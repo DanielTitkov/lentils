@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-06-29 01:07:21
+# at: 2022-06-30 00:08:38
 # template: ../data/templates/ctt-v1/tipi.yaml
 code: tipi
 published: true
@@ -21,6 +21,7 @@ translations:
       rate the extent to which the pair of traits applies to you, even if one characteristic
       applies more strongly than the other.</p> <p>1 means the pair of traits doesn't
       apply to you at all, 7 means it fully applies.</p>
+    details: Test details
   - locale: ru
     title: ТИПИ
     description: Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
@@ -29,6 +30,7 @@ translations:
       <p>Выберите, насколько каждая пара черт подходит вам, даже если одна черта подходит
       больше, чем другая.</p> <p>1 означает, что пара черт вам совершенно не подходит,
       7 означает что подходит полностью.</p>
+    details: Информация о тесте
 scales:
   - code: tipi-01-extraversion
     type: sten

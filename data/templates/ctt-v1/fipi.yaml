@@ -1,14 +1,16 @@
 code: fipi
 locales: ["en", "ru"]
 tags: ["psychology", "short", "testing"]
-en:  # title, decsriptions, instruction
-  - "FIPI"
-  - "Five-Item Personality Inventory (for testing only)" 
-  - "Answer all the questions (there's only 5 of them!)"
-ru: # title, decsriptions, instruction
-  - "ПИПИ"
-  - "Краткий тест личности (для тестов)"
-  - "Ответьте на все вопросы (их всего 5!)"
+en: # title, decsriptions, instruction, details
+  - FIPI
+  - Five-Item Personality Inventory (for testing only)
+  - Answer all the questions (there's only 5 of them!)
+  - This is a fake test created by Lentils for debug purspose only
+ru: # title, decsriptions, instruction, details
+  - ПИПИ
+  - Краткий тест личности (для тестов)
+  - Ответьте на все вопросы (их всего 5!)
+  - Это пробный тест, сознанный Lentils для отладки
 type: sten
 steps: 9 # item steps
 randomize: false

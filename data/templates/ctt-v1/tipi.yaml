@@ -1,7 +1,7 @@
 code: tipi
 locales: ["en", "ru"]
 tags: ["psychology", "short"]
-en:  # title, decsriptions, instruction
+en:  # title, decsriptions, instruction, details
   - TIPI
   - Ten-Item Personality Inventory by Gosling, Rentfrow and Swan (2003)
   - <p>You'll see a number of personality traits that may or may not apply to you. 
@@ -9,7 +9,8 @@ en:  # title, decsriptions, instruction
     <p>You should rate the extent to which the pair of traits applies to you, 
     even if one characteristic applies more strongly than the other.</p>
     <p>1 means the pair of traits doesn't apply to you at all, 7 means it fully applies.</p>
-ru: # title, decsriptions, instruction
+  - Test details
+ru: # title, decsriptions, instruction, details
   - ТИПИ
   - Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
   - <p>Вы увидите разные черты личности, которые могу подходить или не подходить вам.
@@ -17,6 +18,7 @@ ru: # title, decsriptions, instruction
     <p>Выберите, насколько каждая пара черт подходит вам, 
     даже если одна черта подходит больше, чем другая.</p>
     <p>1 означает, что пара черт вам совершенно не подходит, 7 означает что подходит полностью.</p>
+  - Информация о тесте
 type: sten
 steps: 7 # item steps
 randomize: false

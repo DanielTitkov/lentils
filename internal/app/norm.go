@@ -31,7 +31,7 @@ func (a *App) UpdateNorms(ctx context.Context) error {
 			a.log.Error("failed to get sample data", err)
 			return err
 		}
-		a.log.Debug("loaded data for sample", fmt.Sprintf("%+v", data))
+		a.log.Debug("loaded data for sample", fmt.Sprintf("%d results", len(data)))
 		for _, scale := range data {
 			if len(scale.Results) == 0 {
 				continue

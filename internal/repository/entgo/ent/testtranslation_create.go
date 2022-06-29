@@ -47,6 +47,20 @@ func (ttc *TestTranslationCreate) SetNillableDescription(s *string) *TestTransla
 	return ttc
 }
 
+// SetDetails sets the "details" field.
+func (ttc *TestTranslationCreate) SetDetails(s string) *TestTranslationCreate {
+	ttc.mutation.SetDetails(s)
+	return ttc
+}
+
+// SetNillableDetails sets the "details" field if the given value is not nil.
+func (ttc *TestTranslationCreate) SetNillableDetails(s *string) *TestTranslationCreate {
+	if s != nil {
+		ttc.SetDetails(*s)
+	}
+	return ttc
+}
+
 // SetInstruction sets the "instruction" field.
 func (ttc *TestTranslationCreate) SetInstruction(s string) *TestTranslationCreate {
 	ttc.mutation.SetInstruction(s)
@@ -254,6 +268,14 @@ func (ttc *TestTranslationCreate) createSpec() (*TestTranslation, *sqlgraph.Crea
 			Column: testtranslation.FieldDescription,
 		})
 		_node.Description = value
+	}
+	if value, ok := ttc.mutation.Details(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testtranslation.FieldDetails,
+		})
+		_node.Details = value
 	}
 	if value, ok := ttc.mutation.Instruction(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

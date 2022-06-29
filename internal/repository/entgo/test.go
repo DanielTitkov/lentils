@@ -77,6 +77,11 @@ func (r *EntgoRepository) GetTestByCode(ctx context.Context, code string, locale
 				},
 			)
 		}).
+		WithScales(func(q *ent.ScaleQuery) {
+			q.WithTranslations(func(tq *ent.ScaleTranslationQuery) {
+				tq.Where(scaletranslation.LocaleEQ(scaletranslation.Locale(locale)))
+			})
+		}).
 		WithQuestions(
 			func(q *ent.QuestionQuery) {
 				q.WithTranslations(
@@ -94,11 +99,9 @@ func (r *EntgoRepository) GetTestByCode(ctx context.Context, code string, locale
 				)
 			},
 		).
-		WithTranslations(
-			func(q *ent.TestTranslationQuery) {
-				q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
-			},
-		).
+		WithTranslations(func(q *ent.TestTranslationQuery) {
+			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
+		}).
 		Only(ctx)
 	if err != nil {
 		return nil, err
@@ -224,6 +227,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 			SetLocale(testtranslation.Locale(t.Locale)).
 			SetTitle(t.Title).
 			SetDescription(t.Description).
+			SetDetails(t.Details).
 			SetInstruction(t.Instruction).
 			SetTestID(tst.ID).
 			Save(ctx)
@@ -575,6 +579,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 	title := "no title for this locale: " + locale
 	description := "no description for this locale: " + locale
 	instruction := "no instruction for this locale: " + locale
+	details := "no details for the locale: " + locale
 
 	if t.Edges.Translations != nil {
 		if len(t.Edges.Translations) == 1 {
@@ -582,6 +587,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 			title = trans.Title
 			description = trans.Description
 			instruction = trans.Instruction
+			details = trans.Details
 		}
 	}
 
@@ -626,6 +632,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Title:            title,
 		Description:      description,
 		Instruction:      template.HTML(instruction),
+		Details:          template.HTML(details),
 		Display:          display,
 		Questions:        questions,
 		Scales:           scales,

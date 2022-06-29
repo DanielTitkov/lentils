@@ -4,17 +4,26 @@
   <div class="section">
     <h1 class="title is-1">{{ .Test.Title }}</h1>
     <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
-    {{ template "test-tags" .Test }}
   </div>
 
   {{ if eq .Test.Take.Status .IntroStatus }}
-  <div class="block has-text-centered">
-    {{ range .Test.AvailableLocales }}
-    <button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
-      live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">
-      <p class="title is-3">{{ LocaleIcon . }}</p>
-    </button>
-    {{end}}
+  <div class="section">
+    {{ template "show-details-block" . }}
+    <div class="columns">
+      <div class="column is-6">
+        <p class="title is-5">Select language</p>
+        {{ range .Test.AvailableLocales }}
+        <button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
+          live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">
+          <p class="title is-3">{{ LocaleIcon . }}</p>
+        </button>
+        {{end}}
+      </div>
+      <div class="column is-6">
+        <p class="title is-5">Interface settings</p>
+        {{ template "test-controls-info" . }}
+      </div>
+    </div>
   </div>
   <div class="section">
     <div class="notification box">
@@ -22,9 +31,6 @@
       <div class="content is-medium">
         {{ .Test.Instruction }}
       </div>
-    </div>
-    <div class="section">
-      {{ template "test-controls-info" . }}
     </div>
   </div>
   <div class="section">
@@ -41,6 +47,8 @@
 
   {{ if eq .Test.Take.Status .QuestionsStatus }}
   <div class="section">
+    {{ template "show-details-block" . }}
+    {{ template "show-instruction-block" . }}
     <progress class="progress is-large is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
       .Page }}%</progress>
     <p class="header">Page {{ .Page }} of {{ .Test.PageCount }}</p>
@@ -92,6 +100,7 @@
   <!-- end questions status -->
 
   {{ if eq .Test.Take.Status .FinishStatus }}
+  {{ template "show-details-block" . }}
   <div>
     {{ range $i, $scale := .Test.Scales }}
     <div class="notification box">
@@ -132,14 +141,6 @@
 
 {{ define "test-controls-info" }}
 <div class="columns">
-  {{ if eq .Test.Display.QuestionsPerPage 1 }}
-  <div class="column is-6">
-    <p>
-      You can use number keys (1, 2, etc.) on your keyboard to select response variants
-      (works only if there's 1 questions per page).
-    </p>
-  </div>
-  {{ end }}
   <div class="column is-6">
     <p>Auto-Next: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
     <p class="heading">
@@ -153,5 +154,65 @@
       </button>
     </p>
   </div>
+  {{ if eq .Test.Display.QuestionsPerPage 1 }}
+  <div class="column is-6">
+    <p>
+      You can use number keys (1, 2, etc.) on your keyboard to select response variants
+      (works only if there's 1 questions per page).
+    </p>
+  </div>
+  {{ end }}
 </div>
+{{ end }}
+
+{{ define "show-details-block" }}
+<div class="block">
+  <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-details">
+    {{ if .ShowDetails }}
+    Hide test details
+    <i class="bi bi-caret-up-fill"></i>
+    {{ else }}
+    Show test details
+    <i class="bi bi-caret-down-fill"></i>
+    {{ end }}
+  </p>
+</div>
+{{ if .ShowDetails }}
+<div class="notification box">
+  {{ template "test-tags" .Test }}
+  <div class="columns">
+    <div class="column">
+      <div class="content is-medium">
+        {{ .Test.Details }}
+      </div>
+    </div>
+    <div class="column is-narrow">
+      <p><b>Scales:</b> {{ len .Test.Scales }}</p>
+      <p><b>Questions:</b> {{ len .Test.Questions }}</p>
+    </div>
+  </div>
+</div>
+{{ end }}
+{{ end }}
+
+{{ define "show-instruction-block" }}
+<div class="block">
+  <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-instruction">
+    {{ if .ShowInstruction }}
+    Hide test instructions
+    <i class="bi bi-caret-up-fill"></i>
+    {{ else }}
+    Show test instructions
+    <i class="bi bi-caret-down-fill"></i>
+    {{ end }}
+  </p>
+</div>
+{{ if .ShowInstruction }}
+<div class="notification box">
+  <p class="title is-3">Instructions</p>
+  <div class="content is-medium">
+    {{ .Test.Instruction }}
+  </div>
+</div>
+{{ end }}
 {{ end }}

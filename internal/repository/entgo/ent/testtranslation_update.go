@@ -55,6 +55,26 @@ func (ttu *TestTranslationUpdate) ClearDescription() *TestTranslationUpdate {
 	return ttu
 }
 
+// SetDetails sets the "details" field.
+func (ttu *TestTranslationUpdate) SetDetails(s string) *TestTranslationUpdate {
+	ttu.mutation.SetDetails(s)
+	return ttu
+}
+
+// SetNillableDetails sets the "details" field if the given value is not nil.
+func (ttu *TestTranslationUpdate) SetNillableDetails(s *string) *TestTranslationUpdate {
+	if s != nil {
+		ttu.SetDetails(*s)
+	}
+	return ttu
+}
+
+// ClearDetails clears the value of the "details" field.
+func (ttu *TestTranslationUpdate) ClearDetails() *TestTranslationUpdate {
+	ttu.mutation.ClearDetails()
+	return ttu
+}
+
 // SetInstruction sets the "instruction" field.
 func (ttu *TestTranslationUpdate) SetInstruction(s string) *TestTranslationUpdate {
 	ttu.mutation.SetInstruction(s)
@@ -213,6 +233,19 @@ func (ttu *TestTranslationUpdate) sqlSave(ctx context.Context) (n int, err error
 			Column: testtranslation.FieldDescription,
 		})
 	}
+	if value, ok := ttu.mutation.Details(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testtranslation.FieldDetails,
+		})
+	}
+	if ttu.mutation.DetailsCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testtranslation.FieldDetails,
+		})
+	}
 	if value, ok := ttu.mutation.Instruction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -303,6 +336,26 @@ func (ttuo *TestTranslationUpdateOne) SetNillableDescription(s *string) *TestTra
 // ClearDescription clears the value of the "description" field.
 func (ttuo *TestTranslationUpdateOne) ClearDescription() *TestTranslationUpdateOne {
 	ttuo.mutation.ClearDescription()
+	return ttuo
+}
+
+// SetDetails sets the "details" field.
+func (ttuo *TestTranslationUpdateOne) SetDetails(s string) *TestTranslationUpdateOne {
+	ttuo.mutation.SetDetails(s)
+	return ttuo
+}
+
+// SetNillableDetails sets the "details" field if the given value is not nil.
+func (ttuo *TestTranslationUpdateOne) SetNillableDetails(s *string) *TestTranslationUpdateOne {
+	if s != nil {
+		ttuo.SetDetails(*s)
+	}
+	return ttuo
+}
+
+// ClearDetails clears the value of the "details" field.
+func (ttuo *TestTranslationUpdateOne) ClearDetails() *TestTranslationUpdateOne {
+	ttuo.mutation.ClearDetails()
 	return ttuo
 }
 
@@ -492,6 +545,19 @@ func (ttuo *TestTranslationUpdateOne) sqlSave(ctx context.Context) (_node *TestT
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: testtranslation.FieldDescription,
+		})
+	}
+	if value, ok := ttuo.mutation.Details(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testtranslation.FieldDetails,
+		})
+	}
+	if ttuo.mutation.DetailsCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testtranslation.FieldDetails,
 		})
 	}
 	if value, ok := ttuo.mutation.Instruction(); ok {

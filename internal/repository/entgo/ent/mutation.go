@@ -12676,6 +12676,7 @@ type TestTranslationMutation struct {
 	locale        *testtranslation.Locale
 	title         *string
 	description   *string
+	details       *string
 	instruction   *string
 	clearedFields map[string]struct{}
 	test          *uuid.UUID
@@ -12910,6 +12911,55 @@ func (m *TestTranslationMutation) ResetDescription() {
 	delete(m.clearedFields, testtranslation.FieldDescription)
 }
 
+// SetDetails sets the "details" field.
+func (m *TestTranslationMutation) SetDetails(s string) {
+	m.details = &s
+}
+
+// Details returns the value of the "details" field in the mutation.
+func (m *TestTranslationMutation) Details() (r string, exists bool) {
+	v := m.details
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDetails returns the old "details" field's value of the TestTranslation entity.
+// If the TestTranslation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestTranslationMutation) OldDetails(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDetails is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDetails requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDetails: %w", err)
+	}
+	return oldValue.Details, nil
+}
+
+// ClearDetails clears the value of the "details" field.
+func (m *TestTranslationMutation) ClearDetails() {
+	m.details = nil
+	m.clearedFields[testtranslation.FieldDetails] = struct{}{}
+}
+
+// DetailsCleared returns if the "details" field was cleared in this mutation.
+func (m *TestTranslationMutation) DetailsCleared() bool {
+	_, ok := m.clearedFields[testtranslation.FieldDetails]
+	return ok
+}
+
+// ResetDetails resets all changes to the "details" field.
+func (m *TestTranslationMutation) ResetDetails() {
+	m.details = nil
+	delete(m.clearedFields, testtranslation.FieldDetails)
+}
+
 // SetInstruction sets the "instruction" field.
 func (m *TestTranslationMutation) SetInstruction(s string) {
 	m.instruction = &s
@@ -13017,7 +13067,7 @@ func (m *TestTranslationMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestTranslationMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 5)
 	if m.locale != nil {
 		fields = append(fields, testtranslation.FieldLocale)
 	}
@@ -13026,6 +13076,9 @@ func (m *TestTranslationMutation) Fields() []string {
 	}
 	if m.description != nil {
 		fields = append(fields, testtranslation.FieldDescription)
+	}
+	if m.details != nil {
+		fields = append(fields, testtranslation.FieldDetails)
 	}
 	if m.instruction != nil {
 		fields = append(fields, testtranslation.FieldInstruction)
@@ -13044,6 +13097,8 @@ func (m *TestTranslationMutation) Field(name string) (ent.Value, bool) {
 		return m.Title()
 	case testtranslation.FieldDescription:
 		return m.Description()
+	case testtranslation.FieldDetails:
+		return m.Details()
 	case testtranslation.FieldInstruction:
 		return m.Instruction()
 	}
@@ -13061,6 +13116,8 @@ func (m *TestTranslationMutation) OldField(ctx context.Context, name string) (en
 		return m.OldTitle(ctx)
 	case testtranslation.FieldDescription:
 		return m.OldDescription(ctx)
+	case testtranslation.FieldDetails:
+		return m.OldDetails(ctx)
 	case testtranslation.FieldInstruction:
 		return m.OldInstruction(ctx)
 	}
@@ -13092,6 +13149,13 @@ func (m *TestTranslationMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDescription(v)
+		return nil
+	case testtranslation.FieldDetails:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDetails(v)
 		return nil
 	case testtranslation.FieldInstruction:
 		v, ok := value.(string)
@@ -13133,6 +13197,9 @@ func (m *TestTranslationMutation) ClearedFields() []string {
 	if m.FieldCleared(testtranslation.FieldDescription) {
 		fields = append(fields, testtranslation.FieldDescription)
 	}
+	if m.FieldCleared(testtranslation.FieldDetails) {
+		fields = append(fields, testtranslation.FieldDetails)
+	}
 	if m.FieldCleared(testtranslation.FieldInstruction) {
 		fields = append(fields, testtranslation.FieldInstruction)
 	}
@@ -13153,6 +13220,9 @@ func (m *TestTranslationMutation) ClearField(name string) error {
 	case testtranslation.FieldDescription:
 		m.ClearDescription()
 		return nil
+	case testtranslation.FieldDetails:
+		m.ClearDetails()
+		return nil
 	case testtranslation.FieldInstruction:
 		m.ClearInstruction()
 		return nil
@@ -13172,6 +13242,9 @@ func (m *TestTranslationMutation) ResetField(name string) error {
 		return nil
 	case testtranslation.FieldDescription:
 		m.ResetDescription()
+		return nil
+	case testtranslation.FieldDetails:
+		m.ResetDetails()
 		return nil
 	case testtranslation.FieldInstruction:
 		m.ResetInstruction()

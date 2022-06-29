@@ -106,6 +106,13 @@ func Description(v string) predicate.TestTranslation {
 	})
 }
 
+// Details applies equality check predicate on the "details" field. It's identical to DetailsEQ.
+func Details(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDetails), v))
+	})
+}
+
 // Instruction applies equality check predicate on the "instruction" field. It's identical to InstructionEQ.
 func Instruction(v string) predicate.TestTranslation {
 	return predicate.TestTranslation(func(s *sql.Selector) {
@@ -394,6 +401,131 @@ func DescriptionEqualFold(v string) predicate.TestTranslation {
 func DescriptionContainsFold(v string) predicate.TestTranslation {
 	return predicate.TestTranslation(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldDescription), v))
+	})
+}
+
+// DetailsEQ applies the EQ predicate on the "details" field.
+func DetailsEQ(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsNEQ applies the NEQ predicate on the "details" field.
+func DetailsNEQ(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsIn applies the In predicate on the "details" field.
+func DetailsIn(vs ...string) predicate.TestTranslation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDetails), v...))
+	})
+}
+
+// DetailsNotIn applies the NotIn predicate on the "details" field.
+func DetailsNotIn(vs ...string) predicate.TestTranslation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDetails), v...))
+	})
+}
+
+// DetailsGT applies the GT predicate on the "details" field.
+func DetailsGT(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsGTE applies the GTE predicate on the "details" field.
+func DetailsGTE(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsLT applies the LT predicate on the "details" field.
+func DetailsLT(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsLTE applies the LTE predicate on the "details" field.
+func DetailsLTE(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsContains applies the Contains predicate on the "details" field.
+func DetailsContains(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsHasPrefix applies the HasPrefix predicate on the "details" field.
+func DetailsHasPrefix(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsHasSuffix applies the HasSuffix predicate on the "details" field.
+func DetailsHasSuffix(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsIsNil applies the IsNil predicate on the "details" field.
+func DetailsIsNil() predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldDetails)))
+	})
+}
+
+// DetailsNotNil applies the NotNil predicate on the "details" field.
+func DetailsNotNil() predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldDetails)))
+	})
+}
+
+// DetailsEqualFold applies the EqualFold predicate on the "details" field.
+func DetailsEqualFold(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldDetails), v))
+	})
+}
+
+// DetailsContainsFold applies the ContainsFold predicate on the "details" field.
+func DetailsContainsFold(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldDetails), v))
 	})
 }
 

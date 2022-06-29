@@ -23,6 +23,8 @@ type TestTranslation struct {
 	Title string `json:"title,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
+	// Details holds the value of the "details" field.
+	Details string `json:"details,omitempty"`
 	// Instruction holds the value of the "instruction" field.
 	Instruction string `json:"instruction,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -59,7 +61,7 @@ func (*TestTranslation) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case testtranslation.FieldLocale, testtranslation.FieldTitle, testtranslation.FieldDescription, testtranslation.FieldInstruction:
+		case testtranslation.FieldLocale, testtranslation.FieldTitle, testtranslation.FieldDescription, testtranslation.FieldDetails, testtranslation.FieldInstruction:
 			values[i] = new(sql.NullString)
 		case testtranslation.FieldID:
 			values[i] = new(uuid.UUID)
@@ -103,6 +105,12 @@ func (tt *TestTranslation) assignValues(columns []string, values []interface{}) 
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
 				tt.Description = value.String
+			}
+		case testtranslation.FieldDetails:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field details", values[i])
+			} else if value.Valid {
+				tt.Details = value.String
 			}
 		case testtranslation.FieldInstruction:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -158,6 +166,9 @@ func (tt *TestTranslation) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(tt.Description)
+	builder.WriteString(", ")
+	builder.WriteString("details=")
+	builder.WriteString(tt.Details)
 	builder.WriteString(", ")
 	builder.WriteString("instruction=")
 	builder.WriteString(tt.Instruction)

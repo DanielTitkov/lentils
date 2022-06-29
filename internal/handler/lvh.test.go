@@ -18,13 +18,15 @@ import (
 
 const (
 	// events
-	eventBeginTest      = "begin-test"
-	eventEndTest        = "end-test"
-	eventNextPage       = "next-page"
-	eventPrevPage       = "prev-page"
-	eventResponseUpdate = "response-update"
-	eventSetLocale      = "set-locale"
-	eventToggleAutoNext = "toggle-auto-next"
+	eventBeginTest             = "begin-test"
+	eventEndTest               = "end-test"
+	eventNextPage              = "next-page"
+	eventPrevPage              = "prev-page"
+	eventResponseUpdate        = "response-update"
+	eventSetLocale             = "set-locale"
+	eventToggleAutoNext        = "toggle-auto-next"
+	eventToggleShowDetails     = "toggle-show-details"
+	eventToggleShowInstruction = "toggle-show-instruction"
 	// params
 	paramTestCode      = "testCode"
 	paramTestItem      = "item"
@@ -73,6 +75,8 @@ type (
 		FinishStatus    string
 		ResultStatus    string
 		AutoNext        bool
+		ShowDetails     bool
+		ShowInstruction bool
 	}
 )
 
@@ -107,6 +111,8 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 			ResultStatus:    domain.TestStepResult,
 			Locale:          domain.LocaleEn,
 			AutoNext:        false,
+			ShowDetails:     false,
+			ShowInstruction: false,
 		}
 	}
 
@@ -218,6 +224,7 @@ func (h *Handler) Test() live.Handler {
 		}
 		instance.Page = 1
 		instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
+		instance.ShowDetails = false
 
 		return instance, nil
 	})
@@ -243,9 +250,19 @@ func (h *Handler) Test() live.Handler {
 
 	lvh.HandleEvent(eventToggleAutoNext, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewTestInstance(s)
-
 		instance.AutoNext = !instance.AutoNext
+		return instance, nil
+	})
 
+	lvh.HandleEvent(eventToggleShowDetails, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+		instance.ShowDetails = !instance.ShowDetails
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventToggleShowInstruction, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+		instance.ShowInstruction = !instance.ShowInstruction
 		return instance, nil
 	})
 

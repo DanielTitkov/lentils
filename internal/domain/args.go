@@ -33,6 +33,7 @@ type (
 		Locale      string
 		Title       string
 		Description string
+		Details     string
 		Instruction string
 	}
 

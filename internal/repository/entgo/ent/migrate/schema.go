@@ -466,6 +466,7 @@ var (
 		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
 		{Name: "title", Type: field.TypeString, Size: 140},
 		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "details", Type: field.TypeString, Nullable: true},
 		{Name: "instruction", Type: field.TypeString, Nullable: true},
 		{Name: "test_translations", Type: field.TypeUUID, Nullable: true},
 	}
@@ -477,7 +478,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "test_translations_tests_translations",
-				Columns:    []*schema.Column{TestTranslationsColumns[5]},
+				Columns:    []*schema.Column{TestTranslationsColumns[6]},
 				RefColumns: []*schema.Column{TestsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -486,7 +487,7 @@ var (
 			{
 				Name:    "testtranslation_locale_test_translations",
 				Unique:  true,
-				Columns: []*schema.Column{TestTranslationsColumns[1], TestTranslationsColumns[5]},
+				Columns: []*schema.Column{TestTranslationsColumns[1], TestTranslationsColumns[6]},
 			},
 		},
 	}

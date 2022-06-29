@@ -58,6 +58,7 @@ func (TestTranslation) Fields() []ent.Field {
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.String("title").NotEmpty().MaxLen(140),
 		field.String("description").Optional(),
+		field.String("details").Optional(),
 		field.String("instruction").Optional(),
 	}
 }

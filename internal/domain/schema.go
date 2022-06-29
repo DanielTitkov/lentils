@@ -14,6 +14,7 @@ type (
 		Code              string        // unique code for url
 		Title             string        // translatable
 		Description       string        // translatable
+		Details           template.HTML // translatable
 		Instruction       template.HTML // translatable
 		Locale            string
 		AvailableLocales  []string
