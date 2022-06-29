@@ -1,0 +1,364 @@
+code: hexaco
+locales: ["en", "ru"]
+tags: ["psychology", "long"]
+en:  # title, decsriptions, instruction
+  - HEXACO
+  - Kibeom Lee, Ph.D., & Michael C. Ashton, Ph.D.
+  - On the following pages you will find a series of statements about you.  Please read each statement and decide how much you agree or disagree with that statement.  Then write your response in the space next to the statement using the following scale.
+    5 = strongly agree
+    4 = agree 
+    3 = neutral (neither agree nor disagree)
+    2 = disagree
+    1 = strongly disagree
+ru: # title, decsriptions, instruction
+  - HEXACO
+  - Kibeom Lee, Ph.D., & Michael C. Ashton, Ph.D.
+  - Вам будет предложен ряд утверждений. Пожалуйста прочитайте каждое утверждение и оцените, насколько Вы согласны или не согласны с каждым. Напишите Ваш ответ рядом, используя следующую шкалу.
+    5 = полностью согласен
+    4 = согласен 
+    3 = нейтрально (не “согласен” и не “не согласен”)
+    2 = не согласен
+    1 = полностью не согласен 
+type: sten
+steps: 5 # item steps
+randomize: false
+intervals: 3 # interpretation intervals
+question:
+  en: "How much you agree with this statement?" # content
+  ru: "Насколько вы согласны с этим утверждением?" #content
+  page: 1
+scales: 
+  honesty: 
+    en: ["Honesty-Humility", "Honesty-Humility scale"] # title, description
+    ru: ["Честность-Скромность", "Шкала честности-скромности"] # title, description
+    interpretations: 
+      - en: <p>Persons with very high scores on the Honesty-Humility scale avoid manipulating others for personal gain, 
+            feel little temptation to break rules, are uninterested in lavish wealth and luxuries, 
+            and feel no special entitlement to elevated social status.</p>
+            <p>Conversely, persons with very low scores on this scale will flatter others to get what they want, 
+            are inclined to break rules for personal profit, are motivated by material gain, 
+            and feel a strong sense of self-importance.</p>
+        ru: "ru1"
+      - en: <p>Persons with very high scores on the Honesty-Humility scale avoid manipulating others for personal gain, 
+            feel little temptation to break rules, are uninterested in lavish wealth and luxuries, 
+            and feel no special entitlement to elevated social status.</p>
+            <p>Conversely, persons with very low scores on this scale will flatter others to get what they want, 
+            are inclined to break rules for personal profit, are motivated by material gain, 
+            and feel a strong sense of self-importance.</p>
+        ru: "ru2"
+      - en: <p>Persons with very high scores on the Honesty-Humility scale avoid manipulating others for personal gain, 
+            feel little temptation to break rules, are uninterested in lavish wealth and luxuries, 
+            and feel no special entitlement to elevated social status.</p>
+            <p>Conversely, persons with very low scores on this scale will flatter others to get what they want, 
+            are inclined to break rules for personal profit, are motivated by material gain, 
+            and feel a strong sense of self-importance.</p>
+        ru: "ru3"
+  emotionality:
+    en: ["Emotionality", "Emotionality scale"] # title, description
+    ru: ["Доброжелательность", "Шкала доброжелательности"] # title, description
+    interpretations: 
+      - en: <p>Persons with very high scores on the Emotionality scale experience fear of physical dangers, 
+            experience anxiety in response to life's stresses, 
+            feel a need for emotional support from others, 
+            and feel empathy and sentimental attachments with others.</p>
+            <p>Conversely, persons with very low scores on this scale are not deterred by the prospect of physical harm,
+            feel little worry even in stressful situations, have little need to share their concerns with others, 
+            and feel emotionally detached from others.</p>
+        ru: "ru1"
+      - en: <p>Persons with very high scores on the Emotionality scale experience fear of physical dangers, 
+            experience anxiety in response to life's stresses, 
+            feel a need for emotional support from others, 
+            and feel empathy and sentimental attachments with others.</p>
+            <p>Conversely, persons with very low scores on this scale are not deterred by the prospect of physical harm,
+            feel little worry even in stressful situations, have little need to share their concerns with others, 
+            and feel emotionally detached from others.</p>
+        ru: "ru2"
+      - en: <p>Persons with very high scores on the Emotionality scale experience fear of physical dangers, 
+            experience anxiety in response to life's stresses, 
+            feel a need for emotional support from others, 
+            and feel empathy and sentimental attachments with others.</p>
+            <p>Conversely, persons with very low scores on this scale are not deterred by the prospect of physical harm,
+            feel little worry even in stressful situations, have little need to share their concerns with others, 
+            and feel emotionally detached from others.</p>
+        ru: "ru3"
+  extraversion:
+    en: ["eXtraversion", "Extraversion scale"] # title, description
+    ru: ["Сознательность", "Шкала сознательнольсти"] # title, description
+    interpretations: 
+      - en: <p>Persons with very high scores on the Extraversion scale feel positively about themselves, 
+            feel confident when leading or addressing groups of people, enjoy social gatherings and interactions, 
+            and experience positive feelings of enthusiasm and energy.</p>
+            <p>Conversely, persons with very low scores on this scale consider themselves unpopular, 
+            feel awkward when they are the center of social attention, are indifferent to social activities, 
+            and feel less lively and optimistic than others do.</p>
+        ru: "ru1"
+      - en: <p>Persons with very high scores on the Extraversion scale feel positively about themselves, 
+            feel confident when leading or addressing groups of people, enjoy social gatherings and interactions, 
+            and experience positive feelings of enthusiasm and energy.</p>
+            <p>Conversely, persons with very low scores on this scale consider themselves unpopular, 
+            feel awkward when they are the center of social attention, are indifferent to social activities, 
+            and feel less lively and optimistic than others do.</p>
+        ru: "ru2"
+      - en: <p>Persons with very high scores on the Extraversion scale feel positively about themselves, 
+            feel confident when leading or addressing groups of people, enjoy social gatherings and interactions, 
+            and experience positive feelings of enthusiasm and energy.</p>
+            <p>Conversely, persons with very low scores on this scale consider themselves unpopular, 
+            feel awkward when they are the center of social attention, are indifferent to social activities, 
+            and feel less lively and optimistic than others do.</p>
+        ru: "ru3"
+  agreeableness:
+    en: ["Agreeableness", "Agreeableness (versus Anger) scale"] # title, description
+    ru: ["Эмоциональная стабильность", "Шкала эмоциональной стабильности"] # title, description
+    interpretations: 
+      - en: <p>Persons with very high scores on the Agreeableness scale forgive the wrongs that they suffered, 
+            are lenient in judging others, are willing to compromise and cooperate with others, 
+            and can easily control their temper.</p>
+            <p>Conversely, persons with very low scores on this scale hold grudges against those who have harmed them, 
+            are rather critical of others' shortcomings, are stubborn in defending their point of view, 
+            and feel anger readily in response to mistreatment.</p>
+        ru: "ru1"
+      - en: <p>Persons with very high scores on the Agreeableness scale forgive the wrongs that they suffered, 
+            are lenient in judging others, are willing to compromise and cooperate with others, 
+            and can easily control their temper.</p>
+            <p>Conversely, persons with very low scores on this scale hold grudges against those who have harmed them, 
+            are rather critical of others' shortcomings, are stubborn in defending their point of view, 
+            and feel anger readily in response to mistreatment.</p>
+        ru: "ru2"
+      - en: <p>Persons with very high scores on the Agreeableness scale forgive the wrongs that they suffered, 
+            are lenient in judging others, are willing to compromise and cooperate with others, 
+            and can easily control their temper.</p>
+            <p>Conversely, persons with very low scores on this scale hold grudges against those who have harmed them, 
+            are rather critical of others' shortcomings, are stubborn in defending their point of view, 
+            and feel anger readily in response to mistreatment.</p>
+        ru: "ru3"
+  conscientiousness:
+    en: ["Conscientiousness", "Conscientiousness scale"] # title, description
+    ru: ["Открытость новому опыту", "Шкала открытости новому опыту"] # title, description
+    interpretations: 
+      - en: <p>Persons with very high scores on the Conscientiousness scale organize their time and their physical surroundings, 
+            work in a disciplined way toward their goals, strive for accuracy and perfection in their tasks, 
+            and deliberate carefully when making decisions.</p>
+            <p>Conversely, persons with very low scores on this scale tend to be unconcerned with orderly surroundings or schedules, 
+            avoid difficult tasks or challenging goals, are satisfied with work that contains some errors, 
+            and make decisions on impulse or with little reflection.</p>
+        ru: "ru1"
+      - en: <p>Persons with very high scores on the Conscientiousness scale organize their time and their physical surroundings, 
+            work in a disciplined way toward their goals, strive for accuracy and perfection in their tasks, 
+            and deliberate carefully when making decisions.</p>
+            <p>Conversely, persons with very low scores on this scale tend to be unconcerned with orderly surroundings or schedules, 
+            avoid difficult tasks or challenging goals, are satisfied with work that contains some errors, 
+            and make decisions on impulse or with little reflection.</p>
+        ru: "ru2"
+      - en: <p>Persons with very high scores on the Conscientiousness scale organize their time and their physical surroundings, 
+            work in a disciplined way toward their goals, strive for accuracy and perfection in their tasks, 
+            and deliberate carefully when making decisions.</p>
+            <p>Conversely, persons with very low scores on this scale tend to be unconcerned with orderly surroundings or schedules, 
+            avoid difficult tasks or challenging goals, are satisfied with work that contains some errors, 
+            and make decisions on impulse or with little reflection.</p>
+        ru: "ru3"
+  openness:
+    en: ["Openness to experience", "Openness to experience scale"] # title, description
+    ru: ["Открытость новому опыту", "Шкала открытости новому опыту"] # title, description
+    interpretations: 
+      - en: <p>Persons with very high scores on the Openness to Experience scale become absorbed in the beauty of art and nature, 
+            are inquisitive about various domains of knowledge, use their imagination freely in everyday life, 
+            and take an interest in unusual ideas or people.</p>
+            <p>Conversely, persons with very low scores on this scale are rather unimpressed by most works of art, 
+            feel little intellectual curiosity, avoid creative pursuits, 
+            and feel little attraction toward ideas that may seem radical or unconventional.</p>
+        ru: "ru1"
+      - en: <p>Persons with very high scores on the Openness to Experience scale become absorbed in the beauty of art and nature, 
+            are inquisitive about various domains of knowledge, use their imagination freely in everyday life, 
+            and take an interest in unusual ideas or people.</p>
+            <p>Conversely, persons with very low scores on this scale are rather unimpressed by most works of art, 
+            feel little intellectual curiosity, avoid creative pursuits, 
+            and feel little attraction toward ideas that may seem radical or unconventional.</p>
+        ru: "ru2"
+      - en: <p>Persons with very high scores on the Openness to Experience scale become absorbed in the beauty of art and nature, 
+            are inquisitive about various domains of knowledge, use their imagination freely in everyday life, 
+            and take an interest in unusual ideas or people.</p>
+            <p>Conversely, persons with very low scores on this scale are rather unimpressed by most works of art, 
+            feel little intellectual curiosity, avoid creative pursuits, 
+            and feel little attraction toward ideas that may seem radical or unconventional.</p>
+        ru: "ru3"
+items:
+  - en: "I would be quite bored by a visit to an art gallery." # content
+    ru: "Мне было бы скучно в художественной галерее." # content
+    scale: "-openness" # 01
+  - en: "I plan ahead and organize things, to avoid scrambling at the last minute." # content
+    ru: "Я заранее все планирую и организовываю, чтобы избежать неразберихи в последний момент." # content
+    scale: "conscientiousness" # 02
+  - en: "I rarely hold a grudge, even against people who have badly wronged me." # content
+    ru: "Я редко держу зло на людей, даже на тех, кто доставил мне серьезные неприятности." # content
+    scale: "agreeableness" # 03
+  - en: "I feel reasonably satisfied with myself overall." # content
+    ru: "В целом я вполне доволен (довольна) собой. " # content
+    scale: "extraversion" # 04
+  - en: "I would feel afraid if I had to travel in bad weather conditions." # content
+    ru: "Мне было бы страшно, если бы мне пришлось куда-то ехать в очень плохую погоду." # content
+    scale: "emotionality" # 05
+  - en: "I wouldn't use flattery to get a raise or promotion at work, even if I thought it would succeed." # content
+    ru: "Я бы не стал(а) льстить, даже если бы считал(а), что это приведет к повышению зарплаты или продвижению по службе." # content
+    scale: "honesty" # 06
+  - en: "I'm interested in learning about the history and politics of other countries." # content
+    ru: "Мне интересно знакомиться с историей и политикой других стран." # content
+    scale: "openness" # 07
+  - en: "I often push myself very hard when trying to achieve a goal." # content
+    ru: "Часто я из кожи вон лезу, стараясь достичь своей цели. " # content
+    scale: "conscientiousness" # 08
+  - en: "People sometimes tell me that I am too critical of others." # content
+    ru: "Иногда мне говорят, что я слишком критичен (критична) по отношению к другим." # content
+    scale: "-agreeableness" # 09
+  - en: "I rarely express my opinions in group meetings." # content
+    ru: "Я редко высказываю свое мнение на общих собраниях." # content
+    scale: "-extraversion" # 10
+  - en: "I sometimes can't help worrying about little things." # content
+    ru: "Иногда я беспокоюсь из-за мелочей, и ничего не могу с этим поделать." # content
+    scale: "emotionality" # 11
+  - en: "If I knew that I could never get caught, I would be willing to steal a million dollars." # content
+    ru: "Если бы я знал, что меня не поймают, я мог бы (могла бы) украсть миллион долларов." # content
+    scale: "-honesty" # 12
+  - en: "I would enjoy creating a work of art, such as a novel, a song, or a painting." # content
+    ru: "Мне бы понравилась творческая работа, например, сочинять романы, писать песни, рисовать." # content
+    scale: "openness" # 13
+  - en: "When working on something, I don't pay much attention to small details." # content
+    ru: "Работая над чем-то, я не обращаю особого внимания на мелочи." # content
+    scale: "-conscientiousness" # 14
+  - en: "People sometimes tell me that I'm too stubborn." # content
+    ru: "Иногда мне говорят, что я слишком упрям(а)." # content
+    scale: "-agreeableness" # 15
+  - en: "I prefer jobs that involve active social interaction to those that involve working alone." # content
+    ru: "Мне больше нравится работать в коллективе, чем в одиночестве." # content
+    scale: "extraversion" # 16
+  - en: "When I suffer from a painful experience, I need someone to make me feel comfortable." # content
+    ru: "Когда я переживаю из-за неприятностей, мне надо, чтобы кто-нибудь меня поддержал." # content
+    scale: "emotionality" # 17
+  - en: "Having a lot of money is not especially important to me." # content
+    ru: "Для меня не особенно важно иметь много денег." # content
+    scale: "honesty" # 18
+  - en: "I think that paying attention to radical ideas is a waste of time." # content
+    ru: "Я считаю, что увлечение радикальными идеями – это пустая трата времени." # content
+    scale: "-openness" # 19
+  - en: "I make decisions based on the feeling of the moment rather than on careful thought." # content
+    ru: "Я принимаю решения скорее под влиянием момента, чем в результате тщательного обдумывания." # content
+    scale: "-conscientiousness" # 20
+  - en: "People think of me as someone who has a quick temper." # content
+    ru: "Меня считают вспыльчивым человеком." # content
+    scale: "-agreeableness" # 21
+  - en: "On most days, I feel cheerful and optimistic." # content
+    ru: "Я почти всегда бодрый и оптимистичный (бодрая и оптимистичная)." # content
+    scale: "extraversion" # 22
+  - en: "I feel like crying when I see other people crying." # content
+    ru: "Мне хочется плакать, когда я вижу, как плачут другие." # content
+    scale: "emotionality" # 23
+  - en: "I think that I am entitled to more respect than the average person is." # content
+    ru: "Я считаю, что я заслуживаю большего уважения, чем обычные люди." # content
+    scale: "-honesty" # 24
+  - en: "If I had the opportunity, I would like to attend a classical music concert." # content
+    ru: "При возможности, я бы с удовольствием сходил(а) на концерт классической музыки." # content
+    scale: "openness" # 25
+  - en: "When working, I sometimes have difficulties due to being disorganized." # content
+    ru: "Из-за моей неорганизованности у меня бывают трудности на работе." # content
+    scale: "-conscientiousness" # 26
+  - en: "My attitude toward people who have treated me badly is “forgive and forget”." # content
+    ru: "К людям, которые плохо со мной обошлись, я отношусь по принципу «прости и забудь»." # content
+    scale: "agreeableness" # 27
+  - en: "I feel that I am an unpopular person." # content
+    ru: "Мне кажется, что я непопулярный человек." # content
+    scale: "-extraversion" # 28
+  - en: "When it comes to physical danger, I am very fearful." # content
+    ru: "В ситуации физической угрозы мне очень страшно." # content
+    scale: "emotionality" # 29
+  - en: "If I want something from someone, I will laugh at that person's worst jokes." # content
+    ru: "Если мне что-то нужно от человека, я буду смеяться даже над его неудачными шутками." # content
+    scale: "-honesty" # 30
+  - en: "I’ve never really enjoyed looking through an encyclopedia." # content
+    ru: "Мне никогда не доставляло удовольствия листать энциклопедии." # content
+    scale: "-openness" # 31
+  - en: "I do only the minimum amount of work needed to get by. " # content
+    ru: "На работе я делаю только то, что требуется, и не больше." # content
+    scale: "-conscientiousness" # 32
+  - en: "I tend to be lenient in judging other people." # content
+    ru: "Оценивая других людей, я стараюсь быть снисходительным(ой)." # content
+    scale: "agreeableness" # 33
+  - en: "In social situations, I’m usually the one who makes the first move." # content
+    ru: "В ситуации общения обычно именно я делаю первый шаг." # content
+    scale: "extraversion" # 34
+  - en: "I worry a lot less than most people do." # content
+    ru: "Я гораздо меньше, чем другие люди, склонен (склонна) к волнениям. " # content
+    scale: "-emotionality" # 35
+  - en: "I would never accept a bribe, even if it were very large." # content
+    ru: "Я бы никогда не стал(а) брать взятку, даже если бы она была очень большой." # content
+    scale: "honesty" # 36
+  - en: "People have often told me that I have a good imagination." # content
+    ru: "Мне часто говорили, что у меня богатое воображение." # content
+    scale: "openness" # 37
+  - en: "I always try to be accurate in my work, even at the expense of time." # content
+    ru: "Я всегда стараюсь тщательно выполнять свою работу, даже если это отнимает слишком много времени." # content
+    scale: "conscientiousness" # 38
+  - en: "I am usually quite flexible in my opinions when people disagree with me." # content
+    ru: "Обычно я готов(а) изменить свое мнение, если с ним не согласны другие." # content
+    scale: "agreeableness" # 39
+  - en: "The first thing that I always do in a new place is to make friends." # content
+    ru: "Первое, что я всегда  делаю на новом месте - это завожу друзей." # content
+    scale: "extraversion" # 40
+  - en: "I can handle difficult situations without needing emotional support from anyone else." # content
+    ru: "Я могу справиться с трудными ситуациями и не нуждаюсь ни в чьей эмоциональной поддержке." # content
+    scale: "-emotionality" # 41
+  - en: "I would get a lot of pleasure from owning expensive luxury goods." # content
+    ru: "Мне доставило бы  большое удовольствие владеть предметами роскоши." # content
+    scale: "-honesty" # 42
+  - en: "I like people who have unconventional views." # content
+    ru: "Мне нравятся люди, чьи взгляды отличаются от общепринятых." # content
+    scale: "openness" # 43
+  - en: "I make a lot of mistakes because I don’t think before I act." # content
+    ru: "Я совершаю множество ошибок из-за того, что вначале делаю, а потом думаю." # content
+    scale: "-conscientiousness" # 44
+  - en: "Most people tend to get angry more quickly than I do." # content
+    ru: "Меня гораздо труднее разозлить, чем других людей." # content
+    scale: "agreeableness" # 45
+  - en: "Most people are more upbeat and dynamic than I generally am." # content
+    ru: "Большинство людей более жизнерадостные и активные, чем я." # content
+    scale: "-extraversion" # 46
+  - en: "I feel strong emotions when someone close to me is going away for a long time." # content
+    ru: "Я сильно переживаю, когда близкий мне человек надолго уезжает." # content
+    scale: "emotionality" # 47
+  - en: "I want people to know that I am an important person of high status." # content
+    ru: "Я хочу, чтобы люди знали, что я особенный человек и имею положение в обществе." # content
+    scale: "-honesty" # 48
+  - en: "I don’t think of myself as the artistic or creative type." # content
+    ru: "Я не считаю себя художественно одаренным или творческим человеком." # content
+    scale: "-openness" # 49
+  - en: "People often call me a perfectionist." # content
+    ru: "Меня считают человеком, который стремится сделать все идеально." # content
+    scale: "conscientiousness" # 50
+  - en: "Even when people make a lot of mistakes, I rarely say anything negative." # content
+    ru: "Даже когда люди допускают много ошибок, я редко говорю что-нибудь неодобрительное." # content
+    scale: "agreeableness" # 51
+  - en: "I sometimes feel that I am a worthless person." # content
+    ru: "Иногда я ощущаю себя бесполезным человеком." # content
+    scale: "-extraversion" # 52
+  - en: "Even in an emergency I wouldn’t feel like panicking." # content
+    ru: "Я не стану паниковать даже в чрезвычайной ситуации." # content
+    scale: "-emotionality" # 53
+  - en: "I wouldn’t pretend to like someone just to get that person to do favors for me." # content
+    ru: "Я не буду делать вид, что человек мне нравится, только для того, чтобы добиться его расположения." # content
+    scale: "honesty" # 54
+  - en: "I find it boring to discuss philosophy." # content
+    ru: "Я нахожу скучным обсуждение философских вопросов." # content
+    scale: "-openness" # 55
+  - en: "I prefer to do whatever comes to mind, rather than stick to a plan." # content
+    ru: "Я предпочитаю делать первое, что приходит в голову, а не то, что было запланировано." # content
+    scale: "-conscientiousness" # 56
+  - en: "When people tell me that I’m wrong, my first reaction is to argue with them." # content
+    ru: "Когда мне говорят, что я неправ(а), моя первая реакция – постараться переубедить." # content
+    scale: "-agreeableness" # 57
+  - en: "When I’m in a group of people, I’m often the one who speaks on behalf of the group." # content
+    ru: "Часто именно я говорю от имени группы людей, среди которых нахожусь." # content
+    scale: "extraversion" # 58
+  - en: "I remain unemotional even in situations where most people get very sentimental." # content
+    ru: "Я остаюсь бесстрастным даже тогда, когда все вокруг испытывают сильные эмоции. " # content
+    scale: "-emotionality" # 59
+  - en: "I’d be tempted to use counterfeit money, if I were sure I could get away with it." # content
+    ru: "У меня возникло бы искушение использовать фальшивые деньги,  если бы я был уверен (была уверена), что это сойдет мне с рук." # content
+    scale: "-honesty" # 60

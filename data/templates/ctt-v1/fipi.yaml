@@ -16,7 +16,7 @@ intervals: 3 # interpretation intervals
 question:
   en: "How this is about you?" # content
   ru: "Оцените, насколько вам это подходит?" #content
-  page: 1
+  page: 2
 scales: 
   extraversion: 
     en: ["Extraversion", "Extraversion scale"] # title, description

@@ -61,12 +61,12 @@ func (a *App) UpdateNorms(ctx context.Context) error {
 			rank := sample.NormRank(norm)
 			norm.Rank = rank
 
-			norm, err = a.repo.CreateOrUpdateNorm(ctx, norm)
+			_, err = a.repo.CreateOrUpdateNorm(ctx, norm)
 			if err != nil {
 				a.log.Error("failed to save norm", err)
 				return err
 			}
-			a.log.Debug("updated norm", fmt.Sprintf("%+v", norm))
+			// a.log.Debug("updated norm", fmt.Sprintf("%+v", norm)) // FIXME
 		}
 	}
 

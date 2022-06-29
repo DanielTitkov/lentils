@@ -23,6 +23,9 @@
         {{ .Test.Instruction }}
       </div>
     </div>
+    <div class="section">
+      {{ template "test-controls-info" . }}
+    </div>
   </div>
   <div class="section">
     <p class="block is-size-5 has-text-centered">When you are happy please continue to the next step.</p>
@@ -44,7 +47,23 @@
   </div>
   <div class="section">
     {{ range .CurrentQuestions }}
-    {{ template "question-card" . }}
+    <div class="notification box {{ if .IsDone }}question-done{{end}}">
+      <p class="title is-5">{{ .Content }}</p>
+      <div>
+        {{ range $i, $item := .Items }}
+        <p class="title is-3">{{ .Content }}</p>
+        <div class="control">
+          {{ range $j, $s := N .Steps }}
+          <button class="button {{ if eq $item.CurrentResponseValue $j }}is-success{{ end }}"
+            live-click="response-update" live-value-item="{{ $item.Code }}" live-value-val="{{ $j }}" {{ if eq (len
+            $.CurrentQuestions) 1 }} live-window-keyup="response-update" live-key="{{ Plus1 $j }}" {{ end }}>
+            {{ Plus1 $j }}
+          </button>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </div>
     {{ end }}
   </div>
   <div class="level">
@@ -65,6 +84,9 @@
         {{ end }}
       </div>
     </div>
+  </div>
+  <div class="section">
+    {{ template "test-controls-info" . }}
   </div>
   {{ end }}
   <!-- end questions status -->
@@ -94,7 +116,7 @@
         <p class="title is-2">Score: {{printf "%.1f" $scale.Result.Score }}</p>
       </div>
       <hr>
-      <div class="content is-large">
+      <div class="content is-medium">
         {{ if $scale.Result.Interpretation }}
         {{ $scale.Result.Interpretation.Content }}
         {{ else }}
@@ -108,19 +130,28 @@
 </main>
 {{ end }}
 
-{{ define "question-card" }}
-<div class="notification box {{ if .IsDone }}question-done{{end}}">
-  <p class="title is-5">{{ .Content }}</p>
-  <div>
-    {{ range $i, $item := .Items }}
-    <p class="title is-3">{{ .Content }}</p>
-    <div class="control">
-      {{ range $j, $s := N .Steps }}
-      <button class="button {{ if eq $item.CurrentResponseValue $j }}is-success{{ end }}" live-click="response-update"
-        live-value-item="{{ $item.Code }}" live-value-val="{{ $j }}">{{ Plus1 $j }}</button>
-      {{ end }}
-    </div>
-    {{ end }}
+{{ define "test-controls-info" }}
+<div class="columns">
+  {{ if eq .Test.Display.QuestionsPerPage 1 }}
+  <div class="column is-6">
+    <p>
+      You can use number keys (1, 2, etc.) on your keyboard to select response variants
+      (works only if there's 1 questions per page).
+    </p>
+  </div>
+  {{ end }}
+  <div class="column is-6">
+    <p>Auto-Next: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
+    <p class="heading">
+      If Auto-Next is on, test will switch to the next page as soon as all the questions on a page are answered.
+      Otherwise you would need to click "Next" button.
+    </p>
+    <p>
+      <button class="button is-rounded {{ if .AutoNext }}is-success{{else}}is-outlined{{end}}"
+        live-click="toggle-auto-next">
+        Auto-Next
+      </button>
+    </p>
   </div>
 </div>
 {{ end }}

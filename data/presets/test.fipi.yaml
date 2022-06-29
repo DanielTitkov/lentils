@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-06-29 00:30:11
+# at: 2022-06-29 21:27:35
 # template: ../data/templates/ctt-v1/fipi.yaml
 code: fipi
 published: true
@@ -289,5 +289,5 @@ questions:
       - locale: ru
         content: Оцените, насколько вам это подходит?
 display:
-  questionsPerPage: 1
+  questionsPerPage: 2
   randomizeOrder: false

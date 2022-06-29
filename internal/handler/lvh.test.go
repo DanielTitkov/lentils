@@ -24,6 +24,7 @@ const (
 	eventPrevPage       = "prev-page"
 	eventResponseUpdate = "response-update"
 	eventSetLocale      = "set-locale"
+	eventToggleAutoNext = "toggle-auto-next"
 	// params
 	paramTestCode      = "testCode"
 	paramTestItem      = "item"
@@ -71,6 +72,7 @@ type (
 		QuestionsStatus string
 		FinishStatus    string
 		ResultStatus    string
+		AutoNext        bool
 	}
 )
 
@@ -104,6 +106,7 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 			FinishStatus:    domain.TestStepFinish,
 			ResultStatus:    domain.TestStepResult,
 			Locale:          domain.LocaleEn,
+			AutoNext:        false,
 		}
 	}
 
@@ -238,7 +241,24 @@ func (h *Handler) Test() live.Handler {
 		return instance, nil
 	})
 
+	lvh.HandleEvent(eventToggleAutoNext, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+
+		instance.AutoNext = !instance.AutoNext
+
+		return instance, nil
+	})
+
 	lvh.HandleEvent(eventNextPage, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+
+		instance.Page = instance.nextPage()
+		instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
+
+		return instance, nil
+	})
+
+	lvh.HandleSelf(eventNextPage, func(ctx context.Context, s live.Socket, data interface{}) (interface{}, error) {
 		instance := h.NewTestInstance(s)
 
 		instance.Page = instance.nextPage()
@@ -285,6 +305,15 @@ func (h *Handler) Test() live.Handler {
 		instance.Test.Take, item.Response, err = h.app.AddResponse(ctx, instance.Test.Take, item)
 		if err != nil {
 			return instance.withError(err), nil
+		}
+
+		if instance.AutoNext {
+			if !instance.Test.IsPageNotDone(instance.Page) {
+				err := s.Self(ctx, eventNextPage, nil)
+				if err != nil {
+					return instance.withError(err), nil
+				}
+			}
 		}
 
 		return instance, nil
