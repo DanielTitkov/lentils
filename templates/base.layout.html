@@ -380,7 +380,9 @@
 {{ define "test-tags" }}
 <div class="block">
   {{ range .Tags }}
-  <button class='button {{ template "tag-button-style" . }} is-rounded is-small mr-2 mb-1'>{{ .Content }}</button>
+  <button class='button {{ template "tag-button-style" . }} is-rounded is-small mr-2 mb-1'>
+    <b>{{ .Content }}</b>
+  </button>
   {{ end }}
 </div>
 {{ end }}

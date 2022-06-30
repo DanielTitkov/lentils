@@ -16,6 +16,7 @@ func Mux(cfg configs.Config, store live.HttpSessionStore, h *handler.Handler) *m
 	r.NotFoundHandler = http.HandlerFunc(h.NotFoundRedirect)
 	// main handler
 	r.Handle("/test/{testCode}", live.NewHttpHandler(store, h.Test()))
+	r.Handle("/result/{takeID}", live.NewHttpHandler(store, h.Test()))
 	r.Handle("/about", live.NewHttpHandler(store, h.About()))
 	r.Handle("/profile", live.NewHttpHandler(store, h.Profile()))
 	r.Handle("/privacy", live.NewHttpHandler(store, h.Privacy()))

@@ -4,11 +4,14 @@
   <div class="section">
     <h1 class="title is-1">{{ .Test.Title }}</h1>
     <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
+    {{ template "show-details-block" . }}
+    {{ if eq .Test.Take.Status .QuestionsStatus }}
+    {{ template "show-instruction-block" . }}
+    {{ end }}
   </div>
 
   {{ if eq .Test.Take.Status .IntroStatus }}
   <div class="section">
-    {{ template "show-details-block" . }}
     <div class="columns">
       <div class="column is-6">
         <p class="title is-5">Select language</p>
@@ -24,8 +27,6 @@
         {{ template "test-controls-info" . }}
       </div>
     </div>
-  </div>
-  <div class="section">
     <div class="notification box">
       <p class="title is-3">Instructions</p>
       <div class="content is-medium">
@@ -47,13 +48,11 @@
 
   {{ if eq .Test.Take.Status .QuestionsStatus }}
   <div class="section">
-    {{ template "show-details-block" . }}
-    {{ template "show-instruction-block" . }}
-    <progress class="progress is-large is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
-      .Page }}%</progress>
-    <p class="header">Page {{ .Page }} of {{ .Test.PageCount }}</p>
-  </div>
-  <div class="section">
+    <div class="block">
+      <progress class="progress is-normal is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
+        .Page }}%</progress>
+      <p class="header">Page {{ .Page }} of {{ .Test.PageCount }}</p>
+    </div>
     {{ range .CurrentQuestions }}
     <div class="notification box {{ if .IsDone }}question-done{{end}}">
       <p class="title is-5">{{ .Content }}</p>
@@ -100,37 +99,56 @@
   <!-- end questions status -->
 
   {{ if eq .Test.Take.Status .FinishStatus }}
-  {{ template "show-details-block" . }}
-  <div>
-    {{ range $i, $scale := .Test.Scales }}
-    <div class="notification box">
-      <p class="heading">{{ $scale.Code }}</p>
-      <p class="title is-3">{{ $scale.Title }}</p>
-      <p class="subtitle is-5">{{ $scale.Description }}</p>
-      <div class="level">
-        <div class="level-left">
-          <div class="level-item">{{ $scale.Result.Min }}</div>
-        </div>
-        <div class="level-item has-text-centered">{{ Mean $scale.Result.Min $scale.Result.Max }}</div>
-        <div class="level-right">
-          <div class="level-item">{{ $scale.Result.Max }}</div>
-        </div>
-      </div>
-      <progress class="progress is-large is-success" value="{{ $scale.Result.Score }}"
-        max="{{ Sum $scale.Result.Max $scale.Result.Min }}">
-        {{ $scale.Result.Score }}
-      </progress>
-      <div>
-        <p class="heading">{{ $scale.Result.Formula }}</p>
-        <p class="title is-2">Score: {{printf "%.1f" $scale.Result.Score }}</p>
-      </div>
-      <hr>
-      <div class="content is-medium">
-        {{ if $scale.Result.Interpretation }}
-        {{ $scale.Result.Interpretation.Content }}
-        {{ else }}
-        <p>Interpretation not found. This problem is reported.</p>
+  <div class="notification box">
+    <table class="charts-css bar show-labels" id="basic-chart">
+      <tbody>
+        {{ range $i, $scale := .Test.Scales }}
+        <tr>
+          <th scope="row"> {{ $scale.Title }} </th>
+          <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">{{printf "%.1f" $scale.Result.Score }}</td>
+        </tr>
         {{ end }}
+      </tbody>
+    </table>
+    <p>
+      <a href="/result/{{ .Test.Take.ID }}">Result permanent link</a>
+    </p>
+  </div>
+  <div class="columns is-multiline">
+    {{ range $i, $scale := .Test.Scales }}
+    <div class="column is-6">
+      <div class="notification box">
+        <div class="columns">
+          <div class="column">
+            <p class="title is-3">{{ $scale.Title }}</p>
+            <p class="subtitle is-5">{{ $scale.Description }}</p>
+          </div>
+          <div class="column is-narrow">
+            <p class="title is-3 has-text-primary">{{printf "%.1f" $scale.Result.Score }}</p>
+          </div>
+        </div>
+        <p class="heading">{{ $scale.Result.Formula }}</p>
+        <hr>
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">{{ $scale.Result.Min }}</div>
+          </div>
+          <div class="level-item has-text-centered">{{ Mean $scale.Result.Min $scale.Result.Max }}</div>
+          <div class="level-right">
+            <div class="level-item">{{ $scale.Result.Max }}</div>
+          </div>
+        </div>
+        <progress class="progress is-large is-success" value="{{ $scale.Result.Score }}"
+          max="{{ Sum $scale.Result.Max $scale.Result.Min }}">
+          {{ $scale.Result.Score }}
+        </progress>
+        <div class="content is-normal">
+          {{ if $scale.Result.Interpretation }}
+          {{ $scale.Result.Interpretation.Content }}
+          {{ else }}
+          <p>Interpretation not found. This problem is reported.</p>
+          {{ end }}
+        </div>
       </div>
     </div>
     {{ end }}
@@ -140,28 +158,30 @@
 {{ end }}
 
 {{ define "test-controls-info" }}
-<div class="columns">
-  <div class="column is-6">
-    <p>Auto-Next: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
-    <p class="heading">
-      If Auto-Next is on, test will switch to the next page as soon as all the questions on a page are answered.
-      Otherwise you would need to click "Next" button.
-    </p>
-    <p>
-      <button class="button is-rounded {{ if .AutoNext }}is-success{{else}}is-outlined{{end}}"
-        live-click="toggle-auto-next">
-        Auto-Next
-      </button>
-    </p>
+<div class="notification has-background-grey-lighter">
+  <div class="columns">
+    <div class="column is-6">
+      <p>Auto-Next: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
+      <p class="heading">
+        If Auto-Next is on, test will switch to the next page as soon as all the questions on a page are answered.
+        Otherwise you would need to click "Next" button.
+      </p>
+      <p>
+        <button class="button is-rounded {{ if .AutoNext }}is-success{{else}}is-outlined{{end}}"
+          live-click="toggle-auto-next">
+          Auto-Next
+        </button>
+      </p>
+    </div>
+    {{ if eq .Test.Display.QuestionsPerPage 1 }}
+    <div class="column is-6">
+      <p>
+        You can use number keys (1, 2, etc.) on your keyboard to select response variants
+        (works only if there's 1 questions per page).
+      </p>
+    </div>
+    {{ end }}
   </div>
-  {{ if eq .Test.Display.QuestionsPerPage 1 }}
-  <div class="column is-6">
-    <p>
-      You can use number keys (1, 2, etc.) on your keyboard to select response variants
-      (works only if there's 1 questions per page).
-    </p>
-  </div>
-  {{ end }}
 </div>
 {{ end }}
 
@@ -178,7 +198,7 @@
   </p>
 </div>
 {{ if .ShowDetails }}
-<div class="notification box">
+<div class="notification has-background-grey-lighter">
   {{ template "test-tags" .Test }}
   <div class="columns">
     <div class="column">
@@ -208,7 +228,7 @@
   </p>
 </div>
 {{ if .ShowInstruction }}
-<div class="notification box">
+<div class="notification has-background-grey-lighter">
   <p class="title is-3">Instructions</p>
   <div class="content is-medium">
     {{ .Test.Instruction }}

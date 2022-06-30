@@ -46,9 +46,13 @@
     </div>
   </div>
   <div class="section">
-    {{ range $i, $test := .Tests }}
-    {{ template "test-card" $test }}
-    {{ end }}
+    <div class="columns is-multiline">
+      {{ range $i, $test := .Tests }}
+      <div class="column is-4">
+        {{ template "test-card" $test }}
+      </div>
+      {{ end }}
+    </div>
   </div>
   {{ if .Summary }}
   <div class="section">
@@ -69,13 +73,13 @@
 {{ define "filter-tag-active" }}
 <button class='button is-outlined {{ template "tag-button-style" . }} is-rounded is-small mr-2 mb-1'
   live-click="toggle-tag" live-value-tag="{{ .Code }}">
-  {{ .Content }}
+  <b>{{ .Content }}</b>
 </button>
 {{ end }}
 
 {{ define "filter-tag-inactive" }}
-<button class='button {{ template "tag-button-style" . }} is-rounded is-small mr-2 mb-1'
-  live-click="toggle-tag" live-value-tag="{{ .Code }}">
-  {{ .Content }}
+<button class='button {{ template "tag-button-style" . }} is-rounded is-small mr-2 mb-1' live-click="toggle-tag"
+  live-value-tag="{{ .Code }}">
+  <b>{{ .Content }}</b>
 </button>
 {{ end }}
