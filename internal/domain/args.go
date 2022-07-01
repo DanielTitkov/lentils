@@ -61,9 +61,10 @@ type (
 	}
 
 	ScaleTranslation struct {
-		Locale      string
-		Title       string
-		Description string
+		Locale       string
+		Title        string
+		Description  string
+		Abbreviation string
 	}
 
 	CreateInterpretationArgs struct {

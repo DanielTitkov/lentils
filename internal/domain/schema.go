@@ -63,6 +63,7 @@ type (
 		Type            string
 		Title           string // translatable
 		Description     string // translatable
+		Abbreviation    string // translatable
 		Global          bool   // if scale can be used by more than one test
 		Items           []*Item
 		Interpretations []*Interpretation

@@ -19,9 +19,11 @@ scales:
       - locale: en
         title: Extraversion
         description: Extraversion scale
+        abbreviation: EXT
       - locale: ru
         title: Экстраверсия
         description: Шкала экстраверсии
+        abbreviation: ЭКСТ
     interpretations:
       - range: [1.0, 4.5]
         translations:

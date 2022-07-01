@@ -106,6 +106,13 @@ func Description(v string) predicate.ScaleTranslation {
 	})
 }
 
+// Abbreviation applies equality check predicate on the "abbreviation" field. It's identical to AbbreviationEQ.
+func Abbreviation(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAbbreviation), v))
+	})
+}
+
 // LocaleEQ applies the EQ predicate on the "locale" field.
 func LocaleEQ(v Locale) predicate.ScaleTranslation {
 	return predicate.ScaleTranslation(func(s *sql.Selector) {
@@ -387,6 +394,117 @@ func DescriptionEqualFold(v string) predicate.ScaleTranslation {
 func DescriptionContainsFold(v string) predicate.ScaleTranslation {
 	return predicate.ScaleTranslation(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldDescription), v))
+	})
+}
+
+// AbbreviationEQ applies the EQ predicate on the "abbreviation" field.
+func AbbreviationEQ(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationNEQ applies the NEQ predicate on the "abbreviation" field.
+func AbbreviationNEQ(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationIn applies the In predicate on the "abbreviation" field.
+func AbbreviationIn(vs ...string) predicate.ScaleTranslation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAbbreviation), v...))
+	})
+}
+
+// AbbreviationNotIn applies the NotIn predicate on the "abbreviation" field.
+func AbbreviationNotIn(vs ...string) predicate.ScaleTranslation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAbbreviation), v...))
+	})
+}
+
+// AbbreviationGT applies the GT predicate on the "abbreviation" field.
+func AbbreviationGT(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationGTE applies the GTE predicate on the "abbreviation" field.
+func AbbreviationGTE(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationLT applies the LT predicate on the "abbreviation" field.
+func AbbreviationLT(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationLTE applies the LTE predicate on the "abbreviation" field.
+func AbbreviationLTE(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationContains applies the Contains predicate on the "abbreviation" field.
+func AbbreviationContains(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationHasPrefix applies the HasPrefix predicate on the "abbreviation" field.
+func AbbreviationHasPrefix(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationHasSuffix applies the HasSuffix predicate on the "abbreviation" field.
+func AbbreviationHasSuffix(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationEqualFold applies the EqualFold predicate on the "abbreviation" field.
+func AbbreviationEqualFold(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldAbbreviation), v))
+	})
+}
+
+// AbbreviationContainsFold applies the ContainsFold predicate on the "abbreviation" field.
+func AbbreviationContainsFold(v string) predicate.ScaleTranslation {
+	return predicate.ScaleTranslation(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldAbbreviation), v))
 	})
 }
 

@@ -25,7 +25,7 @@
   {{ end }}
   {{ end }}
   <!-- debug end -->
-  {{ if ne .CurrentView "test" }}
+  {{ if and (ne .CurrentView "test") (ne .CurrentView "result") }}
   {{ template "navigation" . }}
   {{ template "navigation-mobile" . }}
   {{ end }}

@@ -63,6 +63,7 @@ func (ScaleTranslation) Fields() []ent.Field {
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.String("title").NotEmpty(),
 		field.String("description").Optional(),
+		field.String("abbreviation").NotEmpty().MaxLen(24).Default("SCALE"),
 	}
 }
 

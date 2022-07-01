@@ -23,6 +23,8 @@ type ScaleTranslation struct {
 	Title string `json:"title,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
+	// Abbreviation holds the value of the "abbreviation" field.
+	Abbreviation string `json:"abbreviation,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ScaleTranslationQuery when eager-loading is set.
 	Edges              ScaleTranslationEdges `json:"edges"`
@@ -57,7 +59,7 @@ func (*ScaleTranslation) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case scaletranslation.FieldLocale, scaletranslation.FieldTitle, scaletranslation.FieldDescription:
+		case scaletranslation.FieldLocale, scaletranslation.FieldTitle, scaletranslation.FieldDescription, scaletranslation.FieldAbbreviation:
 			values[i] = new(sql.NullString)
 		case scaletranslation.FieldID:
 			values[i] = new(uuid.UUID)
@@ -101,6 +103,12 @@ func (st *ScaleTranslation) assignValues(columns []string, values []interface{})
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
 				st.Description = value.String
+			}
+		case scaletranslation.FieldAbbreviation:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field abbreviation", values[i])
+			} else if value.Valid {
+				st.Abbreviation = value.String
 			}
 		case scaletranslation.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -150,6 +158,9 @@ func (st *ScaleTranslation) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(st.Description)
+	builder.WriteString(", ")
+	builder.WriteString("abbreviation=")
+	builder.WriteString(st.Abbreviation)
 	builder.WriteByte(')')
 	return builder.String()
 }

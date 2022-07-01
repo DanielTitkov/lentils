@@ -19,6 +19,8 @@ const (
 	FieldTitle = "title"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
+	// FieldAbbreviation holds the string denoting the abbreviation field in the database.
+	FieldAbbreviation = "abbreviation"
 	// EdgeScale holds the string denoting the scale edge name in mutations.
 	EdgeScale = "scale"
 	// Table holds the table name of the scaletranslation in the database.
@@ -38,6 +40,7 @@ var Columns = []string{
 	FieldLocale,
 	FieldTitle,
 	FieldDescription,
+	FieldAbbreviation,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "scale_translations"
@@ -64,6 +67,10 @@ func ValidColumn(column string) bool {
 var (
 	// TitleValidator is a validator for the "title" field. It is called by the builders before save.
 	TitleValidator func(string) error
+	// DefaultAbbreviation holds the default value on creation for the "abbreviation" field.
+	DefaultAbbreviation string
+	// AbbreviationValidator is a validator for the "abbreviation" field. It is called by the builders before save.
+	AbbreviationValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

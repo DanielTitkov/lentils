@@ -11,6 +11,20 @@ import (
 	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
 )
 
+func (r *EntgoRepository) GetTake(ctx context.Context, takeID uuid.UUID) (*domain.Take, error) {
+	tk, err := r.client.Take.
+		Query().
+		Where(take.IDEQ(takeID)).
+		WithTest(). // TODO maybe migrate to fk field for simpler queries
+		WithUser().
+		Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return entToDomainTake(tk, uuid.Nil, uuid.Nil), nil
+}
+
 func (r *EntgoRepository) CreateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error) {
 	t, err := r.client.Take.Create().
 		SetTestID(tk.TestID).

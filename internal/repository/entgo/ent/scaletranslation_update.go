@@ -55,6 +55,20 @@ func (stu *ScaleTranslationUpdate) ClearDescription() *ScaleTranslationUpdate {
 	return stu
 }
 
+// SetAbbreviation sets the "abbreviation" field.
+func (stu *ScaleTranslationUpdate) SetAbbreviation(s string) *ScaleTranslationUpdate {
+	stu.mutation.SetAbbreviation(s)
+	return stu
+}
+
+// SetNillableAbbreviation sets the "abbreviation" field if the given value is not nil.
+func (stu *ScaleTranslationUpdate) SetNillableAbbreviation(s *string) *ScaleTranslationUpdate {
+	if s != nil {
+		stu.SetAbbreviation(*s)
+	}
+	return stu
+}
+
 // SetScaleID sets the "scale" edge to the Scale entity by ID.
 func (stu *ScaleTranslationUpdate) SetScaleID(id uuid.UUID) *ScaleTranslationUpdate {
 	stu.mutation.SetScaleID(id)
@@ -152,6 +166,11 @@ func (stu *ScaleTranslationUpdate) check() error {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "ScaleTranslation.title": %w`, err)}
 		}
 	}
+	if v, ok := stu.mutation.Abbreviation(); ok {
+		if err := scaletranslation.AbbreviationValidator(v); err != nil {
+			return &ValidationError{Name: "abbreviation", err: fmt.Errorf(`ent: validator failed for field "ScaleTranslation.abbreviation": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -191,6 +210,13 @@ func (stu *ScaleTranslationUpdate) sqlSave(ctx context.Context) (n int, err erro
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: scaletranslation.FieldDescription,
+		})
+	}
+	if value, ok := stu.mutation.Abbreviation(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: scaletranslation.FieldAbbreviation,
 		})
 	}
 	if stu.mutation.ScaleCleared() {
@@ -270,6 +296,20 @@ func (stuo *ScaleTranslationUpdateOne) SetNillableDescription(s *string) *ScaleT
 // ClearDescription clears the value of the "description" field.
 func (stuo *ScaleTranslationUpdateOne) ClearDescription() *ScaleTranslationUpdateOne {
 	stuo.mutation.ClearDescription()
+	return stuo
+}
+
+// SetAbbreviation sets the "abbreviation" field.
+func (stuo *ScaleTranslationUpdateOne) SetAbbreviation(s string) *ScaleTranslationUpdateOne {
+	stuo.mutation.SetAbbreviation(s)
+	return stuo
+}
+
+// SetNillableAbbreviation sets the "abbreviation" field if the given value is not nil.
+func (stuo *ScaleTranslationUpdateOne) SetNillableAbbreviation(s *string) *ScaleTranslationUpdateOne {
+	if s != nil {
+		stuo.SetAbbreviation(*s)
+	}
 	return stuo
 }
 
@@ -383,6 +423,11 @@ func (stuo *ScaleTranslationUpdateOne) check() error {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "ScaleTranslation.title": %w`, err)}
 		}
 	}
+	if v, ok := stuo.mutation.Abbreviation(); ok {
+		if err := scaletranslation.AbbreviationValidator(v); err != nil {
+			return &ValidationError{Name: "abbreviation", err: fmt.Errorf(`ent: validator failed for field "ScaleTranslation.abbreviation": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -439,6 +484,13 @@ func (stuo *ScaleTranslationUpdateOne) sqlSave(ctx context.Context) (_node *Scal
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: scaletranslation.FieldDescription,
+		})
+	}
+	if value, ok := stuo.mutation.Abbreviation(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: scaletranslation.FieldAbbreviation,
 		})
 	}
 	if stuo.mutation.ScaleCleared() {

@@ -43,6 +43,7 @@ type (
 		GetTakeData(ctx context.Context, take *domain.Take, locale string) (*domain.Test, error)
 
 		// take
+		GetTake(ctx context.Context, takeID uuid.UUID) (*domain.Take, error)
 		CreateTake(ctx context.Context, take *domain.Take) (*domain.Take, error)
 		UpdateTake(ctx context.Context, take *domain.Take) (*domain.Take, error)
 

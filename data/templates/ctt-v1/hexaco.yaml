@@ -39,8 +39,8 @@ question:
   page: 1
 scales: 
   honesty: 
-    en: ["Honesty-Humility", "Honesty-Humility scale"] # title, description
-    ru: ["Честность-Скромность", "Шкала честности-скромности"] # title, description
+    en: ["Honesty-Humility", "Honesty-Humility scale", "H"] # title, description, abbreviation
+    ru: ["Честность-Скромность", "Шкала честности-скромности", "H"] # title, description, abbreviation
     interpretations: 
       - en: <p>Persons with very high scores on the Honesty-Humility scale avoid manipulating others for personal gain, 
             feel little temptation to break rules, are uninterested in lavish wealth and luxuries, 
@@ -79,8 +79,8 @@ scales:
             склонны нарушать правила ради личной выгоды, мотивированы материальными приобретениями,
             чувствуют себя важными или особенными.</p>
   emotionality:
-    en: ["Emotionality", "Emotionality scale"] # title, description
-    ru: ["Эмоциональность", "Шкала эмоциональности"] # title, description
+    en: ["Emotionality", "Emotionality scale", "E"] # title, description, abbreviation
+    ru: ["Эмоциональность", "Шкала эмоциональности", "E"] # title, description, abbreviation
     interpretations: 
       - en: <p>Persons with very high scores on the Emotionality scale experience fear of physical dangers, 
             experience anxiety in response to life's stresses, feel a need for emotional support from others, 
@@ -121,8 +121,8 @@ scales:
             они меньше волнуются в стрессовых ситуациях, в меньшей степени хотят делиться своими эмоциями с другими,
             редко испытывают привязанность.</p>
   extraversion:
-    en: ["eXtraversion", "Extraversion scale"] # title, description
-    ru: ["Экстраверсия", "Шкала экстраверсии"] # title, description
+    en: ["eXtraversion", "Extraversion scale", "X"] # title, description, abbreviation
+    ru: ["Экстраверсия", "Шкала экстраверсии", "X"] # title, description, abbreviation
     interpretations: 
       - en: <p>Persons with very high scores on the Extraversion scale feel positively about themselves, 
             feel confident when leading or addressing groups of people, enjoy social gatherings and interactions, 
@@ -161,8 +161,8 @@ scales:
             чувствуют неловкость, если оказываются в центре внимания, равнодушны к массовым мероприятиям,
             чувствуют в себе меньше энергии и оптимизма.</p>
   agreeableness:
-    en: ["Agreeableness", "Agreeableness (versus Anger) scale"] # title, description
-    ru: ["Доброжелательность", "Шкала доброжелательности"] # title, description
+    en: ["Agreeableness", "Agreeableness (versus Anger) scale", "A"] # title, description, abbreviation
+    ru: ["Доброжелательность", "Шкала доброжелательности", "A"] # title, description, abbreviation
     interpretations: 
       - en: <p>Persons with very high scores on the Agreeableness scale forgive the wrongs that they suffered, 
             are lenient in judging others, are willing to compromise and cooperate with others, 
@@ -201,8 +201,8 @@ scales:
             критичны к чужим промахам, упрямы в защите своей точки зрения,
             легко гневаются в ответ на плохое обращение.</p>
   conscientiousness:
-    en: ["Conscientiousness", "Conscientiousness scale"] # title, description
-    ru: ["Сознательность", "Шкала сознательности"] # title, description
+    en: ["Conscientiousness", "Conscientiousness scale", "C"] # title, description, abbreviation
+    ru: ["Сознательность", "Шкала сознательности", "C"] # title, description, abbreviation
     interpretations: 
       - en: <p>Persons with very high scores on the Conscientiousness scale organize their time and their physical surroundings, 
             work in a disciplined way toward their goals, strive for accuracy and perfection in their tasks, 
@@ -241,8 +241,8 @@ scales:
             избегают трудных задач, могут удовлетвориться работой, содержащей ошибки,
             часто принимают решения импульсивно.</p>
   openness:
-    en: ["Openness to experience", "Openness to experience scale"] # title, description
-    ru: ["Открытость новому опыту", "Шкала открытости новому опыту"] # title, description
+    en: ["Openness to experience", "Openness to experience scale", "O"] # title, description, abbreviation
+    ru: ["Открытость новому опыту", "Шкала открытости новому опыту", "O"] # title, description, abbreviation
     interpretations: 
       - en: <p>Persons with very high scores on the Openness to Experience scale become absorbed in the beauty of art and nature, 
             are inquisitive about various domains of knowledge, use their imagination freely in everyday life, 

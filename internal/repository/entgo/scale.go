@@ -53,12 +53,14 @@ func entToDomainNormCalculationData(s *ent.Scale) *domain.NormCalculationData {
 func entToDomainScale(s *ent.Scale, locale string) *domain.Scale {
 	title := "no title for this locale: " + locale
 	description := "no description for this locale: " + locale
+	abbreviation := "no abbreviation for this locale: " + locale
 
 	if s.Edges.Translations != nil {
 		if len(s.Edges.Translations) == 1 {
 			trans := s.Edges.Translations[0]
 			title = trans.Title
 			description = trans.Description
+			abbreviation = trans.Abbreviation
 		}
 	}
 
@@ -83,6 +85,7 @@ func entToDomainScale(s *ent.Scale, locale string) *domain.Scale {
 		Global:          s.Global,
 		Title:           title,
 		Description:     description,
+		Abbreviation:    abbreviation,
 		Interpretations: interpretations,
 		Items:           items,
 	}

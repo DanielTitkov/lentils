@@ -29,8 +29,8 @@ question:
   page: 1
 scales: 
   extraversion: 
-    en: ["Extraversion", "Extraversion scale"] # title, description
-    ru: ["Экстраверсия", "Шкала экстраверсии"] # title, description
+    en: ["Extraversion", "Extraversion scale", "EXT"] # title, description, abbreviation
+    ru: ["Экстраверсия", "Шкала экстраверсии", "ЭКСТ"] # title, description, abbreviation
     interpretations: 
       - en: "en1"
         ru: "ru1"
@@ -39,8 +39,8 @@ scales:
       - en: "en3"
         ru: "ru3"
   agreeableness:
-    en: ["Agreeableness", "Agreeableness scale"] # title, description
-    ru: ["Доброжелательность", "Шкала доброжелательности"] # title, description
+    en: ["Agreeableness", "Agreeableness scale", "AGRB"] # title, description, abbreviation
+    ru: ["Доброжелательность", "Шкала доброжелательности", "ДОБР"] # title, description, abbreviation
     interpretations: 
       - en: "en1"
         ru: "ru1"
@@ -49,8 +49,8 @@ scales:
       - en: "en3"
         ru: "ru3"
   conscientiousness:
-    en: ["Conscientiousness", "Conscientiousness scale"] # title, description
-    ru: ["Сознательность", "Шкала сознательнольсти"] # title, description
+    en: ["Conscientiousness", "Conscientiousness scale", "CONS"] # title, description, abbreviation
+    ru: ["Сознательность", "Шкала сознательнольсти", "СОЗН"] # title, description, abbreviation
     interpretations: 
       - en: "en1"
         ru: "ru1"
@@ -59,8 +59,8 @@ scales:
       - en: "en3"
         ru: "ru3"
   stability:
-    en: ["Emotional Stability", "Emotional stability scale"] # title, description
-    ru: ["Эмоциональная стабильность", "Шкала эмоциональной стабильности"] # title, description
+    en: ["Emotional Stability", "Emotional stability scale", "STAB"] # title, description, abbreviation
+    ru: ["Эмоциональная стабильность", "Шкала эмоциональной стабильности", "СТАБ"] # title, description, abbreviation
     interpretations: 
       - en: "en1"
         ru: "ru1"
@@ -69,8 +69,8 @@ scales:
       - en: "en3"
         ru: "ru3"
   openness:
-    en: ["Openness to experience", "Openness to experience scale"] # title, description
-    ru: ["Открытость новому опыту", "Шкала открытости новому опыту"] # title, description
+    en: ["Openness to experience", "Openness to experience scale", "OPNS"] # title, description, abbreviation
+    ru: ["Открытость новому опыту", "Шкала открытости новому опыту", "ОТКР"] # title, description, abbreviation
     interpretations: 
       - en: "en1"
         ru: "ru1"

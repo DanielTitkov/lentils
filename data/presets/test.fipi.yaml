@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-06-30 00:08:41
+# at: 2022-07-01 23:32:17
 # template: ../data/templates/ctt-v1/fipi.yaml
 code: fipi
 published: true
@@ -30,9 +30,11 @@ scales:
       - locale: en
         title: Extraversion
         description: Extraversion scale
+        abbreviation: EXT
       - locale: ru
         title: Экстраверсия
         description: Шкала экстраверсии
+        abbreviation: ЭКСТ
     interpretations:
       - range:
           - 1.0
@@ -73,9 +75,11 @@ scales:
       - locale: en
         title: Agreeableness
         description: Agreeableness scale
+        abbreviation: AGRB
       - locale: ru
         title: Доброжелательность
         description: Шкала доброжелательности
+        abbreviation: ДОБР
     interpretations:
       - range:
           - 1.0
@@ -116,9 +120,11 @@ scales:
       - locale: en
         title: Conscientiousness
         description: Conscientiousness scale
+        abbreviation: CONS
       - locale: ru
         title: Сознательность
         description: Шкала сознательнольсти
+        abbreviation: СОЗН
     interpretations:
       - range:
           - 1.0
@@ -159,9 +165,11 @@ scales:
       - locale: en
         title: Emotional Stability
         description: Emotional stability scale
+        abbreviation: STAB
       - locale: ru
         title: Эмоциональная стабильность
         description: Шкала эмоциональной стабильности
+        abbreviation: СТАБ
     interpretations:
       - range:
           - 1.0
@@ -202,9 +210,11 @@ scales:
       - locale: en
         title: Openness to experience
         description: Openness to experience scale
+        abbreviation: OPNS
       - locale: ru
         title: Открытость новому опыту
         description: Шкала открытости новому опыту
+        abbreviation: ОТКР
     interpretations:
       - range:
           - 1.0

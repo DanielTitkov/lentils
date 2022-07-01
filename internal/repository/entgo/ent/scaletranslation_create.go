@@ -47,6 +47,20 @@ func (stc *ScaleTranslationCreate) SetNillableDescription(s *string) *ScaleTrans
 	return stc
 }
 
+// SetAbbreviation sets the "abbreviation" field.
+func (stc *ScaleTranslationCreate) SetAbbreviation(s string) *ScaleTranslationCreate {
+	stc.mutation.SetAbbreviation(s)
+	return stc
+}
+
+// SetNillableAbbreviation sets the "abbreviation" field if the given value is not nil.
+func (stc *ScaleTranslationCreate) SetNillableAbbreviation(s *string) *ScaleTranslationCreate {
+	if s != nil {
+		stc.SetAbbreviation(*s)
+	}
+	return stc
+}
+
 // SetID sets the "id" field.
 func (stc *ScaleTranslationCreate) SetID(u uuid.UUID) *ScaleTranslationCreate {
 	stc.mutation.SetID(u)
@@ -157,6 +171,10 @@ func (stc *ScaleTranslationCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (stc *ScaleTranslationCreate) defaults() {
+	if _, ok := stc.mutation.Abbreviation(); !ok {
+		v := scaletranslation.DefaultAbbreviation
+		stc.mutation.SetAbbreviation(v)
+	}
 	if _, ok := stc.mutation.ID(); !ok {
 		v := scaletranslation.DefaultID()
 		stc.mutation.SetID(v)
@@ -179,6 +197,14 @@ func (stc *ScaleTranslationCreate) check() error {
 	if v, ok := stc.mutation.Title(); ok {
 		if err := scaletranslation.TitleValidator(v); err != nil {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "ScaleTranslation.title": %w`, err)}
+		}
+	}
+	if _, ok := stc.mutation.Abbreviation(); !ok {
+		return &ValidationError{Name: "abbreviation", err: errors.New(`ent: missing required field "ScaleTranslation.abbreviation"`)}
+	}
+	if v, ok := stc.mutation.Abbreviation(); ok {
+		if err := scaletranslation.AbbreviationValidator(v); err != nil {
+			return &ValidationError{Name: "abbreviation", err: fmt.Errorf(`ent: validator failed for field "ScaleTranslation.abbreviation": %w`, err)}
 		}
 	}
 	return nil
@@ -240,6 +266,14 @@ func (stc *ScaleTranslationCreate) createSpec() (*ScaleTranslation, *sqlgraph.Cr
 			Column: scaletranslation.FieldDescription,
 		})
 		_node.Description = value
+	}
+	if value, ok := stc.mutation.Abbreviation(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: scaletranslation.FieldAbbreviation,
+		})
+		_node.Abbreviation = value
 	}
 	if nodes := stc.mutation.ScaleIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

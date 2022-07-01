@@ -326,6 +326,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 				SetLocale(scaletranslation.Locale(t.Locale)).
 				SetTitle(t.Title).
 				SetDescription(t.Description).
+				SetAbbreviation(t.Abbreviation).
 				SetScaleID(scl.ID).
 				Save(ctx)
 			if err != nil {

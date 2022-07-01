@@ -2,8 +2,17 @@
 {{ define "view" }}
 <main>
   <div class="section">
-    <h1 class="title is-1">{{ .Test.Title }}</h1>
-    <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
+    <div class="columns">
+      <div class="column">
+        <h1 class="title is-1">{{ .Test.Title }}</h1>
+        <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
+      </div>
+      {{ if eq .CurrentView "result" }}
+      <div class="column is-narrow">
+        {{ template "locale-selector" . }}
+      </div>
+      {{ end }}
+    </div>
     {{ template "show-details-block" . }}
     {{ if eq .Test.Take.Status .QuestionsStatus }}
     {{ template "show-instruction-block" . }}
@@ -14,13 +23,7 @@
   <div class="section">
     <div class="columns">
       <div class="column is-6">
-        <p class="title is-5">Select language</p>
-        {{ range .Test.AvailableLocales }}
-        <button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
-          live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">
-          <p class="title is-3">{{ LocaleIcon . }}</p>
-        </button>
-        {{end}}
+        {{ template "locale-selector" . }}
       </div>
       <div class="column is-6">
         <p class="title is-5">Interface settings</p>
@@ -62,8 +65,7 @@
         <div class="control">
           {{ range $j, $s := N .Steps }}
           <button class="button {{ if eq $item.CurrentResponseValue $j }}is-success{{ end }}"
-            live-click="response-update" live-value-item="{{ $item.Code }}" live-value-val="{{ $j }}" {{ if eq (len
-            $.CurrentQuestions) 1 }} live-window-keyup="response-update" live-key="{{ Plus1 $j }}" {{ end }}>
+            live-click="response-update" live-value-item="{{ $item.Code }}" live-value-val="{{ $j }}">
             {{ Plus1 $j }}
           </button>
           {{ end }}
@@ -100,19 +102,54 @@
 
   {{ if eq .Test.Take.Status .FinishStatus }}
   <div class="notification box">
-    <table class="charts-css bar show-labels" id="basic-chart">
-      <tbody>
-        {{ range $i, $scale := .Test.Scales }}
-        <tr>
-          <th scope="row"> {{ $scale.Title }} </th>
-          <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">{{printf "%.1f" $scale.Result.Score }}</td>
-        </tr>
+    <div class="columns">
+      <div class="column is-6">
+        <table class="charts-css column show-labels show-5-secondary-axes show-primary-axis show-data-axes"
+          id="basic-chart">
+          <tbody>
+            {{ range $i, $scale := .Test.Scales }}
+            <tr>
+              <th scope="row">
+                {{ $scale.Abbreviation }}
+              </th>
+              <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">
+                <span class="data"> {{printf "%.1f" $scale.Result.Score}} </span>
+                <span class="tooltip"> {{ $scale.Title }} </span>
+              </td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+      <div class="column is-6">
+        <p class="subtitle is-5">
+          The results of this online quiz (personality test)
+          are provided "as-is" only for educational purporses
+          and should not be construed as providing professional
+          or certified advice of any kind.
+        </p>
+        <p class="subtitle is-5">
+          Lentils uses dynamic standardization,
+          so results may change (probably insignicantly) with time,
+          as we gather more data and recalculate norms.
+        </p>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">Result permanent link</a></p>
+        <p>NB: anyone with this link will be able to see this page</p>
+      </div>
+      <div class="column is-narrow">
+        {{ if eq .CurrentView "result" }}
+        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2" target="_blank">Take this test</a>
         {{ end }}
-      </tbody>
-    </table>
-    <p>
-      <a href="/result/{{ .Test.Take.ID }}">Result permanent link</a>
-    </p>
+        <a href="/" class="button is-rounded is-primary" target="_blank">Explore other tests</a>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <p class="subtitle is-2 has-text-centered">Detailed report</p>
   </div>
   <div class="columns is-multiline">
     {{ range $i, $scale := .Test.Scales }}
@@ -160,12 +197,7 @@
 {{ define "test-controls-info" }}
 <div class="notification has-background-grey-lighter">
   <div class="columns">
-    <div class="column is-6">
-      <p>Auto-Next: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
-      <p class="heading">
-        If Auto-Next is on, test will switch to the next page as soon as all the questions on a page are answered.
-        Otherwise you would need to click "Next" button.
-      </p>
+    <div class="column is-narrow">
       <p>
         <button class="button is-rounded {{ if .AutoNext }}is-success{{else}}is-outlined{{end}}"
           live-click="toggle-auto-next">
@@ -173,14 +205,21 @@
         </button>
       </p>
     </div>
-    {{ if eq .Test.Display.QuestionsPerPage 1 }}
+    <div class="column">
+      <p>Auto-Next: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
+      <p class="heading">
+        If Auto-Next is on, test will switch to the next page as soon as all the questions on a page are answered.
+        Otherwise you would need to click "Next" button.
+      </p>
+    </div>
+    <!-- {{ if eq .Test.Display.QuestionsPerPage 1 }}
     <div class="column is-6">
       <p>
         You can use number keys (1, 2, etc.) on your keyboard to select response variants
         (works only if there's 1 questions per page).
       </p>
     </div>
-    {{ end }}
+    {{ end }} -->
   </div>
 </div>
 {{ end }}
@@ -235,4 +274,14 @@
   </div>
 </div>
 {{ end }}
+{{ end }}
+
+{{ define "locale-selector" }}
+<p class="title is-5">Select language</p>
+{{ range .Test.AvailableLocales }}
+<button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
+  live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">
+  <p class="title is-3">{{ LocaleIcon . }}</p>
+</button>
+{{end}}
 {{ end }}

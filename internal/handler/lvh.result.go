@@ -7,6 +7,8 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/google/uuid"
+
 	"github.com/DanielTitkov/lentils/internal/domain"
 	"github.com/bradfitz/iter"
 
@@ -15,9 +17,11 @@ import (
 )
 
 const (
-// events
-// params
-// params values
+	// events
+	eventResultSetLocale = "set-locale"
+	// params
+	paramTakeID = "takeID"
+	// params values
 )
 
 var resultFuncMap = template.FuncMap{
@@ -53,6 +57,8 @@ type (
 		Locale   string
 		TestStep string
 		// to have constants in templates
+		IntroStatus     string
+		QuestionsStatus string
 		FinishStatus    string
 		ResultStatus    string
 		ShowDetails     bool
@@ -69,8 +75,10 @@ func (h *Handler) NewResultInstance(s live.Socket) *ResultInstance {
 	m, ok := s.Assigns().(*ResultInstance)
 	if !ok {
 		return &ResultInstance{
-			CommonInstance:  h.NewCommon(s, viewTest),
+			CommonInstance:  h.NewCommon(s, viewResult),
 			TestStep:        domain.TestStepIntro,
+			IntroStatus:     domain.TestStepIntro,
+			QuestionsStatus: domain.TestStepQuestions,
 			FinishStatus:    domain.TestStepFinish,
 			ResultStatus:    domain.TestStepResult,
 			Locale:          domain.LocaleEn,
@@ -83,7 +91,7 @@ func (h *Handler) NewResultInstance(s live.Socket) *ResultInstance {
 }
 
 func (h *Handler) Result() live.Handler {
-	t := template.Must(template.New("base.layout.html").Funcs(testFuncMap).ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(resultFuncMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.test.html",
 	))
@@ -129,22 +137,23 @@ func (h *Handler) Result() live.Handler {
 
 	lvh.HandleMount(func(ctx context.Context, s live.Socket) (i interface{}, err error) {
 		r := live.Request(ctx)
-		testCode, ok := mux.Vars(r)[paramTestCode]
+		takeIDStr, ok := mux.Vars(r)[paramTakeID]
 		if !ok {
-			return nil, errors.New("test code is required")
+			return nil, errors.New("take id is required")
 		}
-
 		instance := h.NewResultInstance(s)
-		instance.fromContext(ctx)
 
-		if instance.User == nil {
-			return instance.withError(errors.New("user is nil")), nil
+		takeID, err := uuid.Parse(takeIDStr)
+		if err != nil {
+			return instance.withError(err), nil
 		}
 
-		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
-			UserID:  instance.UserID,
-			Session: instance.Session,
-		})
+		take, err := h.app.GetTake(ctx, takeID)
+		if err != nil {
+			return instance.withError(err), nil
+		}
+
+		instance.Test, err = h.app.PrepareTestResult(ctx, &domain.Test{Take: take}, instance.Locale)
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -152,12 +161,7 @@ func (h *Handler) Result() live.Handler {
 		return instance, nil
 	})
 
-	lvh.HandleEvent(eventSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
-		r := live.Request(ctx)
-		testCode, ok := mux.Vars(r)[paramTestCode]
-		if !ok {
-			return nil, errors.New("test code is required")
-		}
+	lvh.HandleEvent(eventResultSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
 		instance := h.NewResultInstance(s)
 
 		locale := p.String(paramTestLocale)
@@ -166,10 +170,7 @@ func (h *Handler) Result() live.Handler {
 		}
 
 		instance.Locale = locale
-		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
-			UserID:  instance.UserID,
-			Session: instance.Session,
-		})
+		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale)
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -192,7 +193,7 @@ func (h *Handler) Result() live.Handler {
 	lvh.HandleError(func(ctx context.Context, err error) {
 		w := live.Writer(ctx)
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("this is a bad request: " + err.Error()))
+		w.Write([]byte("bad request: " + err.Error()))
 	})
 
 	return lvh

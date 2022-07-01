@@ -21,6 +21,7 @@ const (
 	viewAbout   = "about"
 	viewAdmin   = "admin"
 	viewTest    = "test"
+	viewResult  = "result"
 	viewHome    = "home"
 	viewProfile = "profile"
 	viewPrivacy = "privacy"

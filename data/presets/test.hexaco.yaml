@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-06-30 00:39:30
+# at: 2022-07-01 23:32:12
 # template: ../data/templates/ctt-v1/hexaco.yaml
 code: hexaco
 published: true
@@ -41,9 +41,11 @@ scales:
       - locale: en
         title: Honesty-Humility
         description: Honesty-Humility scale
+        abbreviation: H
       - locale: ru
         title: Честность-Скромность
         description: Шкала честности-скромности
+        abbreviation: H
     interpretations:
       - range:
           - 1.0
@@ -208,9 +210,11 @@ scales:
       - locale: en
         title: Emotionality
         description: Emotionality scale
+        abbreviation: E
       - locale: ru
         title: Эмоциональность
         description: Шкала эмоциональности
+        abbreviation: E
     interpretations:
       - range:
           - 1.0
@@ -370,9 +374,11 @@ scales:
       - locale: en
         title: eXtraversion
         description: Extraversion scale
+        abbreviation: X
       - locale: ru
         title: Экстраверсия
         description: Шкала экстраверсии
+        abbreviation: X
     interpretations:
       - range:
           - 1.0
@@ -527,9 +533,11 @@ scales:
       - locale: en
         title: Agreeableness
         description: Agreeableness (versus Anger) scale
+        abbreviation: A
       - locale: ru
         title: Доброжелательность
         description: Шкала доброжелательности
+        abbreviation: A
     interpretations:
       - range:
           - 1.0
@@ -689,9 +697,11 @@ scales:
       - locale: en
         title: Conscientiousness
         description: Conscientiousness scale
+        abbreviation: C
       - locale: ru
         title: Сознательность
         description: Шкала сознательности
+        abbreviation: C
     interpretations:
       - range:
           - 1.0
@@ -853,9 +863,11 @@ scales:
       - locale: en
         title: Openness to experience
         description: Openness to experience scale
+        abbreviation: O
       - locale: ru
         title: Открытость новому опыту
         description: Шкала открытости новому опыту
+        abbreviation: O
     interpretations:
       - range:
           - 1.0

@@ -322,6 +322,7 @@ var (
 		{Name: "locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}},
 		{Name: "title", Type: field.TypeString},
 		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "abbreviation", Type: field.TypeString, Size: 24, Default: "SCALE"},
 		{Name: "scale_translations", Type: field.TypeUUID, Nullable: true},
 	}
 	// ScaleTranslationsTable holds the schema information for the "scale_translations" table.
@@ -332,7 +333,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "scale_translations_scales_translations",
-				Columns:    []*schema.Column{ScaleTranslationsColumns[4]},
+				Columns:    []*schema.Column{ScaleTranslationsColumns[5]},
 				RefColumns: []*schema.Column{ScalesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -341,7 +342,7 @@ var (
 			{
 				Name:    "scaletranslation_locale_scale_translations",
 				Unique:  true,
-				Columns: []*schema.Column{ScaleTranslationsColumns[1], ScaleTranslationsColumns[4]},
+				Columns: []*schema.Column{ScaleTranslationsColumns[1], ScaleTranslationsColumns[5]},
 			},
 		},
 	}

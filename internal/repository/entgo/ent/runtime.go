@@ -270,6 +270,26 @@ func init() {
 	scaletranslationDescTitle := scaletranslationFields[1].Descriptor()
 	// scaletranslation.TitleValidator is a validator for the "title" field. It is called by the builders before save.
 	scaletranslation.TitleValidator = scaletranslationDescTitle.Validators[0].(func(string) error)
+	// scaletranslationDescAbbreviation is the schema descriptor for abbreviation field.
+	scaletranslationDescAbbreviation := scaletranslationFields[3].Descriptor()
+	// scaletranslation.DefaultAbbreviation holds the default value on creation for the abbreviation field.
+	scaletranslation.DefaultAbbreviation = scaletranslationDescAbbreviation.Default.(string)
+	// scaletranslation.AbbreviationValidator is a validator for the "abbreviation" field. It is called by the builders before save.
+	scaletranslation.AbbreviationValidator = func() func(string) error {
+		validators := scaletranslationDescAbbreviation.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(abbreviation string) error {
+			for _, fn := range fns {
+				if err := fn(abbreviation); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// scaletranslationDescID is the schema descriptor for id field.
 	scaletranslationDescID := scaletranslationFields[0].Descriptor()
 	// scaletranslation.DefaultID holds the default value on creation for the id field.

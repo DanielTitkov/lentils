@@ -8237,6 +8237,7 @@ type ScaleTranslationMutation struct {
 	locale        *scaletranslation.Locale
 	title         *string
 	description   *string
+	abbreviation  *string
 	clearedFields map[string]struct{}
 	scale         *uuid.UUID
 	clearedscale  bool
@@ -8470,6 +8471,42 @@ func (m *ScaleTranslationMutation) ResetDescription() {
 	delete(m.clearedFields, scaletranslation.FieldDescription)
 }
 
+// SetAbbreviation sets the "abbreviation" field.
+func (m *ScaleTranslationMutation) SetAbbreviation(s string) {
+	m.abbreviation = &s
+}
+
+// Abbreviation returns the value of the "abbreviation" field in the mutation.
+func (m *ScaleTranslationMutation) Abbreviation() (r string, exists bool) {
+	v := m.abbreviation
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAbbreviation returns the old "abbreviation" field's value of the ScaleTranslation entity.
+// If the ScaleTranslation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ScaleTranslationMutation) OldAbbreviation(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAbbreviation is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAbbreviation requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAbbreviation: %w", err)
+	}
+	return oldValue.Abbreviation, nil
+}
+
+// ResetAbbreviation resets all changes to the "abbreviation" field.
+func (m *ScaleTranslationMutation) ResetAbbreviation() {
+	m.abbreviation = nil
+}
+
 // SetScaleID sets the "scale" edge to the Scale entity by id.
 func (m *ScaleTranslationMutation) SetScaleID(id uuid.UUID) {
 	m.scale = &id
@@ -8528,7 +8565,7 @@ func (m *ScaleTranslationMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ScaleTranslationMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 4)
 	if m.locale != nil {
 		fields = append(fields, scaletranslation.FieldLocale)
 	}
@@ -8537,6 +8574,9 @@ func (m *ScaleTranslationMutation) Fields() []string {
 	}
 	if m.description != nil {
 		fields = append(fields, scaletranslation.FieldDescription)
+	}
+	if m.abbreviation != nil {
+		fields = append(fields, scaletranslation.FieldAbbreviation)
 	}
 	return fields
 }
@@ -8552,6 +8592,8 @@ func (m *ScaleTranslationMutation) Field(name string) (ent.Value, bool) {
 		return m.Title()
 	case scaletranslation.FieldDescription:
 		return m.Description()
+	case scaletranslation.FieldAbbreviation:
+		return m.Abbreviation()
 	}
 	return nil, false
 }
@@ -8567,6 +8609,8 @@ func (m *ScaleTranslationMutation) OldField(ctx context.Context, name string) (e
 		return m.OldTitle(ctx)
 	case scaletranslation.FieldDescription:
 		return m.OldDescription(ctx)
+	case scaletranslation.FieldAbbreviation:
+		return m.OldAbbreviation(ctx)
 	}
 	return nil, fmt.Errorf("unknown ScaleTranslation field %s", name)
 }
@@ -8596,6 +8640,13 @@ func (m *ScaleTranslationMutation) SetField(name string, value ent.Value) error 
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDescription(v)
+		return nil
+	case scaletranslation.FieldAbbreviation:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAbbreviation(v)
 		return nil
 	}
 	return fmt.Errorf("unknown ScaleTranslation field %s", name)
@@ -8663,6 +8714,9 @@ func (m *ScaleTranslationMutation) ResetField(name string) error {
 		return nil
 	case scaletranslation.FieldDescription:
 		m.ResetDescription()
+		return nil
+	case scaletranslation.FieldAbbreviation:
+		m.ResetAbbreviation()
 		return nil
 	}
 	return fmt.Errorf("unknown ScaleTranslation field %s", name)
