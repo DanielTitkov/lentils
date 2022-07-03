@@ -115,7 +115,7 @@ func (a *App) GetUserBySession(req *http.Request) (*domain.User, error) {
 		// add or update session for user
 		session, err = a.CreateOrUpdateUserSession(req, user, true)
 		if err != nil {
-			a.log.Error("failed to create user session", err)
+			a.log.Error("failed to create or update user session (GetUserBySession)", err)
 			return nil, err
 		}
 

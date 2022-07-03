@@ -144,13 +144,13 @@ func (h *Handler) Home() live.Handler {
 		instance.fromContext(ctx)
 
 		// tags
-		instance.Tags, err = h.app.GetTags(ctx, instance.Locale)
+		instance.Tags, err = h.app.GetTags(ctx, instance.Locale())
 		if err != nil {
 			return instance.withError(err), nil
 		}
 
 		// tests
-		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale, instance.ActiveTags)
+		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale(), instance.ActiveTags)
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -169,7 +169,7 @@ func (h *Handler) Home() live.Handler {
 		tagCode := p.String(paramHomeTag)
 		instance.toggleTag(tagCode)
 		// update tests
-		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale, instance.ActiveTags)
+		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale(), instance.ActiveTags)
 		if err != nil {
 			return instance.withError(err), nil
 		}

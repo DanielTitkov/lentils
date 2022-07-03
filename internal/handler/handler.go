@@ -42,6 +42,7 @@ type (
 		app *app.App
 		log *logger.Logger
 		t   string // template path
+		ui  map[string]*UITranslation
 	}
 
 	CommonInstance struct {
@@ -55,7 +56,9 @@ type (
 		ShowLogoutModal bool
 		CurrentView     string
 		Version         string
-		Locale          string
+		UI              *UITranslation
+		ui              map[string]*UITranslation
+		locale          string
 	}
 
 	contextKey struct {
@@ -75,11 +78,21 @@ func NewHandler(
 		app: app,
 		log: logger,
 		t:   t,
+		ui:  initTraslationMap(),
 	}
 }
 
+func initTraslationMap() map[string]*UITranslation {
+	m := make(map[string]*UITranslation)
+	for _, l := range domain.Locales() {
+		m[l] = newUITranslation(l)
+	}
+
+	return m
+}
+
 func (h *Handler) NewCommon(s live.Socket, currentView string) *CommonInstance {
-	return &CommonInstance{
+	c := &CommonInstance{
 		Env:             h.app.Cfg.Env,
 		Session:         fmt.Sprint(s.Session()),
 		Error:           nil,
@@ -88,8 +101,12 @@ func (h *Handler) NewCommon(s live.Socket, currentView string) *CommonInstance {
 		ShowLogoutModal: false,
 		CurrentView:     currentView,
 		Version:         h.app.Cfg.App.Version,
-		Locale:          domain.DefaultLocale(),
+		ui:              h.ui,
+		locale:          domain.DefaultLocale(), // it's private because changing requesed additional logic
 	}
+
+	c.SetLocale(c.locale)
+	return c
 }
 
 func (h *Handler) url404() *url.URL {
@@ -99,6 +116,15 @@ func (h *Handler) url404() *url.URL {
 
 func (h *Handler) NotFoundRedirect(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, h.url404().String(), http.StatusTemporaryRedirect)
+}
+
+func (c *CommonInstance) getTranslation(locale string) *UITranslation {
+	trans, ok := c.ui[locale]
+	if !ok {
+		return c.ui[domain.DefaultLocale()]
+	}
+
+	return trans
 }
 
 func (c *CommonInstance) CloseAuthModals() {
@@ -122,6 +148,18 @@ func (c *CommonInstance) CloseMessage() {
 	c.Message = nil
 }
 
+func (c *CommonInstance) SetLocale(l string) {
+	if !domain.IsValidLocale(l) {
+		l = domain.DefaultLocale()
+	}
+	c.locale = l
+	c.UI = c.getTranslation(l)
+}
+
+func (c *CommonInstance) Locale() string {
+	return c.locale
+}
+
 func UserFromCtx(ctx context.Context) (*domain.User, uuid.UUID) {
 	user, ok := ctx.Value(userCtxKey).(*domain.User)
 	if !ok {
@@ -142,7 +180,7 @@ func localeFromCtx(ctx context.Context) string {
 }
 
 func (c *CommonInstance) fromContext(ctx context.Context) {
-	c.Locale = localeFromCtx(ctx)
+	c.locale = localeFromCtx(ctx)
 	user, userID := UserFromCtx(ctx)
 	c.User = user
 	c.UserID = userID

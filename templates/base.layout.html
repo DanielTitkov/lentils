@@ -282,7 +282,7 @@
   <div class="level-item">
     <div class="mx-3">
       <a href="/" class='{{ if eq .CurrentView "home"}}has-text-dark{{ end }}' title="Home">
-        Главная
+        Home
       </a>
     </div>
   </div>
@@ -290,7 +290,7 @@
   <div class="level-item">
     <div class="mx-3" title="About">
       <a class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}' href="/about">
-        О проекте
+        About
       </a>
     </div>
   </div>
@@ -299,7 +299,7 @@
   <div class="level-item">
     <div class="mx-3">
       <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' href="/profile" title="Profile">
-        Профиль
+        Profile
       </a>
     </div>
   </div>
@@ -311,7 +311,7 @@
     <div class="mx-3">
       <!-- Admin panel -->
       <a href="/admin" class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel">
-        Управление
+        Admin
       </a>
     </div>
   </div>
@@ -323,11 +323,11 @@
       <!-- enter or exit -->
       {{ if .User }}
       <a live-click="open-logout-modal" title="Logout">
-        Выход
+        Logout
       </a>
       {{ else }}
       <a live-click="open-login-modal" title="Login">
-        Вход
+        Login
       </a>
       {{ end }}
     </div>

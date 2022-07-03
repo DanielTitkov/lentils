@@ -88,17 +88,22 @@ func (r *EntgoRepository) CreateOrUpdateUserSession(ctx context.Context, s *doma
 }
 
 func (r *EntgoRepository) IfSessionRegistered(ctx context.Context, s *domain.UserSession) (bool, error) {
-	return r.client.UserSession.
+	exists, err := r.client.UserSession.
 		Query().
 		Where(
 			usersession.And(
 				usersession.Active(true),
 				usersession.SidEQ(s.SID),
 				// usersession.IPEQ(s.IP), // FIXME for commented out for debug
-				usersession.UserAgentEQ(s.UserAgent),
+				// usersession.UserAgentEQ(s.UserAgent), // FIXME for commented out for debug
 			),
 		).
 		Exist(ctx)
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
 }
 
 func (r *EntgoRepository) UpdateUserSessionLastActivityBySID(ctx context.Context, sid string) error {
@@ -119,7 +124,7 @@ func (r *EntgoRepository) GetUserBySession(ctx context.Context, s *domain.UserSe
 				usersession.Active(true),
 				usersession.SidEQ(s.SID),
 				// usersession.IPEQ(s.IP), // FIXME commented out for debug
-				usersession.UserAgentEQ(s.UserAgent),
+				// usersession.UserAgentEQ(s.UserAgent), // FIXME commented out for debug
 			),
 		).
 		QueryUser().

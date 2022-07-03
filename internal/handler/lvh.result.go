@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"errors"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -48,13 +47,18 @@ var resultFuncMap = template.FuncMap{
 		return sum / float64(len(data))
 	},
 	"LocaleIcon": domain.LocaleIcon,
+	"Perc": func(min, max, v float64) float64 {
+		if max == min {
+			return 0
+		}
+		return (v - min) / (max - min)
+	},
 }
 
 type (
 	ResultInstance struct {
 		*CommonInstance
 		Test     *domain.Test
-		Locale   string
 		TestStep string
 		// to have constants in templates
 		IntroStatus     string
@@ -81,7 +85,6 @@ func (h *Handler) NewResultInstance(s live.Socket) *ResultInstance {
 			QuestionsStatus: domain.TestStepQuestions,
 			FinishStatus:    domain.TestStepFinish,
 			ResultStatus:    domain.TestStepResult,
-			Locale:          domain.LocaleEn,
 			ShowDetails:     false,
 			ShowInstruction: false,
 		}
@@ -153,7 +156,7 @@ func (h *Handler) Result() live.Handler {
 			return instance.withError(err), nil
 		}
 
-		instance.Test, err = h.app.PrepareTestResult(ctx, &domain.Test{Take: take}, instance.Locale)
+		instance.Test, err = h.app.PrepareTestResult(ctx, &domain.Test{Take: take}, instance.Locale())
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -164,13 +167,8 @@ func (h *Handler) Result() live.Handler {
 	lvh.HandleEvent(eventResultSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
 		instance := h.NewResultInstance(s)
 
-		locale := p.String(paramTestLocale)
-		if !domain.IsValidLocale(locale) {
-			return instance.withError(fmt.Errorf("unknown locale: %s", locale)), nil
-		}
-
-		instance.Locale = locale
-		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale)
+		instance.SetLocale(p.String(paramTestLocale))
+		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale())
 		if err != nil {
 			return instance.withError(err), nil
 		}

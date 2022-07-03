@@ -113,6 +113,13 @@ input[type="checkbox"]:disabled {
 }
 
 
+/* Meter */
+
+meter {
+	background-color: $progress-bar-background-color;
+	border-radius: $progress-border-radius;
+}
+
 /* Loading */
 
 @mixin animate($animation, $duration, $method, $times) {

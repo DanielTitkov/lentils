@@ -26,23 +26,25 @@
         {{ template "locale-selector" . }}
       </div>
       <div class="column is-6">
-        <p class="title is-5">Interface settings</p>
+        <p class="title is-5">{{ .UI.Test.InterfaceSettings }}</p>
         {{ template "test-controls-info" . }}
       </div>
     </div>
     <div class="notification box">
-      <p class="title is-3">Instructions</p>
+      <p class="title is-3">{{ .UI.Test.Instructions }}</p>
       <div class="content is-medium">
         {{ .Test.Instruction }}
       </div>
     </div>
   </div>
   <div class="section">
-    <p class="block is-size-5 has-text-centered">When you are happy please continue to the next step.</p>
+    <p class="block is-size-5 has-text-centered">{{ .UI.Test.BeginLabel }}</p>
     <div class="level">
       <div class="level-item has-text-centered">
         <div class="block">
-          <button class="button is-large is-primary is-rounded" live-click="begin-test">Continue</button>
+          <button class="button is-large is-primary is-rounded" live-click="begin-test">
+            {{ .UI.Test.BeginButton }}
+          </button>
         </div>
       </div>
     </div>
@@ -54,7 +56,7 @@
     <div class="block">
       <progress class="progress is-normal is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
         .Page }}%</progress>
-      <p class="header">Page {{ .Page }} of {{ .Test.PageCount }}</p>
+      <p class="header">{{ .UI.Test.Page }} {{ .Page }} {{ .UI.Test.Of }} {{ .Test.PageCount }}</p>
     </div>
     {{ range .CurrentQuestions }}
     <div class="notification box {{ if .IsDone }}question-done{{end}}">
@@ -79,17 +81,19 @@
     <div class="level-item has-text-centered">
       <div class="block">
         <button class="button is-large is-rounded is-danger" live-click="prev-page" {{ if le .Page 1
-          }}disabled{{end}}>Previous</button>
+          }}disabled{{end}}>{{ .UI.Test.PrevButton }}</button>
       </div>
     </div>
     <div class="level-item has-text-centered">
       <div class="block">
         {{ if ge .Page .Test.PageCount }}
         <button class="button is-large is-rounded is-success" live-click="end-test" {{ if .Test.IsNotDone
-          }}disabled{{end}}>Finish</button>
+          }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
         {{ else }}
         <button class="button is-large is-rounded is-success" live-click="next-page" {{ if ge .Page .Test.PageCount
-          }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>Next</button>
+          }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
+          {{ .UI.Test.NextButton }}
+        </button>
         {{ end }}
       </div>
     </div>
@@ -123,33 +127,29 @@
       </div>
       <div class="column is-6">
         <p class="subtitle is-5">
-          The results of this online quiz (personality test)
-          are provided "as-is" only for educational purporses
-          and should not be construed as providing professional
-          or certified advice of any kind.
+          {{ .UI.Test.Disclaimer }}
         </p>
         <p class="subtitle is-5">
-          Lentils uses dynamic standardization,
-          so results may change (probably insignicantly) with time,
-          as we gather more data and recalculate norms.
+          {{ .UI.Test.NormsInfo }}
         </p>
       </div>
     </div>
     <div class="columns">
       <div class="column">
-        <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">Result permanent link</a></p>
-        <p>NB: anyone with this link will be able to see this page</p>
+        <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
+        <p>{{ .UI.Test.ResultLinkInfo }}</p>
       </div>
       <div class="column is-narrow">
         {{ if eq .CurrentView "result" }}
-        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2" target="_blank">Take this test</a>
+        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2" target="_blank">{{
+          .UI.Test.TakeThisButton }}</a>
         {{ end }}
-        <a href="/" class="button is-rounded is-primary" target="_blank">Explore other tests</a>
+        <a href="/" class="button is-rounded is-primary" target="_blank">{{ .UI.Test.ExploreButton }}</a>
       </div>
     </div>
   </div>
   <div class="section">
-    <p class="subtitle is-2 has-text-centered">Detailed report</p>
+    <p class="subtitle is-2 has-text-centered">{{ .UI.Test.DetailedReport }}</p>
   </div>
   <div class="columns is-multiline">
     {{ range $i, $scale := .Test.Scales }}
@@ -175,8 +175,9 @@
             <div class="level-item">{{ $scale.Result.Max }}</div>
           </div>
         </div>
-        <progress class="progress is-large is-success" value="{{ $scale.Result.Score }}"
-          max="{{ Sum $scale.Result.Max $scale.Result.Min }}">
+        <progress class="progress is-large is-success"
+          value="{{ Perc $scale.Result.Min $scale.Result.Max $scale.Result.Score }}"
+          max="{{ Perc $scale.Result.Min $scale.Result.Max $scale.Result.Max }}">
           {{ $scale.Result.Score }}
         </progress>
         <div class="content is-normal">
@@ -201,25 +202,14 @@
       <p>
         <button class="button is-rounded {{ if .AutoNext }}is-success{{else}}is-outlined{{end}}"
           live-click="toggle-auto-next">
-          Auto-Next
+          {{ .UI.Test.AutoNext }}
         </button>
       </p>
     </div>
     <div class="column">
-      <p>Auto-Next: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
-      <p class="heading">
-        If Auto-Next is on, test will switch to the next page as soon as all the questions on a page are answered.
-        Otherwise you would need to click "Next" button.
-      </p>
+      <p>{{ .UI.Test.AutoNext }}: <b>{{ if .AutoNext }}ON{{else}}OFF{{end}}</b></p>
+      <p class="heading">{{ .UI.Test.AutoNextInfo }}</p>
     </div>
-    <!-- {{ if eq .Test.Display.QuestionsPerPage 1 }}
-    <div class="column is-6">
-      <p>
-        You can use number keys (1, 2, etc.) on your keyboard to select response variants
-        (works only if there's 1 questions per page).
-      </p>
-    </div>
-    {{ end }} -->
   </div>
 </div>
 {{ end }}
@@ -228,10 +218,10 @@
 <div class="block">
   <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-details">
     {{ if .ShowDetails }}
-    Hide test details
+    {{ .UI.Test.HideDetails }}
     <i class="bi bi-caret-up-fill"></i>
     {{ else }}
-    Show test details
+    {{ .UI.Test.ShowDetails }}
     <i class="bi bi-caret-down-fill"></i>
     {{ end }}
   </p>
@@ -258,10 +248,10 @@
 <div class="block">
   <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-instruction">
     {{ if .ShowInstruction }}
-    Hide test instructions
+    {{ .UI.Test.HideInstruction }}
     <i class="bi bi-caret-up-fill"></i>
     {{ else }}
-    Show test instructions
+    {{ .UI.Test.ShowInstruction }}
     <i class="bi bi-caret-down-fill"></i>
     {{ end }}
   </p>
@@ -277,7 +267,7 @@
 {{ end }}
 
 {{ define "locale-selector" }}
-<p class="title is-5">Select language</p>
+<p class="title is-5">{{ .UI.Test.SelectLoc }}</p>
 {{ range .Test.AvailableLocales }}
 <button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
   live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">

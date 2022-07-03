@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"errors"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -59,6 +58,12 @@ var testFuncMap = template.FuncMap{
 		return sum / float64(len(data))
 	},
 	"LocaleIcon": domain.LocaleIcon,
+	"Perc": func(min, max, v float64) float64 {
+		if max == min {
+			return 0
+		}
+		return (v - min) / (max - min)
+	},
 }
 
 type (
@@ -66,7 +71,6 @@ type (
 		*CommonInstance
 		Test             *domain.Test
 		CurrentQuestions []*domain.Question
-		Locale           string
 		TestStep         string
 		Page             int
 		// to have constants in templates
@@ -109,7 +113,6 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 			QuestionsStatus: domain.TestStepQuestions,
 			FinishStatus:    domain.TestStepFinish,
 			ResultStatus:    domain.TestStepResult,
-			Locale:          domain.LocaleEn,
 			AutoNext:        false,
 			ShowDetails:     false,
 			ShowInstruction: false,
@@ -178,7 +181,7 @@ func (h *Handler) Test() live.Handler {
 			return instance.withError(errors.New("user is nil")), nil
 		}
 
-		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
+		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale(), &domain.PrepareTestArgs{
 			UserID:  instance.UserID,
 			Session: instance.Session,
 		})
@@ -197,13 +200,8 @@ func (h *Handler) Test() live.Handler {
 		}
 		instance := h.NewTestInstance(s)
 
-		locale := p.String(paramTestLocale)
-		if !domain.IsValidLocale(locale) {
-			return instance.withError(fmt.Errorf("unknown locale: %s", locale)), nil
-		}
-
-		instance.Locale = locale
-		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale, &domain.PrepareTestArgs{
+		instance.SetLocale(p.String(paramTestLocale))
+		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale(), &domain.PrepareTestArgs{
 			UserID:  instance.UserID,
 			Session: instance.Session,
 		})
@@ -240,7 +238,7 @@ func (h *Handler) Test() live.Handler {
 		}
 
 		// load all test data from the db and calculate result
-		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale)
+		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale())
 		if err != nil {
 			return instance.withError(err), nil
 		}
