@@ -3,12 +3,12 @@ package entgo
 import (
 	"context"
 
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
+	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
 )
 
 func (r *EntgoRepository) GetTake(ctx context.Context, takeID uuid.UUID) (*domain.Take, error) {

@@ -1,4 +1,4 @@
-module github.com/DanielTitkov/lentils
+module github.com/DanielTitkov/orrery
 
 go 1.16
 

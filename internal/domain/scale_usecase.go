@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/DanielTitkov/lentils/internal/util"
+	"github.com/DanielTitkov/orrery/internal/util"
 )
 
 type scaleResolveFunc func(*Scale, *Norm) (*ScaleResult, error)

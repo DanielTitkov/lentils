@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scaletranslation"
 )
 
 // ScaleTranslationDelete is the builder for deleting a ScaleTranslation entity.

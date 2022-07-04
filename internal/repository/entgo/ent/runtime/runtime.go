@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/DanielTitkov/lentils/internal/repository/entgo/ent/runtime.go
+// The schema-stitching logic is generated in github.com/DanielTitkov/orrery/internal/repository/entgo/ent/runtime.go
 
 const (
 	Version = "v0.10.2-0.20220609174026-b2844fb88c13"           // Version of ent codegen.

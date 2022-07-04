@@ -11,11 +11,11 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/questiontranslation"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/questiontranslation"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
 	"github.com/google/uuid"
 )
 

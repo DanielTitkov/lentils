@@ -17,12 +17,12 @@ translations:
     title: FIPI
     description: Five-Item Personality Inventory (for testing only)
     instruction: Answer all the questions (there's only 5 of them!)
-    details: This is a fake test created by Lentils for debug purspose only
+    details: This is a fake test created by Orrery for debug purspose only
   - locale: ru
     title: ПИПИ
     description: Краткий тест личности (для тестов)
     instruction: Ответьте на все вопросы (их всего 5!)
-    details: Это пробный тест, сознанный Lentils для отладки
+    details: Это пробный тест, сознанный Orrery для отладки
 scales:
   - code: fipi-01-extraversion
     type: sten

@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/DanielTitkov/lentils/internal/configs"
-	"github.com/DanielTitkov/lentils/internal/handler"
+	"github.com/DanielTitkov/orrery/internal/configs"
+	"github.com/DanielTitkov/orrery/internal/handler"
 	"github.com/gorilla/mux"
 	"github.com/jfyne/live"
 )

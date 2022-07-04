@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/DanielTitkov/lentils/internal/util"
+	"github.com/DanielTitkov/orrery/internal/util"
 
-	"github.com/DanielTitkov/lentils/internal/configs"
-	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/internal/logger"
+	"github.com/DanielTitkov/orrery/internal/configs"
+	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/logger"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 )

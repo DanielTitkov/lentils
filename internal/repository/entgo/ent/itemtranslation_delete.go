@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/itemtranslation"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/itemtranslation"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
 )
 
 // ItemTranslationDelete is the builder for deleting a ItemTranslation entity.

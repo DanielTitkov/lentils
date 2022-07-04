@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"

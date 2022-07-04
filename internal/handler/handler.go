@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/lentils/internal/app"
-	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/internal/logger"
+	"github.com/DanielTitkov/orrery/internal/app"
+	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/logger"
 )
 
 const (

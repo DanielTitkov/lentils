@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 )
 
 func (a *App) initSamples() error {

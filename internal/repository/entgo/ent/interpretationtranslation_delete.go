@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/interpretationtranslation"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/interpretationtranslation"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
 )
 
 // InterpretationTranslationDelete is the builder for deleting a InterpretationTranslation entity.

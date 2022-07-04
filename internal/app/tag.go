@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 	"gopkg.in/yaml.v2"
 )
 

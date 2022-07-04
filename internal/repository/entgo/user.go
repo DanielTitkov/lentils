@@ -5,9 +5,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
+	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/user"
 )
 
 func (r *EntgoRepository) GetUserCount(ctx context.Context) (int, error) {

@@ -8,9 +8,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/lentils/internal/util"
+	"github.com/DanielTitkov/orrery/internal/util"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 	"gopkg.in/yaml.v2"
 )
 

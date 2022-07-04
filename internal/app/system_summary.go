@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 )
 
 func (a *App) GetSystemSummary(ctx context.Context) (*domain.SystemSymmary, error) {

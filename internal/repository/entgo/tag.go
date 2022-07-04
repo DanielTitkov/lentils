@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tagtranslation"
+	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tag"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tagtranslation"
 	"github.com/google/uuid"
 )
 

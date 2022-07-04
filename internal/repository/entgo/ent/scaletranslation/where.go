@@ -5,7 +5,7 @@ package scaletranslation
 import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/predicate"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
 	"github.com/google/uuid"
 )
 

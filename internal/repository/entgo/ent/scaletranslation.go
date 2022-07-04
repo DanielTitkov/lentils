@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scaletranslation"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scaletranslation"
 	"github.com/google/uuid"
 )
 

@@ -1,9 +1,9 @@
 package job
 
 import (
-	"github.com/DanielTitkov/lentils/internal/app"
-	"github.com/DanielTitkov/lentils/internal/configs"
-	"github.com/DanielTitkov/lentils/internal/logger"
+	"github.com/DanielTitkov/orrery/internal/app"
+	"github.com/DanielTitkov/orrery/internal/configs"
+	"github.com/DanielTitkov/orrery/internal/logger"
 )
 
 type Job struct {

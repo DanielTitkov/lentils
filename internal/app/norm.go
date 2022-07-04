@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 
-	"github.com/DanielTitkov/lentils/internal/util"
+	"github.com/DanielTitkov/orrery/internal/util"
 	"github.com/montanaflynn/stats"
 )
 

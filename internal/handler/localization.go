@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 )
 
 type (
@@ -68,7 +68,7 @@ func newTranslationEn() *UITranslation {
 	return &UITranslation{
 		Base: &UITransBase{},
 		Home: &UITransHome{
-			Title:       "Lentils",
+			Title:       "Orrery",
 			Description: "Modern psychometrics for fun and science",
 		},
 		Test: &UITransTest{
@@ -98,7 +98,7 @@ func newTranslationEn() *UITranslation {
 			Disclaimer: `The results of this online quiz (personality test) 
 			are provided "as-is" only for educational purporses and should not be construed 
 			as providing professional or certified advice of any kind.`,
-			NormsInfo: `Lentils uses dynamic standardization, 
+			NormsInfo: `Orrery uses dynamic standardization, 
 			so results may change (probably insignicantly) with time, 
 			as we gather more data and recalculate norms.`,
 		},
@@ -109,7 +109,7 @@ func newTranslationRu() *UITranslation {
 	return &UITranslation{
 		Base: &UITransBase{},
 		Home: &UITransHome{
-			Title:       "Lentils",
+			Title:       "Orrery",
 			Description: "Современная психометрика для науки и потехи",
 		},
 		Test: &UITransTest{
@@ -140,7 +140,7 @@ func newTranslationRu() *UITranslation {
 			Disclaimer: `Результаты этого опросника (личностного теста)
 			предоставляются как есть исключительно в образовательных целях
 			и не должны рассматриваться как рекомендация или заключение профессионала.`,
-			NormsInfo: `Lentils использует динамическую стандартизацию, 
+			NormsInfo: `Orrery использует динамическую стандартизацию, 
 			поэтому в будущем результаты могут меняться (скорее всего незначительно), 
 			по мере того как мы собираем больше данных и обновляем нормы.`,
 		},

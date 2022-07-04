@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 	"github.com/google/uuid"
 )
 

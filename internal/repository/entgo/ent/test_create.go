@@ -10,13 +10,13 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/question"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/tag"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testdisplay"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/testtranslation"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/question"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tag"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/testdisplay"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/testtranslation"
 	"github.com/google/uuid"
 )
 

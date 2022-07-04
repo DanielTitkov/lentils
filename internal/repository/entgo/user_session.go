@@ -5,13 +5,13 @@ import (
 	"errors"
 	"time"
 
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/usersession"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/user"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/usersession"
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
+	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
 )
 
 func (r *EntgoRepository) CreateUserSession(ctx context.Context, s *domain.UserSession) (*domain.UserSession, error) {

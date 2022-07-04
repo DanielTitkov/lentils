@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/test"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/user"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/user"
 	"github.com/google/uuid"
 )
 

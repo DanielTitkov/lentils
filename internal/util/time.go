@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/DanielTitkov/lentils/internal/logger"
+	"github.com/DanielTitkov/orrery/internal/logger"
 )
 
 func InfoExecutionTime(start time.Time, name string, logger *logger.Logger) {

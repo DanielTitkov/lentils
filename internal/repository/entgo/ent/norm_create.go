@@ -10,9 +10,9 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/norm"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/sample"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/scale"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/norm"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/sample"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
 	"github.com/google/uuid"
 )
 

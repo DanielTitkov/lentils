@@ -3,7 +3,7 @@ package prepare
 import (
 	"net/http"
 
-	"github.com/DanielTitkov/lentils/internal/configs"
+	"github.com/DanielTitkov/orrery/internal/configs"
 	"github.com/jfyne/live"
 )
 

@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/response"
-	"github.com/DanielTitkov/lentils/internal/repository/entgo/ent/take"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/response"
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 	"github.com/google/uuid"
 )
 

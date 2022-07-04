@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"log"
 
-	"github.com/DanielTitkov/lentils/internal/domain"
+	"github.com/DanielTitkov/orrery/internal/domain"
 
 	"github.com/jfyne/live"
 )
