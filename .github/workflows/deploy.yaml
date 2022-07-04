@@ -7,7 +7,7 @@ on:
 jobs:
   # lint code with golangci-lint using built-in action
   lint:
-    environment: stage
+    environment: prod01
     name: Lint
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +21,7 @@ jobs:
 
   # run tests
   test:
-    environment: stage
+    environment: prod01
     name: Test
     runs-on: ubuntu-latest 
     steps:
@@ -36,7 +36,7 @@ jobs:
 
   # build go binary, this is actully not really needed, it just validates the code builds
   build:
-    environment: stage
+    environment: prod01
     name: Build
     runs-on: ubuntu-latest 
     steps:
@@ -51,7 +51,7 @@ jobs:
 
   # build docker and push it to docker registry
   publish:
-    environment: stage
+    environment: prod01
     name: Publish
     needs: [lint, build, test]
     runs-on: ubuntu-latest 
@@ -70,7 +70,7 @@ jobs:
 
   # tell server to pull new contaner and run it
   deploy:
-    environment: stage
+    environment: prod01
     name: Deploy
     needs: [publish]
     runs-on: ubuntu-latest
@@ -129,7 +129,7 @@ jobs:
             echo "all ok"
 
   report:
-    environment: stage
+    environment: prod01
     name: Report deploy
     needs: [deploy]
     runs-on: ubuntu-latest
