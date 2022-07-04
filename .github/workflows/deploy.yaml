@@ -125,7 +125,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:${TAG:11}
             docker stop $(docker ps -a -q --filter name=^/${{ secrets.DOCKER_NAME }}$) || :
             docker rm -f $(docker ps -a -q --filter name=^/${{ secrets.DOCKER_NAME }}$) || :
-            docker run --restart unless-stopped -p 80:${{ secrets.HTTP_PORT }} -d -e CONFIG_PATH=/opt/configs/deploy_config_111.yml --mount type=bind,source=$(pwd)/configs,target=/opt/configs --name=${{ secrets.DOCKER_NAME }} ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:${TAG:11}
+            docker run --restart unless-stopped -p 80:80 -d -e CONFIG_PATH=/opt/configs/deploy_config_111.yml --mount type=bind,source=$(pwd)/configs,target=/opt/configs --name=${{ secrets.DOCKER_NAME }} ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:${TAG:11}
             echo "all ok"
 
   report:
