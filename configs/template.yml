@@ -7,12 +7,11 @@ server:
   port: 80
   host: "0.0.0.0"
 app:
-  defaultChallengePageLimit: 10
-  homeChallengePageLimit: 4
-  systemSummaryInterval: 15 # minutes
-  systemSummaryTimeout: 1500 # milliseconds
+  systemSummaryInterval: 30 # minutes
+  systemSummaryTimeout: 1000 # milliseconds
+  updateNormsInterval: 120 # minutes
+  updateNormsTimeout: 10000 # milliseconds
   defaultTimeLayout: "2006-01-02"
-  minProofCount: 3
   version: {{version}}
 debug:
   logDBQueries: false
@@ -33,15 +32,13 @@ auth:
     callback: {{twitter_auth_callback}}
 data:
   presets:
-    challengePresetsPaths: 
-      # - ./data/presets/challenges.json
-      # - ./data/presets/challenges_auto.json
-    userPresetsPaths:
-      # - ./data/presets/users.json
-      # - ./data/presets/users_auto.json
-    predictionPresetsPaths: 
-      # - ./data/presets/predictions.json
-      # - ./data/presets/predictions_auto.json
+    testPresetsPaths: 
+      - ./data/presets/test.extro.yaml
+      - ./data/presets/test.tipi.yaml
+      - ./data/presets/test.fipi.yaml
+      - ./data/presets/test.hexaco.yaml
+    tagPresetsPaths:
+      - ./data/presets/tags.yaml
 external:
   telegram:
     telegramTo: {{telegram_to}}
