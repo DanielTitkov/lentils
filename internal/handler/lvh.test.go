@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -177,12 +178,17 @@ func (h *Handler) Test() live.Handler {
 		instance := h.NewTestInstance(s)
 		instance.fromContext(ctx)
 
+		fmt.Println("INS USER", instance.User) // FIXME
 		if instance.User == nil {
-			return instance.withError(errors.New("user is nil")), nil
+			instance.User, err = h.app.GetUserByLiveSession(r, s.Session())
+			fmt.Println("INS USER 2", instance.User, err) // FIXME
+			if err != nil || instance.User == nil {
+				return nil, fmt.Errorf("user is nil, sid: %s, error: %s", s.Session(), err)
+			}
 		}
 
 		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale(), &domain.PrepareTestArgs{
-			UserID:  instance.UserID,
+			UserID:  instance.User.ID,
 			Session: instance.Session,
 		})
 		if err != nil {

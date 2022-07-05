@@ -27,6 +27,9 @@ func (h *Handler) Logout(res http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(res, err)
 		return
 	}
+	if ses == nil {
+		return
+	}
 
 	h.log.Debug("user session set inactive", fmt.Sprintf("email: %s, sid: %s", user.Email, ses.SID))
 }
@@ -59,6 +62,9 @@ func (h *Handler) CompleteOAuth(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		h.log.Error("failed to create user session (OAUTH)", err)
 		fmt.Fprintln(res, err)
+		return
+	}
+	if ses == nil {
 		return
 	}
 

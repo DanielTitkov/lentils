@@ -12,18 +12,19 @@ import (
 
 func Mux(cfg configs.Config, store live.HttpSessionStore, h *handler.Handler) *mux.Router {
 	r := mux.NewRouter()
-	r.Use(h.Middleware)
 	r.NotFoundHandler = http.HandlerFunc(h.NotFoundRedirect)
 	// main handler
-	r.Handle("/test/{testCode}", live.NewHttpHandler(store, h.Test()))
-	r.Handle("/result/{takeID}", live.NewHttpHandler(store, h.Result()))
-	r.Handle("/about", live.NewHttpHandler(store, h.About()))
-	r.Handle("/profile", live.NewHttpHandler(store, h.Profile()))
-	r.Handle("/privacy", live.NewHttpHandler(store, h.Privacy()))
-	r.Handle("/terms", live.NewHttpHandler(store, h.Terms()))
-	r.Handle("/admin", live.NewHttpHandler(store, h.Admin()))
-	r.Handle("/404", live.NewHttpHandler(store, h.NotFound()))
-	r.Handle("/", live.NewHttpHandler(store, h.Home()))
+	sr := r.PathPrefix("/").Subrouter()
+	sr.Handle("/test/{testCode}", live.NewHttpHandler(store, h.Test()))
+	sr.Handle("/result/{takeID}", live.NewHttpHandler(store, h.Result()))
+	sr.Handle("/about", live.NewHttpHandler(store, h.About()))
+	sr.Handle("/profile", live.NewHttpHandler(store, h.Profile()))
+	sr.Handle("/privacy", live.NewHttpHandler(store, h.Privacy()))
+	sr.Handle("/terms", live.NewHttpHandler(store, h.Terms()))
+	sr.Handle("/admin", live.NewHttpHandler(store, h.Admin()))
+	sr.Handle("/404", live.NewHttpHandler(store, h.NotFound()))
+	sr.Handle("/", live.NewHttpHandler(store, h.Home()))
+	sr.Use(h.Middleware)
 
 	// live scripts
 	r.Handle("/live.js", live.Javascript{})

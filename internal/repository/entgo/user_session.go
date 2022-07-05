@@ -5,7 +5,6 @@ import (
 	"errors"
 	"time"
 
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/user"
 	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/usersession"
 
 	"github.com/google/uuid"
@@ -14,28 +13,14 @@ import (
 	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
 )
 
-func (r *EntgoRepository) CreateUserSession(ctx context.Context, s *domain.UserSession) (*domain.UserSession, error) {
-	ses, err := r.client.UserSession.
-		Create().
-		SetSid(s.SID).
-		SetUserID(s.UserID).
-		SetIP(s.IP).
-		SetUserAgent(s.UserAgent).
-		SetMeta(s.Meta).
-		SetActive(s.Active).
-		SetLastActivity(time.Now()).
-		Save(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return entToDomainUserSession(ses), nil
-}
-
 // CreateOrUpdateUserSession must be used only with authentication like oauth
 // because it updated ip and user agent and in other uses may be vulnerable
 // to session steal
 func (r *EntgoRepository) CreateOrUpdateUserSession(ctx context.Context, s *domain.UserSession) (*domain.UserSession, error) {
+	if s == nil {
+		return nil, nil
+	}
+
 	if s.UserID == uuid.Nil {
 		return nil, errors.New("user id required to create or update user session")
 	}
@@ -45,9 +30,10 @@ func (r *EntgoRepository) CreateOrUpdateUserSession(ctx context.Context, s *doma
 		Where(
 			usersession.And(
 				usersession.SidEQ(s.SID),
-				usersession.HasUserWith(
-					user.IDEQ(s.UserID),
-				),
+				// FIXME
+				// usersession.HasUserWith(
+				// 	user.IDEQ(s.UserID),
+				// ),
 			),
 		).
 		Only(ctx)

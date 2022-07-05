@@ -31,7 +31,6 @@ type (
 
 		// user session
 		IfSessionRegistered(context.Context, *domain.UserSession) (bool, error)
-		CreateUserSession(context.Context, *domain.UserSession) (*domain.UserSession, error)
 		CreateOrUpdateUserSession(context.Context, *domain.UserSession) (*domain.UserSession, error)
 		UpdateUserSessionLastActivityBySID(context.Context, string) error
 		GetUserBySession(context.Context, *domain.UserSession) (*domain.User, error)
