@@ -15,7 +15,8 @@
 <body has-navbar-fixed-bottom>
   <!-- debug start -->
   {{ if .Env }}
-  {{ if eq .Env "dev1" }}
+  {{ if ne .Env "dev1" }}
+  <!-- FIXME -->
   <div class="box">
     <p class="heading">Debug info</p>
     <p><b>Session: </b>{{ .Session }}</p>
