@@ -11,7 +11,7 @@ func (h *Handler) Logout(res http.ResponseWriter, req *http.Request) {
 	// defer h.app.ResetSession(res, req)
 	defer http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
 
-	user, err := h.app.GetUserBySession(req)
+	user, err := h.app.GetUserBySession(req, nil)
 	if err != nil {
 		// TODO: propagate error to context
 		h.log.Error("failed to get user from session", err)
@@ -20,7 +20,7 @@ func (h *Handler) Logout(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// set user session inactive
-	ses, err := h.app.CreateOrUpdateUserSession(req, user, false)
+	ses, err := h.app.CreateOrUpdateUserSession(req, nil, user, false)
 	if err != nil {
 		// TODO: propagate error to context
 		h.log.Error("failed to create user session (Logout)", err)
@@ -58,7 +58,7 @@ func (h *Handler) CompleteOAuth(res http.ResponseWriter, req *http.Request) {
 	h.log.Debug("user authenticated", fmt.Sprintf("email: %s, provider: %s", user.Email, gu.Provider))
 
 	// add or update session for user
-	ses, err := h.app.CreateOrUpdateUserSession(req, user, true)
+	ses, err := h.app.CreateOrUpdateUserSession(req, nil, user, true)
 	if err != nil {
 		h.log.Error("failed to create user session (OAUTH)", err)
 		fmt.Fprintln(res, err)

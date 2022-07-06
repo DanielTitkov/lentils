@@ -178,10 +178,8 @@ func (h *Handler) Test() live.Handler {
 		instance := h.NewTestInstance(s)
 		instance.fromContext(ctx)
 
-		fmt.Println("INS USER", instance.User) // FIXME
 		if instance.User == nil {
-			instance.User, err = h.app.GetUserByLiveSession(r, s.Session())
-			fmt.Println("INS USER 2", instance.User, err) // FIXME
+			instance.User, err = h.app.GetUserBySession(r, s.Session())
 			if err != nil || instance.User == nil {
 				return nil, fmt.Errorf("user is nil, sid: %s, error: %s", s.Session(), err)
 			}
