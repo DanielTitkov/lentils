@@ -1,1 +1,5 @@
-# lentils
+# Orrery
+
+Psychometrics app
+
+orrery.me
