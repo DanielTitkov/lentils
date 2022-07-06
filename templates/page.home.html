@@ -4,7 +4,7 @@
   <div class="section">
     <div class="columns">
       <div class="column is-4">
-        <p class="title is-4">Themes</p>
+        <p class="title is-4 is-size-5-mobile">Themes</p>
         {{ range .Tags }}
         {{ if eq .Type "theme" }}
         {{ if CodeInTags .Code $.ActiveTags }}
@@ -16,7 +16,7 @@
         {{ end }}
       </div>
       <div class="column is-4">
-        <p class="title is-4">Size</p>
+        <p class="title is-4 is-size-5-mobile">Size</p>
         {{ range .Tags }}
         {{ if eq .Type "len" }}
         {{ if CodeInTags .Code $.ActiveTags }}
@@ -28,7 +28,7 @@
         {{ end }}
       </div>
       <div class="column is-4">
-        <p class="title is-4">Features</p>
+        <p class="title is-4 is-size-5-mobile">Features</p>
         {{ range .Tags }}
         {{ if eq .Type "feature" }}
         {{ if CodeInTags .Code $.ActiveTags }}
@@ -60,8 +60,8 @@
 
 {{ define "test-card" }}
 <div class="box notification">
-  <p class="title is-3"><a href="/test/{{ .Code }}">{{ .Title }}</a></p>
-  <p class="subtitle is-5">{{ .Description }}</p>
+  <p class="title is-3 is-size-5-mobile"><a href="/test/{{ .Code }}">{{ .Title }}</a></p>
+  <p class="subtitle is-5 is-size-6-mobile">{{ .Description }}</p>
   {{ template "test-tags" . }}
 </div>
 {{ end }}

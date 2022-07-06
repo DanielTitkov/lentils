@@ -4,8 +4,8 @@
   <div class="section">
     <div class="columns">
       <div class="column">
-        <h1 class="title is-1">{{ .Test.Title }}</h1>
-        <h3 class="subtitle is-3">{{ .Test.Description }}</h3>
+        <h1 class="title is-1 is-size-3-mobile">{{ .Test.Title }}</h1>
+        <h3 class="subtitle is-3 is-size-5-mobile">{{ .Test.Description }}</h3>
       </div>
       {{ if eq .CurrentView "result" }}
       <div class="column is-narrow">
@@ -31,20 +31,20 @@
       </div>
     </div>
     <div class="notification box">
-      <p class="title is-3">{{ .UI.Test.Instructions }}</p>
-      <div class="content is-medium">
-        {{ .Test.Instruction }}
-      </div>
+      <p class="title is-3 is-size-5-mobile">{{ .UI.Test.Instructions }}</p>
+      <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
+      <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
     </div>
   </div>
   <div class="section">
-    <p class="block is-size-5 has-text-centered">{{ .UI.Test.BeginLabel }}</p>
+    <p class="block is-size-5 is-size-6-mobile has-text-centered">{{ .UI.Test.BeginLabel }}</p>
     <div class="level">
       <div class="level-item has-text-centered">
         <div class="block">
-          <button class="button is-large is-primary is-rounded" live-click="begin-test">
-            {{ .UI.Test.BeginButton }}
-          </button>
+          <button class="button is-large is-primary is-rounded is-hidden-mobile" live-click="begin-test">{{
+            .UI.Test.BeginButton }}</button>
+          <button class="button is-primary is-rounded is-hidden-tablet" live-click="begin-test">{{ .UI.Test.BeginButton
+            }}</button>
         </div>
       </div>
     </div>
@@ -60,10 +60,10 @@
     </div>
     {{ range .CurrentQuestions }}
     <div class="notification box {{ if .IsDone }}question-done{{end}}">
-      <p class="title is-5">{{ .Content }}</p>
+      <p class="title is-5 is-size-6-mobile">{{ .Content }}</p>
       <div>
         {{ range $i, $item := .Items }}
-        <p class="title is-3">{{ .Content }}</p>
+        <p class="title is-3 is-size-5-mobile">{{ .Content }}</p>
         <div class="control">
           {{ range $j, $s := N .Steps }}
           <button class="button {{ if eq $item.CurrentResponseValue $j }}is-success{{ end }}"
@@ -77,20 +77,28 @@
     </div>
     {{ end }}
   </div>
-  <div class="level">
+  <div class="level is-mobile">
     <div class="level-item has-text-centered">
       <div class="block">
-        <button class="button is-large is-rounded is-danger" live-click="prev-page" {{ if le .Page 1
+        <button class="button is-large is-rounded is-danger is-hidden-mobile" live-click="prev-page" {{ if le .Page 1
+          }}disabled{{end}}>{{ .UI.Test.PrevButton }}</button>
+        <button class="button is-rounded is-danger is-hidden-tablet" live-click="prev-page" {{ if le .Page 1
           }}disabled{{end}}>{{ .UI.Test.PrevButton }}</button>
       </div>
     </div>
     <div class="level-item has-text-centered">
       <div class="block">
         {{ if ge .Page .Test.PageCount }}
-        <button class="button is-large is-rounded is-success" live-click="end-test" {{ if .Test.IsNotDone
+        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="end-test" {{ if
+          .Test.IsNotDone }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
+        <button class="button is-rounded is-success is-hidden-tablet" live-click="end-test" {{ if .Test.IsNotDone
           }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
         {{ else }}
-        <button class="button is-large is-rounded is-success" live-click="next-page" {{ if ge .Page .Test.PageCount
+        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="next-page" {{ if ge .Page .Test.PageCount
+          }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
+          {{ .UI.Test.NextButton }}
+        </button>
+        <button class="button is-rounded is-success is-hidden-tablet" live-click="next-page" {{ if ge .Page .Test.PageCount
           }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
           {{ .UI.Test.NextButton }}
         </button>
@@ -126,10 +134,10 @@
         </table>
       </div>
       <div class="column is-6">
-        <p class="subtitle is-5">
+        <p class="subtitle is-5 is-size-6-mobile">
           {{ .UI.Test.Disclaimer }}
         </p>
-        <p class="subtitle is-5">
+        <p class="subtitle is-5 is-size-6-mobile">
           {{ .UI.Test.NormsInfo }}
         </p>
       </div>
@@ -141,15 +149,15 @@
       </div>
       <div class="column is-narrow">
         {{ if eq .CurrentView "result" }}
-        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2" target="_blank">{{
+        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2 mt-1" target="_blank">{{
           .UI.Test.TakeThisButton }}</a>
         {{ end }}
-        <a href="/" class="button is-rounded is-primary" target="_blank">{{ .UI.Test.ExploreButton }}</a>
+        <a href="/" class="button is-rounded is-primary mt-1" target="_blank">{{ .UI.Test.ExploreButton }}</a>
       </div>
     </div>
   </div>
   <div class="section">
-    <p class="subtitle is-2 has-text-centered">{{ .UI.Test.DetailedReport }}</p>
+    <p class="subtitle is-2 is-size-4-mobile has-text-centered">{{ .UI.Test.DetailedReport }}</p>
   </div>
   <div class="columns is-multiline">
     {{ range $i, $scale := .Test.Scales }}
@@ -157,16 +165,16 @@
       <div class="notification box">
         <div class="columns">
           <div class="column">
-            <p class="title is-3">{{ $scale.Title }}</p>
-            <p class="subtitle is-5">{{ $scale.Description }}</p>
+            <p class="title is-3 is-size-5-mobile">{{ $scale.Title }}</p>
+            <p class="subtitle is-5 is-size-6-mobile">{{ $scale.Description }}</p>
           </div>
           <div class="column is-narrow">
-            <p class="title is-3 has-text-primary">{{printf "%.1f" $scale.Result.Score }}</p>
+            <p class="title is-3 is-size-5-mobile has-text-primary">{{printf "%.1f" $scale.Result.Score }}</p>
           </div>
         </div>
         <p class="heading">{{ $scale.Result.Formula }}</p>
         <hr>
-        <div class="level">
+        <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">{{ $scale.Result.Min }}</div>
           </div>
@@ -231,9 +239,8 @@
   {{ template "test-tags" .Test }}
   <div class="columns">
     <div class="column">
-      <div class="content is-medium">
-        {{ .Test.Details }}
-      </div>
+      <div class="content is-medium is-hidden-mobile">{{ .Test.Details }}</div>
+      <div class="content is-normal is-hidden-tablet">{{ .Test.Details }}</div>
     </div>
     <div class="column is-narrow">
       <p><b>Scales:</b> {{ len .Test.Scales }}</p>
@@ -258,20 +265,19 @@
 </div>
 {{ if .ShowInstruction }}
 <div class="notification has-background-grey-lighter">
-  <p class="title is-3">Instructions</p>
-  <div class="content is-medium">
-    {{ .Test.Instruction }}
-  </div>
+  <p class="title is-3 is-size-5-mobile">Instructions</p>
+  <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
+  <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
 </div>
 {{ end }}
 {{ end }}
 
 {{ define "locale-selector" }}
-<p class="title is-5">{{ .UI.Test.SelectLoc }}</p>
+<p class="title is-5 is-size-6-mobile">{{ .UI.Test.SelectLoc }}</p>
 {{ range .Test.AvailableLocales }}
 <button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
   live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">
-  <p class="title is-3">{{ LocaleIcon . }}</p>
+  <p class="title is-3 is-size-4-mobile">{{ LocaleIcon . }}</p>
 </button>
 {{end}}
 {{ end }}
