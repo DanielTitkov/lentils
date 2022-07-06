@@ -38,6 +38,7 @@ func Mux(cfg configs.Config, store live.HttpSessionStore, h *handler.Handler) *m
 	// static
 	r.HandleFunc("/favicon.ico", faviconHandler)
 	r.HandleFunc("/static/css/styles.css", stylesHandler)
+	r.HandleFunc("/static/css/styles-dark.css", stylesDarkHandler)
 
 	return r
 }
@@ -59,4 +60,8 @@ func faviconHandler(w http.ResponseWriter, r *http.Request) {
 
 func stylesHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "web/dist/css/styles.css")
+}
+
+func stylesDarkHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web/dist/css/styles-dark.css")
 }

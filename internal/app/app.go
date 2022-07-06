@@ -28,6 +28,7 @@ type (
 		GetUserByEmail(context.Context, string) (*domain.User, error)
 		GetUserByID(context.Context, uuid.UUID) (*domain.User, error)
 		CreateUser(context.Context, *domain.User) (*domain.User, error)
+		UpdateUser(ctx context.Context, user *domain.User) (*domain.User, error)
 
 		// user session
 		IfSessionRegistered(context.Context, *domain.UserSession) (bool, error)

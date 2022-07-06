@@ -117,6 +117,20 @@ func (uu *UserUpdate) SetNillableAnonymous(b *bool) *UserUpdate {
 	return uu
 }
 
+// SetUseDarkTheme sets the "use_dark_theme" field.
+func (uu *UserUpdate) SetUseDarkTheme(b bool) *UserUpdate {
+	uu.mutation.SetUseDarkTheme(b)
+	return uu
+}
+
+// SetNillableUseDarkTheme sets the "use_dark_theme" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableUseDarkTheme(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetUseDarkTheme(*b)
+	}
+	return uu
+}
+
 // SetMeta sets the "meta" field.
 func (uu *UserUpdate) SetMeta(m map[string]interface{}) *UserUpdate {
 	uu.mutation.SetMeta(m)
@@ -430,6 +444,13 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldAnonymous,
 		})
 	}
+	if value, ok := uu.mutation.UseDarkTheme(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: user.FieldUseDarkTheme,
+		})
+	}
 	if value, ok := uu.mutation.Meta(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeJSON,
@@ -741,6 +762,20 @@ func (uuo *UserUpdateOne) SetAnonymous(b bool) *UserUpdateOne {
 func (uuo *UserUpdateOne) SetNillableAnonymous(b *bool) *UserUpdateOne {
 	if b != nil {
 		uuo.SetAnonymous(*b)
+	}
+	return uuo
+}
+
+// SetUseDarkTheme sets the "use_dark_theme" field.
+func (uuo *UserUpdateOne) SetUseDarkTheme(b bool) *UserUpdateOne {
+	uuo.mutation.SetUseDarkTheme(b)
+	return uuo
+}
+
+// SetNillableUseDarkTheme sets the "use_dark_theme" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableUseDarkTheme(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetUseDarkTheme(*b)
 	}
 	return uuo
 }
@@ -1086,6 +1121,13 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeBool,
 			Value:  value,
 			Column: user.FieldAnonymous,
+		})
+	}
+	if value, ok := uuo.mutation.UseDarkTheme(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: user.FieldUseDarkTheme,
 		})
 	}
 	if value, ok := uuo.mutation.Meta(); ok {

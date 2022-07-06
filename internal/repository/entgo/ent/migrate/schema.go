@@ -504,6 +504,7 @@ var (
 		{Name: "password_hash", Type: field.TypeString},
 		{Name: "admin", Type: field.TypeBool, Default: false},
 		{Name: "anonymous", Type: field.TypeBool, Default: false},
+		{Name: "use_dark_theme", Type: field.TypeBool, Default: false},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "user_aliases", Type: field.TypeUUID, Nullable: true},
 	}
@@ -515,7 +516,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_aliases",
-				Columns:    []*schema.Column{UsersColumns[11]},
+				Columns:    []*schema.Column{UsersColumns[12]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

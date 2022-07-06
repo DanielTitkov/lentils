@@ -78,6 +78,18 @@ func (h *Handler) About() live.Handler {
 			instance.CloseMessage()
 			return instance, nil
 		})
+
+		lvh.HandleEvent(eventToggleDark, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
+			instance := constructor(s)
+			if instance.User != nil {
+				instance.User.UseDarkTheme = !instance.User.UseDarkTheme
+			}
+			instance.User, err = h.app.UpdateUser(ctx, instance.User)
+			if err != nil {
+				return instance.withError(err), nil
+			}
+			return instance, nil
+		})
 		// SAFE TO COPY END
 	}
 	// COMMON BLOCK END

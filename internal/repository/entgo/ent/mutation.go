@@ -13398,6 +13398,7 @@ type UserMutation struct {
 	password_hash   *string
 	admin           *bool
 	anonymous       *bool
+	use_dark_theme  *bool
 	meta            *map[string]interface{}
 	clearedFields   map[string]struct{}
 	sessions        map[int]struct{}
@@ -13870,6 +13871,42 @@ func (m *UserMutation) ResetAnonymous() {
 	m.anonymous = nil
 }
 
+// SetUseDarkTheme sets the "use_dark_theme" field.
+func (m *UserMutation) SetUseDarkTheme(b bool) {
+	m.use_dark_theme = &b
+}
+
+// UseDarkTheme returns the value of the "use_dark_theme" field in the mutation.
+func (m *UserMutation) UseDarkTheme() (r bool, exists bool) {
+	v := m.use_dark_theme
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUseDarkTheme returns the old "use_dark_theme" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldUseDarkTheme(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUseDarkTheme is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUseDarkTheme requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUseDarkTheme: %w", err)
+	}
+	return oldValue.UseDarkTheme, nil
+}
+
+// ResetUseDarkTheme resets all changes to the "use_dark_theme" field.
+func (m *UserMutation) ResetUseDarkTheme() {
+	m.use_dark_theme = nil
+}
+
 // SetMeta sets the "meta" field.
 func (m *UserMutation) SetMeta(value map[string]interface{}) {
 	m.meta = &value
@@ -14139,7 +14176,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.create_time != nil {
 		fields = append(fields, user.FieldCreateTime)
 	}
@@ -14166,6 +14203,9 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.anonymous != nil {
 		fields = append(fields, user.FieldAnonymous)
+	}
+	if m.use_dark_theme != nil {
+		fields = append(fields, user.FieldUseDarkTheme)
 	}
 	if m.meta != nil {
 		fields = append(fields, user.FieldMeta)
@@ -14196,6 +14236,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.Admin()
 	case user.FieldAnonymous:
 		return m.Anonymous()
+	case user.FieldUseDarkTheme:
+		return m.UseDarkTheme()
 	case user.FieldMeta:
 		return m.Meta()
 	}
@@ -14225,6 +14267,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldAdmin(ctx)
 	case user.FieldAnonymous:
 		return m.OldAnonymous(ctx)
+	case user.FieldUseDarkTheme:
+		return m.OldUseDarkTheme(ctx)
 	case user.FieldMeta:
 		return m.OldMeta(ctx)
 	}
@@ -14298,6 +14342,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAnonymous(v)
+		return nil
+	case user.FieldUseDarkTheme:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUseDarkTheme(v)
 		return nil
 	case user.FieldMeta:
 		v, ok := value.(map[string]interface{})
@@ -14402,6 +14453,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldAnonymous:
 		m.ResetAnonymous()
+		return nil
+	case user.FieldUseDarkTheme:
+		m.ResetUseDarkTheme()
 		return nil
 	case user.FieldMeta:
 		m.ResetMeta()

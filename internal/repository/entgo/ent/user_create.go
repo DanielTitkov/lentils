@@ -125,6 +125,20 @@ func (uc *UserCreate) SetNillableAnonymous(b *bool) *UserCreate {
 	return uc
 }
 
+// SetUseDarkTheme sets the "use_dark_theme" field.
+func (uc *UserCreate) SetUseDarkTheme(b bool) *UserCreate {
+	uc.mutation.SetUseDarkTheme(b)
+	return uc
+}
+
+// SetNillableUseDarkTheme sets the "use_dark_theme" field if the given value is not nil.
+func (uc *UserCreate) SetNillableUseDarkTheme(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetUseDarkTheme(*b)
+	}
+	return uc
+}
+
 // SetMeta sets the "meta" field.
 func (uc *UserCreate) SetMeta(m map[string]interface{}) *UserCreate {
 	uc.mutation.SetMeta(m)
@@ -306,6 +320,10 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultAnonymous
 		uc.mutation.SetAnonymous(v)
 	}
+	if _, ok := uc.mutation.UseDarkTheme(); !ok {
+		v := user.DefaultUseDarkTheme
+		uc.mutation.SetUseDarkTheme(v)
+	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
 		uc.mutation.SetID(v)
@@ -349,6 +367,9 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Anonymous(); !ok {
 		return &ValidationError{Name: "anonymous", err: errors.New(`ent: missing required field "User.anonymous"`)}
+	}
+	if _, ok := uc.mutation.UseDarkTheme(); !ok {
+		return &ValidationError{Name: "use_dark_theme", err: errors.New(`ent: missing required field "User.use_dark_theme"`)}
 	}
 	return nil
 }
@@ -457,6 +478,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Column: user.FieldAnonymous,
 		})
 		_node.Anonymous = value
+	}
+	if value, ok := uc.mutation.UseDarkTheme(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: user.FieldUseDarkTheme,
+		})
+		_node.UseDarkTheme = value
 	}
 	if value, ok := uc.mutation.Meta(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

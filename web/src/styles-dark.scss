@@ -1,0 +1,219 @@
+@charset "utf-8";
+
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400;700&display=swap');
+@function tint($color, $percentage) {
+	@return mix(white, $color, $percentage);
+}
+
+// Set your brand colors
+// https://coolors.co/palette/ffadad-ffd6a5-fdffb6-caffbf-9bf6ff-a0c4ff-bdb2ff-ffc6ff-fffffc
+
+// brand colors
+$red: #FF5765;
+$yellow: #FFC527;
+$green: #03AB27;
+$green2: #AAE23B;
+$purple: #8A6FDF;
+$blue: #287aff;
+
+// for gradient in items
+
+$left: tint($green, 60%);
+$right: lighten($green2, 5%);
+
+// Update Bulma's global variables
+$family-sans-serif: "Source Sans Pro", sans-serif; 
+$radius-large: 55px;
+$primary: $blue;
+$link: $primary;
+$success: $green;
+$danger: $red;
+$warning: $yellow;
+$info: $purple;
+// $widescreen-enabled: false;
+// $fullhd-enabled: false;
+
+
+// Update some of Bulma's component variables
+$black: hsl(0, 0%, 100%);
+$black-bis: hsl(0, 0%, 98%);
+$black-ter:hsl(0, 0%, 96%);
+$grey-darker: hsl(0, 0%, 93%);
+$grey-dark: hsl(0, 0%, 86%);
+$grey: hsl(0, 0%, 76%);
+$grey-light:  	#382E51;
+$grey-lighter: #382E51;
+$grey-lightest: #2F1753;
+$white-ter: #190933;
+$white-bis:#17082F;
+$white: #15072B;
+// $body-background-color: #222;
+// $grey-dark:#fff;
+// $grey-light: #aaa;
+// box
+$box-radius: $radius-large;
+$box-padding: 1.5rem;
+$box-shadow: rgba(255, 255, 255, 0.11) 0px 48px 80px 0px;
+// notification
+$ntf-padding-size: 2.5rem 2.5rem 2.5rem 2.5rem;
+$notification-radius: $radius-large;
+$notification-padding: $ntf-padding-size;
+$notification-padding-ltr: $ntf-padding-size;
+$notification-padding-rtl: $ntf-padding-size;
+// modal
+$modal-card-head-background-color: #fff;
+$modal-card-body-background-color: #fff;
+$modal-card-head-border-bottom: 0px;
+$modal-card-foot-border-top: 0px;
+$modal-card-head-padding: 30px;
+// tags
+$tag-radius: $radius-large;
+// hr
+$hr-background-color: #2F1753;
+// section
+$section-padding: 1.5rem 1rem; // for mobile
+// footer
+$footer-padding: 1.5rem 1.5rem 3rem;
+
+@import "~bulma/bulma";
+
+// custom classes
+
+.question-done {
+	color:#190933;
+	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$green+0,4df297+99 */
+	background: $left;
+	/* Old browsers */
+	background: -moz-linear-gradient(-45deg, $left 25%, $right 99%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, $left 25%, $right 99%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, $left 25%, $right 99%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$left', endColorstr='$right', GradientType=1);
+	/* IE6-9 fallback on horizontal gradient */
+}
+
+
+input[type="checkbox"] {
+	-webkit-appearance: none;
+	width: 35px;
+	height: 35px;
+	background: white;
+	border-radius: 50px;
+	border: 4px solid $link;
+}
+
+input[type="checkbox"]:checked {
+	background: $link;
+}
+
+input[type="checkbox"]:disabled {
+	border: 4px solid #b5b5b5;
+	background: white;
+}
+
+/* Chart */
+
+#basic-chart.column {
+	height: 300px;
+	margin: 0;
+}
+ 
+#basic-chart.bar {
+	height: 300px;
+	margin: 0;
+}
+
+
+/* Meter */
+
+meter {
+	background-color: $progress-bar-background-color;
+	border-radius: $progress-border-radius;
+}
+
+/* Loading */
+
+@mixin animate($animation, $duration, $method, $times) {
+	animation: $animation $duration $method $times;
+}
+
+@mixin keyframes($name) {
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+.live-click-loading,
+.live-change-loading,
+.live-submit-loading,
+.live-focus-loading,
+.live-blur-loading,
+.live-keydown-loading,
+.live-keyup-loading {
+	// color: $azur-darker !important;
+	// font-family: "Flow Circular", cursive !important;
+	@include keyframes(movi) {
+		0%,
+		20% {
+			transform: translateY(0px);
+		}
+		40% {
+			transform: translateY(-18px);
+		}
+		80%,
+		100% {
+			transform: translateY(0px);
+		}
+	}
+	@include animate(movi, 1s, linear, infinite);
+}
+
+#main-view-content {
+	@include keyframes(fadein) {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	@include animate(fadein, 0.12s, linear, 1);
+}
+
+.modal {
+	@include keyframes(fadein) {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	@include animate(fadein, 0.1s, linear, 1);
+}
+
+
+
+.bg-decoration {
+	position: absolute;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.bg-decoration__svg {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 134%;
+	min-width: 1280px;
+	max-width: 1920px;
+	height: auto;
+}

@@ -36,6 +36,8 @@ type User struct {
 	Admin bool `json:"admin,omitempty"`
 	// Anonymous holds the value of the "anonymous" field.
 	Anonymous bool `json:"anonymous,omitempty"`
+	// UseDarkTheme holds the value of the "use_dark_theme" field.
+	UseDarkTheme bool `json:"use_dark_theme,omitempty"`
 	// Meta holds the value of the "meta" field.
 	Meta map[string]interface{} `json:"meta,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -107,7 +109,7 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case user.FieldMeta:
 			values[i] = new([]byte)
-		case user.FieldAdmin, user.FieldAnonymous:
+		case user.FieldAdmin, user.FieldAnonymous, user.FieldUseDarkTheme:
 			values[i] = new(sql.NullBool)
 		case user.FieldLocale, user.FieldName, user.FieldEmail, user.FieldPicture, user.FieldPasswordHash:
 			values[i] = new(sql.NullString)
@@ -192,6 +194,12 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field anonymous", values[i])
 			} else if value.Valid {
 				u.Anonymous = value.Bool
+			}
+		case user.FieldUseDarkTheme:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field use_dark_theme", values[i])
+			} else if value.Valid {
+				u.UseDarkTheme = value.Bool
 			}
 		case user.FieldMeta:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -284,6 +292,9 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("anonymous=")
 	builder.WriteString(fmt.Sprintf("%v", u.Anonymous))
+	builder.WriteString(", ")
+	builder.WriteString("use_dark_theme=")
+	builder.WriteString(fmt.Sprintf("%v", u.UseDarkTheme))
 	builder.WriteString(", ")
 	builder.WriteString("meta=")
 	builder.WriteString(fmt.Sprintf("%v", u.Meta))

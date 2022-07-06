@@ -23,6 +23,7 @@ func (User) Fields() []ent.Field {
 		field.String("password_hash"),
 		field.Bool("admin").Default(false),
 		field.Bool("anonymous").Default(false),
+		field.Bool("use_dark_theme").Default(false),
 		field.JSON("meta", make(map[string]interface{})).Optional(),
 	}
 }

@@ -474,6 +474,10 @@ func init() {
 	userDescAnonymous := userFields[6].Descriptor()
 	// user.DefaultAnonymous holds the default value on creation for the anonymous field.
 	user.DefaultAnonymous = userDescAnonymous.Default.(bool)
+	// userDescUseDarkTheme is the schema descriptor for use_dark_theme field.
+	userDescUseDarkTheme := userFields[7].Descriptor()
+	// user.DefaultUseDarkTheme holds the default value on creation for the use_dark_theme field.
+	user.DefaultUseDarkTheme = userDescUseDarkTheme.Default.(bool)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userFields[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

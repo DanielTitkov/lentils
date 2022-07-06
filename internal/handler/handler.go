@@ -32,6 +32,7 @@ const (
 	eventOpenLoginModal  = "open-login-modal"
 	eventCloseError      = "close-error-notification"
 	eventCloseMessage    = "close-message-notification"
+	eventToggleDark      = "toggle-dark"
 	// context
 	userCtxKeyValue   = "user"
 	localeCtxKeyValue = "locale"
@@ -56,6 +57,7 @@ type (
 		ShowLogoutModal bool
 		CurrentView     string
 		Version         string
+		Dark            bool
 		UI              *UITranslation
 		ui              map[string]*UITranslation
 		locale          string

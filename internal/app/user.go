@@ -40,6 +40,10 @@ func (a *App) CreateUser(ctx context.Context, u *domain.User) (*domain.User, err
 	return user, nil
 }
 
+func (a *App) UpdateUser(ctx context.Context, user *domain.User) (*domain.User, error) {
+	return a.repo.UpdateUser(ctx, user)
+}
+
 // AuthenticateGothUser creates new user or returns existsing one.
 // It relies on goth authetication to verify user has access
 // to that profile and thus doesn't check password.

@@ -32,6 +32,8 @@ const (
 	FieldAdmin = "admin"
 	// FieldAnonymous holds the string denoting the anonymous field in the database.
 	FieldAnonymous = "anonymous"
+	// FieldUseDarkTheme holds the string denoting the use_dark_theme field in the database.
+	FieldUseDarkTheme = "use_dark_theme"
 	// FieldMeta holds the string denoting the meta field in the database.
 	FieldMeta = "meta"
 	// EdgeSessions holds the string denoting the sessions edge name in mutations.
@@ -80,6 +82,7 @@ var Columns = []string{
 	FieldPasswordHash,
 	FieldAdmin,
 	FieldAnonymous,
+	FieldUseDarkTheme,
 	FieldMeta,
 }
 
@@ -121,6 +124,8 @@ var (
 	DefaultAdmin bool
 	// DefaultAnonymous holds the default value on creation for the "anonymous" field.
 	DefaultAnonymous bool
+	// DefaultUseDarkTheme holds the default value on creation for the "use_dark_theme" field.
+	DefaultUseDarkTheme bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

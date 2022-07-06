@@ -2,6 +2,7 @@ package entgo
 
 import (
 	"context"
+	"errors"
 
 	"github.com/google/uuid"
 
@@ -12,6 +13,21 @@ import (
 
 func (r *EntgoRepository) GetUserCount(ctx context.Context) (int, error) {
 	return r.client.User.Query().Count(ctx)
+}
+
+func (r *EntgoRepository) UpdateUser(ctx context.Context, u *domain.User) (*domain.User, error) {
+	if u.ID == uuid.Nil {
+		return nil, errors.New("used id is required")
+	}
+
+	usr, err := r.client.User.UpdateOneID(u.ID).
+		SetUseDarkTheme(u.UseDarkTheme).
+		Save(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return entToDomainUser(usr), nil
 }
 
 func (r *EntgoRepository) IfEmailRegistered(ctx context.Context, email string) (bool, error) {
@@ -89,6 +105,7 @@ func entToDomainUser(user *ent.User) *domain.User {
 		Meta:         user.Meta,
 		Locale:       user.Locale.String(),
 		Admin:        user.Admin,
+		UseDarkTheme: user.UseDarkTheme,
 		Anonymous:    user.Anonymous,
 	}
 }

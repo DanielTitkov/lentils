@@ -150,6 +150,13 @@ func Anonymous(v bool) predicate.User {
 	})
 }
 
+// UseDarkTheme applies equality check predicate on the "use_dark_theme" field. It's identical to UseDarkThemeEQ.
+func UseDarkTheme(v bool) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUseDarkTheme), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -847,6 +854,20 @@ func AnonymousEQ(v bool) predicate.User {
 func AnonymousNEQ(v bool) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldAnonymous), v))
+	})
+}
+
+// UseDarkThemeEQ applies the EQ predicate on the "use_dark_theme" field.
+func UseDarkThemeEQ(v bool) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUseDarkTheme), v))
+	})
+}
+
+// UseDarkThemeNEQ applies the NEQ predicate on the "use_dark_theme" field.
+func UseDarkThemeNEQ(v bool) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldUseDarkTheme), v))
 	})
 }
 

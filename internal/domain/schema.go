@@ -172,6 +172,7 @@ type (
 		PasswordHash string
 		Locale       string
 		Anonymous    bool
+		UseDarkTheme bool
 		AnonymousID  []uuid.UUID
 		Meta         map[string]interface{}
 	}
