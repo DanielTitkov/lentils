@@ -4,11 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-jupyter = "*"
-randomname = "*"
-essential-generators = "*"
 pandas = "*"
 pyyaml = "*"
+jupyter = "*"
 
 [dev-packages]
 

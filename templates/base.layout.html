@@ -194,25 +194,24 @@
     </div>
 
     {{ if .User }}
-    <div class="mx-5">
+    <!-- <div class="mx-5">
       <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' href="/profile" title="Profile">
         <i class="bi bi-person-fill"></i>
       </a>
-    </div>
+    </div> -->
     {{ end }}
 
     {{ if .User }}
     {{ if .User.Admin }}
-    <div class="mx-5">
+    <!-- <div class="mx-5">
       <a href="/admin" class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel">
         <i class="bi bi-radioactive"></i>
       </a>
-    </div>
+    </div> -->
     {{ end }}
     {{ end }}
 
-    <div class="mx-5">
-      <!-- enter or exit -->
+    <!-- <div class="mx-5">
       {{ if .User }}
       <a live-click="open-logout-modal" title="Logout">
         <i class="bi bi-box-arrow-right"></i>
@@ -222,7 +221,7 @@
         <i class="bi bi-box-arrow-in-right"></i>
       </a>
       {{ end }}
-    </div>
+    </div> -->
   </div>
 </nav>
 {{ end }}
@@ -244,25 +243,24 @@
     </div>
 
     {{ if .User }}
-    <div class="level-item">
+    <!-- <div class="level-item">
       <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' title="Profile" href="/profile">
         <i class="bi bi-person-fill"></i>
       </a>
-    </div>
+    </div> -->
     {{ end }}
 
     {{ if .User }}
     {{ if .User.Admin }}
-    <div class="level-item">
+    <!-- <div class="level-item">
       <a class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel" href="/admin">
         <i class="bi bi-radioactive"></i>
       </a>
-    </div>
+    </div> -->
     {{ end }}
     {{ end }}
 
-    <div class="level-item">
-      <!-- enter or exit -->
+    <!-- <div class="level-item">
       {{ if .User }}
       <a live-click="open-logout-modal" title="Logout">
         <i class="bi bi-box-arrow-right"></i>
@@ -272,7 +270,7 @@
         <i class="bi bi-box-arrow-in-right"></i>
       </a>
       {{ end }}
-    </div>
+    </div> -->
   </div>
 </nav>
 {{ end }}
@@ -296,31 +294,29 @@
   </div>
 
   {{ if .User }}
-  <div class="level-item">
+  <!-- <div class="level-item">
     <div class="mx-3">
       <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' href="/profile" title="Profile">
         Profile
       </a>
     </div>
-  </div>
+  </div> -->
   {{ end }}
 
   {{ if .User }}
   {{ if .User.Admin }}
-  <div class="level-item">
+  <!-- <div class="level-item">
     <div class="mx-3">
-      <!-- Admin panel -->
       <a href="/admin" class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel">
         Admin
       </a>
     </div>
-  </div>
+  </div> -->
   {{ end }}
   {{ end }}
 
-  <div class="level-item">
+  <!-- <div class="level-item">
     <div class="mx-3">
-      <!-- enter or exit -->
       {{ if .User }}
       <a live-click="open-logout-modal" title="Logout">
         Logout
@@ -331,7 +327,7 @@
       </a>
       {{ end }}
     </div>
-  </div>
+  </div> -->
 </nav>
 {{ end }}
 

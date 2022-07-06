@@ -6,11 +6,11 @@ tags: ["psychology", "short", "testing"]
 translations:
   - locale: en
     title: EXTRO
-    description: Sample extraversion test of 3 questions
+    description: Sample extraversion test of 3 questions (for debug only).
     instruction: Answer all the questions (there's only 3 of them!)
   - locale: ru
     title: ЭКСТРО
-    description: Дурацкий тест экстраверсии из 3 вопросов. 
+    description: Дурацкий тест экстраверсии из 3 вопросов (for debug only). 
     instruction: Ответьте на все вопросы (их всего 3!)
 scales: 
   - code: extro-scale-1-extraversion
