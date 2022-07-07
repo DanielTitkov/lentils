@@ -33,11 +33,13 @@ $success: $green;
 $danger: $red;
 $warning: $yellow;
 $info: $purple;
+
+$body-back: #fafafa;
 // $widescreen-enabled: false;
 // $fullhd-enabled: false;
 
 // Update some of Bulma's component variables
-$body-background-color: #fafafa;
+$body-background-color: $body-back;
 // box
 $box-radius: $radius-large;
 $box-padding: 1.5rem;
@@ -64,6 +66,82 @@ $section-padding: 1.5rem 1rem; // for mobile
 $footer-padding: 1.5rem 1.5rem 3rem;
 
 @import "~bulma/bulma";
+
+// custom styles
+
+@keyframes AnimateBG { 
+	0%{background-position:0% 50%}
+	50%{background-position:100% 50%}
+	100%{background-position:0% 50%}
+  }
+
+.bg11 {
+	background-size: 300% 300%;
+	background-image: linear-gradient(
+		-45deg, 
+		#287aff 0%, 
+		#03D930 25%, 
+		#287aff 51%, 
+		#8A6FDF 100%
+	);  
+	animation: AnimateBG 20s ease infinite;
+
+	position: absolute;
+	width: 100%;
+    padding: 5rem;
+    height: 12rem;
+	z-index: -3;
+
+    // clip-path: polygon(100% 0, 100% 57%, 54% 100%, 0 100%, 0 0); 
+	// clip-path: polygon(59% 75%, 34% 82%, 15% 70%, 16% 71%, 15% 27%, 15% 27%, 76% 51%, 73% 24%, 43% 11%);
+}
+
+.planet {
+	background-size: 300% 300%;
+	background-image: linear-gradient(
+		-45deg, 
+		#287aff 0%, 
+		#03D930 25%, 
+		#287aff 51%, 
+		#8A6FDF 100%
+	);  
+	animation: AnimateBG 20s ease infinite;
+	clip-path: circle(50% at 50% 50%);
+	position: absolute;
+	right: 3rem;
+	top: 2rem;
+	width: 2rem;
+    height: 2rem;
+	z-index: -1;
+}
+
+.planet1 {
+	right: 10vw;
+	top: 10vw;
+	width: 10vw;
+    height: 10vw;
+	min-width: 2rem;
+	min-height: 2rem;
+}
+
+.planet2 {
+	right: 2.5rem;
+	top: 6rem;
+	width: 2rem;
+    height: 2rem;
+}
+
+body::after {
+    content: '';
+    border-top-left-radius: 30% 40%;
+    border-top-right-radius: 25% 70%;
+    position: absolute;
+    top: 0rem;
+    z-index: -2;
+    width: 100%;
+    background-color: $body-back;
+    height: 12rem;
+}
 
 // custom classes
 

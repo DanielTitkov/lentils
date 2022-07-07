@@ -21,6 +21,9 @@
 </head>
 
 <body has-navbar-fixed-bottom>
+  <div class="bg11">
+  </div>
+
   <!-- debug start -->
   {{ if .Env }}
   {{ if eq .Env "dev1" }}
@@ -37,6 +40,7 @@
   {{ template "navigation" . }}
   {{ template "navigation-mobile" . }}
   {{ end }}
+  <div class="planet planet1"></div>
   <section class="section">
     {{ if .Error }}
     {{ template "alert-warning" .Error }}
