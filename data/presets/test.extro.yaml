@@ -2,7 +2,7 @@ code: extro
 published: false
 availableLocales: ["en", "ru"]
 forceUpdate: true
-tags: ["psychology", "short", "testing"]
+tags: ["psychology", "short", "debug"]
 translations:
   - locale: en
     title: EXTRO

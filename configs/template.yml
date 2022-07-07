@@ -33,10 +33,10 @@ auth:
 data:
   presets:
     testPresetsPaths: 
-      - ./data/presets/test.extro.yaml
       - ./data/presets/test.tipi.yaml
-      - ./data/presets/test.fipi.yaml
       - ./data/presets/test.hexaco.yaml
+      - ./data/presets/test.fipi.yaml
+      # - ./data/presets/test.extro.yaml
     tagPresetsPaths:
       - ./data/presets/tags.yaml
 external:

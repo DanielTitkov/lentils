@@ -1,16 +1,16 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-06 22:17:02
+# at: 2022-07-07 21:45:27
 # template: ../data/templates/ctt-v1/fipi.yaml
 code: fipi
-published: false
+published: true
 availableLocales:
   - en
   - ru
 tags:
   - psychology
   - short
-  - testing
+  - debug
 forceUpdate: true
 translations:
   - locale: en

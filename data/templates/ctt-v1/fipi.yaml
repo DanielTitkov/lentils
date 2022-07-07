@@ -1,6 +1,6 @@
 code: fipi
 locales: ["en", "ru"]
-tags: ["psychology", "short", "testing"]
+tags: ["psychology", "short", "debug"]
 en: # title, decsriptions, instruction, details
   - FIPI
   - Five-Item Personality Inventory (for debug only)

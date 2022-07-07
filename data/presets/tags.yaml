@@ -41,9 +41,9 @@
     - locale: ru
       content: забавные
 - type: feature
-  code: testing
+  code: debug
   translations:
     - locale: en
-      content: testing
+      content: debug
     - locale: ru
-      content: тестовые
+      content: debug
