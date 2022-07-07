@@ -48,7 +48,6 @@ func (r *EntgoRepository) GetTests(ctx context.Context, locale string, tagIDs []
 			)
 		}).
 		Where(test.PublishedEQ(true))
-
 	if len(tagIDs) != 0 {
 		query.Where(test.HasTagsWith(tag.IDIn(tagIDs...)))
 	}

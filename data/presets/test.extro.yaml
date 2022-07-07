@@ -1,5 +1,5 @@
 code: extro
-published: true
+published: false
 availableLocales: ["en", "ru"]
 forceUpdate: true
 tags: ["psychology", "short", "testing"]

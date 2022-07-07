@@ -3,7 +3,7 @@
 # at: 2022-07-06 22:17:02
 # template: ../data/templates/ctt-v1/fipi.yaml
 code: fipi
-published: true
+published: false
 availableLocales:
   - en
   - ru
