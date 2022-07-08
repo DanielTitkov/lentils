@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"time"
 
+	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
 	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tag"
 
 	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tagtranslation"
@@ -35,21 +36,31 @@ import (
 	"github.com/DanielTitkov/orrery/internal/domain"
 )
 
-func (r *EntgoRepository) GetTests(ctx context.Context, locale string, tagIDs []uuid.UUID) ([]*domain.Test, error) {
+func (r *EntgoRepository) GetTests(ctx context.Context, args *domain.QueryTestsArgs) ([]*domain.Test, error) {
 	query := r.client.Test.Query().
 		WithTranslations(func(q *ent.TestTranslationQuery) {
-			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(locale)))
+			q.Where(testtranslation.LocaleEQ(testtranslation.Locale(args.Locale)))
 		}).
 		WithTags(func(q *ent.TagQuery) {
 			q.WithTranslations(
 				func(tgtq *ent.TagTranslationQuery) {
-					tgtq.Where(tagtranslation.LocaleEQ(tagtranslation.Locale(locale)))
+					tgtq.Where(tagtranslation.LocaleEQ(tagtranslation.Locale(args.Locale)))
 				},
 			)
 		}).
 		Where(test.PublishedEQ(true))
-	if len(tagIDs) != 0 {
-		query.Where(test.HasTagsWith(tag.IDIn(tagIDs...)))
+	if len(args.TagIDs) != 0 {
+		if args.FilterModeAny {
+			query.Where(test.HasTagsWith(tag.IDIn(args.TagIDs...)))
+		} else {
+			var ps []predicate.Test
+			for _, id := range args.TagIDs {
+				ps = append(ps, test.HasTagsWith(tag.IDEQ(id)))
+			}
+			query.Where(test.And(
+				ps...,
+			))
+		}
 	}
 
 	tests, err := query.All(ctx)
@@ -59,7 +70,7 @@ func (r *EntgoRepository) GetTests(ctx context.Context, locale string, tagIDs []
 
 	var res []*domain.Test
 	for _, t := range tests {
-		res = append(res, entToDomainTest(t, locale))
+		res = append(res, entToDomainTest(t, args.Locale))
 	}
 
 	return res, nil

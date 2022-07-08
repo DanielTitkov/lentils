@@ -101,6 +101,16 @@ type (
 	}
 )
 
+// query args
+type (
+	QueryTestsArgs struct {
+		Locale        string
+		Tags          []*Tag
+		TagIDs        []uuid.UUID
+		FilterModeAny bool
+	}
+)
+
 // norm calculation args
 type (
 	NormCalculationData struct {

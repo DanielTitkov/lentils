@@ -63,13 +63,15 @@ func (a *App) CreateOrUpdateTestFromArgs(ctx context.Context, args domain.Create
 	return a.repo.CreateOrUpdateTestFromArgs(ctx, &args)
 }
 
-func (a *App) GetTestsForLocale(ctx context.Context, locale string, tags []*domain.Tag) ([]*domain.Test, error) {
+func (a *App) GetTestsForLocale(ctx context.Context, args *domain.QueryTestsArgs) ([]*domain.Test, error) {
 	var tagIDs []uuid.UUID
-	for _, tag := range tags {
+	for _, tag := range args.Tags {
 		tagIDs = append(tagIDs, tag.ID)
 	}
 
-	tests, err := a.repo.GetTests(ctx, locale, tagIDs)
+	args.TagIDs = tagIDs
+
+	tests, err := a.repo.GetTests(ctx, args)
 	if err != nil {
 		a.log.Error("get tests for locale failed", err)
 		return nil, err

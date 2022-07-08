@@ -12,7 +12,8 @@ import (
 
 const (
 	// events
-	eventHomeToggleTag = "toggle-tag"
+	eventHomeToggleTag        = "toggle-tag"
+	eventHomeToggleFilterMode = "toggle-filter-mode"
 	// params
 	paramHomeTag = "tag"
 )
@@ -33,10 +34,11 @@ var homeFuncMap = template.FuncMap{
 type (
 	HomeInstance struct {
 		*CommonInstance
-		Tests      []*domain.Test
-		Summary    *domain.SystemSymmary
-		Tags       []*domain.Tag
-		ActiveTags []*domain.Tag
+		Tests         []*domain.Test
+		Summary       *domain.SystemSymmary
+		Tags          []*domain.Tag
+		ActiveTags    []*domain.Tag
+		FilterModeAny bool
 	}
 )
 
@@ -45,6 +47,7 @@ func (h *Handler) NewHomeInstance(s live.Socket) *HomeInstance {
 	if !ok {
 		return &HomeInstance{
 			CommonInstance: h.NewCommon(s, viewHome),
+			FilterModeAny:  true,
 		}
 	}
 
@@ -54,6 +57,19 @@ func (h *Handler) NewHomeInstance(s live.Socket) *HomeInstance {
 func (ins *HomeInstance) withError(err error) *HomeInstance {
 	ins.Error = err
 	return ins
+}
+
+func (ins *HomeInstance) updateTests(ctx context.Context, h *Handler) (err error) {
+	// update tests
+	ins.Tests, err = h.app.GetTestsForLocale(ctx, &domain.QueryTestsArgs{
+		Locale:        ins.Locale(),
+		Tags:          ins.ActiveTags,
+		FilterModeAny: ins.FilterModeAny,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (ins *HomeInstance) isTagActive(code string) bool {
@@ -162,7 +178,7 @@ func (h *Handler) Home() live.Handler {
 		}
 
 		// tests
-		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale(), instance.ActiveTags)
+		err = instance.updateTests(ctx, h)
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -176,17 +192,18 @@ func (h *Handler) Home() live.Handler {
 		return instance.withError(err), nil
 	})
 
+	lvh.HandleEvent(eventHomeToggleFilterMode, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
+		instance := h.NewHomeInstance(s)
+		instance.FilterModeAny = !instance.FilterModeAny
+		return instance.withError(instance.updateTests(ctx, h)), nil
+	})
+
 	lvh.HandleEvent(eventHomeToggleTag, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
 		instance := h.NewHomeInstance(s)
 		tagCode := p.String(paramHomeTag)
 		instance.toggleTag(tagCode)
 		// update tests
-		instance.Tests, err = h.app.GetTestsForLocale(ctx, instance.Locale(), instance.ActiveTags)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-
-		return instance, nil
+		return instance.withError(instance.updateTests(ctx, h)), nil
 	})
 
 	return lvh
