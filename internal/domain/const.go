@@ -5,6 +5,8 @@ import (
 )
 
 const (
+	// env
+	EnvDev = "dev"
 	// locales
 	LocaleRu = "ru"
 	LocaleEn = "en"

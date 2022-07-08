@@ -29,13 +29,16 @@ func (a *App) UpdateSystemSummaryJob() {
 			err := a.updateSystemSummary(ctx)
 			if err != nil {
 				a.log.Error("failed to update system summary", err)
+				a.addError(err)
 			}
 			processDone <- true
 		}()
 
 		select {
 		case <-ctx.Done():
-			a.log.Error("failed to update system summary", errors.New("timeout reached"))
+			err := errors.New("timeout reached while updating system summary")
+			a.log.Error("failed to update system summary", err)
+			a.addError(err)
 		case <-processDone:
 		}
 

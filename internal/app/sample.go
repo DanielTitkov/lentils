@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"go.uber.org/multierr"
+
 	"github.com/DanielTitkov/orrery/internal/domain"
 )
 
@@ -33,14 +35,20 @@ func (a *App) initSamples() error {
 		}
 	}
 
+	var errs error
 	for _, s := range samples {
 		smp, err := a.repo.CreateOrUpdateSample(context.TODO(), s)
 		a.log.Info("created sample", fmt.Sprintf("%+v", smp))
 		if err != nil {
-			a.log.Error("init samples failes", err)
-			return err
+			a.log.Error("init samples failed", err)
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
 		}
 	}
 
-	return nil
+	return errs
 }

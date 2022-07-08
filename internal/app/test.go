@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"time"
 
+	"go.uber.org/multierr"
+
 	"github.com/google/uuid"
 
 	"github.com/DanielTitkov/orrery/internal/util"
@@ -170,40 +172,64 @@ func (a *App) PrepareTest(ctx context.Context, code string, locale string, args 
 	return test, nil
 }
 
-func (a *App) loadTestPresets() error {
+func (a *App) loadTestPresets() (errs error) {
 	a.log.Info("loading test presets", fmt.Sprint(a.Cfg.Data.Presets.TestPresetsPaths))
-	// FIXME: for production MUST NOT FAIL on single wrong test
 	for _, path := range a.Cfg.Data.Presets.TestPresetsPaths {
 		a.log.Debug("reading from file", path)
 		data, err := ioutil.ReadFile(path)
 		if err != nil {
-			return err
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
 		}
 
 		var test domain.CreateTestArgs
 		err = yaml.Unmarshal(data, &test)
 		if err != nil {
-			return err
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
 		}
 
 		if ok := domain.AreValidLocales(test.AvailableLocales); !ok {
-			return fmt.Errorf("locales are not valid: %v", test.AvailableLocales)
+			err := fmt.Errorf("locales are not valid: %v", test.AvailableLocales)
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
 		}
 
 		if err := test.ValidateTranslations(); err != nil {
-			return err
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
 		}
 
 		err = a.CreateOrUpdateTestFromArgs(context.Background(), test)
 		if err != nil {
-			a.log.Error("failed to load test", err)
-			continue
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
 		}
 
 		a.log.Debug("loaded test", fmt.Sprintf("%+v", test.Code))
 	}
 
-	return nil
+	return errs
 }
 
 func (a *App) SaveTestResults(ctx context.Context, test *domain.Test) error {
@@ -232,10 +258,3 @@ func (a *App) SaveTestResults(ctx context.Context, test *domain.Test) error {
 
 	return nil
 }
-
-// func generateQuestionsEachItem(test *domain.CreateTestArgs) error {
-// 	var questions []domain.CreateQuestionArgs
-// 	for _, s := range
-
-// 	return nil
-// }

@@ -1,0 +1,27 @@
+{{ define "title" }} Crowdsourced predictions {{ end }}
+{{ define "view" }}
+<main>
+    {{ template "back-to-home" }}
+    <section class="section">
+        <h1 class="title is-1 has-text-centered">
+            Orrery System Status
+        </h1>
+        <div class="block">
+            <p class="subtitle is-3 is-size-5-mobile">Env</p>
+            <p class="title is-5">{{ .Env }}</p>
+        </div>
+        <div class="block">
+            <p class="subtitle is-3 is-size-5-mobile">Errors</p>
+            {{ if eq (len .Errors) 0 }}
+            <p class="title is-5 is-size-6-mobile">No errors</p>
+            {{ else }}
+            {{ range .Errors }}
+            <div class="notification is-danger">
+                <p>{{ . }}</p>
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+    </section>
+</main>
+{{ end }}

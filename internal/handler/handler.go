@@ -26,6 +26,7 @@ const (
 	viewProfile = "profile"
 	viewPrivacy = "privacy"
 	viewTerms   = "terms"
+	viewStatus  = "status"
 	// events (common)
 	eventCloseAuthModals = "close-auth-modals"
 	eventOpenLogoutModal = "open-logout-modal"

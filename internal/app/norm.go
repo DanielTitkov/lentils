@@ -6,19 +6,25 @@ import (
 	"fmt"
 	"time"
 
+	"go.uber.org/multierr"
+
 	"github.com/DanielTitkov/orrery/internal/domain"
 
 	"github.com/DanielTitkov/orrery/internal/util"
 	"github.com/montanaflynn/stats"
 )
 
-func (a *App) UpdateNorms(ctx context.Context) error {
+func (a *App) UpdateNorms(ctx context.Context) (errs error) {
 	defer util.InfoExecutionTime(time.Now(), "app.UpdateNorms", a.log)
 	// get all samples
 	samples, err := a.repo.GetSamples(ctx)
 	if err != nil {
 		a.log.Error("failed to get samples", err)
-		return err
+		if a.IsDev() {
+			return err
+		} else {
+			errs = multierr.Append(errs, err)
+		}
 	}
 
 	a.log.Info("loaded samples", fmt.Sprintf("%d samples in total", len(samples)))
@@ -29,7 +35,12 @@ func (a *App) UpdateNorms(ctx context.Context) error {
 		data, err := a.repo.GetDataForNormCalculation(ctx, sample.Criteria)
 		if err != nil {
 			a.log.Error("failed to get sample data", err)
-			return err
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
 		}
 		a.log.Debug("loaded data for sample", fmt.Sprintf("%d results", len(data)))
 		for _, scale := range data {
@@ -41,12 +52,22 @@ func (a *App) UpdateNorms(ctx context.Context) error {
 			mean, err := stats.Mean(scale.Results)
 			if err != nil {
 				a.log.Error("failed to calculate mean for sample", err)
-				return err
+				if a.IsDev() {
+					return err
+				} else {
+					errs = multierr.Append(errs, err)
+					continue
+				}
 			}
 			sd, err := stats.StandardDeviationSample(scale.Results)
 			if err != nil {
 				a.log.Error("failed to calculate sd for sample", err)
-				return err
+				if a.IsDev() {
+					return err
+				} else {
+					errs = multierr.Append(errs, err)
+					continue
+				}
 			}
 
 			norm := &domain.Norm{
@@ -64,13 +85,18 @@ func (a *App) UpdateNorms(ctx context.Context) error {
 			_, err = a.repo.CreateOrUpdateNorm(ctx, norm)
 			if err != nil {
 				a.log.Error("failed to save norm", err)
-				return err
+				if a.IsDev() {
+					return err
+				} else {
+					errs = multierr.Append(errs, err)
+					continue
+				}
 			}
 			// a.log.Debug("updated norm", fmt.Sprintf("%+v", norm)) // FIXME
 		}
 	}
 
-	return nil
+	return errs
 }
 
 func (a *App) UpdateNormsJob() {
@@ -82,13 +108,16 @@ func (a *App) UpdateNormsJob() {
 			err := a.UpdateNorms(ctx)
 			if err != nil {
 				a.log.Error("failed to update norms", err)
+				a.addError(err)
 			}
 			processDone <- true
 		}()
 
 		select {
 		case <-ctx.Done():
-			a.log.Error("failed to update norms", errors.New("timeout reached"))
+			err := errors.New("timeout reached while updating norms")
+			a.log.Error("failed to update norms", err)
+			a.addError(err)
 		case <-processDone:
 		}
 
