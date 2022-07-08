@@ -2,10 +2,7 @@ package app
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
-	"fmt"
-	"io/ioutil"
 
 	"github.com/markbates/goth"
 	"github.com/sethvargo/go-password/password"
@@ -150,41 +147,4 @@ func (a *App) ValidateUserPassword(ctx context.Context, u *domain.User) (bool, e
 	}
 
 	return true, nil
-}
-
-func (a *App) loadUserPresets() error {
-	a.log.Info("loading user presets", fmt.Sprint(a.Cfg.Data.Presets.UserPresetsPaths))
-	for _, path := range a.Cfg.Data.Presets.UserPresetsPaths {
-		a.log.Debug("reading from file", path)
-		data, err := ioutil.ReadFile(path)
-		if err != nil {
-			return err
-		}
-
-		var users []domain.User
-		err = json.Unmarshal(data, &users)
-		if err != nil {
-			return err
-		}
-
-		for _, user := range users {
-			ctx := context.Background()
-
-			// its only for debug purposes so checking errors is not critical
-			u, _ := a.GetUserByEmail(ctx, user.Email)
-			if u != nil {
-				a.log.Debug("user already exists", fmt.Sprintf("%+v", u))
-				continue
-			}
-
-			u, err := a.CreateUser(ctx, &user)
-			if err != nil {
-				return err
-			}
-
-			a.log.Debug("loaded user", fmt.Sprintf("%+v", u))
-		}
-	}
-
-	return nil
 }

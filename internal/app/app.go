@@ -97,15 +97,6 @@ func New(
 		}
 	}
 
-	err = app.loadUserPresets()
-	if err != nil {
-		app.log.Error("errors while loading users", err)
-		app.addError(err)
-		if app.Cfg.Env == domain.EnvDev {
-			return nil, err
-		}
-	}
-
 	err = app.loadTestPresets()
 	if err != nil {
 		app.log.Error("errors while loading tests", err)

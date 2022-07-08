@@ -1,0 +1,1179 @@
+# generated, try not to edit
+# by: CTT-v1
+# at: 2022-07-09 02:17:22
+# template: ../data/templates/ctt-v1/riasec-activity-wisc.yaml
+code: riasec-activity-wisc
+published: true
+availableLocales:
+  - en
+  - ru
+tags:
+  - psychology
+  - career
+forceUpdate: true
+translations:
+  - locale: en
+    title: RIASEC (activity)
+    description: Career preference test (activity questions)
+    instruction: <p>The test consists of tasks that you will have to rate by how much
+      you would enjoy performing each on a scale of (1) dislike (2) slightly dislike
+      (3) neither like not dislike (4) slightly enjoy (5) enjoy.</p>
+    details: <p>RIASEC (Holland Codes) is a set of personality types developed by
+      psychologist John L. Holland in the 1970s. Dr. Holland. Widely used to discover
+      ones career and occupation preferences. </p> <p>This version of Holland test
+      consists of questions about your prefered activities. There are also other versions
+      of the test you can find an Orrery. <a href="/test/riasec-personality-wisc"
+      target="_blank">Personality version</a>, Combined version - . Combined version
+      is the most precised, but it has more questions.</p> <p>There are multiple versions
+      of Holland test. Orrery uses the one developed at Wisconsin University. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      target="_blank">Link to Wisc Uni site</a>.</p>
+  - locale: ru
+    title: RIASEC (деятельность)
+    description: Тест профессиональных предпочтений (вопросы о видах деятельности)
+    instruction: <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько
+      вам понравилось бы выполнять такую работу. Дайте ответ, используя следующую
+      шкалу - (1) не нравится (2) скорее не нравится (3) не то и не другое (4) скорее
+      нравится (5) нравится.</p>
+    details: <p>RIASEC (тест Холланда, тест профессиональных предпочтений). Методика
+      разработана психологом Джоном Холландом в 70е годы.</p> <p>Эта версия теста
+      Холланда состоит из вопросов про предпочитаемые виды деятельности. У нас также
+      есть другие версии. <a href="/test/riasec-activity-wisc" target="_blank">Личностный</a>,
+      Комбинированный - . Комбинированный тест наиболее точный, но вопросов в нём
+      больше.</p> <p>Есть много вариантов вопросов для теста Холланда. Orrery использует
+      версию, представленную университетом Висконсина. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      target="_blank">Ссылка на оригинал на сайте университета</a>.</p> <p>Перевод
+      на русский язык выполнен Orrery.</p>
+scales:
+  - code: riasec-activity-wisc-01-realistic
+    type: sten
+    translations:
+      - locale: en
+        title: Realistic
+        description: Practical, physical, concrete, hands-on, machine, and tool-oriented
+        abbreviation: R
+      - locale: ru
+        title: Реалистический
+        description: Практичность, материальность, конкретность, инструментальность
+        abbreviation: R
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+    items:
+      - code: riasec-activity-wisc-01-realistic-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Tinker with mechanics
+          - locale: ru
+            content: Работать с механическими устройствами
+      - code: riasec-activity-wisc-01-realistic-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Work outdoors
+          - locale: ru
+            content: Работать на улице
+      - code: riasec-activity-wisc-01-realistic-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Be physically active
+          - locale: ru
+            content: Быть физически активным (активной)
+      - code: riasec-activity-wisc-01-realistic-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Use your hands
+          - locale: ru
+            content: Работать руками
+      - code: riasec-activity-wisc-01-realistic-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Fix electrical things
+          - locale: ru
+            content: Чинить электрооборудование
+      - code: riasec-activity-wisc-01-realistic-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Pitch a tent
+          - locale: ru
+            content: Устанавливать палатку
+      - code: riasec-activity-wisc-01-realistic-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Play a sport
+          - locale: ru
+            content: Играть в спортивную игру
+      - code: riasec-activity-wisc-01-realistic-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Read a blueprint
+          - locale: ru
+            content: Читать чертежи
+  - code: riasec-activity-wisc-02-investigative
+    type: sten
+    translations:
+      - locale: en
+        title: Investigative
+        description: Analytical, intellectual, scientific, explorative, thinker
+        abbreviation: I
+      - locale: ru
+        title: Исследовательский
+        description: Аналитика, интеллектуальность, наука, исследование, размышления
+        abbreviation: I
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+    items:
+      - code: riasec-activity-wisc-02-investigative-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Explore ideas
+          - locale: ru
+            content: Изучать и анализировать идеи
+      - code: riasec-activity-wisc-02-investigative-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Work independently
+          - locale: ru
+            content: Работать в одиночестве
+      - code: riasec-activity-wisc-02-investigative-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Perform lab experiments
+          - locale: ru
+            content: Проводить эксперименты в лаборатории
+      - code: riasec-activity-wisc-02-investigative-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Read scientific or technical articles
+          - locale: ru
+            content: Читать научные или технические статьи
+      - code: riasec-activity-wisc-02-investigative-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Solve math problems
+          - locale: ru
+            content: Решать математические проблемы
+      - code: riasec-activity-wisc-02-investigative-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Use a microscope
+          - locale: ru
+            content: Работать с микроскопом
+      - code: riasec-activity-wisc-02-investigative-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Analyze data
+          - locale: ru
+            content: Анализировать данные
+      - code: riasec-activity-wisc-02-investigative-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Do complex calculations
+          - locale: ru
+            content: Проводить сложные вычисления
+  - code: riasec-activity-wisc-03-artistic
+    type: sten
+    translations:
+      - locale: en
+        title: Artistic
+        description: Creative, original, independent, chaotic, inventive, media, graphics,
+          and text
+        abbreviation: A
+      - locale: ru
+        title: Художественный (Артистический)
+        description: Творчество, оригинальность, независимость, хаотичность
+        abbreviation: A
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+    items:
+      - code: riasec-activity-wisc-03-artistic-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Attend concerts, theaters, art exhibits
+          - locale: ru
+            content: Посещать концерты, театры, художественные выставки
+      - code: riasec-activity-wisc-03-artistic-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Read fiction, plays, poetry
+          - locale: ru
+            content: Читать художественную литературу
+      - code: riasec-activity-wisc-03-artistic-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Take photographs
+          - locale: ru
+            content: Делать фотографии
+      - code: riasec-activity-wisc-03-artistic-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Write stories, poetry, music, sing, act, dance
+          - locale: ru
+            content: Писать рассказы, стихи, музыку, танцевать, петь, выступать
+      - code: riasec-activity-wisc-03-artistic-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Play a musical instrument
+          - locale: ru
+            content: Играть на музыкальном инструменте
+      - code: riasec-activity-wisc-03-artistic-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: 'Sketch, draw, paint '
+          - locale: ru
+            content: Рисовать
+      - code: riasec-activity-wisc-03-artistic-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Design fashions or interiors
+          - locale: ru
+            content: Создавать дизайн одежды, интерьеров и т.д.
+  - code: riasec-activity-wisc-04-social
+    type: sten
+    translations:
+      - locale: en
+        title: Social
+        description: cooperative, supporting, helping, healing/nurturing, teaching
+        abbreviation: S
+      - locale: ru
+        title: Социальный
+        description: Кооперация, поддержка, помощь, забота, преподавание
+        abbreviation: S
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+    items:
+      - code: riasec-activity-wisc-04-social-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Work in groups
+          - locale: ru
+            content: Работать в группе
+      - code: riasec-activity-wisc-04-social-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Help people with problems
+          - locale: ru
+            content: Помогать людям с их проблемами
+      - code: riasec-activity-wisc-04-social-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Participate in meetings
+          - locale: ru
+            content: Участвовать во встречах
+      - code: riasec-activity-wisc-04-social-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Do volunteer service
+          - locale: ru
+            content: Работать волонтёром
+      - code: riasec-activity-wisc-04-social-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Teach/train others
+          - locale: ru
+            content: Учить или тренировать других
+      - code: riasec-activity-wisc-04-social-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Lead a group discussion
+          - locale: ru
+            content: Модерировать дискуссию
+      - code: riasec-activity-wisc-04-social-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Mediate disputes
+          - locale: ru
+            content: Улаживать разногласия
+  - code: riasec-activity-wisc-05-enterprising
+    type: sten
+    translations:
+      - locale: en
+        title: Enterprising
+        description: Competitive environments, leadership, persuading, status
+        abbreviation: E
+      - locale: ru
+        title: Предприимчивый
+        description: Конкуренция, лидерство, убеждение, статус
+        abbreviation: E
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+    items:
+      - code: riasec-activity-wisc-05-enterprising-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Make decisions affecting others
+          - locale: ru
+            content: Принимать решения, которые влияют на других людей
+      - code: riasec-activity-wisc-05-enterprising-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Start your own political campaign
+          - locale: ru
+            content: Вести собственную политическую кампанию
+      - code: riasec-activity-wisc-05-enterprising-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Meet important people
+          - locale: ru
+            content: Встречаться с важными людьми
+      - code: riasec-activity-wisc-05-enterprising-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Initiate projects
+          - locale: ru
+            content: Начинать проекты
+      - code: riasec-activity-wisc-05-enterprising-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Sell things or promote ideas
+          - locale: ru
+            content: Продавать вещи или продвигать идеи
+      - code: riasec-activity-wisc-05-enterprising-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Give talks or speeches
+          - locale: ru
+            content: Говорить на публику
+      - code: riasec-activity-wisc-05-enterprising-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Organize activities and events
+          - locale: ru
+            content: Организовывать мероприятия
+      - code: riasec-activity-wisc-05-enterprising-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Lead a group
+          - locale: ru
+            content: Руководить группой
+  - code: riasec-activity-wisc-06-conventional
+    type: sten
+    translations:
+      - locale: en
+        title: Conventional
+        description: Detail-oriented, organizing, clerical
+        abbreviation: C
+      - locale: ru
+        title: Конвенциональный
+        description: Внимание к деталям, стремление к порядку, четкая структура
+        abbreviation: C
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+    items:
+      - code: riasec-activity-wisc-06-conventional-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Follow clearly defined procedures
+          - locale: ru
+            content: Следовать чётким инструкциям
+      - code: riasec-activity-wisc-06-conventional-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Work with numbers
+          - locale: ru
+            content: Работать с числами
+      - code: riasec-activity-wisc-06-conventional-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Be responsible for details
+          - locale: ru
+            content: Отвечать за точность в деталях
+      - code: riasec-activity-wisc-06-conventional-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Keep accurate records
+          - locale: ru
+            content: Аккуратно вести записи
+      - code: riasec-activity-wisc-06-conventional-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Do a lot of paper work
+          - locale: ru
+            content: Делать много бумажной работы
+      - code: riasec-activity-wisc-06-conventional-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Work within a system
+          - locale: ru
+            content: Работать как часть системы
+      - code: riasec-activity-wisc-06-conventional-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Use Excel or similar software
+          - locale: ru
+            content: Работать в Экселе или другой подобной программе
+questions:
+  - code: riasec-activity-wisc-001
+    order: 10
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-001
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-002
+    order: 20
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-002
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-003
+    order: 30
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-003
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-004
+    order: 40
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-004
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-005
+    order: 50
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-005
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-006
+    order: 60
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-006
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-007
+    order: 70
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-007
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-008
+    order: 80
+    type: simple
+    items:
+      - code: riasec-activity-wisc-01-realistic-008
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-009
+    order: 90
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-001
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-010
+    order: 100
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-002
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-011
+    order: 110
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-003
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-012
+    order: 120
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-004
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-013
+    order: 130
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-005
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-014
+    order: 140
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-006
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-015
+    order: 150
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-007
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-016
+    order: 160
+    type: simple
+    items:
+      - code: riasec-activity-wisc-02-investigative-008
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-017
+    order: 170
+    type: simple
+    items:
+      - code: riasec-activity-wisc-03-artistic-001
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-018
+    order: 180
+    type: simple
+    items:
+      - code: riasec-activity-wisc-03-artistic-002
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-019
+    order: 190
+    type: simple
+    items:
+      - code: riasec-activity-wisc-03-artistic-003
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-020
+    order: 200
+    type: simple
+    items:
+      - code: riasec-activity-wisc-03-artistic-004
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-021
+    order: 210
+    type: simple
+    items:
+      - code: riasec-activity-wisc-03-artistic-005
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-022
+    order: 220
+    type: simple
+    items:
+      - code: riasec-activity-wisc-03-artistic-006
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-023
+    order: 230
+    type: simple
+    items:
+      - code: riasec-activity-wisc-03-artistic-007
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-024
+    order: 240
+    type: simple
+    items:
+      - code: riasec-activity-wisc-04-social-001
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-025
+    order: 250
+    type: simple
+    items:
+      - code: riasec-activity-wisc-04-social-002
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-026
+    order: 260
+    type: simple
+    items:
+      - code: riasec-activity-wisc-04-social-003
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-027
+    order: 270
+    type: simple
+    items:
+      - code: riasec-activity-wisc-04-social-004
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-028
+    order: 280
+    type: simple
+    items:
+      - code: riasec-activity-wisc-04-social-005
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-029
+    order: 290
+    type: simple
+    items:
+      - code: riasec-activity-wisc-04-social-006
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-030
+    order: 300
+    type: simple
+    items:
+      - code: riasec-activity-wisc-04-social-007
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-031
+    order: 310
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-001
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-032
+    order: 320
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-002
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-033
+    order: 330
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-003
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-034
+    order: 340
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-004
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-035
+    order: 350
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-005
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-036
+    order: 360
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-006
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-037
+    order: 370
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-007
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-038
+    order: 380
+    type: simple
+    items:
+      - code: riasec-activity-wisc-05-enterprising-008
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-039
+    order: 390
+    type: simple
+    items:
+      - code: riasec-activity-wisc-06-conventional-001
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-040
+    order: 400
+    type: simple
+    items:
+      - code: riasec-activity-wisc-06-conventional-002
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-041
+    order: 410
+    type: simple
+    items:
+      - code: riasec-activity-wisc-06-conventional-003
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-042
+    order: 420
+    type: simple
+    items:
+      - code: riasec-activity-wisc-06-conventional-004
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-043
+    order: 430
+    type: simple
+    items:
+      - code: riasec-activity-wisc-06-conventional-005
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-044
+    order: 440
+    type: simple
+    items:
+      - code: riasec-activity-wisc-06-conventional-006
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+  - code: riasec-activity-wisc-045
+    order: 450
+    type: simple
+    items:
+      - code: riasec-activity-wisc-06-conventional-007
+    translations:
+      - locale: en
+        content: Would you like to...
+      - locale: ru
+        content: Насколько вам понравилось бы...
+display:
+  questionsPerPage: 1
+  randomizeOrder: true

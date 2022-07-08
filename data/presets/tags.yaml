@@ -47,3 +47,10 @@
       content: debug
     - locale: ru
       content: debug
+- type: theme
+  code: career
+  translations:
+    - locale: en
+      content: career
+    - locale: ru
+      content: профориентация

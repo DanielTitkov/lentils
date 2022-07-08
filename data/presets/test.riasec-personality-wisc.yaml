@@ -1,0 +1,981 @@
+# generated, try not to edit
+# by: CTT-v1
+# at: 2022-07-09 02:17:19
+# template: ../data/templates/ctt-v1/riasec-personality-wisc.yaml
+code: riasec-personality-wisc
+published: true
+availableLocales:
+  - en
+  - ru
+tags:
+  - psychology
+  - career
+forceUpdate: true
+translations:
+  - locale: en
+    title: RIASEC (personality)
+    description: Career preference test (personality questions)
+    instruction: <p>The test consists of statements about personality that you will
+      have to rate by how much each is true for you. each on a scale of (1) not true
+      (2) mostly not true (3) neither true or not true (4) mostly true (5) true.</p>
+    details: <p>RIASEC (Holland Codes) is a set of personality types developed by
+      psychologist John L. Holland in the 1970s. Dr. Holland. Widely used to discover
+      ones career and occupation preferences. </p> <p>This version of Holland test
+      consists of questions about your personality. There are also other versions
+      of the test you can find an Orrery. <a href="/test/riasec-activity-wisc" target="_blank">Activities
+      version</a>, Combined version - . Combined version is the most precised, but
+      it has more questions.</p> <p>There are multiple versions of Holland test. Orrery
+      uses the one developed at Wisconsin University. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      target="_blank">Link to Wisc Uni site</a>.</p>
+  - locale: ru
+    title: RIASEC (личностный)
+    description: Тест профессиональных предпочтений (личностные вопросы)
+    instruction: <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько
+      пункт соотвествует вашей личности. Дайте ответ, используя следующую шкалу -
+      (1) не соотвествует (2) скорее не соотвествует (3) не то и не другое (4) скорее
+      соотвествует (5) соотвествует.</p>
+    details: <p>RIASEC (тест Холланда, тест профессиональных предпочтений). Методика
+      разработана психологом Джоном Холландом в 70е годы.</p> <p>Эта версия теста
+      Холланда состоит из вопросов про вашу личность. У нас также есть другие версии.
+      <a href="/test/riasec-activity-wisc" target="_blank">Виды деятельности</a>,
+      Комбинированный - . Комбинированный тест наиболее точный, но вопросов в нём
+      больше.</p> <p>Есть много вариантов вопросов для теста Холланда. Orrery использует
+      версию, представленную университетом Висконсина. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      target="_blank">Ссылка на оригинал на сайте университета</a>.</p> <p>Перевод
+      на русский язык выполнен Orrery.</p>
+scales:
+  - code: riasec-personality-wisc-01-realistic
+    type: sten
+    translations:
+      - locale: en
+        title: Realistic
+        description: Practical, physical, concrete, hands-on, machine, and tool-oriented
+        abbreviation: R
+      - locale: ru
+        title: Реалистический
+        description: Практичность, материальность, конкретность, инструментальность
+        abbreviation: R
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+    items:
+      - code: riasec-personality-wisc-01-realistic-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Practical
+          - locale: ru
+            content: Практичны
+      - code: riasec-personality-wisc-01-realistic-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Athletic
+          - locale: ru
+            content: Атлетичны
+      - code: riasec-personality-wisc-01-realistic-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Straight forward
+          - locale: ru
+            content: Прямолинейны
+      - code: riasec-personality-wisc-01-realistic-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Mechanically inclined
+          - locale: ru
+            content: Склонны к механике
+      - code: riasec-personality-wisc-01-realistic-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: 'A nature lover '
+          - locale: ru
+            content: Любите природу
+      - code: riasec-personality-wisc-01-realistic-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Good with tools and machinery
+          - locale: ru
+            content: Умелы в обращении с интрументами и техникой
+  - code: riasec-personality-wisc-02-investigative
+    type: sten
+    translations:
+      - locale: en
+        title: Investigative
+        description: Analytical, intellectual, scientific, explorative, thinker
+        abbreviation: I
+      - locale: ru
+        title: Исследовательский
+        description: Аналитика, интеллектуальность, наука, исследование, размышления
+        abbreviation: I
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+    items:
+      - code: riasec-personality-wisc-02-investigative-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Inquisitive
+          - locale: ru
+            content: Любознательны
+      - code: riasec-personality-wisc-02-investigative-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Analytical
+          - locale: ru
+            content: Обладаете аналитическим мышлением
+      - code: riasec-personality-wisc-02-investigative-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Scientific
+          - locale: ru
+            content: Увлечены наукой
+      - code: riasec-personality-wisc-02-investigative-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Observant
+          - locale: ru
+            content: Наблюдательны
+      - code: riasec-personality-wisc-02-investigative-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Precise
+          - locale: ru
+            content: Склонны к точности
+  - code: riasec-personality-wisc-03-artistic
+    type: sten
+    translations:
+      - locale: en
+        title: Artistic
+        description: Creative, original, independent, chaotic, inventive, media, graphics,
+          and text
+        abbreviation: A
+      - locale: ru
+        title: Художественный (Артистический)
+        description: Творчество, оригинальность, независимость, хаотичность
+        abbreviation: A
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+    items:
+      - code: riasec-personality-wisc-03-artistic-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Creative
+          - locale: ru
+            content: Креативны
+      - code: riasec-personality-wisc-03-artistic-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Intuitive
+          - locale: ru
+            content: Полагаетесь на интуицию
+      - code: riasec-personality-wisc-03-artistic-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Imaginative
+          - locale: ru
+            content: Обладаете развитым воображением
+      - code: riasec-personality-wisc-03-artistic-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Innovative
+          - locale: ru
+            content: Любите всё новое
+      - code: riasec-personality-wisc-03-artistic-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: An individualist
+          - locale: ru
+            content: Индивидуалистичны
+  - code: riasec-personality-wisc-04-social
+    type: sten
+    translations:
+      - locale: en
+        title: Social
+        description: cooperative, supporting, helping, healing/nurturing, teaching
+        abbreviation: S
+      - locale: ru
+        title: Социальный
+        description: Кооперация, поддержка, помощь, забота, преподавание
+        abbreviation: S
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+    items:
+      - code: riasec-personality-wisc-04-social-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Friendly
+          - locale: ru
+            content: Дружелюбны
+      - code: riasec-personality-wisc-04-social-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Helpful
+          - locale: ru
+            content: Готовы помогать
+      - code: riasec-personality-wisc-04-social-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Idealistic
+          - locale: ru
+            content: Идеалистичны
+      - code: riasec-personality-wisc-04-social-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Insightful
+          - locale: ru
+            content: Проницательны
+      - code: riasec-personality-wisc-04-social-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Outgoing
+          - locale: ru
+            content: Отзывчивы
+      - code: riasec-personality-wisc-04-social-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Understanding
+          - locale: ru
+            content: Легко понимаете других
+  - code: riasec-personality-wisc-05-enterprising
+    type: sten
+    translations:
+      - locale: en
+        title: Enterprising
+        description: Competitive environments, leadership, persuading, status
+        abbreviation: E
+      - locale: ru
+        title: Предприимчивый
+        description: Конкуренция, лидерство, убеждение, статус
+        abbreviation: E
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+    items:
+      - code: riasec-personality-wisc-05-enterprising-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Self-confident
+          - locale: ru
+            content: Уверены в себе
+      - code: riasec-personality-wisc-05-enterprising-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Assertive
+          - locale: ru
+            content: Настойчивы
+      - code: riasec-personality-wisc-05-enterprising-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Sociable
+          - locale: ru
+            content: Общительны
+      - code: riasec-personality-wisc-05-enterprising-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Persuasive
+          - locale: ru
+            content: Легко убеждаете других
+      - code: riasec-personality-wisc-05-enterprising-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Enthusiastic
+          - locale: ru
+            content: Полны энтузиазма
+      - code: riasec-personality-wisc-05-enterprising-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Energetic
+          - locale: ru
+            content: Энергичны
+  - code: riasec-personality-wisc-06-conventional
+    type: sten
+    translations:
+      - locale: en
+        title: Conventional
+        description: Detail-oriented, organizing, clerical
+        abbreviation: C
+      - locale: ru
+        title: Конвенциональный
+        description: Внимание к деталям, стремление к порядку, четкая структура
+        abbreviation: C
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+    items:
+      - code: riasec-personality-wisc-06-conventional-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Well groomed
+          - locale: ru
+            content: Ухожены
+      - code: riasec-personality-wisc-06-conventional-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Accurate
+          - locale: ru
+            content: Аккуратны
+      - code: riasec-personality-wisc-06-conventional-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: 'Numerically inclined '
+          - locale: ru
+            content: Склонны работать с числами
+      - code: riasec-personality-wisc-06-conventional-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Methodical
+          - locale: ru
+            content: Методичны
+      - code: riasec-personality-wisc-06-conventional-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Conscientious
+          - locale: ru
+            content: Отвественны
+      - code: riasec-personality-wisc-06-conventional-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: Efficient
+          - locale: ru
+            content: Стремитесь к эффективности в работе
+questions:
+  - code: riasec-personality-wisc-001
+    order: 10
+    type: simple
+    items:
+      - code: riasec-personality-wisc-01-realistic-001
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-002
+    order: 20
+    type: simple
+    items:
+      - code: riasec-personality-wisc-01-realistic-002
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-003
+    order: 30
+    type: simple
+    items:
+      - code: riasec-personality-wisc-01-realistic-003
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-004
+    order: 40
+    type: simple
+    items:
+      - code: riasec-personality-wisc-01-realistic-004
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-005
+    order: 50
+    type: simple
+    items:
+      - code: riasec-personality-wisc-01-realistic-005
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-006
+    order: 60
+    type: simple
+    items:
+      - code: riasec-personality-wisc-01-realistic-006
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-007
+    order: 70
+    type: simple
+    items:
+      - code: riasec-personality-wisc-02-investigative-001
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-008
+    order: 80
+    type: simple
+    items:
+      - code: riasec-personality-wisc-02-investigative-002
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-009
+    order: 90
+    type: simple
+    items:
+      - code: riasec-personality-wisc-02-investigative-003
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-010
+    order: 100
+    type: simple
+    items:
+      - code: riasec-personality-wisc-02-investigative-004
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-011
+    order: 110
+    type: simple
+    items:
+      - code: riasec-personality-wisc-02-investigative-005
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-012
+    order: 120
+    type: simple
+    items:
+      - code: riasec-personality-wisc-03-artistic-001
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-013
+    order: 130
+    type: simple
+    items:
+      - code: riasec-personality-wisc-03-artistic-002
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-014
+    order: 140
+    type: simple
+    items:
+      - code: riasec-personality-wisc-03-artistic-003
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-015
+    order: 150
+    type: simple
+    items:
+      - code: riasec-personality-wisc-03-artistic-004
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-016
+    order: 160
+    type: simple
+    items:
+      - code: riasec-personality-wisc-03-artistic-005
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-017
+    order: 170
+    type: simple
+    items:
+      - code: riasec-personality-wisc-04-social-001
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-018
+    order: 180
+    type: simple
+    items:
+      - code: riasec-personality-wisc-04-social-002
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-019
+    order: 190
+    type: simple
+    items:
+      - code: riasec-personality-wisc-04-social-003
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-020
+    order: 200
+    type: simple
+    items:
+      - code: riasec-personality-wisc-04-social-004
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-021
+    order: 210
+    type: simple
+    items:
+      - code: riasec-personality-wisc-04-social-005
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-022
+    order: 220
+    type: simple
+    items:
+      - code: riasec-personality-wisc-04-social-006
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-023
+    order: 230
+    type: simple
+    items:
+      - code: riasec-personality-wisc-05-enterprising-001
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-024
+    order: 240
+    type: simple
+    items:
+      - code: riasec-personality-wisc-05-enterprising-002
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-025
+    order: 250
+    type: simple
+    items:
+      - code: riasec-personality-wisc-05-enterprising-003
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-026
+    order: 260
+    type: simple
+    items:
+      - code: riasec-personality-wisc-05-enterprising-004
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-027
+    order: 270
+    type: simple
+    items:
+      - code: riasec-personality-wisc-05-enterprising-005
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-028
+    order: 280
+    type: simple
+    items:
+      - code: riasec-personality-wisc-05-enterprising-006
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-029
+    order: 290
+    type: simple
+    items:
+      - code: riasec-personality-wisc-06-conventional-001
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-030
+    order: 300
+    type: simple
+    items:
+      - code: riasec-personality-wisc-06-conventional-002
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-031
+    order: 310
+    type: simple
+    items:
+      - code: riasec-personality-wisc-06-conventional-003
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-032
+    order: 320
+    type: simple
+    items:
+      - code: riasec-personality-wisc-06-conventional-004
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-033
+    order: 330
+    type: simple
+    items:
+      - code: riasec-personality-wisc-06-conventional-005
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+  - code: riasec-personality-wisc-034
+    order: 340
+    type: simple
+    items:
+      - code: riasec-personality-wisc-06-conventional-006
+    translations:
+      - locale: en
+        content: You are...
+      - locale: ru
+        content: Насколько вы...
+display:
+  questionsPerPage: 1
+  randomizeOrder: true
