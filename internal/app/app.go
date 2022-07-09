@@ -42,6 +42,8 @@ type (
 		GetTests(ctx context.Context, args *domain.QueryTestsArgs) ([]*domain.Test, error)
 		GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error)
 		GetTakeData(ctx context.Context, take *domain.Take, locale string) (*domain.Test, error)
+		GetDataForMarkCalculation(ctx context.Context) ([]*domain.Test, error)
+		UpdateTestMark(ctx context.Context, testID uuid.UUID, mark float64) error
 
 		// take
 		GetTake(ctx context.Context, takeID uuid.UUID) (*domain.Take, error)
@@ -121,6 +123,15 @@ func New(
 	err = app.UpdateNorms(context.TODO())
 	if err != nil {
 		app.log.Error("errors while updating norms", err)
+		app.addError(err)
+		if app.Cfg.Env == domain.EnvDev {
+			return nil, err
+		}
+	}
+
+	err = app.updateTestMarks(context.TODO())
+	if err != nil {
+		app.log.Error("errors while updating test marks", err)
 		app.addError(err)
 		if app.Cfg.Env == domain.EnvDev {
 			return nil, err

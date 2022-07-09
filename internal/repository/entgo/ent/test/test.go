@@ -23,6 +23,8 @@ const (
 	FieldPublished = "published"
 	// FieldAvailableLocales holds the string denoting the available_locales field in the database.
 	FieldAvailableLocales = "available_locales"
+	// FieldMark holds the string denoting the mark field in the database.
+	FieldMark = "mark"
 	// EdgeTakes holds the string denoting the takes edge name in mutations.
 	EdgeTakes = "takes"
 	// EdgeQuestions holds the string denoting the questions edge name in mutations.
@@ -83,6 +85,7 @@ var Columns = []string{
 	FieldCode,
 	FieldPublished,
 	FieldAvailableLocales,
+	FieldMark,
 }
 
 var (
@@ -118,6 +121,8 @@ var (
 	CodeValidator func(string) error
 	// DefaultPublished holds the default value on creation for the "published" field.
 	DefaultPublished bool
+	// DefaultMark holds the default value on creation for the "mark" field.
+	DefaultMark float64
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

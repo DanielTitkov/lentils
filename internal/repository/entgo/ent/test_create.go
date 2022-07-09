@@ -81,6 +81,20 @@ func (tc *TestCreate) SetAvailableLocales(s []string) *TestCreate {
 	return tc
 }
 
+// SetMark sets the "mark" field.
+func (tc *TestCreate) SetMark(f float64) *TestCreate {
+	tc.mutation.SetMark(f)
+	return tc
+}
+
+// SetNillableMark sets the "mark" field if the given value is not nil.
+func (tc *TestCreate) SetNillableMark(f *float64) *TestCreate {
+	if f != nil {
+		tc.SetMark(*f)
+	}
+	return tc
+}
+
 // SetID sets the "id" field.
 func (tc *TestCreate) SetID(u uuid.UUID) *TestCreate {
 	tc.mutation.SetID(u)
@@ -278,6 +292,10 @@ func (tc *TestCreate) defaults() {
 		v := test.DefaultPublished
 		tc.mutation.SetPublished(v)
 	}
+	if _, ok := tc.mutation.Mark(); !ok {
+		v := test.DefaultMark
+		tc.mutation.SetMark(v)
+	}
 	if _, ok := tc.mutation.ID(); !ok {
 		v := test.DefaultID()
 		tc.mutation.SetID(v)
@@ -302,6 +320,9 @@ func (tc *TestCreate) check() error {
 	}
 	if _, ok := tc.mutation.Published(); !ok {
 		return &ValidationError{Name: "published", err: errors.New(`ent: missing required field "Test.published"`)}
+	}
+	if _, ok := tc.mutation.Mark(); !ok {
+		return &ValidationError{Name: "mark", err: errors.New(`ent: missing required field "Test.mark"`)}
 	}
 	return nil
 }
@@ -378,6 +399,14 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 			Column: test.FieldAvailableLocales,
 		})
 		_node.AvailableLocales = value
+	}
+	if value, ok := tc.mutation.Mark(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: test.FieldMark,
+		})
+		_node.Mark = value
 	}
 	if nodes := tc.mutation.TakesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

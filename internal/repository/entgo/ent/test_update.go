@@ -67,6 +67,27 @@ func (tu *TestUpdate) ClearAvailableLocales() *TestUpdate {
 	return tu
 }
 
+// SetMark sets the "mark" field.
+func (tu *TestUpdate) SetMark(f float64) *TestUpdate {
+	tu.mutation.ResetMark()
+	tu.mutation.SetMark(f)
+	return tu
+}
+
+// SetNillableMark sets the "mark" field if the given value is not nil.
+func (tu *TestUpdate) SetNillableMark(f *float64) *TestUpdate {
+	if f != nil {
+		tu.SetMark(*f)
+	}
+	return tu
+}
+
+// AddMark adds f to the "mark" field.
+func (tu *TestUpdate) AddMark(f float64) *TestUpdate {
+	tu.mutation.AddMark(f)
+	return tu
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by IDs.
 func (tu *TestUpdate) AddTakeIDs(ids ...uuid.UUID) *TestUpdate {
 	tu.mutation.AddTakeIDs(ids...)
@@ -383,6 +404,20 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeJSON,
 			Column: test.FieldAvailableLocales,
+		})
+	}
+	if value, ok := tu.mutation.Mark(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: test.FieldMark,
+		})
+	}
+	if value, ok := tu.mutation.AddedMark(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: test.FieldMark,
 		})
 	}
 	if tu.mutation.TakesCleared() {
@@ -741,6 +776,27 @@ func (tuo *TestUpdateOne) ClearAvailableLocales() *TestUpdateOne {
 	return tuo
 }
 
+// SetMark sets the "mark" field.
+func (tuo *TestUpdateOne) SetMark(f float64) *TestUpdateOne {
+	tuo.mutation.ResetMark()
+	tuo.mutation.SetMark(f)
+	return tuo
+}
+
+// SetNillableMark sets the "mark" field if the given value is not nil.
+func (tuo *TestUpdateOne) SetNillableMark(f *float64) *TestUpdateOne {
+	if f != nil {
+		tuo.SetMark(*f)
+	}
+	return tuo
+}
+
+// AddMark adds f to the "mark" field.
+func (tuo *TestUpdateOne) AddMark(f float64) *TestUpdateOne {
+	tuo.mutation.AddMark(f)
+	return tuo
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by IDs.
 func (tuo *TestUpdateOne) AddTakeIDs(ids ...uuid.UUID) *TestUpdateOne {
 	tuo.mutation.AddTakeIDs(ids...)
@@ -1087,6 +1143,20 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeJSON,
 			Column: test.FieldAvailableLocales,
+		})
+	}
+	if value, ok := tuo.mutation.Mark(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: test.FieldMark,
+		})
+	}
+	if value, ok := tuo.mutation.AddedMark(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: test.FieldMark,
 		})
 	}
 	if tuo.mutation.TakesCleared() {

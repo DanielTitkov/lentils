@@ -122,6 +122,13 @@ func Published(v bool) predicate.Test {
 	})
 }
 
+// Mark applies equality check predicate on the "mark" field. It's identical to MarkEQ.
+func Mark(v float64) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMark), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
@@ -410,6 +417,82 @@ func AvailableLocalesIsNil() predicate.Test {
 func AvailableLocalesNotNil() predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldAvailableLocales)))
+	})
+}
+
+// MarkEQ applies the EQ predicate on the "mark" field.
+func MarkEQ(v float64) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMark), v))
+	})
+}
+
+// MarkNEQ applies the NEQ predicate on the "mark" field.
+func MarkNEQ(v float64) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMark), v))
+	})
+}
+
+// MarkIn applies the In predicate on the "mark" field.
+func MarkIn(vs ...float64) predicate.Test {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Test(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldMark), v...))
+	})
+}
+
+// MarkNotIn applies the NotIn predicate on the "mark" field.
+func MarkNotIn(vs ...float64) predicate.Test {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Test(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldMark), v...))
+	})
+}
+
+// MarkGT applies the GT predicate on the "mark" field.
+func MarkGT(v float64) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMark), v))
+	})
+}
+
+// MarkGTE applies the GTE predicate on the "mark" field.
+func MarkGTE(v float64) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMark), v))
+	})
+}
+
+// MarkLT applies the LT predicate on the "mark" field.
+func MarkLT(v float64) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMark), v))
+	})
+}
+
+// MarkLTE applies the LTE predicate on the "mark" field.
+func MarkLTE(v float64) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMark), v))
 	})
 }
 

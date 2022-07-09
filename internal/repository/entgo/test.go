@@ -168,6 +168,7 @@ func (r *EntgoRepository) GetTakeData(ctx context.Context, tk *domain.Take, loca
 			})
 			sq.Order(ent.Asc(scale.FieldCode)) // this should work fine until test doesn't have >99 scales which would be crazy
 		}).
+		WithQuestions(). // only question count is need here so no need for translations
 		Only(ctx)
 	if err != nil {
 		return nil, err
@@ -586,6 +587,33 @@ func (r *EntgoRepository) invalidateNorms(tx *ent.Tx, ctx context.Context, scale
 	return nil
 }
 
+func (r *EntgoRepository) GetDataForMarkCalculation(ctx context.Context) ([]*domain.Test, error) {
+	tests, err := r.client.Test.Query().
+		WithTakes(func(q *ent.TakeQuery) {
+			q.Where(take.MarkNotNil())
+		}).
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []*domain.Test
+	for _, t := range tests {
+		res = append(res, entToDomainTest(t, domain.DefaultLocale()))
+	}
+
+	return res, nil
+}
+
+func (r *EntgoRepository) UpdateTestMark(ctx context.Context, testID uuid.UUID, mark float64) error {
+	_, err := r.client.Test.UpdateOneID(testID).SetMark(mark).Save(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 	title := "no title for this locale: " + locale
 	description := "no description for this locale: " + locale
@@ -629,9 +657,14 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 	}
 
 	var take *domain.Take
+	var takes []*domain.Take
 	if t.Edges.Takes != nil {
 		if len(t.Edges.Takes) == 1 {
 			take = entToDomainTake(t.Edges.Takes[0], uuid.Nil, t.ID)
+		}
+		for _, tk := range t.Edges.Takes {
+			// this is used for mark calculations and maybe other statistics
+			takes = append(takes, entToDomainTake(tk, uuid.Nil, t.ID))
 		}
 	}
 
@@ -640,6 +673,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Code:             t.Code,
 		Published:        t.Published,
 		AvailableLocales: t.AvailableLocales,
+		Mark:             t.Mark,
 		Title:            title,
 		Description:      description,
 		Instruction:      template.HTML(instruction),
@@ -649,6 +683,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Scales:           scales,
 		Tags:             tags,
 		Take:             take,
+		Takes:            takes,
 	}
 }
 

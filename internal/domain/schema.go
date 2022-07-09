@@ -24,7 +24,9 @@ type (
 		Scales            []*Scale
 		Tags              []*Tag
 		Display           TestDisplay
-		Take              *Take // for use in handler
+		Mark              float64
+		Take              *Take   // for use in handler
+		Takes             []*Take // for calculations
 	}
 
 	TestDisplay struct {

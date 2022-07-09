@@ -413,6 +413,10 @@ func init() {
 	testDescPublished := testFields[2].Descriptor()
 	// test.DefaultPublished holds the default value on creation for the published field.
 	test.DefaultPublished = testDescPublished.Default.(bool)
+	// testDescMark is the schema descriptor for mark field.
+	testDescMark := testFields[4].Descriptor()
+	// test.DefaultMark holds the default value on creation for the mark field.
+	test.DefaultMark = testDescMark.Default.(float64)
 	// testDescID is the schema descriptor for id field.
 	testDescID := testFields[0].Descriptor()
 	// test.DefaultID holds the default value on creation for the id field.

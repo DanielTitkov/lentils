@@ -21,6 +21,7 @@ func (Test) Fields() []ent.Field {
 		field.String("code").NotEmpty().MaxLen(100).Unique().Immutable(),
 		field.Bool("published").Default(true),
 		field.Strings("available_locales").Optional(),
+		field.Float("mark").Default(3),
 	}
 }
 

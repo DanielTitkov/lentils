@@ -11324,6 +11324,8 @@ type TestMutation struct {
 	code                *string
 	published           *bool
 	available_locales   *[]string
+	mark                *float64
+	addmark             *float64
 	clearedFields       map[string]struct{}
 	takes               map[uuid.UUID]struct{}
 	removedtakes        map[uuid.UUID]struct{}
@@ -11642,6 +11644,62 @@ func (m *TestMutation) AvailableLocalesCleared() bool {
 func (m *TestMutation) ResetAvailableLocales() {
 	m.available_locales = nil
 	delete(m.clearedFields, test.FieldAvailableLocales)
+}
+
+// SetMark sets the "mark" field.
+func (m *TestMutation) SetMark(f float64) {
+	m.mark = &f
+	m.addmark = nil
+}
+
+// Mark returns the value of the "mark" field in the mutation.
+func (m *TestMutation) Mark() (r float64, exists bool) {
+	v := m.mark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMark returns the old "mark" field's value of the Test entity.
+// If the Test object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestMutation) OldMark(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMark: %w", err)
+	}
+	return oldValue.Mark, nil
+}
+
+// AddMark adds f to the "mark" field.
+func (m *TestMutation) AddMark(f float64) {
+	if m.addmark != nil {
+		*m.addmark += f
+	} else {
+		m.addmark = &f
+	}
+}
+
+// AddedMark returns the value that was added to the "mark" field in this mutation.
+func (m *TestMutation) AddedMark() (r float64, exists bool) {
+	v := m.addmark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetMark resets all changes to the "mark" field.
+func (m *TestMutation) ResetMark() {
+	m.mark = nil
+	m.addmark = nil
 }
 
 // AddTakeIDs adds the "takes" edge to the Take entity by ids.
@@ -11972,7 +12030,7 @@ func (m *TestMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.create_time != nil {
 		fields = append(fields, test.FieldCreateTime)
 	}
@@ -11987,6 +12045,9 @@ func (m *TestMutation) Fields() []string {
 	}
 	if m.available_locales != nil {
 		fields = append(fields, test.FieldAvailableLocales)
+	}
+	if m.mark != nil {
+		fields = append(fields, test.FieldMark)
 	}
 	return fields
 }
@@ -12006,6 +12067,8 @@ func (m *TestMutation) Field(name string) (ent.Value, bool) {
 		return m.Published()
 	case test.FieldAvailableLocales:
 		return m.AvailableLocales()
+	case test.FieldMark:
+		return m.Mark()
 	}
 	return nil, false
 }
@@ -12025,6 +12088,8 @@ func (m *TestMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldPublished(ctx)
 	case test.FieldAvailableLocales:
 		return m.OldAvailableLocales(ctx)
+	case test.FieldMark:
+		return m.OldMark(ctx)
 	}
 	return nil, fmt.Errorf("unknown Test field %s", name)
 }
@@ -12069,6 +12134,13 @@ func (m *TestMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAvailableLocales(v)
 		return nil
+	case test.FieldMark:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMark(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)
 }
@@ -12076,13 +12148,21 @@ func (m *TestMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *TestMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addmark != nil {
+		fields = append(fields, test.FieldMark)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *TestMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case test.FieldMark:
+		return m.AddedMark()
+	}
 	return nil, false
 }
 
@@ -12091,6 +12171,13 @@ func (m *TestMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *TestMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case test.FieldMark:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddMark(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Test numeric field %s", name)
 }
@@ -12141,6 +12228,9 @@ func (m *TestMutation) ResetField(name string) error {
 		return nil
 	case test.FieldAvailableLocales:
 		m.ResetAvailableLocales()
+		return nil
+	case test.FieldMark:
+		m.ResetMark()
 		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)

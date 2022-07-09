@@ -434,6 +434,7 @@ var (
 		{Name: "code", Type: field.TypeString, Unique: true, Size: 100},
 		{Name: "published", Type: field.TypeBool, Default: true},
 		{Name: "available_locales", Type: field.TypeJSON, Nullable: true},
+		{Name: "mark", Type: field.TypeFloat64, Default: 3},
 	}
 	// TestsTable holds the schema information for the "tests" table.
 	TestsTable = &schema.Table{

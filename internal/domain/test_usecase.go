@@ -6,6 +6,8 @@ import (
 	"math/rand"
 	"reflect"
 	"sort"
+
+	"github.com/montanaflynn/stats"
 )
 
 func (t *Test) OrderQuestions(seed int64) {
@@ -107,6 +109,30 @@ func (t *Test) CalculateResult() error {
 	}
 
 	return nil
+}
+
+func (t *Test) CalculateMark() float64 {
+	if len(t.Takes) == 0 {
+		return t.Mark
+	}
+
+	var takeMarks []float64
+	for _, take := range t.Takes {
+		if take.Mark == nil {
+			continue
+		}
+		takeMarks = append(takeMarks, float64(*take.Mark))
+	}
+
+	if len(takeMarks) == 0 {
+		return t.Mark
+	}
+
+	mark, err := stats.Mean(takeMarks)
+	if err != nil {
+		return t.Mark
+	}
+	return mark
 }
 
 func (t *CreateTestArgs) ValidateTranslations() error {
