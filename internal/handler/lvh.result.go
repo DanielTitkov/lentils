@@ -5,6 +5,7 @@ import (
 	"errors"
 	"html/template"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -58,6 +59,9 @@ var resultFuncMap = template.FuncMap{
 			return 0
 		}
 		return *i
+	},
+	"DisplayTime": func(t time.Time) string {
+		return t.Format(domain.DefaultDisplayTime)
 	},
 }
 

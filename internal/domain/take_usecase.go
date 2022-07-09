@@ -32,6 +32,13 @@ func (t *Take) End() error {
 	return nil
 }
 
+func (t *Take) Elapsed() time.Duration {
+	if t.StartTime == nil || t.EndTime == nil {
+		return 0
+	}
+	return t.EndTime.Sub(*t.StartTime)
+}
+
 func (t *Take) calculateSuspicion() {
 	if t.StartTime == nil || t.EndTime == nil {
 		return

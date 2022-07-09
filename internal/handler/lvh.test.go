@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
 	"github.com/DanielTitkov/orrery/internal/util"
 
@@ -72,6 +73,9 @@ var testFuncMap = template.FuncMap{
 			return 0
 		}
 		return *i
+	},
+	"DisplayTime": func(t time.Time) string {
+		return t.Format(domain.DefaultDisplayTime)
 	},
 }
 

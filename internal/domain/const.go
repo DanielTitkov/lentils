@@ -47,6 +47,8 @@ const (
 	TagCodeLong    = "long"
 	TagLenShort    = 10
 	TagLenLong     = 50
+	// time
+	DefaultDisplayTime = time.RFC822
 )
 
 func Locales() []string {

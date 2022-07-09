@@ -6,6 +6,16 @@
       <div class="column">
         <h1 class="title is-1 is-size-3-mobile">{{ .Test.Title }}</h1>
         <h3 class="subtitle is-3 is-size-5-mobile">{{ .Test.Description }}</h3>
+        {{ if .Test.Take }}
+        <span class="heading">
+          {{ if .Test.Take.StartTime }}
+          <span>Started at: <b>{{ DisplayTime .Test.Take.StartTime }}</b></span>
+          {{ end }}
+          {{ if .Test.Take.EndTime }}
+          <span> - Finished at: <b>{{ DisplayTime .Test.Take.EndTime }}</b> in {{ .Test.Take.Elapsed }}</span>
+          {{ end }}
+        </span>
+        {{ end }}
       </div>
       {{ if eq .CurrentView "result" }}
       <div class="column is-narrow">
