@@ -38,6 +38,7 @@ data:
       - ./data/presets/test.fipi.yaml
       - ./data/presets/test.riasec-personality-wisc.yaml
       - ./data/presets/test.riasec-activity-wisc.yaml
+      - ./data/presets/test.riasec-combined-wisc.yaml
       # - ./data/presets/test.extro.yaml
     tagPresetsPaths:
       - ./data/presets/tags.yaml

@@ -141,6 +141,7 @@ const DefaultType = TypeSten
 const (
 	TypeSten   Type = "sten"
 	TypeMean   Type = "mean"
+	TypePerc   Type = "perc"
 	TypeSum    Type = "sum"
 	TypeZscore Type = "zscore"
 )
@@ -152,7 +153,7 @@ func (_type Type) String() string {
 // TypeValidator is a validator for the "type" field enum values. It is called by the builders before save.
 func TypeValidator(_type Type) error {
 	switch _type {
-	case TypeSten, TypeMean, TypeSum, TypeZscore:
+	case TypeSten, TypeMean, TypePerc, TypeSum, TypeZscore:
 		return nil
 	default:
 		return fmt.Errorf("scale: invalid enum value for type field: %q", _type)

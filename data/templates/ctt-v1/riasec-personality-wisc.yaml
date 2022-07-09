@@ -4,23 +4,27 @@ tags: ["psychology", "career"]
 en:  # title, decsriptions, instruction, details
   - RIASEC (personality)
   - Career preference test (personality questions)
-  - <p>The test consists of statements about personality that you will have to rate by how much each is true for you.
-    each on a scale of (1) not true (2) mostly not true (3) neither true or not true (4) mostly true (5) true.</p>
+  - <p>The test consists of statements about personality that you will have to rate by how much each is true 
+    on a scale of (1) not true (2) mostly not true (3) neither true or not true (4) mostly true (5) true.</p>
   - <p>RIASEC (Holland Codes) is a set of personality types developed by psychologist John L. Holland in the 1970s. Dr. Holland.
     Widely used to discover ones career and occupation preferences. </p>
     <p>This version of Holland test consists of questions about your personality. There are also other versions of the test you can find an Orrery.
-    <a href="/test/riasec-activity-wisc" target="_blank">Activities version</a>, Combined version - . Combined version is the most precised, but it has more questions.</p>
+    <a href="/test/riasec-activity-wisc" target="_blank">Activities version</a>, 
+    <a href="/test/riasec-combined-wisc" target="_blank">Combined version</a>.
+    Combined version is the most precised, but it has more questions.</p>
     <p>There are multiple versions of Holland test. Orrery uses the one developed at Wisconsin University.
     <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf" target="_blank">Link to Wisc Uni site</a>.</p>
 ru: # title, decsriptions, instruction, details
   - RIASEC (личностный)
   - Тест профессиональных предпочтений (личностные вопросы)
-  - <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько пункт соотвествует вашей личности.
-    Дайте ответ, используя следующую шкалу - (1) не соотвествует (2) скорее не соотвествует (3) не то и не другое (4) скорее соотвествует
-    (5) соотвествует.</p>
+  - <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько пункт соответствует вашей личности.
+    Дайте ответ, используя следующую шкалу - (1) не соответствует (2) скорее не соответствует (3) не то и не другое 
+    (4) скорее соответствует (5) соответствует.</p>
   - <p>RIASEC (тест Холланда, тест профессиональных предпочтений). Методика разработана психологом Джоном Холландом в 70е годы.</p>
     <p>Эта версия теста Холланда состоит из вопросов про вашу личность. У нас также есть другие версии. 
-    <a href="/test/riasec-activity-wisc" target="_blank">Виды деятельности</a>, Комбинированный - . Комбинированный тест наиболее точный, но вопросов в нём больше.</p>
+    <a href="/test/riasec-activity-wisc" target="_blank">Виды деятельности</a>, 
+    <a href="/test/riasec-combined-wisc" target="_blank">Комбинированный</a>.
+    Комбинированный тест наиболее точный, но вопросов в нём больше.</p>
     <p>Есть много вариантов вопросов для теста Холланда. Orrery использует версию, представленную университетом Висконсина.
     <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf" target="_blank">Ссылка на оригинал на сайте университета</a>.</p>
     <p>Перевод на русский язык выполнен Orrery.</p>

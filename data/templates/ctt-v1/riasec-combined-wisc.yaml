@@ -1,29 +1,30 @@
-code: riasec-activity-wisc
+code: riasec-combined-wisc
 locales: ["en", "ru"]
 tags: ["psychology", "career"]
 en:  # title, decsriptions, instruction, details
-  - RIASEC (activity)
-  - Career preference test (activity questions)
-  - <p>The test consists of tasks that you will have to rate by how much you would enjoy performing 
-    each on a scale of (1) dislike (2) slightly dislike (3) neither like not dislike (4) slightly enjoy (5) enjoy.</p>
+  - RIASEC (combined)
+  - Career preference test (personality + activity questions)
+  - <p>The test consists of statements that you will have to rate by how much each is true for you
+    on a scale of (1) not true (2) mostly not true (3) neither true or not true (4) mostly true (5) true.</p>
   - <p>RIASEC (Holland Codes) is a set of personality types developed by psychologist John L. Holland in the 1970s. Dr. Holland.
     Widely used to discover ones career and occupation preferences. </p>
-    <p>This version of Holland test consists of questions about your prefered activities. There are also other versions of the test you can find an Orrery.
+    <p>This version of Holland test consists of questions about your personality and prefered activities. 
+    There are also other versions of the test you can find an Orrery.
     <a href="/test/riasec-personality-wisc" target="_blank">Personality version</a>, 
-    <a href="/test/riasec-combined-wisc" target="_blank">Combined version</a>. 
+    <a href="/test/riasec-activity-wisc" target="_blank">Activities version</a>. 
     Combined version is the most precised, but it has more questions.</p>
     <p>There are multiple versions of Holland test. Orrery uses the one developed at Wisconsin University.
     <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf" target="_blank">Link to Wisc Uni site</a>.</p>
 ru: # title, decsriptions, instruction, details
-  - RIASEC (деятельность)
-  - Тест профессиональных предпочтений (вопросы о видах деятельности)
-  - <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько вам понравилось бы выполнять такую работу.
-    Дайте ответ, используя следующую шкалу - (1) не нравится (2) скорее не нравится (3) не то и не другое (4) скорее нравится
-    (5) нравится.</p>
+  - RIASEC (комбинированный)
+  - Тест профессиональных предпочтений (вопросы о личности и видах деятельности)
+  - <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько верно каждое утверждение.
+    Дайте ответ, используя следующую шкалу - (1) не верно (2) скорее не верно (3) не то и не другое (4) скорее верно
+    (5) верно.</p>
   - <p>RIASEC (тест Холланда, тест профессиональных предпочтений). Методика разработана психологом Джоном Холландом в 70е годы.</p>
     <p>Эта версия теста Холланда состоит из вопросов про предпочитаемые виды деятельности. У нас также есть другие версии. 
-    <a href="/test/riasec-activity-wisc" target="_blank">Личностный</a>, 
-    <a href="/test/riasec-combined-wisc" target="_blank">Комбинированный</a>.
+    <a href="/test/riasec-personality-wisc" target="_blank">Личностный</a>, 
+    <a href="/test/riasec-activity-wisc" target="_blank">Виды деятельности</a>. 
     Комбинированный тест наиболее точный, но вопросов в нём больше.</p>
     <p>Есть много вариантов вопросов для теста Холланда. Orrery использует версию, представленную университетом Висконсина.
     <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf" target="_blank">Ссылка на оригинал на сайте университета</a>.</p>
@@ -33,8 +34,8 @@ steps: 5 # item steps
 randomize: true
 intervals: 3 # interpretation intervals
 question:
-  en: "Would you like to..." # content
-  ru: "Насколько вам понравилось бы..." #content
+  en: "Please rate how much this statement applies to you..." # content
+  ru: "Укажите, насколько верно следующее утверждение..." #content
   page: 1
 scales: 
   realistic: 
@@ -153,143 +154,224 @@ scales:
             систематизацией информации в виде чисел, формул, текста, а также ведением документации.</p>
 items:
   # realistic
-  - en: "Tinker with mechanics" # content
-    ru: "Работать с механическими устройствами" # content
+  - en: "You like (or would like) to tinker with mechanics" # content
+    ru: "Вам нравится (или понравилось бы) работать с механическими или электрическими устройствами" # content
     scale: "realistic" # 
-  - en: "Work outdoors" # content
-    ru: "Работать на улице" # content
+  - en: "You like (or would like) to work outdoors" # content
+    ru: "Вам нравится (или понравилось бы) работать на улице" # content
     scale: "realistic" # 
-  - en: "Be physically active" # content
-    ru: "Быть физически активным (активной)" # content
+  - en: "You like (or would like) to be physically active" # content
+    ru: "Вам нравится (или понравилось бы) быть физически активным (активной)" # content
     scale: "realistic" # 
-  - en: "Use your hands" # content
-    ru: "Работать руками" # content
+  - en: "You like (or would like) to use your hands" # content
+    ru: "Вам нравится (или понравилось бы) работать руками" # content
     scale: "realistic" # 
-  - en: "Fix electrical things" # content
-    ru: "Чинить электрооборудование" # content
+  - en: "You like (or would like) to pitch a tent" # content
+    ru: "Вам нравится (или понравилось бы) устанавливать палатку" # content
     scale: "realistic" # 
-  - en: "Pitch a tent" # content
-    ru: "Устанавливать палатку" # content
+  - en: "You like (or would like) to play a sport" # content
+    ru: "Вам нравится (или понравилось бы) играть в спортивную игру" # content
     scale: "realistic" # 
-  - en: "Play a sport" # content
-    ru: "Играть в спортивную игру" # content
+  - en: "You are practical" # content
+    ru: "Вы практичны" # content
     scale: "realistic" # 
-  - en: "Read a blueprint" # content
-    ru: "Читать чертежи" # content
+  - en: "You are athletic" # content
+    ru: "Вы атлетичны" # content
+    scale: "realistic" # 
+  - en: "You are straight forward" # content
+    ru: "Вы прямолинейны" # content
+    scale: "realistic" # 
+  - en: "You are mechanically inclined" # content
+    ru: "Вы склонны к механике" # content
+    scale: "realistic" # 
+  - en: "You are a nature lover " # content
+    ru: "Вы любите природу" # content
+    scale: "realistic" # 
+  - en: "You are good with tools and machinery" # content
+    ru: "Вы умелы в обращении с интрументами и техникой" # content
     scale: "realistic" # 
   # investigative
-  - en: "Explore ideas" # content
-    ru: "Изучать и анализировать идеи" # content
+  - en: "You like (or would like) to explore ideas" # content
+    ru: "Вам нравится (или понравилось бы) изучать и анализировать идеи" # content
     scale: "investigative" # 
-  - en: "Work independently" # content
-    ru: "Работать в одиночестве" # content
+  - en: "You like (or would like) to work independently" # content
+    ru: "Вам нравится (или понравилось бы) работать в одиночестве" # content
     scale: "investigative" # 
-  - en: "Perform lab experiments" # content
-    ru: "Проводить эксперименты в лаборатории" # content
+  - en: "You like (or would like) to perform lab experiments" # content
+    ru: "Вам нравится (или понравилось бы) проводить эксперименты в лаборатории" # content
     scale: "investigative" # 
-  - en: "Read scientific or technical articles" # content
-    ru: "Читать научные или технические статьи" # content
+  - en: "You like (or would like) to read scientific or technical articles" # content
+    ru: "Вам нравится (или понравилось бы) читать научные или технические статьи" # content
     scale: "investigative" # 
-  - en: "Solve math problems" # content
-    ru: "Решать математические проблемы" # content
+  - en: "You like (or would like) to use a microscope" # content
+    ru: "Вам нравится (или понравилось бы) работать с микроскопом" # content
     scale: "investigative" # 
-  - en: "Use a microscope" # content
-    ru: "Работать с микроскопом" # content
+  - en: "You like (or would like) to analyze data" # content
+    ru: "Вам нравится (или понравилось бы) анализировать данные" # content
     scale: "investigative" # 
-  - en: "Analyze data" # content
-    ru: "Анализировать данные" # content
+  - en: "You like (or would like) to do complex calculations" # content
+    ru: "Вам нравится (или понравилось бы) проводить сложные вычисления" # content
     scale: "investigative" # 
-  - en: "Do complex calculations" # content
-    ru: "Проводить сложные вычисления" # content
+  - en: "You are inquisitive" # content
+    ru: "Вы любознательны" # content
+    scale: "investigative" # 
+  - en: "You are analytical" # content
+    ru: "Вы обладаете аналитическим мышлением" # content
+    scale: "investigative" # 
+  - en: "You are scientific" # content
+    ru: "Вы увлечены наукой" # content
+    scale: "investigative" # 
+  - en: "You are observant" # content
+    ru: "Вы наблюдательны" # content
+    scale: "investigative" # 
+  - en: "You are precise" # content
+    ru: "Вы склонны к точности" # content
     scale: "investigative" # 
   # Artistic
-  - en: "Attend concerts, theaters, art exhibits" # content
-    ru: "Посещать концерты, театры, художественные выставки" # content
+  - en: "You like (or would like) to attend concerts, theaters, art exhibits" # content
+    ru: "Вам нравится (или понравилось бы) посещать концерты, театры, художественные выставки" # content
     scale: "artistic" # 
-  - en: "Read fiction, plays, poetry" # content
-    ru: "Читать художественную литературу" # content
+  - en: "You like (or would like) to read fiction, plays, poetry" # content
+    ru: "Вам нравится (или понравилось бы) читать художественную литературу" # content
     scale: "artistic" # 
-  - en: "Take photographs" # content
-    ru: "Делать фотографии" # content
+  - en: "You like (or would like) to take photographs" # content
+    ru: "Вам нравится (или понравилось бы) делать фотографии" # content
     scale: "artistic" # 
-  - en: "Write stories, poetry, music, sing, act, dance" # content
-    ru: "Писать рассказы, стихи, музыку, танцевать, петь, выступать" # content
+  - en: "You like (or would like) to write stories, poetry, music, sing, act, dance" # content
+    ru: "Вам нравится (или понравилось бы) писать рассказы, стихи, музыку, танцевать, петь, выступать" # content
     scale: "artistic" # 
-  - en: "Play a musical instrument" # content
-    ru: "Играть на музыкальном инструменте" # content
+  - en: "You like (or would like) to play a musical instrument" # content
+    ru: "Вам нравится (или понравилось бы) играть на музыкальном инструменте" # content
     scale: "artistic" # 
-  - en: "Sketch, draw, paint " # content
-    ru: "Рисовать" # content
+  - en: "You like (or would like) to sketch, draw, paint " # content
+    ru: "Вам нравится (или понравилось бы) рисовать" # content
     scale: "artistic" # 
-  - en: "Design fashions or interiors" # content
-    ru: "Создавать дизайн одежды, интерьеров и т.д." # content
+  - en: "You like (or would like) to design fashions or interiors" # content
+    ru: "Вам нравится (или понравилось бы) создавать дизайн одежды, интерьеров и т.д." # content
+    scale: "artistic" # 
+  - en: "You are creative" # content
+    ru: "Вы креативны" # content
+    scale: "artistic" # 
+  - en: "You are intuitive" # content
+    ru: "Вы полагаетесь на интуицию" # content
+    scale: "artistic" # 
+  - en: "You are imaginative" # content
+    ru: "Вы обладаете развитым воображением" # content
+    scale: "artistic" # 
+  - en: "You are innovative" # content
+    ru: "Вы любите всё новое" # content
+    scale: "artistic" # 
+  - en: "You are an individualist" # content
+    ru: "Вы индивидуалистичны" # content
     scale: "artistic" # 
   # social
-  - en: "Work in groups" # content
-    ru: "Работать в группе" # content
+  - en: "You like (or would like) to work in groups" # content
+    ru: "Вам нравится (или понравилось бы) работать в группе" # content
     scale: "social" # 
-  - en: "Help people with problems" # content
-    ru: "Помогать людям с их проблемами" # content
+  - en: "You like (or would like) to help people with problems" # content
+    ru: "Вам нравится (или понравилось бы) помогать людям с их проблемами" # content
     scale: "social" # 
-  - en: "Participate in meetings" # content
-    ru: "Участвовать во встречах" # content
+  - en: "You like (or would like) to participate in meetings" # content
+    ru: "Вам нравится (или понравилось бы) участвовать во встречах" # content
     scale: "social" # 
-  - en: "Do volunteer service" # content
-    ru: "Работать волонтёром" # content
+  - en: "You like (or would like) to do volunteer service" # content
+    ru: "Вам нравится (или понравилось бы) работать волонтёром" # content
     scale: "social" # 
-  - en: "Teach/train others" # content
-    ru: "Учить или тренировать других" # content
+  - en: "You like (or would like) to teach/train others" # content
+    ru: "Вам нравится (или понравилось бы) учить или тренировать других" # content
     scale: "social" # 
-  - en: "Lead a group discussion" # content
-    ru: "Модерировать дискуссию" # content
+  - en: "You like (or would like) to mediate disputes" # content
+    ru: "Вам нравится (или понравилось бы) улаживать разногласия" # content
     scale: "social" # 
-  - en: "Mediate disputes" # content
-    ru: "Улаживать разногласия" # content
+  - en: "You are friendly" # content
+    ru: "Вы дружелюбны" # content
+    scale: "social" # 
+  - en: "You are helpful" # content
+    ru: "Вы готовы помогать" # content
+    scale: "social" # 
+  - en: "You are idealistic" # content
+    ru: "Вы идеалистичны" # content
+    scale: "social" # 
+  - en: "You are insightful" # content
+    ru: "Вы проницательны" # content
+    scale: "social" # 
+  - en: "You are outgoing" # content
+    ru: "Вы отзывчивы" # content
+    scale: "social" # 
+  - en: "You are understanding" # content
+    ru: "Вы легко понимаете других" # content
     scale: "social" # 
   # enterprising
-  - en: "Make decisions affecting others" # content
-    ru: "Принимать решения, которые влияют на других людей" # content
+  - en: "You like (or would like) to make decisions affecting others" # content
+    ru: "Вам нравится (или понравилось бы) принимать решения, которые влияют на других людей" # content
     scale: "enterprising" # 
-  - en: "Start your own political campaign" # content
-    ru: "Вести собственную политическую кампанию" # content
+  - en: "You like (or would like) to initiate projects" # content
+    ru: "Вам нравится (или понравилось бы) начинать проекты" # content
     scale: "enterprising" # 
-  - en: "Meet important people" # content
-    ru: "Встречаться с важными людьми" # content
+  - en: "You like (or would like) to sell things or promote ideas" # content
+    ru: "Вам нравится (или понравилось бы) продавать вещи или продвигать идеи" # content
     scale: "enterprising" # 
-  - en: "Initiate projects" # content
-    ru: "Начинать проекты" # content
+  - en: "You like (or would like) to give talks or speeches" # content
+    ru: "Вам нравится (или понравилось бы) говорить на публику" # content
     scale: "enterprising" # 
-  - en: "Sell things or promote ideas" # content
-    ru: "Продавать вещи или продвигать идеи" # content
+  - en: "You like (or would like) to organize activities and events" # content
+    ru: "Вам нравится (или понравилось бы) организовывать мероприятия" # content
     scale: "enterprising" # 
-  - en: "Give talks or speeches" # content
-    ru: "Говорить на публику" # content
+  - en: "You like (or would like) to lead a group" # content
+    ru: "Вам нравится (или понравилось бы) руководить группой" # content
     scale: "enterprising" # 
-  - en: "Organize activities and events" # content
-    ru: "Организовывать мероприятия" # content
+  - en: "You are self-confident" # content
+    ru: "Вы уверены в себе" # content
     scale: "enterprising" # 
-  - en: "Lead a group" # content
-    ru: "Руководить группой" # content
+  - en: "You are assertive" # content
+    ru: "Вы настойчивы" # content
+    scale: "enterprising" # 
+  - en: "You are sociable" # content
+    ru: "Вы общительны" # content
+    scale: "enterprising" # 
+  - en: "You are persuasive" # content
+    ru: "Вы легко убеждаете других" # content
+    scale: "enterprising" # 
+  - en: "You are enthusiastic" # content
+    ru: "Вы полны энтузиазма" # content
+    scale: "enterprising" # 
+  - en: "You are energetic" # content
+    ru: "Вы энергичны" # content
     scale: "enterprising" # 
   # conventional
-  - en: "Follow clearly defined procedures" # content
-    ru: "Следовать чётким инструкциям" # content
+  - en: "You like (or would like) to follow clearly defined procedures" # content
+    ru: "Вам нравится (или понравилось бы) следовать чётким инструкциям" # content
     scale: "conventional" # 
-  - en: "Work with numbers" # content
-    ru: "Работать с числами" # content
+  - en: "You like (or would like) to be responsible for details" # content
+    ru: "Вам нравится (или понравилось бы) отвечать за точность в деталях" # content
     scale: "conventional" # 
-  - en: "Be responsible for details" # content
-    ru: "Отвечать за точность в деталях" # content
+  - en: "You like (or would like) to keep accurate records" # content
+    ru: "Вам нравится (или понравилось бы) аккуратно вести записи" # content
     scale: "conventional" # 
-  - en: "Keep accurate records" # content
-    ru: "Аккуратно вести записи" # content
+  - en: "You like (or would like) to do a lot of paper work" # content
+    ru: "Вам нравится (или понравилось бы) делать много бумажной работы" # content
     scale: "conventional" # 
-  - en: "Do a lot of paper work" # content
-    ru: "Делать много бумажной работы" # content
-    scale: "conventional" # 
-  - en: "Work within a system" # content
-    ru: "Работать как часть системы" # content
+  - en: "You like (or would like) to work within a system" # content
+    ru: "Вам нравится (или понравилось бы) работать как часть системы" # content
     scale: "conventional" #
-  - en: "Use Excel or similar software" # content
-    ru: "Работать в Экселе или другой подобной программе" # content
+  - en: "You like (or would like) to use Excel or similar software" # content
+    ru: "Вам нравится (или понравилось бы) работать в Экселе или другой подобной программе" # content
+    scale: "conventional" # 
+  - en: "You are well groomed" # content
+    ru: "Вы ухожены" # content
+    scale: "conventional" # 
+  - en: "You are accurate" # content
+    ru: "Вы аккуратны" # content
+    scale: "conventional" # 
+  - en: "You are numerically inclined " # content
+    ru: "Вы склонны работать с числами" # content
+    scale: "conventional" # 
+  - en: "You are methodical" # content
+    ru: "Вы методичны" # content
+    scale: "conventional" # 
+  - en: "You are conscientious" # content
+    ru: "Вы отвественны" # content
+    scale: "conventional" # 
+  - en: "You are efficient" # content
+    ru: "Вы стремитесь к эффективности в работе" # content
     scale: "conventional" # 

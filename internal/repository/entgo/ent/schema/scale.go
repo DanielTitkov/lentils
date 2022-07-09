@@ -24,6 +24,7 @@ func (Scale) Fields() []ent.Field {
 		field.Enum("type").Values(
 			domain.ScaleTypeSten,
 			domain.ScaleTypeMean,
+			domain.ScaleTypePerc,
 			domain.ScaleTypeSum,
 			domain.ScaleTypeZScore,
 		).Default(domain.ScaleTypeSten),

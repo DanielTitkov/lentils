@@ -1,0 +1,1675 @@
+# generated, try not to edit
+# by: CTT-v1
+# at: 2022-07-09 22:07:02
+# template: ../data/templates/ctt-v1/riasec-combined-wisc.yaml
+code: riasec-combined-wisc
+published: true
+availableLocales:
+  - en
+  - ru
+tags:
+  - psychology
+  - career
+forceUpdate: true
+translations:
+  - locale: en
+    title: RIASEC (combined)
+    description: Career preference test (personality + activity questions)
+    instruction: <p>The test consists of statements that you will have to rate by
+      how much each is true for you on a scale of (1) not true (2) mostly not true
+      (3) neither true or not true (4) mostly true (5) true.</p>
+    details: <p>RIASEC (Holland Codes) is a set of personality types developed by
+      psychologist John L. Holland in the 1970s. Dr. Holland. Widely used to discover
+      ones career and occupation preferences. </p> <p>This version of Holland test
+      consists of questions about your personality and prefered activities. There
+      are also other versions of the test you can find an Orrery. <a href="/test/riasec-personality-wisc"
+      target="_blank">Personality version</a>, <a href="/test/riasec-activity-wisc"
+      target="_blank">Activities version</a>. Combined version is the most precised,
+      but it has more questions.</p> <p>There are multiple versions of Holland test.
+      Orrery uses the one developed at Wisconsin University. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      target="_blank">Link to Wisc Uni site</a>.</p>
+  - locale: ru
+    title: RIASEC (комбинированный)
+    description: Тест профессиональных предпочтений (вопросы о личности и видах деятельности)
+    instruction: <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько
+      верно каждое утверждение. Дайте ответ, используя следующую шкалу - (1) не верно
+      (2) скорее не верно (3) не то и не другое (4) скорее верно (5) верно.</p>
+    details: <p>RIASEC (тест Холланда, тест профессиональных предпочтений). Методика
+      разработана психологом Джоном Холландом в 70е годы.</p> <p>Эта версия теста
+      Холланда состоит из вопросов про предпочитаемые виды деятельности. У нас также
+      есть другие версии. <a href="/test/riasec-personality-wisc" target="_blank">Личностный</a>,
+      <a href="/test/riasec-activity-wisc" target="_blank">Виды деятельности</a>.
+      Комбинированный тест наиболее точный, но вопросов в нём больше.</p> <p>Есть
+      много вариантов вопросов для теста Холланда. Orrery использует версию, представленную
+      университетом Висконсина. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      target="_blank">Ссылка на оригинал на сайте университета</a>.</p> <p>Перевод
+      на русский язык выполнен Orrery.</p>
+scales:
+  - code: riasec-combined-wisc-01-realistic
+    type: sten
+    translations:
+      - locale: en
+        title: Realistic
+        description: Practical, physical, concrete, hands-on, machine, and tool-oriented
+        abbreviation: R
+      - locale: ru
+        title: Реалистический
+        description: Практичность, материальность, конкретность, инструментальность
+        abbreviation: R
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Realistic occupations frequently involve work activities that
+              include practical, hands-on problems, and solutions. They often deal
+              with plants, animals, and real-world materials like wood, tools, and
+              machinery. Many of the occupations require working outside, and do not
+              involve a lot of paperwork or working closely with others.</p>
+          - locale: ru
+            content: <p>Реалистический тип личности — максимально направлен на создание
+              материальных вещей, обслуживание технических устройств и технологических
+              процессов.</p>
+    items:
+      - code: riasec-combined-wisc-01-realistic-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to tinker with mechanics
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать с механическими или
+              электрическими устройствами
+      - code: riasec-combined-wisc-01-realistic-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to work outdoors
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать на улице
+      - code: riasec-combined-wisc-01-realistic-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to be physically active
+          - locale: ru
+            content: Вам нравится (или понравилось бы) быть физически активным (активной)
+      - code: riasec-combined-wisc-01-realistic-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to use your hands
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать руками
+      - code: riasec-combined-wisc-01-realistic-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to pitch a tent
+          - locale: ru
+            content: Вам нравится (или понравилось бы) устанавливать палатку
+      - code: riasec-combined-wisc-01-realistic-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to play a sport
+          - locale: ru
+            content: Вам нравится (или понравилось бы) играть в спортивную игру
+      - code: riasec-combined-wisc-01-realistic-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are practical
+          - locale: ru
+            content: Вы практичны
+      - code: riasec-combined-wisc-01-realistic-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are athletic
+          - locale: ru
+            content: Вы атлетичны
+      - code: riasec-combined-wisc-01-realistic-009
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are straight forward
+          - locale: ru
+            content: Вы прямолинейны
+      - code: riasec-combined-wisc-01-realistic-010
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are mechanically inclined
+          - locale: ru
+            content: Вы склонны к механике
+      - code: riasec-combined-wisc-01-realistic-011
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: 'You are a nature lover '
+          - locale: ru
+            content: Вы любите природу
+      - code: riasec-combined-wisc-01-realistic-012
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are good with tools and machinery
+          - locale: ru
+            content: Вы умелы в обращении с интрументами и техникой
+  - code: riasec-combined-wisc-02-investigative
+    type: sten
+    translations:
+      - locale: en
+        title: Investigative
+        description: Analytical, intellectual, scientific, explorative, thinker
+        abbreviation: I
+      - locale: ru
+        title: Исследовательский
+        description: Аналитика, интеллектуальность, наука, исследование, размышления
+        abbreviation: I
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Investigative occupations frequently involve working with
+              ideas, and require an extensive amount of thinking. These occupations
+              can involve searching for facts and figuring out problems mentally.</p>
+          - locale: ru
+            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
+              повышенные требования к интеллекту, аналитическим способностям, рационализму,
+              умению трезво мыслить.</p>
+    items:
+      - code: riasec-combined-wisc-02-investigative-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to explore ideas
+          - locale: ru
+            content: Вам нравится (или понравилось бы) изучать и анализировать идеи
+      - code: riasec-combined-wisc-02-investigative-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to work independently
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать в одиночестве
+      - code: riasec-combined-wisc-02-investigative-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to perform lab experiments
+          - locale: ru
+            content: Вам нравится (или понравилось бы) проводить эксперименты в лаборатории
+      - code: riasec-combined-wisc-02-investigative-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to read scientific or technical articles
+          - locale: ru
+            content: Вам нравится (или понравилось бы) читать научные или технические
+              статьи
+      - code: riasec-combined-wisc-02-investigative-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to use a microscope
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать с микроскопом
+      - code: riasec-combined-wisc-02-investigative-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to analyze data
+          - locale: ru
+            content: Вам нравится (или понравилось бы) анализировать данные
+      - code: riasec-combined-wisc-02-investigative-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to do complex calculations
+          - locale: ru
+            content: Вам нравится (или понравилось бы) проводить сложные вычисления
+      - code: riasec-combined-wisc-02-investigative-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are inquisitive
+          - locale: ru
+            content: Вы любознательны
+      - code: riasec-combined-wisc-02-investigative-009
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are analytical
+          - locale: ru
+            content: Вы обладаете аналитическим мышлением
+      - code: riasec-combined-wisc-02-investigative-010
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are scientific
+          - locale: ru
+            content: Вы увлечены наукой
+      - code: riasec-combined-wisc-02-investigative-011
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are observant
+          - locale: ru
+            content: Вы наблюдательны
+      - code: riasec-combined-wisc-02-investigative-012
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are precise
+          - locale: ru
+            content: Вы склонны к точности
+  - code: riasec-combined-wisc-03-artistic
+    type: sten
+    translations:
+      - locale: en
+        title: Artistic
+        description: Creative, original, independent, chaotic, inventive, media, graphics,
+          and text
+        abbreviation: A
+      - locale: ru
+        title: Художественный (Артистический)
+        description: Творчество, оригинальность, независимость, хаотичность
+        abbreviation: A
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Artistic occupations frequently involve working with forms,
+              designs, and patterns. They often require self-expression and the work
+              can be done without following a clear set of rules.</p>
+          - locale: ru
+            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
+              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
+              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
+              Для них предпочтительны профессии мира искусств изобразительное искусство,
+              театр, кино, литература и подобные.</p>
+    items:
+      - code: riasec-combined-wisc-03-artistic-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to attend concerts, theaters, art exhibits
+          - locale: ru
+            content: Вам нравится (или понравилось бы) посещать концерты, театры,
+              художественные выставки
+      - code: riasec-combined-wisc-03-artistic-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to read fiction, plays, poetry
+          - locale: ru
+            content: Вам нравится (или понравилось бы) читать художественную литературу
+      - code: riasec-combined-wisc-03-artistic-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to take photographs
+          - locale: ru
+            content: Вам нравится (или понравилось бы) делать фотографии
+      - code: riasec-combined-wisc-03-artistic-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to write stories, poetry, music, sing,
+              act, dance
+          - locale: ru
+            content: Вам нравится (или понравилось бы) писать рассказы, стихи, музыку,
+              танцевать, петь, выступать
+      - code: riasec-combined-wisc-03-artistic-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to play a musical instrument
+          - locale: ru
+            content: Вам нравится (или понравилось бы) играть на музыкальном инструменте
+      - code: riasec-combined-wisc-03-artistic-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: 'You like (or would like) to sketch, draw, paint '
+          - locale: ru
+            content: Вам нравится (или понравилось бы) рисовать
+      - code: riasec-combined-wisc-03-artistic-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to design fashions or interiors
+          - locale: ru
+            content: Вам нравится (или понравилось бы) создавать дизайн одежды, интерьеров
+              и т.д.
+      - code: riasec-combined-wisc-03-artistic-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are creative
+          - locale: ru
+            content: Вы креативны
+      - code: riasec-combined-wisc-03-artistic-009
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are intuitive
+          - locale: ru
+            content: Вы полагаетесь на интуицию
+      - code: riasec-combined-wisc-03-artistic-010
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are imaginative
+          - locale: ru
+            content: Вы обладаете развитым воображением
+      - code: riasec-combined-wisc-03-artistic-011
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are innovative
+          - locale: ru
+            content: Вы любите всё новое
+      - code: riasec-combined-wisc-03-artistic-012
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are an individualist
+          - locale: ru
+            content: Вы индивидуалистичны
+  - code: riasec-combined-wisc-04-social
+    type: sten
+    translations:
+      - locale: en
+        title: Social
+        description: cooperative, supporting, helping, healing/nurturing, teaching
+        abbreviation: S
+      - locale: ru
+        title: Социальный
+        description: Кооперация, поддержка, помощь, забота, преподавание
+        abbreviation: S
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Social occupations frequently involve working with, communicating
+              with, and teaching people. These occupations often involve helping or
+              providing service to others.</p>
+          - locale: ru
+            content: <p>Социальный тип личности — им подойдут любые профессии, которые
+              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
+              консультирование, уход, помощь.</p>
+    items:
+      - code: riasec-combined-wisc-04-social-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to work in groups
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать в группе
+      - code: riasec-combined-wisc-04-social-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to help people with problems
+          - locale: ru
+            content: Вам нравится (или понравилось бы) помогать людям с их проблемами
+      - code: riasec-combined-wisc-04-social-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to participate in meetings
+          - locale: ru
+            content: Вам нравится (или понравилось бы) участвовать во встречах
+      - code: riasec-combined-wisc-04-social-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to do volunteer service
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать волонтёром
+      - code: riasec-combined-wisc-04-social-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to teach/train others
+          - locale: ru
+            content: Вам нравится (или понравилось бы) учить или тренировать других
+      - code: riasec-combined-wisc-04-social-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to mediate disputes
+          - locale: ru
+            content: Вам нравится (или понравилось бы) улаживать разногласия
+      - code: riasec-combined-wisc-04-social-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are friendly
+          - locale: ru
+            content: Вы дружелюбны
+      - code: riasec-combined-wisc-04-social-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are helpful
+          - locale: ru
+            content: Вы готовы помогать
+      - code: riasec-combined-wisc-04-social-009
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are idealistic
+          - locale: ru
+            content: Вы идеалистичны
+      - code: riasec-combined-wisc-04-social-010
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are insightful
+          - locale: ru
+            content: Вы проницательны
+      - code: riasec-combined-wisc-04-social-011
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are outgoing
+          - locale: ru
+            content: Вы отзывчивы
+      - code: riasec-combined-wisc-04-social-012
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are understanding
+          - locale: ru
+            content: Вы легко понимаете других
+  - code: riasec-combined-wisc-05-enterprising
+    type: sten
+    translations:
+      - locale: en
+        title: Enterprising
+        description: Competitive environments, leadership, persuading, status
+        abbreviation: E
+      - locale: ru
+        title: Предприимчивый
+        description: Конкуренция, лидерство, убеждение, статус
+        abbreviation: E
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Enterprising occupations frequently involve starting up and
+              carrying out projects. These occupations can involve leading people
+              and making many decisions. Sometimes they require risk taking, and they
+              often deal with business.</p>
+          - locale: ru
+            content: <p>Предпринимательский тип личности — требующие больших затрат
+              энергии профессии, связанные с риском, необходимостью постоянно принимать
+              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
+              Требуется наличие организаторских способностей, развитых коммуникативных
+              навыков и большого запаса сил.</p>
+    items:
+      - code: riasec-combined-wisc-05-enterprising-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to make decisions affecting others
+          - locale: ru
+            content: Вам нравится (или понравилось бы) принимать решения, которые
+              влияют на других людей
+      - code: riasec-combined-wisc-05-enterprising-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to initiate projects
+          - locale: ru
+            content: Вам нравится (или понравилось бы) начинать проекты
+      - code: riasec-combined-wisc-05-enterprising-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to sell things or promote ideas
+          - locale: ru
+            content: Вам нравится (или понравилось бы) продавать вещи или продвигать
+              идеи
+      - code: riasec-combined-wisc-05-enterprising-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to give talks or speeches
+          - locale: ru
+            content: Вам нравится (или понравилось бы) говорить на публику
+      - code: riasec-combined-wisc-05-enterprising-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to organize activities and events
+          - locale: ru
+            content: Вам нравится (или понравилось бы) организовывать мероприятия
+      - code: riasec-combined-wisc-05-enterprising-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to lead a group
+          - locale: ru
+            content: Вам нравится (или понравилось бы) руководить группой
+      - code: riasec-combined-wisc-05-enterprising-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are self-confident
+          - locale: ru
+            content: Вы уверены в себе
+      - code: riasec-combined-wisc-05-enterprising-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are assertive
+          - locale: ru
+            content: Вы настойчивы
+      - code: riasec-combined-wisc-05-enterprising-009
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are sociable
+          - locale: ru
+            content: Вы общительны
+      - code: riasec-combined-wisc-05-enterprising-010
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are persuasive
+          - locale: ru
+            content: Вы легко убеждаете других
+      - code: riasec-combined-wisc-05-enterprising-011
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are enthusiastic
+          - locale: ru
+            content: Вы полны энтузиазма
+      - code: riasec-combined-wisc-05-enterprising-012
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are energetic
+          - locale: ru
+            content: Вы энергичны
+  - code: riasec-combined-wisc-06-conventional
+    type: sten
+    translations:
+      - locale: en
+        title: Conventional
+        description: Detail-oriented, organizing, clerical
+        abbreviation: C
+      - locale: ru
+        title: Конвенциональный
+        description: Внимание к деталям, стремление к порядку, четкая структура
+        abbreviation: C
+    interpretations:
+      - range:
+          - 1.0
+          - 4.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+      - range:
+          - 4.0
+          - 7.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+      - range:
+          - 7.0
+          - 10.0
+        translations:
+          - locale: en
+            content: <p>Conventional occupations frequently involve following set
+              procedures and routines. These occupations can include working with
+              data and details more than with ideas. There is usually a clear line
+              of authority to follow.</p>
+          - locale: ru
+            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
+              и систематизацией информации в виде чисел, формул, текста, а также ведением
+              документации.</p>
+    items:
+      - code: riasec-combined-wisc-06-conventional-001
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to follow clearly defined procedures
+          - locale: ru
+            content: Вам нравится (или понравилось бы) следовать чётким инструкциям
+      - code: riasec-combined-wisc-06-conventional-002
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to be responsible for details
+          - locale: ru
+            content: Вам нравится (или понравилось бы) отвечать за точность в деталях
+      - code: riasec-combined-wisc-06-conventional-003
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to keep accurate records
+          - locale: ru
+            content: Вам нравится (или понравилось бы) аккуратно вести записи
+      - code: riasec-combined-wisc-06-conventional-004
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to do a lot of paper work
+          - locale: ru
+            content: Вам нравится (или понравилось бы) делать много бумажной работы
+      - code: riasec-combined-wisc-06-conventional-005
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to work within a system
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать как часть системы
+      - code: riasec-combined-wisc-06-conventional-006
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You like (or would like) to use Excel or similar software
+          - locale: ru
+            content: Вам нравится (или понравилось бы) работать в Экселе или другой
+              подобной программе
+      - code: riasec-combined-wisc-06-conventional-007
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are well groomed
+          - locale: ru
+            content: Вы ухожены
+      - code: riasec-combined-wisc-06-conventional-008
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are accurate
+          - locale: ru
+            content: Вы аккуратны
+      - code: riasec-combined-wisc-06-conventional-009
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: 'You are numerically inclined '
+          - locale: ru
+            content: Вы склонны работать с числами
+      - code: riasec-combined-wisc-06-conventional-010
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are methodical
+          - locale: ru
+            content: Вы методичны
+      - code: riasec-combined-wisc-06-conventional-011
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are conscientious
+          - locale: ru
+            content: Вы отвественны
+      - code: riasec-combined-wisc-06-conventional-012
+        steps: 5
+        reverse: false
+        translations:
+          - locale: en
+            content: You are efficient
+          - locale: ru
+            content: Вы стремитесь к эффективности в работе
+questions:
+  - code: riasec-combined-wisc-001
+    order: 10
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-001
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-002
+    order: 20
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-002
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-003
+    order: 30
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-003
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-004
+    order: 40
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-004
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-005
+    order: 50
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-005
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-006
+    order: 60
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-006
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-007
+    order: 70
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-007
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-008
+    order: 80
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-008
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-009
+    order: 90
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-009
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-010
+    order: 100
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-010
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-011
+    order: 110
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-011
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-012
+    order: 120
+    type: simple
+    items:
+      - code: riasec-combined-wisc-01-realistic-012
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-013
+    order: 130
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-001
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-014
+    order: 140
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-002
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-015
+    order: 150
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-003
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-016
+    order: 160
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-004
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-017
+    order: 170
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-005
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-018
+    order: 180
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-006
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-019
+    order: 190
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-007
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-020
+    order: 200
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-008
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-021
+    order: 210
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-009
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-022
+    order: 220
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-010
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-023
+    order: 230
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-011
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-024
+    order: 240
+    type: simple
+    items:
+      - code: riasec-combined-wisc-02-investigative-012
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-025
+    order: 250
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-001
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-026
+    order: 260
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-002
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-027
+    order: 270
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-003
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-028
+    order: 280
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-004
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-029
+    order: 290
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-005
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-030
+    order: 300
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-006
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-031
+    order: 310
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-007
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-032
+    order: 320
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-008
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-033
+    order: 330
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-009
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-034
+    order: 340
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-010
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-035
+    order: 350
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-011
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-036
+    order: 360
+    type: simple
+    items:
+      - code: riasec-combined-wisc-03-artistic-012
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-037
+    order: 370
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-001
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-038
+    order: 380
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-002
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-039
+    order: 390
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-003
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-040
+    order: 400
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-004
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-041
+    order: 410
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-005
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-042
+    order: 420
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-006
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-043
+    order: 430
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-007
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-044
+    order: 440
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-008
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-045
+    order: 450
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-009
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-046
+    order: 460
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-010
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-047
+    order: 470
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-011
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-048
+    order: 480
+    type: simple
+    items:
+      - code: riasec-combined-wisc-04-social-012
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-049
+    order: 490
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-001
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-050
+    order: 500
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-002
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-051
+    order: 510
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-003
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-052
+    order: 520
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-004
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-053
+    order: 530
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-005
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-054
+    order: 540
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-006
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-055
+    order: 550
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-007
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-056
+    order: 560
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-008
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-057
+    order: 570
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-009
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-058
+    order: 580
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-010
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-059
+    order: 590
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-011
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-060
+    order: 600
+    type: simple
+    items:
+      - code: riasec-combined-wisc-05-enterprising-012
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-061
+    order: 610
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-001
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-062
+    order: 620
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-002
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-063
+    order: 630
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-003
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-064
+    order: 640
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-004
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-065
+    order: 650
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-005
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-066
+    order: 660
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-006
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-067
+    order: 670
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-007
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-068
+    order: 680
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-008
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-069
+    order: 690
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-009
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-070
+    order: 700
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-010
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-071
+    order: 710
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-011
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+  - code: riasec-combined-wisc-072
+    order: 720
+    type: simple
+    items:
+      - code: riasec-combined-wisc-06-conventional-012
+    translations:
+      - locale: en
+        content: Please rate how much this statement applies to you...
+      - locale: ru
+        content: Укажите, насколько верно следующее утверждение...
+display:
+  questionsPerPage: 1
+  randomizeOrder: true

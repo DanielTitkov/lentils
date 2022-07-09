@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-09 02:17:22
+# at: 2022-07-09 22:07:04
 # template: ../data/templates/ctt-v1/riasec-activity-wisc.yaml
 code: riasec-activity-wisc
 published: true
@@ -23,9 +23,10 @@ translations:
       ones career and occupation preferences. </p> <p>This version of Holland test
       consists of questions about your prefered activities. There are also other versions
       of the test you can find an Orrery. <a href="/test/riasec-personality-wisc"
-      target="_blank">Personality version</a>, Combined version - . Combined version
-      is the most precised, but it has more questions.</p> <p>There are multiple versions
-      of Holland test. Orrery uses the one developed at Wisconsin University. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      target="_blank">Personality version</a>, <a href="/test/riasec-combined-wisc"
+      target="_blank">Combined version</a>. Combined version is the most precised,
+      but it has more questions.</p> <p>There are multiple versions of Holland test.
+      Orrery uses the one developed at Wisconsin University. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
       target="_blank">Link to Wisc Uni site</a>.</p>
   - locale: ru
     title: RIASEC (деятельность)
@@ -38,9 +39,10 @@ translations:
       разработана психологом Джоном Холландом в 70е годы.</p> <p>Эта версия теста
       Холланда состоит из вопросов про предпочитаемые виды деятельности. У нас также
       есть другие версии. <a href="/test/riasec-activity-wisc" target="_blank">Личностный</a>,
-      Комбинированный - . Комбинированный тест наиболее точный, но вопросов в нём
-      больше.</p> <p>Есть много вариантов вопросов для теста Холланда. Orrery использует
-      версию, представленную университетом Висконсина. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
+      <a href="/test/riasec-combined-wisc" target="_blank">Комбинированный</a>. Комбинированный
+      тест наиболее точный, но вопросов в нём больше.</p> <p>Есть много вариантов
+      вопросов для теста Холланда. Orrery использует версию, представленную университетом
+      Висконсина. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
       target="_blank">Ссылка на оригинал на сайте университета</a>.</p> <p>Перевод
       на русский язык выполнен Orrery.</p>
 scales:

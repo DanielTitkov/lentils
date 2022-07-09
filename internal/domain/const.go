@@ -16,6 +16,7 @@ const (
 	// scale types
 	ScaleTypeSten   = "sten"
 	ScaleTypeSum    = "sum"
+	ScaleTypePerc   = "perc"
 	ScaleTypeZScore = "zscore"
 	ScaleTypeMean   = "mean"
 	// question types

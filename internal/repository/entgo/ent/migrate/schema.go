@@ -282,7 +282,7 @@ var (
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true},
 		{Name: "global", Type: field.TypeBool, Default: false},
-		{Name: "type", Type: field.TypeEnum, Enums: []string{"sten", "mean", "sum", "zscore"}, Default: "sten"},
+		{Name: "type", Type: field.TypeEnum, Enums: []string{"sten", "mean", "perc", "sum", "zscore"}, Default: "sten"},
 	}
 	// ScalesTable holds the schema information for the "scales" table.
 	ScalesTable = &schema.Table{

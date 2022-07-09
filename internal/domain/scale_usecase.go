@@ -50,6 +50,8 @@ func getScaleResolveFunc(typ string) (scaleResolveFunc, error) {
 	switch typ {
 	case ScaleTypeSum:
 		return resolveScaleSum, nil
+	case ScaleTypePerc:
+		return resolveScalePerc, nil
 	case ScaleTypeMean:
 		return resolveScaleMean, nil
 	case ScaleTypeSten:
@@ -78,13 +80,31 @@ func resolveScaleSum(s *Scale, norm *Norm) (*ScaleResult, error) {
 		max += float64(itm.Steps - 1)
 	}
 
-	formula := fmt.Sprintf("Raw(sum)=%s=%.3f", strings.Join(vals, "+"), sum)
+	formula := fmt.Sprintf("Raw(sum)=%s=%.1f", strings.Join(vals, "+"), sum)
 
 	return &ScaleResult{
 		Score:    sum,
 		RawScore: sum,
 		Min:      0,
 		Max:      max,
+		Formula:  formula,
+	}, nil
+}
+
+func resolveScalePerc(s *Scale, norm *Norm) (*ScaleResult, error) {
+	sumRes, err := resolveScaleSum(s, norm)
+	if err != nil {
+		return nil, err
+	}
+
+	perc := sumRes.Score / sumRes.Max * 100
+	formula := fmt.Sprintf("%s; Percentage=%.1f/%.1f*100=%.1f", sumRes.Formula, sumRes.Score, sumRes.Max, perc)
+
+	return &ScaleResult{
+		Score:    perc,
+		RawScore: sumRes.RawScore,
+		Min:      0,
+		Max:      100,
 		Formula:  formula,
 	}, nil
 }
@@ -130,7 +150,7 @@ func resolveScaleZScore(s *Scale, norm *Norm) (*ScaleResult, error) {
 	}
 
 	z := (sumRes.Score - mean) / sigma
-	usedNorm := fmt.Sprintf("used norm: %s (M=%.3f S=%.3f, n=%d)", normName, mean, sigma, base)
+	usedNorm := fmt.Sprintf("used norm: %s (M=%.2f sd=%.2f, n=%d)", normName, mean, sigma, base)
 	formula := fmt.Sprintf("%s; z=(%.3f-%.3f)/%.3f=%.3f; %s", sumRes.Formula, sumRes.Score, mean, sigma, z, usedNorm)
 
 	return &ScaleResult{
