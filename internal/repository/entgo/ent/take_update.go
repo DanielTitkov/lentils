@@ -149,6 +149,33 @@ func (tu *TakeUpdate) SetNillableStatus(t *take.Status) *TakeUpdate {
 	return tu
 }
 
+// SetMark sets the "mark" field.
+func (tu *TakeUpdate) SetMark(i int) *TakeUpdate {
+	tu.mutation.ResetMark()
+	tu.mutation.SetMark(i)
+	return tu
+}
+
+// SetNillableMark sets the "mark" field if the given value is not nil.
+func (tu *TakeUpdate) SetNillableMark(i *int) *TakeUpdate {
+	if i != nil {
+		tu.SetMark(*i)
+	}
+	return tu
+}
+
+// AddMark adds i to the "mark" field.
+func (tu *TakeUpdate) AddMark(i int) *TakeUpdate {
+	tu.mutation.AddMark(i)
+	return tu
+}
+
+// ClearMark clears the value of the "mark" field.
+func (tu *TakeUpdate) ClearMark() *TakeUpdate {
+	tu.mutation.ClearMark()
+	return tu
+}
+
 // SetInLocale sets the "in_locale" field.
 func (tu *TakeUpdate) SetInLocale(tl take.InLocale) *TakeUpdate {
 	tu.mutation.SetInLocale(tl)
@@ -362,6 +389,11 @@ func (tu *TakeUpdate) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
 		}
 	}
+	if v, ok := tu.mutation.Mark(); ok {
+		if err := take.MarkValidator(v); err != nil {
+			return &ValidationError{Name: "mark", err: fmt.Errorf(`ent: validator failed for field "Take.mark": %w`, err)}
+		}
+	}
 	if v, ok := tu.mutation.InLocale(); ok {
 		if err := take.InLocaleValidator(v); err != nil {
 			return &ValidationError{Name: "in_locale", err: fmt.Errorf(`ent: validator failed for field "Take.in_locale": %w`, err)}
@@ -467,6 +499,26 @@ func (tu *TakeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeEnum,
 			Value:  value,
 			Column: take.FieldStatus,
+		})
+	}
+	if value, ok := tu.mutation.Mark(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldMark,
+		})
+	}
+	if value, ok := tu.mutation.AddedMark(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldMark,
+		})
+	}
+	if tu.mutation.MarkCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: take.FieldMark,
 		})
 	}
 	if value, ok := tu.mutation.InLocale(); ok {
@@ -802,6 +854,33 @@ func (tuo *TakeUpdateOne) SetNillableStatus(t *take.Status) *TakeUpdateOne {
 	return tuo
 }
 
+// SetMark sets the "mark" field.
+func (tuo *TakeUpdateOne) SetMark(i int) *TakeUpdateOne {
+	tuo.mutation.ResetMark()
+	tuo.mutation.SetMark(i)
+	return tuo
+}
+
+// SetNillableMark sets the "mark" field if the given value is not nil.
+func (tuo *TakeUpdateOne) SetNillableMark(i *int) *TakeUpdateOne {
+	if i != nil {
+		tuo.SetMark(*i)
+	}
+	return tuo
+}
+
+// AddMark adds i to the "mark" field.
+func (tuo *TakeUpdateOne) AddMark(i int) *TakeUpdateOne {
+	tuo.mutation.AddMark(i)
+	return tuo
+}
+
+// ClearMark clears the value of the "mark" field.
+func (tuo *TakeUpdateOne) ClearMark() *TakeUpdateOne {
+	tuo.mutation.ClearMark()
+	return tuo
+}
+
 // SetInLocale sets the "in_locale" field.
 func (tuo *TakeUpdateOne) SetInLocale(tl take.InLocale) *TakeUpdateOne {
 	tuo.mutation.SetInLocale(tl)
@@ -1028,6 +1107,11 @@ func (tuo *TakeUpdateOne) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
 		}
 	}
+	if v, ok := tuo.mutation.Mark(); ok {
+		if err := take.MarkValidator(v); err != nil {
+			return &ValidationError{Name: "mark", err: fmt.Errorf(`ent: validator failed for field "Take.mark": %w`, err)}
+		}
+	}
 	if v, ok := tuo.mutation.InLocale(); ok {
 		if err := take.InLocaleValidator(v); err != nil {
 			return &ValidationError{Name: "in_locale", err: fmt.Errorf(`ent: validator failed for field "Take.in_locale": %w`, err)}
@@ -1150,6 +1234,26 @@ func (tuo *TakeUpdateOne) sqlSave(ctx context.Context) (_node *Take, err error) 
 			Type:   field.TypeEnum,
 			Value:  value,
 			Column: take.FieldStatus,
+		})
+	}
+	if value, ok := tuo.mutation.Mark(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldMark,
+		})
+	}
+	if value, ok := tuo.mutation.AddedMark(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldMark,
+		})
+	}
+	if tuo.mutation.MarkCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: take.FieldMark,
 		})
 	}
 	if value, ok := tuo.mutation.InLocale(); ok {

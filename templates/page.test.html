@@ -94,12 +94,12 @@
         <button class="button is-rounded is-success is-hidden-tablet" live-click="end-test" {{ if .Test.IsNotDone
           }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
         {{ else }}
-        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="next-page" {{ if ge .Page .Test.PageCount
-          }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
+        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="next-page" {{ if ge .Page
+          .Test.PageCount }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
           {{ .UI.Test.NextButton }}
         </button>
-        <button class="button is-rounded is-success is-hidden-tablet" live-click="next-page" {{ if ge .Page .Test.PageCount
-          }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
+        <button class="button is-rounded is-success is-hidden-tablet" live-click="next-page" {{ if ge .Page
+          .Test.PageCount }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
           {{ .UI.Test.NextButton }}
         </button>
         {{ end }}
@@ -199,6 +199,20 @@
     </div>
     {{ end }}
   </div>
+  {{ if eq .CurrentView "test" }}
+  <div class="section">
+    <p class="subtitle is-2 is-size-4-mobile has-text-centered">{{ .UI.Test.TestMark }}</p>
+    <div class="control block has-text-centered">
+      {{ range $j, $s := N 5 }}
+      <button class="button {{ if eq (Plus1 $j) (DerefInt $.Test.Take.Mark) }}is-success{{ end }}"
+        live-click="test-mark-update" live-value-val="{{ Plus1 $j }}">
+        {{ Plus1 $j }}
+      </button>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+  <!-- mark block end -->
   {{ end }}
 </main>
 {{ end }}

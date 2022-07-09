@@ -38,6 +38,8 @@ type Take struct {
 	Suspicious bool `json:"suspicious,omitempty"`
 	// Status holds the value of the "status" field.
 	Status take.Status `json:"status,omitempty"`
+	// Mark holds the value of the "mark" field.
+	Mark *int `json:"mark,omitempty"`
 	// InLocale holds the value of the "in_locale" field.
 	InLocale take.InLocale `json:"in_locale,omitempty"`
 	// Meta holds the value of the "meta" field.
@@ -119,7 +121,7 @@ func (*Take) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new([]byte)
 		case take.FieldSuspicious:
 			values[i] = new(sql.NullBool)
-		case take.FieldSeed, take.FieldProgress, take.FieldPage:
+		case take.FieldSeed, take.FieldProgress, take.FieldPage, take.FieldMark:
 			values[i] = new(sql.NullInt64)
 		case take.FieldStatus, take.FieldInLocale:
 			values[i] = new(sql.NullString)
@@ -207,6 +209,13 @@ func (t *Take) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				t.Status = take.Status(value.String)
+			}
+		case take.FieldMark:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field mark", values[i])
+			} else if value.Valid {
+				t.Mark = new(int)
+				*t.Mark = int(value.Int64)
 			}
 		case take.FieldInLocale:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -314,6 +323,11 @@ func (t *Take) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", t.Status))
+	builder.WriteString(", ")
+	if v := t.Mark; v != nil {
+		builder.WriteString("mark=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("in_locale=")
 	builder.WriteString(fmt.Sprintf("%v", t.InLocale))

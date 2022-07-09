@@ -27,11 +27,13 @@ const (
 	eventToggleAutoNext        = "toggle-auto-next"
 	eventToggleShowDetails     = "toggle-show-details"
 	eventToggleShowInstruction = "toggle-show-instruction"
+	eventTestMarkUpdate        = "test-mark-update"
 	// params
 	paramTestCode      = "testCode"
 	paramTestItem      = "item"
 	paramTestItemValue = "val"
 	paramTestLocale    = "locale"
+	paramTestMarkValue = "val"
 	// params values
 )
 
@@ -64,6 +66,12 @@ var testFuncMap = template.FuncMap{
 			return 0
 		}
 		return (v - min) / (max - min)
+	},
+	"DerefInt": func(i *int) int {
+		if i == nil {
+			return 0
+		}
+		return *i
 	},
 }
 
@@ -347,6 +355,19 @@ func (h *Handler) Test() live.Handler {
 			}
 		}
 
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventTestMarkUpdate, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+		mark := p.Int(paramTestMarkValue)
+		if mark >= domain.TakeMinMark && mark <= domain.TakeMaxMark {
+			instance.Test.Take.Mark = &mark
+			err := h.app.UpdateTakeMark(ctx, instance.Test.Take.ID, mark)
+			if err != nil {
+				return instance.withError(err), nil
+			}
+		}
 		return instance, nil
 	})
 

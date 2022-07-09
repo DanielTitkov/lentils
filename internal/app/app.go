@@ -47,6 +47,7 @@ type (
 		GetTake(ctx context.Context, takeID uuid.UUID) (*domain.Take, error)
 		CreateTake(ctx context.Context, take *domain.Take) (*domain.Take, error)
 		UpdateTake(ctx context.Context, take *domain.Take) (*domain.Take, error)
+		UpdateTakeMark(ctx context.Context, takeID uuid.UUID, mark int) error
 
 		// response
 		AddOrUpdateResponse(ctx context.Context, takeID uuid.UUID, itm *domain.Item) (*domain.Response, error)

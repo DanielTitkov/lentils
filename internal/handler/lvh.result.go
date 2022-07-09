@@ -53,6 +53,12 @@ var resultFuncMap = template.FuncMap{
 		}
 		return (v - min) / (max - min)
 	},
+	"DerefInt": func(i *int) int {
+		if i == nil {
+			return 0
+		}
+		return *i
+	},
 }
 
 type (

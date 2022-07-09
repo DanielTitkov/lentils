@@ -50,6 +50,7 @@ type (
 		DetailedReport    string
 		Disclaimer        string
 		NormsInfo         string
+		TestMark          string
 	}
 )
 
@@ -101,6 +102,7 @@ func newTranslationEn() *UITranslation {
 			NormsInfo: `Orrery uses dynamic standardization, 
 			so results may change (probably insignicantly) with time, 
 			as we gather more data and recalculate norms.`,
+			TestMark: "Please rate how useful/interesting was this test for you?",
 		},
 	}
 }
@@ -143,6 +145,7 @@ func newTranslationRu() *UITranslation {
 			NormsInfo: `Orrery использует динамическую стандартизацию, 
 			поэтому в будущем результаты могут меняться (скорее всего незначительно), 
 			по мере того как мы собираем больше данных и обновляем нормы.`,
+			TestMark: "Насколько полезным/интересным оказался для вас этот тест?",
 		},
 	}
 }

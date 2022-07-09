@@ -41,6 +41,15 @@ func (r *EntgoRepository) CreateTake(ctx context.Context, tk *domain.Take) (*dom
 	return entToDomainTake(t, tk.UserID, tk.TestID), nil
 }
 
+func (r *EntgoRepository) UpdateTakeMark(ctx context.Context, takeID uuid.UUID, mark int) error {
+	_, err := r.client.Take.UpdateOneID(takeID).SetMark(mark).Save(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *EntgoRepository) UpdateTake(ctx context.Context, tk *domain.Take) (*domain.Take, error) {
 	t, err := r.client.Take.Query().
 		Where(take.IDEQ(tk.ID)).
@@ -95,6 +104,7 @@ func entToDomainTake(t *ent.Take, uid, tid uuid.UUID) *domain.Take {
 		Suspicious: t.Suspicious,
 		CreateTime: t.CreateTime,
 		UpdateTime: t.UpdateTime,
+		Mark:       t.Mark,
 		Meta:       t.Meta,
 	}
 }

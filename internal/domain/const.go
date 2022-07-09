@@ -36,6 +36,8 @@ const (
 	// take
 	TakeMinTime = 8 * time.Second
 	TakeMaxTime = 2 * time.Hour
+	TakeMinMark = 1
+	TakeMaxMark = 5
 	// tags
 	TagTypeTheme   = "theme"
 	TagTypeLen     = "len"

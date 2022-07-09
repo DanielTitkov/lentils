@@ -9911,6 +9911,8 @@ type TakeMutation struct {
 	end_time         *time.Time
 	suspicious       *bool
 	status           *take.Status
+	mark             *int
+	addmark          *int
 	in_locale        *take.InLocale
 	meta             *map[string]interface{}
 	clearedFields    map[string]struct{}
@@ -10443,6 +10445,76 @@ func (m *TakeMutation) ResetStatus() {
 	m.status = nil
 }
 
+// SetMark sets the "mark" field.
+func (m *TakeMutation) SetMark(i int) {
+	m.mark = &i
+	m.addmark = nil
+}
+
+// Mark returns the value of the "mark" field in the mutation.
+func (m *TakeMutation) Mark() (r int, exists bool) {
+	v := m.mark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMark returns the old "mark" field's value of the Take entity.
+// If the Take object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TakeMutation) OldMark(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMark: %w", err)
+	}
+	return oldValue.Mark, nil
+}
+
+// AddMark adds i to the "mark" field.
+func (m *TakeMutation) AddMark(i int) {
+	if m.addmark != nil {
+		*m.addmark += i
+	} else {
+		m.addmark = &i
+	}
+}
+
+// AddedMark returns the value that was added to the "mark" field in this mutation.
+func (m *TakeMutation) AddedMark() (r int, exists bool) {
+	v := m.addmark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearMark clears the value of the "mark" field.
+func (m *TakeMutation) ClearMark() {
+	m.mark = nil
+	m.addmark = nil
+	m.clearedFields[take.FieldMark] = struct{}{}
+}
+
+// MarkCleared returns if the "mark" field was cleared in this mutation.
+func (m *TakeMutation) MarkCleared() bool {
+	_, ok := m.clearedFields[take.FieldMark]
+	return ok
+}
+
+// ResetMark resets all changes to the "mark" field.
+func (m *TakeMutation) ResetMark() {
+	m.mark = nil
+	m.addmark = nil
+	delete(m.clearedFields, take.FieldMark)
+}
+
 // SetInLocale sets the "in_locale" field.
 func (m *TakeMutation) SetInLocale(tl take.InLocale) {
 	m.in_locale = &tl
@@ -10733,7 +10805,7 @@ func (m *TakeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TakeMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.create_time != nil {
 		fields = append(fields, take.FieldCreateTime)
 	}
@@ -10760,6 +10832,9 @@ func (m *TakeMutation) Fields() []string {
 	}
 	if m.status != nil {
 		fields = append(fields, take.FieldStatus)
+	}
+	if m.mark != nil {
+		fields = append(fields, take.FieldMark)
 	}
 	if m.in_locale != nil {
 		fields = append(fields, take.FieldInLocale)
@@ -10793,6 +10868,8 @@ func (m *TakeMutation) Field(name string) (ent.Value, bool) {
 		return m.Suspicious()
 	case take.FieldStatus:
 		return m.Status()
+	case take.FieldMark:
+		return m.Mark()
 	case take.FieldInLocale:
 		return m.InLocale()
 	case take.FieldMeta:
@@ -10824,6 +10901,8 @@ func (m *TakeMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldSuspicious(ctx)
 	case take.FieldStatus:
 		return m.OldStatus(ctx)
+	case take.FieldMark:
+		return m.OldMark(ctx)
 	case take.FieldInLocale:
 		return m.OldInLocale(ctx)
 	case take.FieldMeta:
@@ -10900,6 +10979,13 @@ func (m *TakeMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetStatus(v)
 		return nil
+	case take.FieldMark:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMark(v)
+		return nil
 	case take.FieldInLocale:
 		v, ok := value.(take.InLocale)
 		if !ok {
@@ -10931,6 +11017,9 @@ func (m *TakeMutation) AddedFields() []string {
 	if m.addpage != nil {
 		fields = append(fields, take.FieldPage)
 	}
+	if m.addmark != nil {
+		fields = append(fields, take.FieldMark)
+	}
 	return fields
 }
 
@@ -10945,6 +11034,8 @@ func (m *TakeMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedProgress()
 	case take.FieldPage:
 		return m.AddedPage()
+	case take.FieldMark:
+		return m.AddedMark()
 	}
 	return nil, false
 }
@@ -10975,6 +11066,13 @@ func (m *TakeMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddPage(v)
 		return nil
+	case take.FieldMark:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddMark(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Take numeric field %s", name)
 }
@@ -10988,6 +11086,9 @@ func (m *TakeMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(take.FieldEndTime) {
 		fields = append(fields, take.FieldEndTime)
+	}
+	if m.FieldCleared(take.FieldMark) {
+		fields = append(fields, take.FieldMark)
 	}
 	if m.FieldCleared(take.FieldMeta) {
 		fields = append(fields, take.FieldMeta)
@@ -11011,6 +11112,9 @@ func (m *TakeMutation) ClearField(name string) error {
 		return nil
 	case take.FieldEndTime:
 		m.ClearEndTime()
+		return nil
+	case take.FieldMark:
+		m.ClearMark()
 		return nil
 	case take.FieldMeta:
 		m.ClearMeta()
@@ -11049,6 +11153,9 @@ func (m *TakeMutation) ResetField(name string) error {
 		return nil
 	case take.FieldStatus:
 		m.ResetStatus()
+		return nil
+	case take.FieldMark:
+		m.ResetMark()
 		return nil
 	case take.FieldInLocale:
 		m.ResetInLocale()

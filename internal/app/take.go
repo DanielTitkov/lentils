@@ -26,3 +26,7 @@ func (a *App) AddResponse(ctx context.Context, take *domain.Take, item *domain.I
 
 	return take, resp, nil
 }
+
+func (a *App) UpdateTakeMark(ctx context.Context, takeID uuid.UUID, mark int) error {
+	return a.repo.UpdateTakeMark(ctx, takeID, mark)
+}

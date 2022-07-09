@@ -143,6 +143,20 @@ func (tc *TakeCreate) SetNillableStatus(t *take.Status) *TakeCreate {
 	return tc
 }
 
+// SetMark sets the "mark" field.
+func (tc *TakeCreate) SetMark(i int) *TakeCreate {
+	tc.mutation.SetMark(i)
+	return tc
+}
+
+// SetNillableMark sets the "mark" field if the given value is not nil.
+func (tc *TakeCreate) SetNillableMark(i *int) *TakeCreate {
+	if i != nil {
+		tc.SetMark(*i)
+	}
+	return tc
+}
+
 // SetInLocale sets the "in_locale" field.
 func (tc *TakeCreate) SetInLocale(tl take.InLocale) *TakeCreate {
 	tc.mutation.SetInLocale(tl)
@@ -368,6 +382,11 @@ func (tc *TakeCreate) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Take.status": %w`, err)}
 		}
 	}
+	if v, ok := tc.mutation.Mark(); ok {
+		if err := take.MarkValidator(v); err != nil {
+			return &ValidationError{Name: "mark", err: fmt.Errorf(`ent: validator failed for field "Take.mark": %w`, err)}
+		}
+	}
 	if _, ok := tc.mutation.InLocale(); !ok {
 		return &ValidationError{Name: "in_locale", err: errors.New(`ent: missing required field "Take.in_locale"`)}
 	}
@@ -489,6 +508,14 @@ func (tc *TakeCreate) createSpec() (*Take, *sqlgraph.CreateSpec) {
 			Column: take.FieldStatus,
 		})
 		_node.Status = value
+	}
+	if value, ok := tc.mutation.Mark(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: take.FieldMark,
+		})
+		_node.Mark = &value
 	}
 	if value, ok := tc.mutation.InLocale(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

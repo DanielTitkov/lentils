@@ -354,6 +354,24 @@ func init() {
 	takeDescSuspicious := takeFields[6].Descriptor()
 	// take.DefaultSuspicious holds the default value on creation for the suspicious field.
 	take.DefaultSuspicious = takeDescSuspicious.Default.(bool)
+	// takeDescMark is the schema descriptor for mark field.
+	takeDescMark := takeFields[8].Descriptor()
+	// take.MarkValidator is a validator for the "mark" field. It is called by the builders before save.
+	take.MarkValidator = func() func(int) error {
+		validators := takeDescMark.Validators
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
+		}
+		return func(mark int) error {
+			for _, fn := range fns {
+				if err := fn(mark); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// takeDescID is the schema descriptor for id field.
 	takeDescID := takeFields[0].Descriptor()
 	// take.DefaultID holds the default value on creation for the id field.

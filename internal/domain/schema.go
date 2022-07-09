@@ -149,6 +149,7 @@ type (
 		Page       int
 		Status     string
 		Progress   int
+		Mark       *int
 		Meta       map[string]interface{}
 	}
 

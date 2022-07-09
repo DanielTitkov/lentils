@@ -150,6 +150,13 @@ func Suspicious(v bool) predicate.Take {
 	})
 }
 
+// Mark applies equality check predicate on the "mark" field. It's identical to MarkEQ.
+func Mark(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMark), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Take {
 	return predicate.Take(func(s *sql.Selector) {
@@ -769,6 +776,96 @@ func StatusNotIn(vs ...Status) predicate.Take {
 			return
 		}
 		s.Where(sql.NotIn(s.C(FieldStatus), v...))
+	})
+}
+
+// MarkEQ applies the EQ predicate on the "mark" field.
+func MarkEQ(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMark), v))
+	})
+}
+
+// MarkNEQ applies the NEQ predicate on the "mark" field.
+func MarkNEQ(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMark), v))
+	})
+}
+
+// MarkIn applies the In predicate on the "mark" field.
+func MarkIn(vs ...int) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldMark), v...))
+	})
+}
+
+// MarkNotIn applies the NotIn predicate on the "mark" field.
+func MarkNotIn(vs ...int) predicate.Take {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Take(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldMark), v...))
+	})
+}
+
+// MarkGT applies the GT predicate on the "mark" field.
+func MarkGT(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMark), v))
+	})
+}
+
+// MarkGTE applies the GTE predicate on the "mark" field.
+func MarkGTE(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMark), v))
+	})
+}
+
+// MarkLT applies the LT predicate on the "mark" field.
+func MarkLT(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMark), v))
+	})
+}
+
+// MarkLTE applies the LTE predicate on the "mark" field.
+func MarkLTE(v int) predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMark), v))
+	})
+}
+
+// MarkIsNil applies the IsNil predicate on the "mark" field.
+func MarkIsNil() predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldMark)))
+	})
+}
+
+// MarkNotNil applies the NotNil predicate on the "mark" field.
+func MarkNotNil() predicate.Take {
+	return predicate.Take(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldMark)))
 	})
 }
 

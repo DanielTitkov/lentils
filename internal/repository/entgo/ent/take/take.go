@@ -32,6 +32,8 @@ const (
 	FieldSuspicious = "suspicious"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldMark holds the string denoting the mark field in the database.
+	FieldMark = "mark"
 	// FieldInLocale holds the string denoting the in_locale field in the database.
 	FieldInLocale = "in_locale"
 	// FieldMeta holds the string denoting the meta field in the database.
@@ -88,6 +90,7 @@ var Columns = []string{
 	FieldEndTime,
 	FieldSuspicious,
 	FieldStatus,
+	FieldMark,
 	FieldInLocale,
 	FieldMeta,
 }
@@ -127,6 +130,8 @@ var (
 	DefaultPage int
 	// DefaultSuspicious holds the default value on creation for the "suspicious" field.
 	DefaultSuspicious bool
+	// MarkValidator is a validator for the "mark" field. It is called by the builders before save.
+	MarkValidator func(int) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

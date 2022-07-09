@@ -400,6 +400,7 @@ var (
 		{Name: "end_time", Type: field.TypeTime, Nullable: true},
 		{Name: "suspicious", Type: field.TypeBool, Default: false},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"intro", "questions", "finish", "result"}, Default: "intro"},
+		{Name: "mark", Type: field.TypeInt, Nullable: true},
 		{Name: "in_locale", Type: field.TypeEnum, Enums: []string{"en", "ru"}, Default: "en"},
 		{Name: "meta", Type: field.TypeJSON, Nullable: true},
 		{Name: "test_takes", Type: field.TypeUUID},
@@ -413,13 +414,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "takes_tests_takes",
-				Columns:    []*schema.Column{TakesColumns[12]},
+				Columns:    []*schema.Column{TakesColumns[13]},
 				RefColumns: []*schema.Column{TestsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "takes_users_takes",
-				Columns:    []*schema.Column{TakesColumns[13]},
+				Columns:    []*schema.Column{TakesColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
