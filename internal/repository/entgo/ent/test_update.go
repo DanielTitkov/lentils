@@ -88,6 +88,27 @@ func (tu *TestUpdate) AddMark(f float64) *TestUpdate {
 	return tu
 }
 
+// SetQuestionCount sets the "question_count" field.
+func (tu *TestUpdate) SetQuestionCount(i int) *TestUpdate {
+	tu.mutation.ResetQuestionCount()
+	tu.mutation.SetQuestionCount(i)
+	return tu
+}
+
+// SetNillableQuestionCount sets the "question_count" field if the given value is not nil.
+func (tu *TestUpdate) SetNillableQuestionCount(i *int) *TestUpdate {
+	if i != nil {
+		tu.SetQuestionCount(*i)
+	}
+	return tu
+}
+
+// AddQuestionCount adds i to the "question_count" field.
+func (tu *TestUpdate) AddQuestionCount(i int) *TestUpdate {
+	tu.mutation.AddQuestionCount(i)
+	return tu
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by IDs.
 func (tu *TestUpdate) AddTakeIDs(ids ...uuid.UUID) *TestUpdate {
 	tu.mutation.AddTakeIDs(ids...)
@@ -306,12 +327,18 @@ func (tu *TestUpdate) Save(ctx context.Context) (int, error) {
 	)
 	tu.defaults()
 	if len(tu.hooks) == 0 {
+		if err = tu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = tu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*TestMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = tu.check(); err != nil {
+				return 0, err
 			}
 			tu.mutation = mutation
 			affected, err = tu.sqlSave(ctx)
@@ -359,6 +386,16 @@ func (tu *TestUpdate) defaults() {
 		v := test.UpdateDefaultUpdateTime()
 		tu.mutation.SetUpdateTime(v)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (tu *TestUpdate) check() error {
+	if v, ok := tu.mutation.QuestionCount(); ok {
+		if err := test.QuestionCountValidator(v); err != nil {
+			return &ValidationError{Name: "question_count", err: fmt.Errorf(`ent: validator failed for field "Test.question_count": %w`, err)}
+		}
+	}
+	return nil
 }
 
 func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -418,6 +455,20 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: test.FieldMark,
+		})
+	}
+	if value, ok := tu.mutation.QuestionCount(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: test.FieldQuestionCount,
+		})
+	}
+	if value, ok := tu.mutation.AddedQuestionCount(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: test.FieldQuestionCount,
 		})
 	}
 	if tu.mutation.TakesCleared() {
@@ -797,6 +848,27 @@ func (tuo *TestUpdateOne) AddMark(f float64) *TestUpdateOne {
 	return tuo
 }
 
+// SetQuestionCount sets the "question_count" field.
+func (tuo *TestUpdateOne) SetQuestionCount(i int) *TestUpdateOne {
+	tuo.mutation.ResetQuestionCount()
+	tuo.mutation.SetQuestionCount(i)
+	return tuo
+}
+
+// SetNillableQuestionCount sets the "question_count" field if the given value is not nil.
+func (tuo *TestUpdateOne) SetNillableQuestionCount(i *int) *TestUpdateOne {
+	if i != nil {
+		tuo.SetQuestionCount(*i)
+	}
+	return tuo
+}
+
+// AddQuestionCount adds i to the "question_count" field.
+func (tuo *TestUpdateOne) AddQuestionCount(i int) *TestUpdateOne {
+	tuo.mutation.AddQuestionCount(i)
+	return tuo
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by IDs.
 func (tuo *TestUpdateOne) AddTakeIDs(ids ...uuid.UUID) *TestUpdateOne {
 	tuo.mutation.AddTakeIDs(ids...)
@@ -1022,12 +1094,18 @@ func (tuo *TestUpdateOne) Save(ctx context.Context) (*Test, error) {
 	)
 	tuo.defaults()
 	if len(tuo.hooks) == 0 {
+		if err = tuo.check(); err != nil {
+			return nil, err
+		}
 		node, err = tuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*TestMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = tuo.check(); err != nil {
+				return nil, err
 			}
 			tuo.mutation = mutation
 			node, err = tuo.sqlSave(ctx)
@@ -1081,6 +1159,16 @@ func (tuo *TestUpdateOne) defaults() {
 		v := test.UpdateDefaultUpdateTime()
 		tuo.mutation.SetUpdateTime(v)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (tuo *TestUpdateOne) check() error {
+	if v, ok := tuo.mutation.QuestionCount(); ok {
+		if err := test.QuestionCountValidator(v); err != nil {
+			return &ValidationError{Name: "question_count", err: fmt.Errorf(`ent: validator failed for field "Test.question_count": %w`, err)}
+		}
+	}
+	return nil
 }
 
 func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) {
@@ -1157,6 +1245,20 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: test.FieldMark,
+		})
+	}
+	if value, ok := tuo.mutation.QuestionCount(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: test.FieldQuestionCount,
+		})
+	}
+	if value, ok := tuo.mutation.AddedQuestionCount(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: test.FieldQuestionCount,
 		})
 	}
 	if tuo.mutation.TakesCleared() {

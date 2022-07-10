@@ -22,6 +22,7 @@ func (Test) Fields() []ent.Field {
 		field.Bool("published").Default(true),
 		field.Strings("available_locales").Optional(),
 		field.Float("mark").Default(3),
+		field.Int("question_count").NonNegative().Default(1),
 	}
 }
 
@@ -61,6 +62,7 @@ func (TestTranslation) Fields() []ent.Field {
 		field.String("description").Optional(),
 		field.String("details").Optional(),
 		field.String("instruction").Optional(),
+		field.String("result_preambule").Optional(),
 	}
 }
 

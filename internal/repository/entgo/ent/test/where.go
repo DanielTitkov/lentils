@@ -129,6 +129,13 @@ func Mark(v float64) predicate.Test {
 	})
 }
 
+// QuestionCount applies equality check predicate on the "question_count" field. It's identical to QuestionCountEQ.
+func QuestionCount(v int) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldQuestionCount), v))
+	})
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
@@ -493,6 +500,82 @@ func MarkLT(v float64) predicate.Test {
 func MarkLTE(v float64) predicate.Test {
 	return predicate.Test(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldMark), v))
+	})
+}
+
+// QuestionCountEQ applies the EQ predicate on the "question_count" field.
+func QuestionCountEQ(v int) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldQuestionCount), v))
+	})
+}
+
+// QuestionCountNEQ applies the NEQ predicate on the "question_count" field.
+func QuestionCountNEQ(v int) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldQuestionCount), v))
+	})
+}
+
+// QuestionCountIn applies the In predicate on the "question_count" field.
+func QuestionCountIn(vs ...int) predicate.Test {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Test(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldQuestionCount), v...))
+	})
+}
+
+// QuestionCountNotIn applies the NotIn predicate on the "question_count" field.
+func QuestionCountNotIn(vs ...int) predicate.Test {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Test(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldQuestionCount), v...))
+	})
+}
+
+// QuestionCountGT applies the GT predicate on the "question_count" field.
+func QuestionCountGT(v int) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldQuestionCount), v))
+	})
+}
+
+// QuestionCountGTE applies the GTE predicate on the "question_count" field.
+func QuestionCountGTE(v int) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldQuestionCount), v))
+	})
+}
+
+// QuestionCountLT applies the LT predicate on the "question_count" field.
+func QuestionCountLT(v int) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldQuestionCount), v))
+	})
+}
+
+// QuestionCountLTE applies the LTE predicate on the "question_count" field.
+func QuestionCountLTE(v int) predicate.Test {
+	return predicate.Test(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldQuestionCount), v))
 	})
 }
 

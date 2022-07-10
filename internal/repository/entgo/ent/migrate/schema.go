@@ -435,6 +435,7 @@ var (
 		{Name: "published", Type: field.TypeBool, Default: true},
 		{Name: "available_locales", Type: field.TypeJSON, Nullable: true},
 		{Name: "mark", Type: field.TypeFloat64, Default: 3},
+		{Name: "question_count", Type: field.TypeInt, Default: 1},
 	}
 	// TestsTable holds the schema information for the "tests" table.
 	TestsTable = &schema.Table{
@@ -471,6 +472,7 @@ var (
 		{Name: "description", Type: field.TypeString, Nullable: true},
 		{Name: "details", Type: field.TypeString, Nullable: true},
 		{Name: "instruction", Type: field.TypeString, Nullable: true},
+		{Name: "result_preambule", Type: field.TypeString, Nullable: true},
 		{Name: "test_translations", Type: field.TypeUUID, Nullable: true},
 	}
 	// TestTranslationsTable holds the schema information for the "test_translations" table.
@@ -481,7 +483,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "test_translations_tests_translations",
-				Columns:    []*schema.Column{TestTranslationsColumns[6]},
+				Columns:    []*schema.Column{TestTranslationsColumns[7]},
 				RefColumns: []*schema.Column{TestsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -490,7 +492,7 @@ var (
 			{
 				Name:    "testtranslation_locale_test_translations",
 				Unique:  true,
-				Columns: []*schema.Column{TestTranslationsColumns[1], TestTranslationsColumns[6]},
+				Columns: []*schema.Column{TestTranslationsColumns[1], TestTranslationsColumns[7]},
 			},
 		},
 	}

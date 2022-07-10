@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-09 22:07:02
+# at: 2022-07-10 23:37:14
 # template: ../data/templates/ctt-v1/riasec-combined-wisc.yaml
 code: riasec-combined-wisc
 published: true
@@ -28,6 +28,12 @@ translations:
       but it has more questions.</p> <p>There are multiple versions of Holland test.
       Orrery uses the one developed at Wisconsin University. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
       target="_blank">Link to Wisc Uni site</a>.</p>
+    preambule: Results of this test should be considered as mere recommendation, which
+      is obviously not perfect and not obligatory to follow. The world is more complex,
+      than it could be described by a test. If results seem interesting and useful,
+      you can consider them in your career choice. Otherwise feel free to ignore then
+      partially or whatsoever. You should not give up your dreams just because someone
+      says so.
   - locale: ru
     title: RIASEC (комбинированный)
     description: Тест профессиональных предпочтений (вопросы о личности и видах деятельности)
@@ -44,6 +50,13 @@ translations:
       университетом Висконсина. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
       target="_blank">Ссылка на оригинал на сайте университета</a>.</p> <p>Перевод
       на русский язык выполнен Orrery.</p>
+    preambule: Результаты этого теста должны рассматривать как рекомендация для выбора
+      возможной профессии, но ни в коем случае не обязательная. Помните, что и вы,
+      и мир - сложнее чем можно охватить тестом. Если результаты теста показались
+      вам полезными и интересными, используйте их как опору для своего выбора. Если
+      же вам кажется, что с ними что-то не так, что чего-то не хватает, что рекомендации
+      не соотвествуют вашему самоощущению, не бойтесь полностью или частично проигнорировать
+      их. Не стоит отказываться от своей мечты только потому, что кто-то вам так сказал.
 scales:
   - code: riasec-combined-wisc-01-realistic
     type: sten
@@ -59,34 +72,6 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Realistic occupations frequently involve work activities that
-              include practical, hands-on problems, and solutions. They often deal
-              with plants, animals, and real-world materials like wood, tools, and
-              machinery. Many of the occupations require working outside, and do not
-              involve a lot of paperwork or working closely with others.</p>
-          - locale: ru
-            content: <p>Реалистический тип личности — максимально направлен на создание
-              материальных вещей, обслуживание технических устройств и технологических
-              процессов.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Realistic occupations frequently involve work activities that
-              include practical, hands-on problems, and solutions. They often deal
-              with plants, animals, and real-world materials like wood, tools, and
-              machinery. Many of the occupations require working outside, and do not
-              involve a lot of paperwork or working closely with others.</p>
-          - locale: ru
-            content: <p>Реалистический тип личности — максимально направлен на создание
-              материальных вещей, обслуживание технических устройств и технологических
-              процессов.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
@@ -94,61 +79,74 @@ scales:
               include practical, hands-on problems, and solutions. They often deal
               with plants, animals, and real-world materials like wood, tools, and
               machinery. Many of the occupations require working outside, and do not
-              involve a lot of paperwork or working closely with others.</p>
+              involve a lot of paperwork or working closely with others.</p> <p><b>Key
+              skills</b></p> <p>Using and operating tools, equipment and machinery,
+              designing, building, repairing, maintaining, measuring, working in detail,
+              driving, moving, caring for animals, working with plants.</p> <p><b>Some
+              possible occupations</b><p> <p>Agriculture, health assistant, construction,
+              mechanic/machinist, food and hospitality, pilot, horticulturist, builder,
+              engineer, upholsterer, electrician, computer technologist, park ranger,
+              sportsperson.</p>
           - locale: ru
             content: <p>Реалистический тип личности — максимально направлен на создание
               материальных вещей, обслуживание технических устройств и технологических
-              процессов.</p>
+              процессов.</p> <p><b>Ключевые навыки</b></p> <p>Работа с инструментами,
+              оборудованием и машинами, строительство, ремонт, забота о животных,
+              работа с растениями.</p> <p><b>Примеры возможных профессий</b><p> <p>Сельское
+              хозяйство, медицинская работа, строительство, механика, еда, индустрия
+              гостеприимства, управление транспортными средствами, садоводство, инженерия,
+              обслуживание зданий, машин и помещений, забота о животных, работа с
+              растениями.</p>
     items:
       - code: riasec-combined-wisc-01-realistic-001
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to tinker with mechanics
+            content: You like (would like) to tinker with mechanics
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать с механическими или
-              электрическими устройствами
+            content: Вам нравится (понравилось бы) работать с механическими или электрическими
+              устройствами
       - code: riasec-combined-wisc-01-realistic-002
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to work outdoors
+            content: You like (would like) to work outdoors
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать на улице
+            content: Вам нравится (понравилось бы) работать на улице
       - code: riasec-combined-wisc-01-realistic-003
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to be physically active
+            content: You like (would like) to be physically active
           - locale: ru
-            content: Вам нравится (или понравилось бы) быть физически активным (активной)
+            content: Вам нравится (понравилось бы) быть физически активным (активной)
       - code: riasec-combined-wisc-01-realistic-004
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to use your hands
+            content: You like (would like) to use your hands
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать руками
+            content: Вам нравится (понравилось бы) работать руками
       - code: riasec-combined-wisc-01-realistic-005
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to pitch a tent
+            content: You like (would like) to pitch a tent
           - locale: ru
-            content: Вам нравится (или понравилось бы) устанавливать палатку
+            content: Вам нравится (понравилось бы) устанавливать палатку
       - code: riasec-combined-wisc-01-realistic-006
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to play a sport
+            content: You like (would like) to play a sport
           - locale: ru
-            content: Вам нравится (или понравилось бы) играть в спортивную игру
+            content: Вам нравится (понравилось бы) играть в спортивную игру
       - code: riasec-combined-wisc-01-realistic-007
         steps: 5
         reverse: false
@@ -211,98 +209,83 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Investigative occupations frequently involve working with
-              ideas, and require an extensive amount of thinking. These occupations
-              can involve searching for facts and figuring out problems mentally.</p>
-          - locale: ru
-            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
-              повышенные требования к интеллекту, аналитическим способностям, рационализму,
-              умению трезво мыслить.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Investigative occupations frequently involve working with
-              ideas, and require an extensive amount of thinking. These occupations
-              can involve searching for facts and figuring out problems mentally.</p>
-          - locale: ru
-            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
-              повышенные требования к интеллекту, аналитическим способностям, рационализму,
-              умению трезво мыслить.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Investigative occupations frequently involve working with
               ideas, and require an extensive amount of thinking. These occupations
               can involve searching for facts and figuring out problems mentally.</p>
+              <p><b>Key skills</b></p> <p>Thinking analytically and logically, computing,
+              communicating by writing and speaking, designing, formulating, calculating,
+              diagnosing, experimenting, investigating.</p> <p><b>Some possible occupations</b><p>
+              <p>Engineering, chemistry, biology, medicine/surgery, consumer economics,
+              psychology, philosophy, science, research.</p>
           - locale: ru
             content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
               повышенные требования к интеллекту, аналитическим способностям, рационализму,
-              умению трезво мыслить.</p>
+              умению трезво мыслить.</p> <p><b>Ключевые навыки</b></p> <p>Логическое
+              мышление, аналитическое мышление, вычисления, формулирование, диагностика,
+              экспериментирование, аргументация.</p> <p><b>Примеры возможных профессий</b><p>
+              <p>Инженерия, химия, биология, медицина, экономика, психология, философия,
+              научная деятельность, исследования.</p>
     items:
       - code: riasec-combined-wisc-02-investigative-001
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to explore ideas
+            content: You like (would like) to explore ideas
           - locale: ru
-            content: Вам нравится (или понравилось бы) изучать и анализировать идеи
+            content: Вам нравится (понравилось бы) изучать и анализировать идеи
       - code: riasec-combined-wisc-02-investigative-002
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to work independently
+            content: You like (would like) to work independently
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать в одиночестве
+            content: Вам нравится (понравилось бы) работать в одиночестве
       - code: riasec-combined-wisc-02-investigative-003
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to perform lab experiments
+            content: You like (would like) to perform lab experiments
           - locale: ru
-            content: Вам нравится (или понравилось бы) проводить эксперименты в лаборатории
+            content: Вам нравится (понравилось бы) проводить эксперименты в лаборатории
       - code: riasec-combined-wisc-02-investigative-004
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to read scientific or technical articles
+            content: You like (would like) to read scientific or technical articles
           - locale: ru
-            content: Вам нравится (или понравилось бы) читать научные или технические
+            content: Вам нравится (понравилось бы) читать научные или технические
               статьи
       - code: riasec-combined-wisc-02-investigative-005
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to use a microscope
+            content: You like (would like) to use a microscope
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать с микроскопом
+            content: Вам нравится (понравилось бы) работать с микроскопом
       - code: riasec-combined-wisc-02-investigative-006
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to analyze data
+            content: You like (would like) to analyze data
           - locale: ru
-            content: Вам нравится (или понравилось бы) анализировать данные
+            content: Вам нравится (понравилось бы) анализировать данные
       - code: riasec-combined-wisc-02-investigative-007
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to do complex calculations
+            content: You like (would like) to do complex calculations
           - locale: ru
-            content: Вам нравится (или понравилось бы) проводить сложные вычисления
+            content: Вам нравится (понравилось бы) проводить сложные вычисления
       - code: riasec-combined-wisc-02-investigative-008
         steps: 5
         reverse: false
@@ -358,106 +341,87 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Artistic occupations frequently involve working with forms,
-              designs, and patterns. They often require self-expression and the work
-              can be done without following a clear set of rules.</p>
-          - locale: ru
-            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
-              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
-              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
-              Для них предпочтительны профессии мира искусств изобразительное искусство,
-              театр, кино, литература и подобные.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Artistic occupations frequently involve working with forms,
-              designs, and patterns. They often require self-expression and the work
-              can be done without following a clear set of rules.</p>
-          - locale: ru
-            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
-              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
-              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
-              Для них предпочтительны профессии мира искусств изобразительное искусство,
-              театр, кино, литература и подобные.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Artistic occupations frequently involve working with forms,
               designs, and patterns. They often require self-expression and the work
-              can be done without following a clear set of rules.</p>
+              can be done without following a clear set of rules.</p> <p><b>Key skills</b></p>
+              <p>Expressing artistically or physically, communicating by speaking,
+              writing and singing, performing, designing, presenting, planning, composing,
+              playing, dancing.</p> <p><b>Some possible occupations</b><p> <p>Communications,
+              cosmetology, fine and performing arts, photography, radio and TV, interior
+              design, architecture, fashion design</p>
           - locale: ru
             content: <p>Артистический тип личности — оригинальные, с необычным взглядом
               на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
               часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
               Для них предпочтительны профессии мира искусств изобразительное искусство,
-              театр, кино, литература и подобные.</p>
+              театр, кино, литература и подобные.</p> <p><b>Ключевые навыки</b></p>
+              <p>Художественное самовыражение, речь, письмо, пение, выступление, дизайн.</p>
+              <p><b>Примеры возможных профессий</b><p> <p>Коммуникации, косметология,
+              искусство, фотография, радио и ТВ, пресса, дизайн интерьеров, архитектура,
+              мода.</p>
     items:
       - code: riasec-combined-wisc-03-artistic-001
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to attend concerts, theaters, art exhibits
+            content: You like (would like) to attend concerts, theaters, art exhibits
           - locale: ru
-            content: Вам нравится (или понравилось бы) посещать концерты, театры,
-              художественные выставки
+            content: Вам нравится (понравилось бы) посещать концерты, театры, художественные
+              выставки
       - code: riasec-combined-wisc-03-artistic-002
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to read fiction, plays, poetry
+            content: You like (would like) to read fiction, plays, poetry
           - locale: ru
-            content: Вам нравится (или понравилось бы) читать художественную литературу
+            content: Вам нравится (понравилось бы) читать художественную литературу
       - code: riasec-combined-wisc-03-artistic-003
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to take photographs
+            content: You like (would like) to take photographs
           - locale: ru
-            content: Вам нравится (или понравилось бы) делать фотографии
+            content: Вам нравится (понравилось бы) делать фотографии
       - code: riasec-combined-wisc-03-artistic-004
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to write stories, poetry, music, sing,
+            content: You like (would like) to write stories, poetry, music, sing,
               act, dance
           - locale: ru
-            content: Вам нравится (или понравилось бы) писать рассказы, стихи, музыку,
+            content: Вам нравится (понравилось бы) писать рассказы, стихи, музыку,
               танцевать, петь, выступать
       - code: riasec-combined-wisc-03-artistic-005
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to play a musical instrument
+            content: You like (would like) to play a musical instrument
           - locale: ru
-            content: Вам нравится (или понравилось бы) играть на музыкальном инструменте
+            content: Вам нравится (понравилось бы) играть на музыкальном инструменте
       - code: riasec-combined-wisc-03-artistic-006
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: 'You like (or would like) to sketch, draw, paint '
+            content: 'You like (would like) to sketch, draw, paint '
           - locale: ru
-            content: Вам нравится (или понравилось бы) рисовать
+            content: Вам нравится (понравилось бы) рисовать
       - code: riasec-combined-wisc-03-artistic-007
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to design fashions or interiors
+            content: You like (would like) to design fashions or interiors
           - locale: ru
-            content: Вам нравится (или понравилось бы) создавать дизайн одежды, интерьеров
+            content: Вам нравится (понравилось бы) создавать дизайн одежды, интерьеров
               и т.д.
       - code: riasec-combined-wisc-03-artistic-008
         steps: 5
@@ -513,89 +477,73 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Social occupations frequently involve working with, communicating
-              with, and teaching people. These occupations often involve helping or
-              providing service to others.</p>
-          - locale: ru
-            content: <p>Социальный тип личности — им подойдут любые профессии, которые
-              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
-              консультирование, уход, помощь.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Social occupations frequently involve working with, communicating
-              with, and teaching people. These occupations often involve helping or
-              providing service to others.</p>
-          - locale: ru
-            content: <p>Социальный тип личности — им подойдут любые профессии, которые
-              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
-              консультирование, уход, помощь.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Social occupations frequently involve working with, communicating
               with, and teaching people. These occupations often involve helping or
-              providing service to others.</p>
+              providing service to others.</p> <p><b>Key skills</b></p> <p>Communicating
+              by writing and speaking, caring and supporting, training, meeting, greeting,
+              assisting, teaching, informing, interviewing, coaching.</p> <p><b>Some
+              possible occupations</b><p> <p>Counseling, nursing, physical therapy,
+              travel, advertising, public relations, education</p>
           - locale: ru
             content: <p>Социальный тип личности — им подойдут любые профессии, которые
               связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
-              консультирование, уход, помощь.</p>
+              консультирование, уход, помощь.</p> <p><b>Ключевые навыки</b></p> <p>Письменное
+              и устное общение, забота и поддержка, обучение, помощь, преподаване,
+              донесение информации, интервьюриование, коучинг.</p> <p><b>Примеры возможных
+              профессий</b><p> <p>Консультирование, терапия, реклама, общественные
+              отношения, образование, медицина.</p>
     items:
       - code: riasec-combined-wisc-04-social-001
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to work in groups
+            content: You like (would like) to work in groups
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать в группе
+            content: Вам нравится (понравилось бы) работать в группе
       - code: riasec-combined-wisc-04-social-002
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to help people with problems
+            content: You like (would like) to help people with problems
           - locale: ru
-            content: Вам нравится (или понравилось бы) помогать людям с их проблемами
+            content: Вам нравится (понравилось бы) помогать людям с их проблемами
       - code: riasec-combined-wisc-04-social-003
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to participate in meetings
+            content: You like (would like) to participate in meetings
           - locale: ru
-            content: Вам нравится (или понравилось бы) участвовать во встречах
+            content: Вам нравится (понравилось бы) участвовать во встречах
       - code: riasec-combined-wisc-04-social-004
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to do volunteer service
+            content: You like (would like) to do volunteer service
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать волонтёром
+            content: Вам нравится (понравилось бы) работать волонтёром
       - code: riasec-combined-wisc-04-social-005
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to teach/train others
+            content: You like (would like) to teach/train others
           - locale: ru
-            content: Вам нравится (или понравилось бы) учить или тренировать других
+            content: Вам нравится (понравилось бы) учить или тренировать других
       - code: riasec-combined-wisc-04-social-006
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to mediate disputes
+            content: You like (would like) to mediate disputes
           - locale: ru
-            content: Вам нравится (или понравилось бы) улаживать разногласия
+            content: Вам нравится (понравилось бы) улаживать разногласия
       - code: riasec-combined-wisc-04-social-007
         steps: 5
         reverse: false
@@ -658,100 +606,78 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Enterprising occupations frequently involve starting up and
-              carrying out projects. These occupations can involve leading people
-              and making many decisions. Sometimes they require risk taking, and they
-              often deal with business.</p>
-          - locale: ru
-            content: <p>Предпринимательский тип личности — требующие больших затрат
-              энергии профессии, связанные с риском, необходимостью постоянно принимать
-              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
-              Требуется наличие организаторских способностей, развитых коммуникативных
-              навыков и большого запаса сил.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Enterprising occupations frequently involve starting up and
-              carrying out projects. These occupations can involve leading people
-              and making many decisions. Sometimes they require risk taking, and they
-              often deal with business.</p>
-          - locale: ru
-            content: <p>Предпринимательский тип личности — требующие больших затрат
-              энергии профессии, связанные с риском, необходимостью постоянно принимать
-              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
-              Требуется наличие организаторских способностей, развитых коммуникативных
-              навыков и большого запаса сил.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Enterprising occupations frequently involve starting up and
               carrying out projects. These occupations can involve leading people
               and making many decisions. Sometimes they require risk taking, and they
-              often deal with business.</p>
+              often deal with business.</p> <p><b>Key skills</b></p> <p>Selling, promoting
+              and persuading, developing ideas, public speaking, managing, organising,
+              leading and captaining, computing, planning.</p> <p><b>Some possible
+              occupations</b><p> <p>Marketing/sales, lawyer, politician, accountant,
+              business owner, executive or manager, travel agent, music or sports
+              promoter.</p>
           - locale: ru
             content: <p>Предпринимательский тип личности — требующие больших затрат
               энергии профессии, связанные с риском, необходимостью постоянно принимать
               волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
               Требуется наличие организаторских способностей, развитых коммуникативных
-              навыков и большого запаса сил.</p>
+              навыков и большого запаса сил.</p> <p><b>Ключевые навыки</b></p> <p>Продажа
+              и продвижение, убеждение, развитие идей, выступление на публику, управление,
+              организация процессов, лидерство, планирование.</p> <p><b>Примеры возможных
+              профессий</b><p> <p>Маркетинг/продажи, адвокатура, политическая работа,
+              бизнес, менеджмент, продюсирование.</p>
     items:
       - code: riasec-combined-wisc-05-enterprising-001
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to make decisions affecting others
+            content: You like (would like) to make decisions affecting others
           - locale: ru
-            content: Вам нравится (или понравилось бы) принимать решения, которые
-              влияют на других людей
+            content: Вам нравится (понравилось бы) принимать решения, которые влияют
+              на других людей
       - code: riasec-combined-wisc-05-enterprising-002
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to initiate projects
+            content: You like (would like) to initiate projects
           - locale: ru
-            content: Вам нравится (или понравилось бы) начинать проекты
+            content: Вам нравится (понравилось бы) начинать проекты
       - code: riasec-combined-wisc-05-enterprising-003
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to sell things or promote ideas
+            content: You like (would like) to sell things or promote ideas
           - locale: ru
-            content: Вам нравится (или понравилось бы) продавать вещи или продвигать
-              идеи
+            content: Вам нравится (понравилось бы) продавать вещи или продвигать идеи
       - code: riasec-combined-wisc-05-enterprising-004
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to give talks or speeches
+            content: You like (would like) to give talks or speeches
           - locale: ru
-            content: Вам нравится (или понравилось бы) говорить на публику
+            content: Вам нравится (понравилось бы) говорить на публику
       - code: riasec-combined-wisc-05-enterprising-005
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to organize activities and events
+            content: You like (would like) to organize activities and events
           - locale: ru
-            content: Вам нравится (или понравилось бы) организовывать мероприятия
+            content: Вам нравится (понравилось бы) организовывать мероприятия
       - code: riasec-combined-wisc-05-enterprising-006
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to lead a group
+            content: You like (would like) to lead a group
           - locale: ru
-            content: Вам нравится (или понравилось бы) руководить группой
+            content: Вам нравится (понравилось бы) руководить группой
       - code: riasec-combined-wisc-05-enterprising-007
         steps: 5
         reverse: false
@@ -814,93 +740,77 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Conventional occupations frequently involve following set
-              procedures and routines. These occupations can include working with
-              data and details more than with ideas. There is usually a clear line
-              of authority to follow.</p>
-          - locale: ru
-            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
-              и систематизацией информации в виде чисел, формул, текста, а также ведением
-              документации.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Conventional occupations frequently involve following set
-              procedures and routines. These occupations can include working with
-              data and details more than with ideas. There is usually a clear line
-              of authority to follow.</p>
-          - locale: ru
-            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
-              и систематизацией информации в виде чисел, формул, текста, а также ведением
-              документации.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Conventional occupations frequently involve following set
               procedures and routines. These occupations can include working with
               data and details more than with ideas. There is usually a clear line
-              of authority to follow.</p>
+              of authority to follow.</p> <p><b>Key skills</b></p> <p>Computing and
+              keyboarding, office software, recording and keeping records, paying
+              attention to detail, meeting and greeting, doing calculations, handling
+              money, organising, arranging, working independently.</p> <p><b>Some
+              possible occupations</b><p> <p>Accounting, court reporting, insurance,
+              administration, medical records, banking, data processing</p>
           - locale: ru
             content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
               и систематизацией информации в виде чисел, формул, текста, а также ведением
-              документации.</p>
+              документации.</p> <p><b>Ключевые навыки</b></p> <p>Работа за компьютером,
+              оффисное программное обеспечение, ведение записей и документации, внимание
+              к деталям, корпоративный стиль, работа с числами, обращение с деньгами,
+              приведение в порядок, систематизация.</p> <p><b>Примеры возможных профессий</b><p>
+              <p>Бухгалтерия, финансы, судопроизводство, страхование, администрирование,
+              банковское дело, обработка данных.</p>
     items:
       - code: riasec-combined-wisc-06-conventional-001
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to follow clearly defined procedures
+            content: You like (would like) to follow clearly defined procedures
           - locale: ru
-            content: Вам нравится (или понравилось бы) следовать чётким инструкциям
+            content: Вам нравится (понравилось бы) следовать чётким инструкциям
       - code: riasec-combined-wisc-06-conventional-002
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to be responsible for details
+            content: You like (would like) to be responsible for details
           - locale: ru
-            content: Вам нравится (или понравилось бы) отвечать за точность в деталях
+            content: Вам нравится (понравилось бы) отвечать за точность в деталях
       - code: riasec-combined-wisc-06-conventional-003
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to keep accurate records
+            content: You like (would like) to keep accurate records
           - locale: ru
-            content: Вам нравится (или понравилось бы) аккуратно вести записи
+            content: Вам нравится (понравилось бы) аккуратно вести записи
       - code: riasec-combined-wisc-06-conventional-004
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to do a lot of paper work
+            content: You like (would like) to do a lot of paper work
           - locale: ru
-            content: Вам нравится (или понравилось бы) делать много бумажной работы
+            content: Вам нравится (понравилось бы) делать много бумажной работы
       - code: riasec-combined-wisc-06-conventional-005
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to work within a system
+            content: You like (would like) to work within a system
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать как часть системы
+            content: Вам нравится (понравилось бы) работать как часть системы
       - code: riasec-combined-wisc-06-conventional-006
         steps: 5
         reverse: false
         translations:
           - locale: en
-            content: You like (or would like) to use Excel or similar software
+            content: You like (would like) to use Excel or similar software
           - locale: ru
-            content: Вам нравится (или понравилось бы) работать в Экселе или другой
-              подобной программе
+            content: Вам нравится (понравилось бы) работать в Экселе или другой подобной
+              программе
       - code: riasec-combined-wisc-06-conventional-007
         steps: 5
         reverse: false

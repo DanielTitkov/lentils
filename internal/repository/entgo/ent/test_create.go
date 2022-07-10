@@ -95,6 +95,20 @@ func (tc *TestCreate) SetNillableMark(f *float64) *TestCreate {
 	return tc
 }
 
+// SetQuestionCount sets the "question_count" field.
+func (tc *TestCreate) SetQuestionCount(i int) *TestCreate {
+	tc.mutation.SetQuestionCount(i)
+	return tc
+}
+
+// SetNillableQuestionCount sets the "question_count" field if the given value is not nil.
+func (tc *TestCreate) SetNillableQuestionCount(i *int) *TestCreate {
+	if i != nil {
+		tc.SetQuestionCount(*i)
+	}
+	return tc
+}
+
 // SetID sets the "id" field.
 func (tc *TestCreate) SetID(u uuid.UUID) *TestCreate {
 	tc.mutation.SetID(u)
@@ -296,6 +310,10 @@ func (tc *TestCreate) defaults() {
 		v := test.DefaultMark
 		tc.mutation.SetMark(v)
 	}
+	if _, ok := tc.mutation.QuestionCount(); !ok {
+		v := test.DefaultQuestionCount
+		tc.mutation.SetQuestionCount(v)
+	}
 	if _, ok := tc.mutation.ID(); !ok {
 		v := test.DefaultID()
 		tc.mutation.SetID(v)
@@ -323,6 +341,14 @@ func (tc *TestCreate) check() error {
 	}
 	if _, ok := tc.mutation.Mark(); !ok {
 		return &ValidationError{Name: "mark", err: errors.New(`ent: missing required field "Test.mark"`)}
+	}
+	if _, ok := tc.mutation.QuestionCount(); !ok {
+		return &ValidationError{Name: "question_count", err: errors.New(`ent: missing required field "Test.question_count"`)}
+	}
+	if v, ok := tc.mutation.QuestionCount(); ok {
+		if err := test.QuestionCountValidator(v); err != nil {
+			return &ValidationError{Name: "question_count", err: fmt.Errorf(`ent: validator failed for field "Test.question_count": %w`, err)}
+		}
 	}
 	return nil
 }
@@ -407,6 +433,14 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 			Column: test.FieldMark,
 		})
 		_node.Mark = value
+	}
+	if value, ok := tc.mutation.QuestionCount(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: test.FieldQuestionCount,
+		})
+		_node.QuestionCount = value
 	}
 	if nodes := tc.mutation.TakesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

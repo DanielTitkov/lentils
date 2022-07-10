@@ -417,6 +417,12 @@ func init() {
 	testDescMark := testFields[4].Descriptor()
 	// test.DefaultMark holds the default value on creation for the mark field.
 	test.DefaultMark = testDescMark.Default.(float64)
+	// testDescQuestionCount is the schema descriptor for question_count field.
+	testDescQuestionCount := testFields[5].Descriptor()
+	// test.DefaultQuestionCount holds the default value on creation for the question_count field.
+	test.DefaultQuestionCount = testDescQuestionCount.Default.(int)
+	// test.QuestionCountValidator is a validator for the "question_count" field. It is called by the builders before save.
+	test.QuestionCountValidator = testDescQuestionCount.Validators[0].(func(int) error)
 	// testDescID is the schema descriptor for id field.
 	testDescID := testFields[0].Descriptor()
 	// test.DefaultID holds the default value on creation for the id field.

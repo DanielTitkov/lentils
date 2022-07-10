@@ -95,6 +95,26 @@ func (ttu *TestTranslationUpdate) ClearInstruction() *TestTranslationUpdate {
 	return ttu
 }
 
+// SetResultPreambule sets the "result_preambule" field.
+func (ttu *TestTranslationUpdate) SetResultPreambule(s string) *TestTranslationUpdate {
+	ttu.mutation.SetResultPreambule(s)
+	return ttu
+}
+
+// SetNillableResultPreambule sets the "result_preambule" field if the given value is not nil.
+func (ttu *TestTranslationUpdate) SetNillableResultPreambule(s *string) *TestTranslationUpdate {
+	if s != nil {
+		ttu.SetResultPreambule(*s)
+	}
+	return ttu
+}
+
+// ClearResultPreambule clears the value of the "result_preambule" field.
+func (ttu *TestTranslationUpdate) ClearResultPreambule() *TestTranslationUpdate {
+	ttu.mutation.ClearResultPreambule()
+	return ttu
+}
+
 // SetTestID sets the "test" edge to the Test entity by ID.
 func (ttu *TestTranslationUpdate) SetTestID(id uuid.UUID) *TestTranslationUpdate {
 	ttu.mutation.SetTestID(id)
@@ -259,6 +279,19 @@ func (ttu *TestTranslationUpdate) sqlSave(ctx context.Context) (n int, err error
 			Column: testtranslation.FieldInstruction,
 		})
 	}
+	if value, ok := ttu.mutation.ResultPreambule(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testtranslation.FieldResultPreambule,
+		})
+	}
+	if ttu.mutation.ResultPreambuleCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testtranslation.FieldResultPreambule,
+		})
+	}
 	if ttu.mutation.TestCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -376,6 +409,26 @@ func (ttuo *TestTranslationUpdateOne) SetNillableInstruction(s *string) *TestTra
 // ClearInstruction clears the value of the "instruction" field.
 func (ttuo *TestTranslationUpdateOne) ClearInstruction() *TestTranslationUpdateOne {
 	ttuo.mutation.ClearInstruction()
+	return ttuo
+}
+
+// SetResultPreambule sets the "result_preambule" field.
+func (ttuo *TestTranslationUpdateOne) SetResultPreambule(s string) *TestTranslationUpdateOne {
+	ttuo.mutation.SetResultPreambule(s)
+	return ttuo
+}
+
+// SetNillableResultPreambule sets the "result_preambule" field if the given value is not nil.
+func (ttuo *TestTranslationUpdateOne) SetNillableResultPreambule(s *string) *TestTranslationUpdateOne {
+	if s != nil {
+		ttuo.SetResultPreambule(*s)
+	}
+	return ttuo
+}
+
+// ClearResultPreambule clears the value of the "result_preambule" field.
+func (ttuo *TestTranslationUpdateOne) ClearResultPreambule() *TestTranslationUpdateOne {
+	ttuo.mutation.ClearResultPreambule()
 	return ttuo
 }
 
@@ -571,6 +624,19 @@ func (ttuo *TestTranslationUpdateOne) sqlSave(ctx context.Context) (_node *TestT
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: testtranslation.FieldInstruction,
+		})
+	}
+	if value, ok := ttuo.mutation.ResultPreambule(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testtranslation.FieldResultPreambule,
+		})
+	}
+	if ttuo.mutation.ResultPreambuleCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testtranslation.FieldResultPreambule,
 		})
 	}
 	if ttuo.mutation.TestCleared() {

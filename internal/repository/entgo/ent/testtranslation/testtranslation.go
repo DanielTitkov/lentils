@@ -23,6 +23,8 @@ const (
 	FieldDetails = "details"
 	// FieldInstruction holds the string denoting the instruction field in the database.
 	FieldInstruction = "instruction"
+	// FieldResultPreambule holds the string denoting the result_preambule field in the database.
+	FieldResultPreambule = "result_preambule"
 	// EdgeTest holds the string denoting the test edge name in mutations.
 	EdgeTest = "test"
 	// Table holds the table name of the testtranslation in the database.
@@ -44,6 +46,7 @@ var Columns = []string{
 	FieldDescription,
 	FieldDetails,
 	FieldInstruction,
+	FieldResultPreambule,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "test_translations"

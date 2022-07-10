@@ -1,7 +1,7 @@
 code: riasec-activity-wisc
 locales: ["en", "ru"]
 tags: ["psychology", "career"]
-en:  # title, decsriptions, instruction, details
+en:  # title, decsriptions, instruction, details, result preambule
   - RIASEC (activity)
   - Career preference test (activity questions)
   - <p>The test consists of tasks that you will have to rate by how much you would enjoy performing 
@@ -14,7 +14,11 @@ en:  # title, decsriptions, instruction, details
     Combined version is the most precised, but it has more questions.</p>
     <p>There are multiple versions of Holland test. Orrery uses the one developed at Wisconsin University.
     <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf" target="_blank">Link to Wisc Uni site</a>.</p>
-ru: # title, decsriptions, instruction, details
+  - Results of this test should be considered as mere recommendation, which is obviously not perfect and not 
+    obligatory to follow. The world is more complex, than it could be described by a test. If results seem interesting and useful, 
+    you can consider them in your career choice. Otherwise feel free to ignore then partially or whatsoever.
+    You should not give up your dreams just because someone says so. 
+ru: # title, decsriptions, instruction, details, result preambule
   - RIASEC (деятельность)
   - Тест профессиональных предпочтений (вопросы о видах деятельности)
   - <p>Тест состоит из пунктов, по каждому из которых надо указать, насколько вам понравилось бы выполнять такую работу.
@@ -28,10 +32,15 @@ ru: # title, decsriptions, instruction, details
     <p>Есть много вариантов вопросов для теста Холланда. Orrery использует версию, представленную университетом Висконсина.
     <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf" target="_blank">Ссылка на оригинал на сайте университета</a>.</p>
     <p>Перевод на русский язык выполнен Orrery.</p>
+  - Результаты этого теста должны рассматривать как рекомендация для выбора возможной профессии, но ни в коем случае не обязательная. 
+    Помните, что и вы, и мир - сложнее чем можно охватить тестом. Если результаты теста показались вам полезными и интересными, 
+    используйте их как опору для своего выбора. Если же вам кажется, что с ними что-то не так, что чего-то не хватает, что
+    рекомендации не соотвествуют вашему самоощущению, не бойтесь полностью или частично проигнорировать их. 
+    Не стоит отказываться от своей мечты только потому, что кто-то вам так сказал. 
 type: sten
 steps: 5 # item steps
 randomize: true
-intervals: 3 # interpretation intervals
+intervals: 1 # interpretation intervals
 question:
   en: "Would you like to..." # content
   ru: "Насколько вам понравилось бы..." #content
@@ -44,69 +53,76 @@ scales:
       - en: <p>Realistic occupations frequently involve work activities that include practical, hands-on problems, and solutions. 
             They often deal with plants, animals, and real-world materials like wood, tools, and machinery. 
             Many of the occupations require working outside, and do not involve a lot of paperwork or working closely with others.</p>
+            <p><b>Key skills</b></p>
+            <p>Using and operating tools, equipment and machinery, designing, building, repairing, maintaining, measuring,
+            working in detail, driving, moving, caring for animals, working with plants.</p>
+            <p><b>Some possible occupations</b><p>
+            <p>Agriculture, health assistant, construction, mechanic/machinist, food and hospitality,
+            pilot, horticulturist, builder, engineer, upholsterer, electrician,
+            computer technologist, park ranger, sportsperson.</p>
         ru: <p>Реалистический тип личности — максимально направлен на создание материальных вещей, 
             обслуживание технических устройств и технологических процессов.</p>
-      - en: <p>Realistic occupations frequently involve work activities that include practical, hands-on problems, and solutions. 
-            They often deal with plants, animals, and real-world materials like wood, tools, and machinery. 
-            Many of the occupations require working outside, and do not involve a lot of paperwork or working closely with others.</p>
-        ru: <p>Реалистический тип личности — максимально направлен на создание материальных вещей, 
-            обслуживание технических устройств и технологических процессов.</p>
-      - en: <p>Realistic occupations frequently involve work activities that include practical, hands-on problems, and solutions. 
-            They often deal with plants, animals, and real-world materials like wood, tools, and machinery. 
-            Many of the occupations require working outside, and do not involve a lot of paperwork or working closely with others.</p>
-        ru: <p>Реалистический тип личности — максимально направлен на создание материальных вещей, 
-            обслуживание технических устройств и технологических процессов.</p>
+            <p><b>Ключевые навыки</b></p>
+            <p>Работа с инструментами, оборудованием и машинами, строительство, ремонт, забота о животных, работа с растениями.</p>
+            <p><b>Примеры возможных профессий</b><p>
+            <p>Сельское хозяйство, медицинская работа, строительство, механика, еда, индустрия гостеприимства,
+            управление транспортными средствами, садоводство, инженерия, обслуживание зданий, машин и помещений,
+            забота о животных, работа с растениями.</p>
   investigative:
     en: ["Investigative", "Analytical, intellectual, scientific, explorative, thinker", "I"] # title, description, abbreviation
     ru: ["Исследовательский", "Аналитика, интеллектуальность, наука, исследование, размышления", "I"] # title, description, abbreviation
     interpretations: 
       - en: <p>Investigative occupations frequently involve working with ideas, and require an extensive amount of thinking. 
             These occupations can involve searching for facts and figuring out problems mentally.</p>
+            <p><b>Key skills</b></p>
+            <p>Thinking analytically and logically, computing, communicating by writing and speaking, designing, formulating,
+            calculating, diagnosing, experimenting, investigating.</p>
+            <p><b>Some possible occupations</b><p>
+            <p>Engineering, chemistry, biology, medicine/surgery, consumer economics, psychology, philosophy, science, research.</p>
         ru: <p>Интеллектуальный тип личности — любые профессии, предъявляющие повышенные требования к интеллекту, 
             аналитическим способностям, рационализму, умению трезво мыслить.</p>
-      - en: <p>Investigative occupations frequently involve working with ideas, and require an extensive amount of thinking. 
-            These occupations can involve searching for facts and figuring out problems mentally.</p>
-        ru: <p>Интеллектуальный тип личности — любые профессии, предъявляющие повышенные требования к интеллекту, 
-            аналитическим способностям, рационализму, умению трезво мыслить.</p>
-      - en: <p>Investigative occupations frequently involve working with ideas, and require an extensive amount of thinking. 
-            These occupations can involve searching for facts and figuring out problems mentally.</p>
-        ru: <p>Интеллектуальный тип личности — любые профессии, предъявляющие повышенные требования к интеллекту, 
-            аналитическим способностям, рационализму, умению трезво мыслить.</p>
+            <p><b>Ключевые навыки</b></p>
+            <p>Логическое мышление, аналитическое мышление, вычисления, формулирование, диагностика, экспериментирование, 
+            аргументация.</p>
+            <p><b>Примеры возможных профессий</b><p>
+            <p>Инженерия, химия, биология, медицина, экономика, психология, философия, научная деятельность, исследования.</p>
   artistic:
     en: ["Artistic", "Creative, original, independent, chaotic, inventive, media, graphics, and text", "A"] # title, description, abbreviation
     ru: ["Художественный (Артистический)", "Творчество, оригинальность, независимость, хаотичность", "A"] # title, description, abbreviation
     interpretations: 
       - en: <p>Artistic occupations frequently involve working with forms, designs, and patterns. 
             They often require self-expression and the work can be done without following a clear set of rules.</p>
+            <p><b>Key skills</b></p>
+            <p>Expressing artistically or physically, communicating by speaking, writing and singing, performing,
+            designing, presenting, planning, composing, playing, dancing.</p>
+            <p><b>Some possible occupations</b><p>
+            <p>Communications, cosmetology, fine and performing arts, photography, radio and TV,
+            interior design, architecture, fashion design</p>
         ru: <p>Артистический тип личности — оригинальные, с необычным взглядом на жизнь люди, 
             которые стараются не зависеть от мнения окружающих. Очень часто отличаются высокой чувствительностью, эмоциональностью, эмпатией. 
             Для них предпочтительны профессии мира искусств изобразительное искусство, театр, кино, литература и подобные.</p>
-      - en: <p>Artistic occupations frequently involve working with forms, designs, and patterns. 
-            They often require self-expression and the work can be done without following a clear set of rules.</p>
-        ru: <p>Артистический тип личности — оригинальные, с необычным взглядом на жизнь люди, 
-            которые стараются не зависеть от мнения окружающих. Очень часто отличаются высокой чувствительностью, эмоциональностью, эмпатией. 
-            Для них предпочтительны профессии мира искусств изобразительное искусство, театр, кино, литература и подобные.</p>
-      - en: <p>Artistic occupations frequently involve working with forms, designs, and patterns. 
-            They often require self-expression and the work can be done without following a clear set of rules.</p>
-        ru: <p>Артистический тип личности — оригинальные, с необычным взглядом на жизнь люди, 
-            которые стараются не зависеть от мнения окружающих. Очень часто отличаются высокой чувствительностью, эмоциональностью, эмпатией. 
-            Для них предпочтительны профессии мира искусств изобразительное искусство, театр, кино, литература и подобные.</p>
+            <p><b>Ключевые навыки</b></p>
+            <p>Художественное самовыражение, речь, письмо, пение, выступление, дизайн.</p>
+            <p><b>Примеры возможных профессий</b><p>
+            <p>Коммуникации, косметология, искусство, фотография, радио и ТВ, пресса, дизайн интерьеров, архитектура, мода.</p>
   social:
     en: ["Social", "cooperative, supporting, helping, healing/nurturing, teaching", "S"] # title, description, abbreviation
     ru: ["Социальный", "Кооперация, поддержка, помощь, забота, преподавание", "S"] # title, description, abbreviation
     interpretations: 
       - en: <p>Social occupations frequently involve working with, communicating with, and teaching people. 
             These occupations often involve helping or providing service to others.</p>
+            <p><b>Key skills</b></p>
+            <p>Communicating by writing and speaking, caring and supporting, training, meeting, greeting, assisting,
+            teaching, informing, interviewing, coaching.</p>
+            <p><b>Some possible occupations</b><p>
+            <p>Counseling, nursing, physical therapy, travel, advertising, public relations, education</p>
         ru: <p>Социальный тип личности — им подойдут любые профессии, 
             которые связаны с социальной средой - обучение, воспитание, лечение, обслуживание, консультирование, уход, помощь.</p>
-      - en: <p>Social occupations frequently involve working with, communicating with, and teaching people. 
-            These occupations often involve helping or providing service to others.</p>
-        ru: <p>Социальный тип личности — им подойдут любые профессии, 
-            которые связаны с социальной средой - обучение, воспитание, лечение, обслуживание, консультирование, уход, помощь.</p>
-      - en: <p>Social occupations frequently involve working with, communicating with, and teaching people. 
-            These occupations often involve helping or providing service to others.</p>
-        ru: <p>Социальный тип личности — им подойдут любые профессии, 
-            которые связаны с социальной средой - обучение, воспитание, лечение, обслуживание, консультирование, уход, помощь.</p>
+            <p><b>Ключевые навыки</b></p>
+            <p>Письменное и устное общение, забота и поддержка, обучение, помощь, преподаване, донесение информации, 
+            интервьюриование, коучинг.</p>
+            <p><b>Примеры возможных профессий</b><p>
+            <p>Консультирование, терапия, реклама, общественные отношения, образование, медицина.</p>
   enterprising:
     en: ["Enterprising", "Competitive environments, leadership, persuading, status", "E"] # title, description, abbreviation
     ru: ["Предприимчивый", "Конкуренция, лидерство, убеждение, статус", "E"] # title, description, abbreviation
@@ -114,24 +130,21 @@ scales:
       - en: <p>Enterprising occupations frequently involve starting up and carrying out projects. 
             These occupations can involve leading people and making many decisions. 
             Sometimes they require risk taking, and they often deal with business.</p>
+            <p><b>Key skills</b></p>
+            <p>Selling, promoting and persuading, developing ideas, public speaking, managing, organising,
+            leading and captaining, computing, planning.</p>
+            <p><b>Some possible occupations</b><p>
+            <p>Marketing/sales, lawyer, politician, accountant, business owner, executive or manager, 
+            travel agent, music or sports promoter.</p>
         ru: <p>Предпринимательский тип личности — требующие больших затрат энергии профессии, связанные с риском, 
             необходимостью постоянно принимать волевые самостоятельные решения. 
             Однообразие и монотонность не приветствуются. Требуется наличие организаторских способностей, 
             развитых коммуникативных навыков и большого запаса сил.</p>
-      - en: <p>Enterprising occupations frequently involve starting up and carrying out projects. 
-            These occupations can involve leading people and making many decisions. 
-            Sometimes they require risk taking, and they often deal with business.</p>
-        ru: <p>Предпринимательский тип личности — требующие больших затрат энергии профессии, связанные с риском, 
-            необходимостью постоянно принимать волевые самостоятельные решения. 
-            Однообразие и монотонность не приветствуются. Требуется наличие организаторских способностей, 
-            развитых коммуникативных навыков и большого запаса сил.</p>
-      - en: <p>Enterprising occupations frequently involve starting up and carrying out projects. 
-            These occupations can involve leading people and making many decisions. 
-            Sometimes they require risk taking, and they often deal with business.</p>
-        ru: <p>Предпринимательский тип личности — требующие больших затрат энергии профессии, связанные с риском, 
-            необходимостью постоянно принимать волевые самостоятельные решения. 
-            Однообразие и монотонность не приветствуются. Требуется наличие организаторских способностей, 
-            развитых коммуникативных навыков и большого запаса сил.</p>
+            <p><b>Ключевые навыки</b></p>
+            <p>Продажа и продвижение, убеждение, развитие идей, выступление на публику, управление, организация процессов, 
+            лидерство, планирование.</p>
+            <p><b>Примеры возможных профессий</b><p>
+            <p>Маркетинг/продажи, адвокатура, политическая работа, бизнес, менеджмент, продюсирование.</p>
   conventional:
     en: ["Conventional", "Detail-oriented, organizing, clerical", "C"] # title, description, abbreviation
     ru: ["Конвенциональный", "Внимание к деталям, стремление к порядку, четкая структура", "C"] # title, description, abbreviation
@@ -139,18 +152,19 @@ scales:
       - en: <p>Conventional occupations frequently involve following set procedures and routines. 
             These occupations can include working with data and details more than with ideas. 
             There is usually a clear line of authority to follow.</p>
+            <p><b>Key skills</b></p>
+            <p>Computing and keyboarding, office software, recording and keeping records, paying attention to detail, meeting and
+            greeting, doing calculations, handling money, organising, arranging, working independently.</p>
+            <p><b>Some possible occupations</b><p>
+            <p>Accounting, court reporting, insurance, administration, medical records,
+            banking, data processing</p>
         ru: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой и 
             систематизацией информации в виде чисел, формул, текста, а также ведением документации.</p>
-      - en: <p>Conventional occupations frequently involve following set procedures and routines. 
-            These occupations can include working with data and details more than with ideas. 
-            There is usually a clear line of authority to follow.</p>
-        ru: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой и 
-            систематизацией информации в виде чисел, формул, текста, а также ведением документации.</p>
-      - en: <p>Conventional occupations frequently involve following set procedures and routines. 
-            These occupations can include working with data and details more than with ideas. 
-            There is usually a clear line of authority to follow.</p>
-        ru: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой и 
-            систематизацией информации в виде чисел, формул, текста, а также ведением документации.</p>
+            <p><b>Ключевые навыки</b></p>
+            <p>Работа за компьютером, оффисное программное обеспечение, ведение записей и документации, внимание к деталям,
+            корпоративный стиль, работа с числами, обращение с деньгами, приведение в порядок, систематизация.</p>
+            <p><b>Примеры возможных профессий</b><p>
+            <p>Бухгалтерия, финансы, судопроизводство, страхование, администрирование, банковское дело, обработка данных.</p>
 items:
   # realistic
   - en: "Tinker with mechanics" # content

@@ -31,6 +31,8 @@ type Test struct {
 	AvailableLocales []string `json:"available_locales,omitempty"`
 	// Mark holds the value of the "mark" field.
 	Mark float64 `json:"mark,omitempty"`
+	// QuestionCount holds the value of the "question_count" field.
+	QuestionCount int `json:"question_count,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TestQuery when eager-loading is set.
 	Edges TestEdges `json:"edges"`
@@ -125,6 +127,8 @@ func (*Test) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case test.FieldMark:
 			values[i] = new(sql.NullFloat64)
+		case test.FieldQuestionCount:
+			values[i] = new(sql.NullInt64)
 		case test.FieldCode:
 			values[i] = new(sql.NullString)
 		case test.FieldCreateTime, test.FieldUpdateTime:
@@ -189,6 +193,12 @@ func (t *Test) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field mark", values[i])
 			} else if value.Valid {
 				t.Mark = value.Float64
+			}
+		case test.FieldQuestionCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field question_count", values[i])
+			} else if value.Valid {
+				t.QuestionCount = int(value.Int64)
 			}
 		}
 	}
@@ -265,6 +275,9 @@ func (t *Test) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("mark=")
 	builder.WriteString(fmt.Sprintf("%v", t.Mark))
+	builder.WriteString(", ")
+	builder.WriteString("question_count=")
+	builder.WriteString(fmt.Sprintf("%v", t.QuestionCount))
 	builder.WriteByte(')')
 	return builder.String()
 }

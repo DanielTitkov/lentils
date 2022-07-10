@@ -27,6 +27,8 @@ type TestTranslation struct {
 	Details string `json:"details,omitempty"`
 	// Instruction holds the value of the "instruction" field.
 	Instruction string `json:"instruction,omitempty"`
+	// ResultPreambule holds the value of the "result_preambule" field.
+	ResultPreambule string `json:"result_preambule,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TestTranslationQuery when eager-loading is set.
 	Edges             TestTranslationEdges `json:"edges"`
@@ -61,7 +63,7 @@ func (*TestTranslation) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case testtranslation.FieldLocale, testtranslation.FieldTitle, testtranslation.FieldDescription, testtranslation.FieldDetails, testtranslation.FieldInstruction:
+		case testtranslation.FieldLocale, testtranslation.FieldTitle, testtranslation.FieldDescription, testtranslation.FieldDetails, testtranslation.FieldInstruction, testtranslation.FieldResultPreambule:
 			values[i] = new(sql.NullString)
 		case testtranslation.FieldID:
 			values[i] = new(uuid.UUID)
@@ -118,6 +120,12 @@ func (tt *TestTranslation) assignValues(columns []string, values []interface{}) 
 			} else if value.Valid {
 				tt.Instruction = value.String
 			}
+		case testtranslation.FieldResultPreambule:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field result_preambule", values[i])
+			} else if value.Valid {
+				tt.ResultPreambule = value.String
+			}
 		case testtranslation.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field test_translations", values[i])
@@ -172,6 +180,9 @@ func (tt *TestTranslation) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("instruction=")
 	builder.WriteString(tt.Instruction)
+	builder.WriteString(", ")
+	builder.WriteString("result_preambule=")
+	builder.WriteString(tt.ResultPreambule)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -16,6 +16,7 @@ type (
 		Description       string        // translatable
 		Details           template.HTML // translatable
 		Instruction       template.HTML // translatable
+		ResultPreambule   template.HTML // translatable
 		Locale            string
 		AvailableLocales  []string
 		GenerateQuestions string
@@ -25,6 +26,7 @@ type (
 		Tags              []*Tag
 		Display           TestDisplay
 		Mark              float64
+		QuestionCount     int     // for display (and less joins in requests)
 		Take              *Take   // for use in handler
 		Takes             []*Take // for calculations
 	}

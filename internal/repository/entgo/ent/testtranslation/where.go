@@ -120,6 +120,13 @@ func Instruction(v string) predicate.TestTranslation {
 	})
 }
 
+// ResultPreambule applies equality check predicate on the "result_preambule" field. It's identical to ResultPreambuleEQ.
+func ResultPreambule(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldResultPreambule), v))
+	})
+}
+
 // LocaleEQ applies the EQ predicate on the "locale" field.
 func LocaleEQ(v Locale) predicate.TestTranslation {
 	return predicate.TestTranslation(func(s *sql.Selector) {
@@ -651,6 +658,131 @@ func InstructionEqualFold(v string) predicate.TestTranslation {
 func InstructionContainsFold(v string) predicate.TestTranslation {
 	return predicate.TestTranslation(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldInstruction), v))
+	})
+}
+
+// ResultPreambuleEQ applies the EQ predicate on the "result_preambule" field.
+func ResultPreambuleEQ(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleNEQ applies the NEQ predicate on the "result_preambule" field.
+func ResultPreambuleNEQ(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleIn applies the In predicate on the "result_preambule" field.
+func ResultPreambuleIn(vs ...string) predicate.TestTranslation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldResultPreambule), v...))
+	})
+}
+
+// ResultPreambuleNotIn applies the NotIn predicate on the "result_preambule" field.
+func ResultPreambuleNotIn(vs ...string) predicate.TestTranslation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldResultPreambule), v...))
+	})
+}
+
+// ResultPreambuleGT applies the GT predicate on the "result_preambule" field.
+func ResultPreambuleGT(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleGTE applies the GTE predicate on the "result_preambule" field.
+func ResultPreambuleGTE(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleLT applies the LT predicate on the "result_preambule" field.
+func ResultPreambuleLT(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleLTE applies the LTE predicate on the "result_preambule" field.
+func ResultPreambuleLTE(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleContains applies the Contains predicate on the "result_preambule" field.
+func ResultPreambuleContains(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleHasPrefix applies the HasPrefix predicate on the "result_preambule" field.
+func ResultPreambuleHasPrefix(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleHasSuffix applies the HasSuffix predicate on the "result_preambule" field.
+func ResultPreambuleHasSuffix(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleIsNil applies the IsNil predicate on the "result_preambule" field.
+func ResultPreambuleIsNil() predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldResultPreambule)))
+	})
+}
+
+// ResultPreambuleNotNil applies the NotNil predicate on the "result_preambule" field.
+func ResultPreambuleNotNil() predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldResultPreambule)))
+	})
+}
+
+// ResultPreambuleEqualFold applies the EqualFold predicate on the "result_preambule" field.
+func ResultPreambuleEqualFold(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldResultPreambule), v))
+	})
+}
+
+// ResultPreambuleContainsFold applies the ContainsFold predicate on the "result_preambule" field.
+func ResultPreambuleContainsFold(v string) predicate.TestTranslation {
+	return predicate.TestTranslation(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldResultPreambule), v))
 	})
 }
 

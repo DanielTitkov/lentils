@@ -11326,6 +11326,8 @@ type TestMutation struct {
 	available_locales   *[]string
 	mark                *float64
 	addmark             *float64
+	question_count      *int
+	addquestion_count   *int
 	clearedFields       map[string]struct{}
 	takes               map[uuid.UUID]struct{}
 	removedtakes        map[uuid.UUID]struct{}
@@ -11702,6 +11704,62 @@ func (m *TestMutation) ResetMark() {
 	m.addmark = nil
 }
 
+// SetQuestionCount sets the "question_count" field.
+func (m *TestMutation) SetQuestionCount(i int) {
+	m.question_count = &i
+	m.addquestion_count = nil
+}
+
+// QuestionCount returns the value of the "question_count" field in the mutation.
+func (m *TestMutation) QuestionCount() (r int, exists bool) {
+	v := m.question_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldQuestionCount returns the old "question_count" field's value of the Test entity.
+// If the Test object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestMutation) OldQuestionCount(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldQuestionCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldQuestionCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldQuestionCount: %w", err)
+	}
+	return oldValue.QuestionCount, nil
+}
+
+// AddQuestionCount adds i to the "question_count" field.
+func (m *TestMutation) AddQuestionCount(i int) {
+	if m.addquestion_count != nil {
+		*m.addquestion_count += i
+	} else {
+		m.addquestion_count = &i
+	}
+}
+
+// AddedQuestionCount returns the value that was added to the "question_count" field in this mutation.
+func (m *TestMutation) AddedQuestionCount() (r int, exists bool) {
+	v := m.addquestion_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetQuestionCount resets all changes to the "question_count" field.
+func (m *TestMutation) ResetQuestionCount() {
+	m.question_count = nil
+	m.addquestion_count = nil
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by ids.
 func (m *TestMutation) AddTakeIDs(ids ...uuid.UUID) {
 	if m.takes == nil {
@@ -12030,7 +12088,7 @@ func (m *TestMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
 	if m.create_time != nil {
 		fields = append(fields, test.FieldCreateTime)
 	}
@@ -12048,6 +12106,9 @@ func (m *TestMutation) Fields() []string {
 	}
 	if m.mark != nil {
 		fields = append(fields, test.FieldMark)
+	}
+	if m.question_count != nil {
+		fields = append(fields, test.FieldQuestionCount)
 	}
 	return fields
 }
@@ -12069,6 +12130,8 @@ func (m *TestMutation) Field(name string) (ent.Value, bool) {
 		return m.AvailableLocales()
 	case test.FieldMark:
 		return m.Mark()
+	case test.FieldQuestionCount:
+		return m.QuestionCount()
 	}
 	return nil, false
 }
@@ -12090,6 +12153,8 @@ func (m *TestMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldAvailableLocales(ctx)
 	case test.FieldMark:
 		return m.OldMark(ctx)
+	case test.FieldQuestionCount:
+		return m.OldQuestionCount(ctx)
 	}
 	return nil, fmt.Errorf("unknown Test field %s", name)
 }
@@ -12141,6 +12206,13 @@ func (m *TestMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMark(v)
 		return nil
+	case test.FieldQuestionCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetQuestionCount(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)
 }
@@ -12152,6 +12224,9 @@ func (m *TestMutation) AddedFields() []string {
 	if m.addmark != nil {
 		fields = append(fields, test.FieldMark)
 	}
+	if m.addquestion_count != nil {
+		fields = append(fields, test.FieldQuestionCount)
+	}
 	return fields
 }
 
@@ -12162,6 +12237,8 @@ func (m *TestMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case test.FieldMark:
 		return m.AddedMark()
+	case test.FieldQuestionCount:
+		return m.AddedQuestionCount()
 	}
 	return nil, false
 }
@@ -12177,6 +12254,13 @@ func (m *TestMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddMark(v)
+		return nil
+	case test.FieldQuestionCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddQuestionCount(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Test numeric field %s", name)
@@ -12231,6 +12315,9 @@ func (m *TestMutation) ResetField(name string) error {
 		return nil
 	case test.FieldMark:
 		m.ResetMark()
+		return nil
+	case test.FieldQuestionCount:
+		m.ResetQuestionCount()
 		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)
@@ -12921,20 +13008,21 @@ func (m *TestDisplayMutation) ResetEdge(name string) error {
 // TestTranslationMutation represents an operation that mutates the TestTranslation nodes in the graph.
 type TestTranslationMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *uuid.UUID
-	locale        *testtranslation.Locale
-	title         *string
-	description   *string
-	details       *string
-	instruction   *string
-	clearedFields map[string]struct{}
-	test          *uuid.UUID
-	clearedtest   bool
-	done          bool
-	oldValue      func(context.Context) (*TestTranslation, error)
-	predicates    []predicate.TestTranslation
+	op               Op
+	typ              string
+	id               *uuid.UUID
+	locale           *testtranslation.Locale
+	title            *string
+	description      *string
+	details          *string
+	instruction      *string
+	result_preambule *string
+	clearedFields    map[string]struct{}
+	test             *uuid.UUID
+	clearedtest      bool
+	done             bool
+	oldValue         func(context.Context) (*TestTranslation, error)
+	predicates       []predicate.TestTranslation
 }
 
 var _ ent.Mutation = (*TestTranslationMutation)(nil)
@@ -13260,6 +13348,55 @@ func (m *TestTranslationMutation) ResetInstruction() {
 	delete(m.clearedFields, testtranslation.FieldInstruction)
 }
 
+// SetResultPreambule sets the "result_preambule" field.
+func (m *TestTranslationMutation) SetResultPreambule(s string) {
+	m.result_preambule = &s
+}
+
+// ResultPreambule returns the value of the "result_preambule" field in the mutation.
+func (m *TestTranslationMutation) ResultPreambule() (r string, exists bool) {
+	v := m.result_preambule
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldResultPreambule returns the old "result_preambule" field's value of the TestTranslation entity.
+// If the TestTranslation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestTranslationMutation) OldResultPreambule(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldResultPreambule is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldResultPreambule requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldResultPreambule: %w", err)
+	}
+	return oldValue.ResultPreambule, nil
+}
+
+// ClearResultPreambule clears the value of the "result_preambule" field.
+func (m *TestTranslationMutation) ClearResultPreambule() {
+	m.result_preambule = nil
+	m.clearedFields[testtranslation.FieldResultPreambule] = struct{}{}
+}
+
+// ResultPreambuleCleared returns if the "result_preambule" field was cleared in this mutation.
+func (m *TestTranslationMutation) ResultPreambuleCleared() bool {
+	_, ok := m.clearedFields[testtranslation.FieldResultPreambule]
+	return ok
+}
+
+// ResetResultPreambule resets all changes to the "result_preambule" field.
+func (m *TestTranslationMutation) ResetResultPreambule() {
+	m.result_preambule = nil
+	delete(m.clearedFields, testtranslation.FieldResultPreambule)
+}
+
 // SetTestID sets the "test" edge to the Test entity by id.
 func (m *TestTranslationMutation) SetTestID(id uuid.UUID) {
 	m.test = &id
@@ -13318,7 +13455,7 @@ func (m *TestTranslationMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestTranslationMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.locale != nil {
 		fields = append(fields, testtranslation.FieldLocale)
 	}
@@ -13333,6 +13470,9 @@ func (m *TestTranslationMutation) Fields() []string {
 	}
 	if m.instruction != nil {
 		fields = append(fields, testtranslation.FieldInstruction)
+	}
+	if m.result_preambule != nil {
+		fields = append(fields, testtranslation.FieldResultPreambule)
 	}
 	return fields
 }
@@ -13352,6 +13492,8 @@ func (m *TestTranslationMutation) Field(name string) (ent.Value, bool) {
 		return m.Details()
 	case testtranslation.FieldInstruction:
 		return m.Instruction()
+	case testtranslation.FieldResultPreambule:
+		return m.ResultPreambule()
 	}
 	return nil, false
 }
@@ -13371,6 +13513,8 @@ func (m *TestTranslationMutation) OldField(ctx context.Context, name string) (en
 		return m.OldDetails(ctx)
 	case testtranslation.FieldInstruction:
 		return m.OldInstruction(ctx)
+	case testtranslation.FieldResultPreambule:
+		return m.OldResultPreambule(ctx)
 	}
 	return nil, fmt.Errorf("unknown TestTranslation field %s", name)
 }
@@ -13415,6 +13559,13 @@ func (m *TestTranslationMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetInstruction(v)
 		return nil
+	case testtranslation.FieldResultPreambule:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetResultPreambule(v)
+		return nil
 	}
 	return fmt.Errorf("unknown TestTranslation field %s", name)
 }
@@ -13454,6 +13605,9 @@ func (m *TestTranslationMutation) ClearedFields() []string {
 	if m.FieldCleared(testtranslation.FieldInstruction) {
 		fields = append(fields, testtranslation.FieldInstruction)
 	}
+	if m.FieldCleared(testtranslation.FieldResultPreambule) {
+		fields = append(fields, testtranslation.FieldResultPreambule)
+	}
 	return fields
 }
 
@@ -13477,6 +13631,9 @@ func (m *TestTranslationMutation) ClearField(name string) error {
 	case testtranslation.FieldInstruction:
 		m.ClearInstruction()
 		return nil
+	case testtranslation.FieldResultPreambule:
+		m.ClearResultPreambule()
+		return nil
 	}
 	return fmt.Errorf("unknown TestTranslation nullable field %s", name)
 }
@@ -13499,6 +13656,9 @@ func (m *TestTranslationMutation) ResetField(name string) error {
 		return nil
 	case testtranslation.FieldInstruction:
 		m.ResetInstruction()
+		return nil
+	case testtranslation.FieldResultPreambule:
+		m.ResetResultPreambule()
 		return nil
 	}
 	return fmt.Errorf("unknown TestTranslation field %s", name)

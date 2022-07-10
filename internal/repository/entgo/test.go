@@ -168,7 +168,6 @@ func (r *EntgoRepository) GetTakeData(ctx context.Context, tk *domain.Take, loca
 			})
 			sq.Order(ent.Asc(scale.FieldCode)) // this should work fine until test doesn't have >99 scales which would be crazy
 		}).
-		WithQuestions(). // only question count is need here so no need for translations
 		Only(ctx)
 	if err != nil {
 		return nil, err
@@ -197,6 +196,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		tst, err = tx.Test.Create().
 			SetCode(args.Code).
 			SetPublished(args.Published).
+			SetQuestionCount(len(args.Questions)).
 			SetAvailableLocales(args.AvailableLocales).
 			Save(ctx)
 		if err != nil {
@@ -212,6 +212,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		tst, err = tst.Update().
 			SetPublished(args.Published).
 			SetAvailableLocales(args.AvailableLocales).
+			SetQuestionCount(len(args.Questions)).
 			// clear edges
 			ClearScales().
 			ClearQuestions().
@@ -240,6 +241,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 			SetDescription(t.Description).
 			SetDetails(t.Details).
 			SetInstruction(t.Instruction).
+			SetResultPreambule(t.Preambule).
 			SetTestID(tst.ID).
 			Save(ctx)
 		if err != nil {
@@ -619,6 +621,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 	description := "no description for this locale: " + locale
 	instruction := "no instruction for this locale: " + locale
 	details := "no details for the locale: " + locale
+	preambule := "no result preambule for the locale: " + locale
 
 	if t.Edges.Translations != nil {
 		if len(t.Edges.Translations) == 1 {
@@ -627,6 +630,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 			description = trans.Description
 			instruction = trans.Instruction
 			details = trans.Details
+			preambule = trans.ResultPreambule
 		}
 	}
 
@@ -674,10 +678,12 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		Published:        t.Published,
 		AvailableLocales: t.AvailableLocales,
 		Mark:             t.Mark,
+		QuestionCount:    t.QuestionCount,
 		Title:            title,
 		Description:      description,
 		Instruction:      template.HTML(instruction),
 		Details:          template.HTML(details),
+		ResultPreambule:  template.HTML(preambule),
 		Display:          display,
 		Questions:        questions,
 		Scales:           scales,

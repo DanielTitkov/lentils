@@ -35,6 +35,7 @@ type (
 		Description string
 		Details     string
 		Instruction string
+		Preambule   string
 	}
 
 	CreateQuestionArgs struct {

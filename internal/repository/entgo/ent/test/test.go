@@ -25,6 +25,8 @@ const (
 	FieldAvailableLocales = "available_locales"
 	// FieldMark holds the string denoting the mark field in the database.
 	FieldMark = "mark"
+	// FieldQuestionCount holds the string denoting the question_count field in the database.
+	FieldQuestionCount = "question_count"
 	// EdgeTakes holds the string denoting the takes edge name in mutations.
 	EdgeTakes = "takes"
 	// EdgeQuestions holds the string denoting the questions edge name in mutations.
@@ -86,6 +88,7 @@ var Columns = []string{
 	FieldPublished,
 	FieldAvailableLocales,
 	FieldMark,
+	FieldQuestionCount,
 }
 
 var (
@@ -123,6 +126,10 @@ var (
 	DefaultPublished bool
 	// DefaultMark holds the default value on creation for the "mark" field.
 	DefaultMark float64
+	// DefaultQuestionCount holds the default value on creation for the "question_count" field.
+	DefaultQuestionCount int
+	// QuestionCountValidator is a validator for the "question_count" field. It is called by the builders before save.
+	QuestionCountValidator func(int) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

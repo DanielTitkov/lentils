@@ -152,6 +152,8 @@
         </p>
       </div>
     </div>
+    <div class="content is-normal is-hidden-tablet">{{ .Test.ResultPreambule }}</div>
+    <div class="content is-medium is-hidden-mobile">{{ .Test.ResultPreambule }}</div>
     <div class="columns">
       <div class="column">
         <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
@@ -268,7 +270,7 @@
     </div>
     <div class="column is-narrow">
       <p><b>Scales:</b> {{ len .Test.Scales }}</p>
-      <p><b>Questions:</b> {{ len .Test.Questions }}</p>
+      <p><b>Questions:</b> {{ .Test.QuestionCount }}</p>
     </div>
   </div>
 </div>

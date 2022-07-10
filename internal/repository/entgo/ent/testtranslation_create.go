@@ -75,6 +75,20 @@ func (ttc *TestTranslationCreate) SetNillableInstruction(s *string) *TestTransla
 	return ttc
 }
 
+// SetResultPreambule sets the "result_preambule" field.
+func (ttc *TestTranslationCreate) SetResultPreambule(s string) *TestTranslationCreate {
+	ttc.mutation.SetResultPreambule(s)
+	return ttc
+}
+
+// SetNillableResultPreambule sets the "result_preambule" field if the given value is not nil.
+func (ttc *TestTranslationCreate) SetNillableResultPreambule(s *string) *TestTranslationCreate {
+	if s != nil {
+		ttc.SetResultPreambule(*s)
+	}
+	return ttc
+}
+
 // SetID sets the "id" field.
 func (ttc *TestTranslationCreate) SetID(u uuid.UUID) *TestTranslationCreate {
 	ttc.mutation.SetID(u)
@@ -284,6 +298,14 @@ func (ttc *TestTranslationCreate) createSpec() (*TestTranslation, *sqlgraph.Crea
 			Column: testtranslation.FieldInstruction,
 		})
 		_node.Instruction = value
+	}
+	if value, ok := ttc.mutation.ResultPreambule(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testtranslation.FieldResultPreambule,
+		})
+		_node.ResultPreambule = value
 	}
 	if nodes := ttc.mutation.TestIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

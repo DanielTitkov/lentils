@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-09 22:07:04
+# at: 2022-07-10 23:37:14
 # template: ../data/templates/ctt-v1/riasec-activity-wisc.yaml
 code: riasec-activity-wisc
 published: true
@@ -28,6 +28,12 @@ translations:
       but it has more questions.</p> <p>There are multiple versions of Holland test.
       Orrery uses the one developed at Wisconsin University. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
       target="_blank">Link to Wisc Uni site</a>.</p>
+    preambule: Results of this test should be considered as mere recommendation, which
+      is obviously not perfect and not obligatory to follow. The world is more complex,
+      than it could be described by a test. If results seem interesting and useful,
+      you can consider them in your career choice. Otherwise feel free to ignore then
+      partially or whatsoever. You should not give up your dreams just because someone
+      says so.
   - locale: ru
     title: RIASEC (деятельность)
     description: Тест профессиональных предпочтений (вопросы о видах деятельности)
@@ -45,6 +51,13 @@ translations:
       Висконсина. <a href="https://fyi.extension.wisc.edu/teencourthub/files/2014/05/Holland-Code-Assessment.pdf"
       target="_blank">Ссылка на оригинал на сайте университета</a>.</p> <p>Перевод
       на русский язык выполнен Orrery.</p>
+    preambule: Результаты этого теста должны рассматривать как рекомендация для выбора
+      возможной профессии, но ни в коем случае не обязательная. Помните, что и вы,
+      и мир - сложнее чем можно охватить тестом. Если результаты теста показались
+      вам полезными и интересными, используйте их как опору для своего выбора. Если
+      же вам кажется, что с ними что-то не так, что чего-то не хватает, что рекомендации
+      не соотвествуют вашему самоощущению, не бойтесь полностью или частично проигнорировать
+      их. Не стоит отказываться от своей мечты только потому, что кто-то вам так сказал.
 scales:
   - code: riasec-activity-wisc-01-realistic
     type: sten
@@ -60,34 +73,6 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Realistic occupations frequently involve work activities that
-              include practical, hands-on problems, and solutions. They often deal
-              with plants, animals, and real-world materials like wood, tools, and
-              machinery. Many of the occupations require working outside, and do not
-              involve a lot of paperwork or working closely with others.</p>
-          - locale: ru
-            content: <p>Реалистический тип личности — максимально направлен на создание
-              материальных вещей, обслуживание технических устройств и технологических
-              процессов.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Realistic occupations frequently involve work activities that
-              include practical, hands-on problems, and solutions. They often deal
-              with plants, animals, and real-world materials like wood, tools, and
-              machinery. Many of the occupations require working outside, and do not
-              involve a lot of paperwork or working closely with others.</p>
-          - locale: ru
-            content: <p>Реалистический тип личности — максимально направлен на создание
-              материальных вещей, обслуживание технических устройств и технологических
-              процессов.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
@@ -95,11 +80,24 @@ scales:
               include practical, hands-on problems, and solutions. They often deal
               with plants, animals, and real-world materials like wood, tools, and
               machinery. Many of the occupations require working outside, and do not
-              involve a lot of paperwork or working closely with others.</p>
+              involve a lot of paperwork or working closely with others.</p> <p><b>Key
+              skills</b></p> <p>Using and operating tools, equipment and machinery,
+              designing, building, repairing, maintaining, measuring, working in detail,
+              driving, moving, caring for animals, working with plants.</p> <p><b>Some
+              possible occupations</b><p> <p>Agriculture, health assistant, construction,
+              mechanic/machinist, food and hospitality, pilot, horticulturist, builder,
+              engineer, upholsterer, electrician, computer technologist, park ranger,
+              sportsperson.</p>
           - locale: ru
             content: <p>Реалистический тип личности — максимально направлен на создание
               материальных вещей, обслуживание технических устройств и технологических
-              процессов.</p>
+              процессов.</p> <p><b>Ключевые навыки</b></p> <p>Работа с инструментами,
+              оборудованием и машинами, строительство, ремонт, забота о животных,
+              работа с растениями.</p> <p><b>Примеры возможных профессий</b><p> <p>Сельское
+              хозяйство, медицинская работа, строительство, механика, еда, индустрия
+              гостеприимства, управление транспортными средствами, садоводство, инженерия,
+              обслуживание зданий, машин и помещений, забота о животных, работа с
+              растениями.</p>
     items:
       - code: riasec-activity-wisc-01-realistic-001
         steps: 5
@@ -179,40 +177,25 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Investigative occupations frequently involve working with
-              ideas, and require an extensive amount of thinking. These occupations
-              can involve searching for facts and figuring out problems mentally.</p>
-          - locale: ru
-            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
-              повышенные требования к интеллекту, аналитическим способностям, рационализму,
-              умению трезво мыслить.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Investigative occupations frequently involve working with
-              ideas, and require an extensive amount of thinking. These occupations
-              can involve searching for facts and figuring out problems mentally.</p>
-          - locale: ru
-            content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
-              повышенные требования к интеллекту, аналитическим способностям, рационализму,
-              умению трезво мыслить.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Investigative occupations frequently involve working with
               ideas, and require an extensive amount of thinking. These occupations
               can involve searching for facts and figuring out problems mentally.</p>
+              <p><b>Key skills</b></p> <p>Thinking analytically and logically, computing,
+              communicating by writing and speaking, designing, formulating, calculating,
+              diagnosing, experimenting, investigating.</p> <p><b>Some possible occupations</b><p>
+              <p>Engineering, chemistry, biology, medicine/surgery, consumer economics,
+              psychology, philosophy, science, research.</p>
           - locale: ru
             content: <p>Интеллектуальный тип личности — любые профессии, предъявляющие
               повышенные требования к интеллекту, аналитическим способностям, рационализму,
-              умению трезво мыслить.</p>
+              умению трезво мыслить.</p> <p><b>Ключевые навыки</b></p> <p>Логическое
+              мышление, аналитическое мышление, вычисления, формулирование, диагностика,
+              экспериментирование, аргументация.</p> <p><b>Примеры возможных профессий</b><p>
+              <p>Инженерия, химия, биология, медицина, экономика, психология, философия,
+              научная деятельность, исследования.</p>
     items:
       - code: riasec-activity-wisc-02-investigative-001
         steps: 5
@@ -293,46 +276,27 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Artistic occupations frequently involve working with forms,
-              designs, and patterns. They often require self-expression and the work
-              can be done without following a clear set of rules.</p>
-          - locale: ru
-            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
-              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
-              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
-              Для них предпочтительны профессии мира искусств изобразительное искусство,
-              театр, кино, литература и подобные.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Artistic occupations frequently involve working with forms,
-              designs, and patterns. They often require self-expression and the work
-              can be done without following a clear set of rules.</p>
-          - locale: ru
-            content: <p>Артистический тип личности — оригинальные, с необычным взглядом
-              на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
-              часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
-              Для них предпочтительны профессии мира искусств изобразительное искусство,
-              театр, кино, литература и подобные.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Artistic occupations frequently involve working with forms,
               designs, and patterns. They often require self-expression and the work
-              can be done without following a clear set of rules.</p>
+              can be done without following a clear set of rules.</p> <p><b>Key skills</b></p>
+              <p>Expressing artistically or physically, communicating by speaking,
+              writing and singing, performing, designing, presenting, planning, composing,
+              playing, dancing.</p> <p><b>Some possible occupations</b><p> <p>Communications,
+              cosmetology, fine and performing arts, photography, radio and TV, interior
+              design, architecture, fashion design</p>
           - locale: ru
             content: <p>Артистический тип личности — оригинальные, с необычным взглядом
               на жизнь люди, которые стараются не зависеть от мнения окружающих. Очень
               часто отличаются высокой чувствительностью, эмоциональностью, эмпатией.
               Для них предпочтительны профессии мира искусств изобразительное искусство,
-              театр, кино, литература и подобные.</p>
+              театр, кино, литература и подобные.</p> <p><b>Ключевые навыки</b></p>
+              <p>Художественное самовыражение, речь, письмо, пение, выступление, дизайн.</p>
+              <p><b>Примеры возможных профессий</b><p> <p>Коммуникации, косметология,
+              искусство, фотография, радио и ТВ, пресса, дизайн интерьеров, архитектура,
+              мода.</p>
     items:
       - code: riasec-activity-wisc-03-artistic-001
         steps: 5
@@ -404,40 +368,24 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Social occupations frequently involve working with, communicating
-              with, and teaching people. These occupations often involve helping or
-              providing service to others.</p>
-          - locale: ru
-            content: <p>Социальный тип личности — им подойдут любые профессии, которые
-              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
-              консультирование, уход, помощь.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Social occupations frequently involve working with, communicating
-              with, and teaching people. These occupations often involve helping or
-              providing service to others.</p>
-          - locale: ru
-            content: <p>Социальный тип личности — им подойдут любые профессии, которые
-              связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
-              консультирование, уход, помощь.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Social occupations frequently involve working with, communicating
               with, and teaching people. These occupations often involve helping or
-              providing service to others.</p>
+              providing service to others.</p> <p><b>Key skills</b></p> <p>Communicating
+              by writing and speaking, caring and supporting, training, meeting, greeting,
+              assisting, teaching, informing, interviewing, coaching.</p> <p><b>Some
+              possible occupations</b><p> <p>Counseling, nursing, physical therapy,
+              travel, advertising, public relations, education</p>
           - locale: ru
             content: <p>Социальный тип личности — им подойдут любые профессии, которые
               связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
-              консультирование, уход, помощь.</p>
+              консультирование, уход, помощь.</p> <p><b>Ключевые навыки</b></p> <p>Письменное
+              и устное общение, забота и поддержка, обучение, помощь, преподаване,
+              донесение информации, интервьюриование, коучинг.</p> <p><b>Примеры возможных
+              профессий</b><p> <p>Консультирование, терапия, реклама, общественные
+              отношения, образование, медицина.</p>
     items:
       - code: riasec-activity-wisc-04-social-001
         steps: 5
@@ -509,49 +457,28 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Enterprising occupations frequently involve starting up and
-              carrying out projects. These occupations can involve leading people
-              and making many decisions. Sometimes they require risk taking, and they
-              often deal with business.</p>
-          - locale: ru
-            content: <p>Предпринимательский тип личности — требующие больших затрат
-              энергии профессии, связанные с риском, необходимостью постоянно принимать
-              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
-              Требуется наличие организаторских способностей, развитых коммуникативных
-              навыков и большого запаса сил.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Enterprising occupations frequently involve starting up and
-              carrying out projects. These occupations can involve leading people
-              and making many decisions. Sometimes they require risk taking, and they
-              often deal with business.</p>
-          - locale: ru
-            content: <p>Предпринимательский тип личности — требующие больших затрат
-              энергии профессии, связанные с риском, необходимостью постоянно принимать
-              волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
-              Требуется наличие организаторских способностей, развитых коммуникативных
-              навыков и большого запаса сил.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Enterprising occupations frequently involve starting up and
               carrying out projects. These occupations can involve leading people
               and making many decisions. Sometimes they require risk taking, and they
-              often deal with business.</p>
+              often deal with business.</p> <p><b>Key skills</b></p> <p>Selling, promoting
+              and persuading, developing ideas, public speaking, managing, organising,
+              leading and captaining, computing, planning.</p> <p><b>Some possible
+              occupations</b><p> <p>Marketing/sales, lawyer, politician, accountant,
+              business owner, executive or manager, travel agent, music or sports
+              promoter.</p>
           - locale: ru
             content: <p>Предпринимательский тип личности — требующие больших затрат
               энергии профессии, связанные с риском, необходимостью постоянно принимать
               волевые самостоятельные решения. Однообразие и монотонность не приветствуются.
               Требуется наличие организаторских способностей, развитых коммуникативных
-              навыков и большого запаса сил.</p>
+              навыков и большого запаса сил.</p> <p><b>Ключевые навыки</b></p> <p>Продажа
+              и продвижение, убеждение, развитие идей, выступление на публику, управление,
+              организация процессов, лидерство, планирование.</p> <p><b>Примеры возможных
+              профессий</b><p> <p>Маркетинг/продажи, адвокатура, политическая работа,
+              бизнес, менеджмент, продюсирование.</p>
     items:
       - code: riasec-activity-wisc-05-enterprising-001
         steps: 5
@@ -631,43 +558,27 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Conventional occupations frequently involve following set
-              procedures and routines. These occupations can include working with
-              data and details more than with ideas. There is usually a clear line
-              of authority to follow.</p>
-          - locale: ru
-            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
-              и систематизацией информации в виде чисел, формул, текста, а также ведением
-              документации.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Conventional occupations frequently involve following set
-              procedures and routines. These occupations can include working with
-              data and details more than with ideas. There is usually a clear line
-              of authority to follow.</p>
-          - locale: ru
-            content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
-              и систематизацией информации в виде чисел, формул, текста, а также ведением
-              документации.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
             content: <p>Conventional occupations frequently involve following set
               procedures and routines. These occupations can include working with
               data and details more than with ideas. There is usually a clear line
-              of authority to follow.</p>
+              of authority to follow.</p> <p><b>Key skills</b></p> <p>Computing and
+              keyboarding, office software, recording and keeping records, paying
+              attention to detail, meeting and greeting, doing calculations, handling
+              money, organising, arranging, working independently.</p> <p><b>Some
+              possible occupations</b><p> <p>Accounting, court reporting, insurance,
+              administration, medical records, banking, data processing</p>
           - locale: ru
             content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
               и систематизацией информации в виде чисел, формул, текста, а также ведением
-              документации.</p>
+              документации.</p> <p><b>Ключевые навыки</b></p> <p>Работа за компьютером,
+              оффисное программное обеспечение, ведение записей и документации, внимание
+              к деталям, корпоративный стиль, работа с числами, обращение с деньгами,
+              приведение в порядок, систематизация.</p> <p><b>Примеры возможных профессий</b><p>
+              <p>Бухгалтерия, финансы, судопроизводство, страхование, администрирование,
+              банковское дело, обработка данных.</p>
     items:
       - code: riasec-activity-wisc-06-conventional-001
         steps: 5

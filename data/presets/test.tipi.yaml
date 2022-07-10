@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-07 21:45:26
+# at: 2022-07-10 23:37:14
 # template: ../data/templates/ctt-v1/tipi.yaml
 code: tipi
 published: true
@@ -26,6 +26,7 @@ translations:
       target="_blank"> S. D. Gosling, P. J. Rentfrow, W. B. Swann. A Very Brief Measure
       of the Big Five Personality Domains // Journal of Research in Personality, 2003.
       37 </a>
+    preambule: ''
   - locale: ru
     title: ТИПИ
     description: Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
@@ -39,6 +40,7 @@ translations:
       target="_blank"> S. D. Gosling, P. J. Rentfrow, W. B. Swann. A Very Brief Measure
       of the Big Five Personality Domains // Journal of Research in Personality, 2003.
       37 </a>
+    preambule: ''
 scales:
   - code: tipi-01-extraversion
     type: sten
@@ -54,66 +56,6 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Extraversion indicates how outgoing and social a person is.
-              A person who scores high in extraversion on a personality test is the
-              life of the party. They enjoy being with people, participating in social
-              gatherings, and are full of energy. A person low in extraversion is
-              less outgoing and is more comfortable working by himself.</p> <p>Introverts
-              have lower social engagement and activity levels than extraverts. They
-              tend to seem quiet, low-key, deliberate, and less involved in the social
-              world. Their lack of social involvement should not be interpreted as
-              shyness or depression. Introverts simply need less stimulation than
-              extraverts and more time alone. They may be very active and energetic,
-              simply not socially.</p>
-          - locale: ru
-            content: <p>Экстравертивность характеризуется позитивными эмоциями, склонностью
-              к поиску ощущений и компании. Экстраверты преимущественно заинтересованы
-              во внешнем мире. Они любят взаимодействовать с людьми и часто выглядят
-              полными энергии. Они склонны проявлять энтузиазм, ориентированы на действие.
-              Нуждаются в общественном внимании, любят говорить и показывать себя.</p>
-              <p>Интроверты в меньшей степени заинтересованы в социальном взаимодействии
-              и высокой активности, нежели экстраверты. Они выглядят тихими, осторожными
-              и менее вовлеченным в социальные мир. Эта их низкая вовлеченность в
-              социальные взаимодействия не должна пониматься как стеснительность или
-              депрессия - они просто в меньшей степени нуждаются в этих взаимодействиях
-              и любят проводить время в одиночестве. Они могут быть очень активными
-              и энергичными, но, скорее, их активность не будет связана с другими
-              людьми.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Extraversion indicates how outgoing and social a person is.
-              A person who scores high in extraversion on a personality test is the
-              life of the party. They enjoy being with people, participating in social
-              gatherings, and are full of energy. A person low in extraversion is
-              less outgoing and is more comfortable working by himself.</p> <p>Introverts
-              have lower social engagement and activity levels than extraverts. They
-              tend to seem quiet, low-key, deliberate, and less involved in the social
-              world. Their lack of social involvement should not be interpreted as
-              shyness or depression. Introverts simply need less stimulation than
-              extraverts and more time alone. They may be very active and energetic,
-              simply not socially.</p>
-          - locale: ru
-            content: <p>Экстравертивность характеризуется позитивными эмоциями, склонностью
-              к поиску ощущений и компании. Экстраверты преимущественно заинтересованы
-              во внешнем мире. Они любят взаимодействовать с людьми и часто выглядят
-              полными энергии. Они склонны проявлять энтузиазм, ориентированы на действие.
-              Нуждаются в общественном внимании, любят говорить и показывать себя.</p>
-              <p>Интроверты в меньшей степени заинтересованы в социальном взаимодействии
-              и высокой активности, нежели экстраверты. Они выглядят тихими, осторожными
-              и менее вовлеченным в социальные мир. Эта их низкая вовлеченность в
-              социальные взаимодействия не должна пониматься как стеснительность или
-              депрессия - они просто в меньшей степени нуждаются в этих взаимодействиях
-              и любят проводить время в одиночестве. Они могут быть очень активными
-              и энергичными, но, скорее, их активность не будет связана с другими
-              людьми.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
@@ -173,60 +115,6 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Persons with very high scores on the Agreeableness scale forgive
-              the wrongs that they suffered, are lenient in judging others, are willing
-              to compromise and cooperate with others, and can easily control their
-              temper.</p> <p>Conversely, persons with very low scores on this scale
-              hold grudges against those who have harmed them, are rather critical
-              of others' shortcomings, are stubborn in defending their point of view,
-              and feel anger readily in response to mistreatment.</p>
-          - locale: ru
-            content: <p>Доброжелательность – это тенденция сочувствовать и содействовать
-              окружающим, вместо того, чтобы относиться к ним с подозрительностью
-              и враждебностью. Эта черта отражает заинтересованность в социальной
-              гармонии. Доброжелательные люди ценят отношения с другими. Они обычно
-              дружелюбны, тактичные, щедры, готовы помочь, стремятся к компромиссу.
-              Доброжелательные люди отличаются оптимистичным взглядом на человеческую
-              природу. Доброжелательность положительно связана с навыками работы в
-              команде, но отрицательно – с лидерскими качествами.</p> <p>Люди, отличающиеся
-              низкими показателями по фактору доброжелательности обычно ставят собственные
-              интересы выше достижения гармонии с окружающими. Они в целом не обеспокоены
-              благополучием других и менее склонны оказывать безвозмездную помощь.
-              Иногда они могут проявлять себя как подозрительные, недружелюбные и
-              неготовые к кооперации. Такие люди склонные держаться на некотором удалении
-              от других.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Persons with very high scores on the Agreeableness scale forgive
-              the wrongs that they suffered, are lenient in judging others, are willing
-              to compromise and cooperate with others, and can easily control their
-              temper.</p> <p>Conversely, persons with very low scores on this scale
-              hold grudges against those who have harmed them, are rather critical
-              of others' shortcomings, are stubborn in defending their point of view,
-              and feel anger readily in response to mistreatment.</p>
-          - locale: ru
-            content: <p>Доброжелательность – это тенденция сочувствовать и содействовать
-              окружающим, вместо того, чтобы относиться к ним с подозрительностью
-              и враждебностью. Эта черта отражает заинтересованность в социальной
-              гармонии. Доброжелательные люди ценят отношения с другими. Они обычно
-              дружелюбны, тактичные, щедры, готовы помочь, стремятся к компромиссу.
-              Доброжелательные люди отличаются оптимистичным взглядом на человеческую
-              природу. Доброжелательность положительно связана с навыками работы в
-              команде, но отрицательно – с лидерскими качествами.</p> <p>Люди, отличающиеся
-              низкими показателями по фактору доброжелательности обычно ставят собственные
-              интересы выше достижения гармонии с окружающими. Они в целом не обеспокоены
-              благополучием других и менее склонны оказывать безвозмездную помощь.
-              Иногда они могут проявлять себя как подозрительные, недружелюбные и
-              неготовые к кооперации. Такие люди склонные держаться на некотором удалении
-              от других.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
@@ -283,50 +171,6 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Conscientiousness is a tendency to show self-discipline, act
-              dutifully, and aim for achievement against measures or outside expectations.
-              The trait shows a preference for planned rather than spontaneous behavior.
-              It influences the way in which we control, regulate, and direct our
-              impulses. The average level of conscientiousness rises among young adults
-              and then declines among older adults.</p>
-          - locale: ru
-            content: <p>Сознательность (ответственность) – это тенденция к проявлению
-              самодисциплины, надежности и готовности действовать, несмотря на внешние
-              обстоятельства. Ответственные люди отдают предпочтение скорее спланированным
-              действиями, нежели спонтанным. В крайнем своем проявлении ответственность
-              выражается в педантизме.</p> <p>Люди, склоняющиеся к полюсу беспечности
-              по данному фактору не склонные планировать свои действия и предпочитают
-              действовать спонтанно, легко отклоняются от плана, подвержены внешним
-              или внутренним ситуативным воздействиям. В крайнем своем проявлении
-              беспечность может выражаться как полная неорганизованность, моральная
-              гибкость и хаотичность.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Conscientiousness is a tendency to show self-discipline, act
-              dutifully, and aim for achievement against measures or outside expectations.
-              The trait shows a preference for planned rather than spontaneous behavior.
-              It influences the way in which we control, regulate, and direct our
-              impulses. The average level of conscientiousness rises among young adults
-              and then declines among older adults.</p>
-          - locale: ru
-            content: <p>Сознательность (ответственность) – это тенденция к проявлению
-              самодисциплины, надежности и готовности действовать, несмотря на внешние
-              обстоятельства. Ответственные люди отдают предпочтение скорее спланированным
-              действиями, нежели спонтанным. В крайнем своем проявлении ответственность
-              выражается в педантизме.</p> <p>Люди, склоняющиеся к полюсу беспечности
-              по данному фактору не склонные планировать свои действия и предпочитают
-              действовать спонтанно, легко отклоняются от плана, подвержены внешним
-              или внутренним ситуативным воздействиям. В крайнем своем проявлении
-              беспечность может выражаться как полная неорганизованность, моральная
-              гибкость и хаотичность.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
@@ -378,64 +222,6 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Persons with very high scores on the Emotional stability scale
-              experience fear of physical dangers, experience anxiety in response
-              to life's stresses, feel a need for emotional support from others, and
-              feel empathy and sentimental attachments with others.</p> <p>Conversely,
-              persons with very low scores on this scale are not deterred by the prospect
-              of physical harm, feel little worry even in stressful situations, have
-              little need to share their concerns with others, and feel emotionally
-              detached from others.</p>
-          - locale: ru
-            content: <p>Люди, имеющие высокие показатели по фактору эмоциональной
-              устойчивости менее подвержены плохому настроению и менее эмоционально
-              чувствительны. Обычно они спокойны и свободны от влияния негативных
-              эмоций. При этом нужно понимать, что свобода от отрицательных эмоциональных
-              состояний не означает, что такие люди обязательно испытывают много положительных
-              эмоций.</p> <p>Тревожность – это тенденция переживать негативные эмоциональные
-              состояния - гнев, беспокойство, депрессию. Тревожность связанна с низкой
-              устойчивостью к стрессу, агрессивным стимулам. Тревожные люди отличаются
-              возбудимостью и уязвимостью к стрессу. Они скорее склонные интерпретировать
-              обыденные ситуации как угрожающие и небольшие трудности - как серьезные.
-              Негативное состояние может продолжаться довольно длительное время, так
-              что тревожные люди часто пребывают в плохом настроении. Высокий уровень
-              тревожности и неумение управлять своими эмоциями могут снижать способность
-              ясно оценивать ситуацию, принимать решения и эффективно справляться
-              с жизненными трудностями.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Persons with very high scores on the Emotional stability scale
-              experience fear of physical dangers, experience anxiety in response
-              to life's stresses, feel a need for emotional support from others, and
-              feel empathy and sentimental attachments with others.</p> <p>Conversely,
-              persons with very low scores on this scale are not deterred by the prospect
-              of physical harm, feel little worry even in stressful situations, have
-              little need to share their concerns with others, and feel emotionally
-              detached from others.</p>
-          - locale: ru
-            content: <p>Люди, имеющие высокие показатели по фактору эмоциональной
-              устойчивости менее подвержены плохому настроению и менее эмоционально
-              чувствительны. Обычно они спокойны и свободны от влияния негативных
-              эмоций. При этом нужно понимать, что свобода от отрицательных эмоциональных
-              состояний не означает, что такие люди обязательно испытывают много положительных
-              эмоций.</p> <p>Тревожность – это тенденция переживать негативные эмоциональные
-              состояния - гнев, беспокойство, депрессию. Тревожность связанна с низкой
-              устойчивостью к стрессу, агрессивным стимулам. Тревожные люди отличаются
-              возбудимостью и уязвимостью к стрессу. Они скорее склонные интерпретировать
-              обыденные ситуации как угрожающие и небольшие трудности - как серьезные.
-              Негативное состояние может продолжаться довольно длительное время, так
-              что тревожные люди часто пребывают в плохом настроении. Высокий уровень
-              тревожности и неумение управлять своими эмоциями могут снижать способность
-              ясно оценивать ситуацию, принимать решения и эффективно справляться
-              с жизненными трудностями.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
@@ -494,62 +280,6 @@ scales:
     interpretations:
       - range:
           - 1.0
-          - 4.0
-        translations:
-          - locale: en
-            content: <p>Persons with very high scores on the Openness to Experience
-              scale become absorbed in the beauty of art and nature, are inquisitive
-              about various domains of knowledge, use their imagination freely in
-              everyday life, and take an interest in unusual ideas or people.</p>
-              <p>Conversely, persons with very low scores on this scale are rather
-              unimpressed by most works of art, feel little intellectual curiosity,
-              avoid creative pursuits, and feel little attraction toward ideas that
-              may seem radical or unconventional.</p>
-          - locale: ru
-            content: <p>Открытые опыту люди любопытны, заинтересованы в искусстве,
-              отличаются чувствительностью к прекрасному. Они склонны к творчеству
-              и более, в сравнении с закрытыми, внимательны к своим чувствам. Они
-              с большей вероятностью отходят от общепринятых убеждений. Существует
-              положительная связь между открытостью опыту и склонностью к либеральной
-              этике и толерантности. Еще одной чертой открытых людей часто является
-              мышление символами и абстрактными категориями, оторванными от конкретного
-              опыта.</p> <p>Люди с низким показателем по фактору открытости, т.е.
-              закрытые или консервативные, обычно имеют более традиционные, признанные
-              большинством интересы. Они предпочитают простое, ясное и очевидное,
-              а не запутанное, двусмысленное и загадочное. Они могут относиться к
-              науке и искусству с подозрением или полагать их неинтересными. Консервативные
-              люди отдают предпочтение знакомому, а не новому, и склонны сопротивляться
-              изменениям.</p>
-      - range:
-          - 4.0
-          - 7.0
-        translations:
-          - locale: en
-            content: <p>Persons with very high scores on the Openness to Experience
-              scale become absorbed in the beauty of art and nature, are inquisitive
-              about various domains of knowledge, use their imagination freely in
-              everyday life, and take an interest in unusual ideas or people.</p>
-              <p>Conversely, persons with very low scores on this scale are rather
-              unimpressed by most works of art, feel little intellectual curiosity,
-              avoid creative pursuits, and feel little attraction toward ideas that
-              may seem radical or unconventional.</p>
-          - locale: ru
-            content: <p>Открытые опыту люди любопытны, заинтересованы в искусстве,
-              отличаются чувствительностью к прекрасному. Они склонны к творчеству
-              и более, в сравнении с закрытыми, внимательны к своим чувствам. Они
-              с большей вероятностью отходят от общепринятых убеждений. Существует
-              положительная связь между открытостью опыту и склонностью к либеральной
-              этике и толерантности. Еще одной чертой открытых людей часто является
-              мышление символами и абстрактными категориями, оторванными от конкретного
-              опыта.</p> <p>Люди с низким показателем по фактору открытости, т.е.
-              закрытые или консервативные, обычно имеют более традиционные, признанные
-              большинством интересы. Они предпочитают простое, ясное и очевидное,
-              а не запутанное, двусмысленное и загадочное. Они могут относиться к
-              науке и искусству с подозрением или полагать их неинтересными. Консервативные
-              люди отдают предпочтение знакомому, а не новому, и склонны сопротивляться
-              изменениям.</p>
-      - range:
-          - 7.0
           - 10.0
         translations:
           - locale: en
