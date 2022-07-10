@@ -10,6 +10,7 @@ import (
 	"github.com/DanielTitkov/orrery/internal/app"
 	"github.com/DanielTitkov/orrery/internal/configs"
 	"github.com/DanielTitkov/orrery/internal/handler"
+	"github.com/DanielTitkov/orrery/internal/job"
 	"github.com/DanielTitkov/orrery/internal/logger"
 	"github.com/DanielTitkov/orrery/internal/repository/entgo"
 	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
@@ -68,6 +69,12 @@ func main() {
 	if err != nil {
 		logger.Fatal("failed to init app", err)
 	}
+
+	jobs, err := job.New(cfg, logger, a)
+	if err != nil {
+		logger.Fatal("failed to init jobs", err)
+	}
+	jobs.Run() // async
 
 	// email service
 	// es, err := email.New(cfg.External.Sendinblue.Key)

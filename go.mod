@@ -5,6 +5,7 @@ go 1.16
 require (
 	entgo.io/ent v0.10.2-0.20220609174026-b2844fb88c13
 	github.com/bradfitz/iter v0.0.0-20191230175014-e8f45d346db8 // indirect
+	github.com/go-co-op/gocron v1.15.0 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/sessions v1.2.1

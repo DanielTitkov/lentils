@@ -205,4 +205,10 @@ type (
 		Users      int
 		CreateTime time.Time
 	}
+	Event struct {
+		Name      string
+		StartTime time.Time
+		EndTime   time.Time
+		Elapsed   time.Duration
+	}
 )

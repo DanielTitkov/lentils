@@ -22,6 +22,7 @@ type (
 		Store         sessions.Store
 		locales       []string // locale count is not very big so no need to have map
 		Errors        []error
+		Events        []domain.Event
 	}
 	Repository interface {
 		// user
@@ -94,8 +95,8 @@ func New(
 	err := app.loadTagPresets()
 	if err != nil {
 		app.log.Error("errors while loading tags", err)
-		app.addError(err)
-		if app.Cfg.Env == domain.EnvDev {
+		app.AddError(err)
+		if app.IsDev() {
 			return nil, err
 		}
 	}
@@ -103,8 +104,8 @@ func New(
 	err = app.loadTestPresets()
 	if err != nil {
 		app.log.Error("errors while loading tests", err)
-		app.addError(err)
-		if app.Cfg.Env == domain.EnvDev {
+		app.AddError(err)
+		if app.IsDev() {
 			return nil, err
 		}
 	}
@@ -114,34 +115,11 @@ func New(
 	err = app.initSamples()
 	if err != nil {
 		app.log.Error("errors while creating samples", err)
-		app.addError(err)
-		if app.Cfg.Env == domain.EnvDev {
+		app.AddError(err)
+		if app.IsDev() {
 			return nil, err
 		}
 	}
-
-	err = app.UpdateNorms(context.TODO())
-	if err != nil {
-		app.log.Error("errors while updating norms", err)
-		app.addError(err)
-		if app.Cfg.Env == domain.EnvDev {
-			return nil, err
-		}
-	}
-
-	err = app.updateTestMarks(context.TODO())
-	if err != nil {
-		app.log.Error("errors while updating test marks", err)
-		app.addError(err)
-		if app.Cfg.Env == domain.EnvDev {
-			return nil, err
-		}
-	}
-
-	// init app jobs, caches and preload data (if any)
-	// TODO: move to jobs
-	go app.UpdateSystemSummaryJob()
-	go app.UpdateNormsJob()
 
 	return &app, nil
 }
@@ -150,6 +128,15 @@ func (a *App) IsDev() bool {
 	return a.Cfg.Env == domain.EnvDev
 }
 
-func (a *App) addError(err error) {
+func (a *App) AddError(err error) {
 	a.Errors = append(a.Errors, err)
+}
+
+func (a *App) AddEvent(name string, start time.Time) {
+	a.Events = append(a.Events, domain.Event{
+		Name:      name,
+		StartTime: start,
+		EndTime:   time.Now(),
+		Elapsed:   time.Since(start),
+	})
 }

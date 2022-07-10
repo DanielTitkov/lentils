@@ -7,10 +7,12 @@ server:
   port: 80
   host: "0.0.0.0"
 app:
-  systemSummaryInterval: 30 # minutes
+  systemSummarySchedule: "30 4 * * *"
   systemSummaryTimeout: 1000 # milliseconds
-  updateNormsInterval: 120 # minutes
-  updateNormsTimeout: 10000 # milliseconds
+  updateNormsSchedule: "35 4 * * *"
+  updateNormsTimeout: 15000 # milliseconds
+  updateMarksSchedule: "50 4 * * *"
+  updateMarksTimeout: 15000 # milliseconds
   defaultTimeLayout: "2006-01-02"
   version: {{version}}
 debug:

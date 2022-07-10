@@ -3,7 +3,9 @@ package handler
 import (
 	"context"
 	"html/template"
-	"log"
+	"time"
+
+	"github.com/DanielTitkov/orrery/internal/domain"
 
 	"github.com/jfyne/live"
 )
@@ -12,8 +14,15 @@ type (
 	StatusInstance struct {
 		*CommonInstance
 		Errors []error
+		Events []domain.Event
 	}
 )
+
+var statusFuncMap = template.FuncMap{
+	"DisplayTechTime": func(t time.Time) string {
+		return t.Format("2006-01-02 15:04:05.000 MST")
+	},
+}
 
 func (ins *StatusInstance) withError(err error) *StatusInstance {
 	ins.Error = err
@@ -26,6 +35,7 @@ func (h *Handler) NewStatusInstance(s live.Socket) *StatusInstance {
 		return &StatusInstance{
 			CommonInstance: h.NewCommon(s, viewStatus),
 			Errors:         nil,
+			Events:         nil,
 		}
 	}
 
@@ -33,13 +43,10 @@ func (h *Handler) NewStatusInstance(s live.Socket) *StatusInstance {
 }
 
 func (h *Handler) Status() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(statusFuncMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.status.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START
@@ -97,6 +104,7 @@ func (h *Handler) Status() live.Handler {
 		instance.fromContext(ctx)
 
 		instance.Errors = h.app.Errors
+		instance.Events = h.app.Events
 
 		return instance, nil
 	})

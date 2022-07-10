@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
@@ -12,7 +11,7 @@ import (
 func (a *App) GetSystemSummary(ctx context.Context) (*domain.SystemSymmary, error) {
 	if a.systemSummary == nil {
 		a.log.Debug("system summary requested but not found, gathering...", "")
-		err := a.updateSystemSummary(ctx)
+		err := a.UpdateSystemSummary(ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -21,33 +20,7 @@ func (a *App) GetSystemSummary(ctx context.Context) (*domain.SystemSymmary, erro
 	return a.systemSummary, nil
 }
 
-func (a *App) UpdateSystemSummaryJob() {
-	for {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(a.Cfg.App.SystemSummaryTimeout)*time.Millisecond)
-		processDone := make(chan bool)
-		go func() {
-			err := a.updateSystemSummary(ctx)
-			if err != nil {
-				a.log.Error("failed to update system summary", err)
-				a.addError(err)
-			}
-			processDone <- true
-		}()
-
-		select {
-		case <-ctx.Done():
-			err := errors.New("timeout reached while updating system summary")
-			a.log.Error("failed to update system summary", err)
-			a.addError(err)
-		case <-processDone:
-		}
-
-		cancel()
-		time.Sleep(time.Minute * time.Duration(a.Cfg.App.SystemSummaryInterval))
-	}
-}
-
-func (a *App) updateSystemSummary(ctx context.Context) error {
+func (a *App) UpdateSystemSummary(ctx context.Context) error {
 	a.log.Debug("updating system summary", "")
 
 	userCount, err := a.repo.GetUserCount(ctx)

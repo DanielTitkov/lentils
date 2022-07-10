@@ -3,13 +3,12 @@ package configs
 const LiveSessionName = "go-live-session"
 
 type AppConfig struct {
-	DefaultChallengePageLimit int    `yaml:"defaultChallengePageLimit"`
-	HomeChallengePageLimit    int    `yaml:"homeChallengePageLimit"`
-	SystemSummaryInterval     int    `yaml:"systemSummaryInterval"`
-	SystemSummaryTimeout      int    `yaml:"systemSummaryTimeout"`
-	UpdateNormsInterval       int    `yaml:"updateNormsInterval"`
-	UpdateNormTimeout         int    `yaml:"updateNormsTimeout"`
-	DefaultTimeLayout         string `yaml:"defaultTimeLayout"`
-	MinProofCount             int    `yaml:"minProofCount"`
-	Version                   string `yaml:"version"`
+	SystemSummarySchedule string `yaml:"systemSummarySchedule"`
+	SystemSummaryTimeout  int    `yaml:"systemSummaryTimeout"`
+	UpdateNormsSchedule   string `yaml:"updateNormsSchedule"`
+	UpdateNormsTimeout    int    `yaml:"updateNormsTimeout"`
+	UpdateMarksSchedule   string `yaml:"updateMarksSchedule"`
+	UpdateMarksTimeout    int    `yaml:"updateMarksTimeout"`
+	DefaultTimeLayout     string `yaml:"defaultTimeLayout"`
+	Version               string `yaml:"version"`
 }

@@ -232,7 +232,7 @@ func (a *App) loadTestPresets() (errs error) {
 	return errs
 }
 
-func (a *App) updateTestMarks(ctx context.Context) error {
+func (a *App) UpdateTestMarks(ctx context.Context) error {
 	tests, err := a.repo.GetDataForMarkCalculation(ctx)
 	if err != nil {
 		return err
