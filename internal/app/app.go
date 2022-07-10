@@ -83,7 +83,8 @@ func New(
 	repo Repository,
 	store sessions.Store,
 ) (*App, error) {
-	defer util.InfoExecutionTime(time.Now(), "app.New", logger)
+	start := time.Now()
+	defer util.InfoExecutionTime(start, "app.New", logger)
 	app := App{
 		Cfg:     cfg,
 		log:     logger,
@@ -120,6 +121,8 @@ func New(
 			return nil, err
 		}
 	}
+
+	app.AddEvent("app.New", start)
 
 	return &app, nil
 }

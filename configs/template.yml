@@ -8,11 +8,11 @@ server:
   host: "0.0.0.0"
 app:
   systemSummarySchedule: "30 4 * * *"
-  systemSummaryTimeout: 1000 # milliseconds
+  systemSummaryTimeout: 5000 # milliseconds
   updateNormsSchedule: "35 4 * * *"
-  updateNormsTimeout: 15000 # milliseconds
+  updateNormsTimeout: 35000 # milliseconds
   updateMarksSchedule: "50 4 * * *"
-  updateMarksTimeout: 15000 # milliseconds
+  updateMarksTimeout: 35000 # milliseconds
   defaultTimeLayout: "2006-01-02"
   version: {{version}}
 debug:
