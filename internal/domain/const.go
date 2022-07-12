@@ -49,6 +49,8 @@ const (
 	TagLenLong     = 50
 	// time
 	DefaultDisplayTime = time.RFC822
+	// app
+	AppMaxEvents = 20
 )
 
 func Locales() []string {

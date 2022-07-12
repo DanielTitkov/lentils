@@ -22,6 +22,9 @@ var statusFuncMap = template.FuncMap{
 	"DisplayTechTime": func(t time.Time) string {
 		return t.Format("2006-01-02 15:04:05.000 MST")
 	},
+	"Since": func(t time.Time) time.Duration {
+		return time.Since(t)
+	},
 }
 
 func (ins *StatusInstance) withError(err error) *StatusInstance {

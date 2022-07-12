@@ -30,30 +30,30 @@
             <table class="table is-fullwidth is-hoverable">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>From now</th>
                         <th>Name</th>
                         <th>Started</th>
-                        <th>Ended</th>
+                        <!-- <th>Ended</th> -->
                         <th>Took</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{ range $i, $event := .Events }}
                     <tr>
-                        <th>{{ $i }}</th>
+                        <th>-{{ Since $event.StartTime }}</th>
                         <td><b>{{ $event.Name }}</b></td>
                         <td>{{ DisplayTechTime $event.StartTime }}</td>
-                        <td>{{ DisplayTechTime $event.EndTime }}</td>
+                        <!-- <td>{{ DisplayTechTime $event.EndTime }}</td> -->
                         <td>{{ $event.Elapsed }}</td>
                     </tr>
                     {{ end }}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>#</th>
+                        <th>From now</th>
                         <th>Name</th>
                         <th>Started</th>
-                        <th>Ended</th>
+                        <!-- <th>Ended</th> -->
                         <th>Took</th>
                     </tr>
                 </tfoot>

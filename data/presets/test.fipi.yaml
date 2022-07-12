@@ -11,7 +11,7 @@ tags:
   - psychology
   - short
   - debug
-forceUpdate: true
+forceUpdate: false
 translations:
   - locale: en
     title: FIPI

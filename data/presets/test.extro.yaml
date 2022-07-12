@@ -1,7 +1,7 @@
 code: extro
 published: true
 availableLocales: ["en", "ru"]
-forceUpdate: true
+forceUpdate: false
 tags: ["psychology", "short", "debug"]
 translations:
   - locale: en

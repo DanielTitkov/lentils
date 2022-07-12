@@ -18,7 +18,7 @@
     - locale: en
       content: short (<11 questions)
     - locale: ru
-      content: короткие (до 10 вопросов)
+      content: короткие (<11 вопросов)
 - type: len
   code: medium
   translations:
@@ -32,7 +32,7 @@
     - locale: en
       content: long (>50 questions)
     - locale: ru
-      content: длинные (от 50 вопросов)
+      content: длинные (>50 вопросов)
 - type: feature
   code: funny
   translations: 

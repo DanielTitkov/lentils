@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - long
-forceUpdate: true
+forceUpdate: false
 translations:
   - locale: en
     title: HEXACO

@@ -136,10 +136,14 @@ func (a *App) AddError(err error) {
 }
 
 func (a *App) AddEvent(name string, start time.Time) {
-	a.Events = append(a.Events, domain.Event{
+	if len(a.Events) >= domain.AppMaxEvents {
+		a.Events = a.Events[:len(a.Events)-1]
+	}
+	// prepend event to show in reverse order
+	a.Events = append([]domain.Event{domain.Event{
 		Name:      name,
 		StartTime: start,
 		EndTime:   time.Now(),
 		Elapsed:   time.Since(start),
-	})
+	}}, a.Events...)
 }
