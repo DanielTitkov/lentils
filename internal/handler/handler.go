@@ -49,6 +49,7 @@ type (
 
 	CommonInstance struct {
 		Env             string
+		Domain          string
 		Session         string
 		Error           error
 		Message         *string
@@ -97,6 +98,7 @@ func initTraslationMap() map[string]*UITranslation {
 func (h *Handler) NewCommon(s live.Socket, currentView string) *CommonInstance {
 	c := &CommonInstance{
 		Env:             h.app.Cfg.Env,
+		Domain:          h.app.Cfg.Server.Domain,
 		Session:         fmt.Sprint(s.Session()),
 		Error:           nil,
 		Message:         nil,

@@ -2,6 +2,7 @@ package domain
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -185,4 +186,20 @@ func resolveScaleSten(s *Scale, norm *Norm) (*ScaleResult, error) {
 		Max:      10,
 		Formula:  formula,
 	}, nil
+}
+
+func (s *Scale) ResultShareText() string {
+	if s.Result == nil {
+		return ""
+	}
+
+	// map result to share scale
+	shareRes := s.Result.Score / s.Result.Max * ShareScaleLen
+
+	return fmt.Sprintf(
+		"%s: %s%s\n",
+		s.Abbreviation,
+		strings.Repeat(ShareScaleUnit, int(math.Round(shareRes))),
+		strings.Repeat(ShareScaleUnitEmpty, ShareScaleLen-int(math.Round(shareRes))),
+	)
 }

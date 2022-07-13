@@ -50,7 +50,10 @@ const (
 	// time
 	DefaultDisplayTime = time.RFC822
 	// app
-	AppMaxEvents = 20
+	AppMaxEvents        = 20
+	ShareScaleLen       = 5
+	ShareScaleUnit      = "🟩"
+	ShareScaleUnitEmpty = "⬜️"
 )
 
 func Locales() []string {

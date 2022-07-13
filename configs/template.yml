@@ -6,12 +6,13 @@ db:
 server:
   port: 80
   host: "0.0.0.0"
+  domain: {{domain}}
 app:
-  systemSummarySchedule: "30 4 * * *"
+  systemSummarySchedule: "30 1 * * *"
   systemSummaryTimeout: 5000 # milliseconds
-  updateNormsSchedule: "35 4 * * *"
+  updateNormsSchedule: "35 1 * * *"
   updateNormsTimeout: 35000 # milliseconds
-  updateMarksSchedule: "50 4 * * *"
+  updateMarksSchedule: "50 1 * * *"
   updateMarksTimeout: 35000 # milliseconds
   defaultTimeLayout: "2006-01-02"
   version: {{version}}

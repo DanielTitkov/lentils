@@ -6,9 +6,15 @@
         <h1 class="title is-1 has-text-centered">
             Orrery System Status
         </h1>
-        <div class="block">
-            <p class="subtitle is-3 is-size-5-mobile">Env</p>
-            <p class="title is-5">{{ .Env }}</p>
+        <div class="level">
+            <div class="level_item">
+                <p class="subtitle is-3 is-size-5-mobile">Env</p>
+                <p class="title is-5">{{ .Env }}</p>
+            </div>
+            <div class="level_item">
+                <p class="subtitle is-3 is-size-5-mobile">Domain</p>
+                <p class="title is-5">{{ .Domain }}</p>
+            </div>
         </div>
         <div class="block">
             <p class="subtitle is-3 is-size-5-mobile">Errors</p>

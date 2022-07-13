@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"net/url"
 	"reflect"
 	"sort"
+	"unicode/utf8"
 
 	"github.com/montanaflynn/stats"
 )
@@ -196,4 +198,33 @@ func (t *CreateTestArgs) ValidateTranslations() error {
 	}
 
 	return nil
+}
+
+func (t *Test) Link(domain string) string {
+	url := fmt.Sprintf("/test/%s", t.Code)
+	if domain == "" {
+		return url
+	}
+	return fmt.Sprintf("https://%s%s", domain, url)
+}
+
+func (t *Test) LinkSafe(domain string) string {
+	return url.QueryEscape(t.Link(domain))
+}
+
+func (t *Test) ResultShareText() string {
+	res := fmt.Sprintf("%s - my result:\n\n", t.Title)
+	for _, s := range t.Scales {
+		if s.Result == nil {
+			continue
+		}
+		if utf8.RuneCountInString(res) > 220 {
+			// otherwise it won't fit in a tweet
+			res += "\n..."
+			break
+		}
+		res += s.ResultShareText()
+	}
+	res += "\nExplore"
+	return res
 }

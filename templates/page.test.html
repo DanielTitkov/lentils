@@ -144,16 +144,30 @@
         </table>
       </div>
       <div class="column is-6">
-        <p class="subtitle is-5 is-size-6-mobile">
-          {{ .UI.Test.Disclaimer }}
-        </p>
-        <p class="subtitle is-5 is-size-6-mobile">
+        <div class="content is-normal is-hidden-tablet">{{ .Test.ResultPreambule }}</div>
+        <div class="content is-medium is-hidden-mobile">{{ .Test.ResultPreambule }}</div>
+        <div class="level">
+          <div class="level-item">
+            {{ template "share-result-facebook" . }}
+          </div>
+          <div class="level-item">
+            {{ template "share-result-twitter" . }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-6">
+        <p class="heading">
           {{ .UI.Test.NormsInfo }}
         </p>
       </div>
+      <div class="column is-6">
+        <p class="heading">
+          {{ .UI.Test.Disclaimer }}
+        </p>
+      </div>
     </div>
-    <div class="content is-normal is-hidden-tablet">{{ .Test.ResultPreambule }}</div>
-    <div class="content is-medium is-hidden-mobile">{{ .Test.ResultPreambule }}</div>
     <div class="columns">
       <div class="column">
         <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
@@ -306,4 +320,25 @@
   <p class="title is-3 is-size-4-mobile">{{ LocaleIcon . }}</p>
 </button>
 {{end}}
+{{ end }}
+
+{{ define "share-result-twitter" }}
+<a target="_blank" class="button is-fullwidth share-twitter-button"
+  href="https://twitter.com/intent/tweet?original_referer={{ .Test.Link .Domain }}&amp;text={{ .Test.ResultShareText }}&amp;tw_p=tweet&amp;url={{ .Test.Link .Domain }}&amp;via=dan_tables">
+  <span class="icon">
+    <i class="bi bi-twitter"></i>
+  </span>
+  <span>Share on Twitter</span>
+</a>
+{{ end }}
+
+{{ define "share-result-facebook" }}
+<a target="_blank" class="button is-fullwidth share-facebook-button"
+  onclick="return !window.open(this.href, 'Facebook', 'width=640,height=480')"
+  href="https://www.facebook.com/sharer.php?u={{ .Test.Link .Domain }}&amp;p[summary]={{ .Test.ResultShareText }}" data-url="{{ .Test.Link .Domain }}">
+  <span class="icon">
+    <i class="bi bi-facebook"></i>
+  </span>
+  <span>Share on Facebook</span>
+</a>
 {{ end }}

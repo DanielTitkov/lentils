@@ -6,6 +6,7 @@ type ServerConfig struct {
 	Port    int
 	TLSPort int `yaml:"tlsPort"`
 	Host    string
+	Domain  string
 }
 
 func (s *ServerConfig) GetAddress() string {
