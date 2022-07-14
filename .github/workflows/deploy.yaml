@@ -93,7 +93,7 @@ jobs:
       TWITTER_AUTH_CLIENT: ${{ secrets.TWITTER_AUTH_CLIENT }}
       TWITTER_AUTH_SECRET: ${{ secrets.TWITTER_AUTH_SECRET }}
       TWITTER_AUTH_CALLBACK: ${{ secrets.TWITTER_AUTH_CALLBACK }}
-      DOMAIN: ${{ github.DOMAIN }}
+      DOMAIN: ${{ secrets.DOMAIN }}
       VERSION: ${{ github.ref_name }}
       CONFIG_PATH: ./configs/deploy_config_111.yml
     steps:
