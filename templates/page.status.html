@@ -33,37 +33,39 @@
             {{ if eq (len .Events) 0 }}
             <p class="title is-5 is-size-6-mobile">No events</p>
             {{ else }}
-            <table class="table is-fullwidth is-hoverable">
-                <thead>
-                    <tr>
-                        <th>From now</th>
-                        <th>Name</th>
-                        <th>Started</th>
-                        <!-- <th>Ended</th> -->
-                        <th>Took</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ range $i, $event := .Events }}
-                    <tr>
-                        <th>-{{ Since $event.StartTime }}</th>
-                        <td><b>{{ $event.Name }}</b></td>
-                        <td>{{ DisplayTechTime $event.StartTime }}</td>
-                        <!-- <td>{{ DisplayTechTime $event.EndTime }}</td> -->
-                        <td>{{ $event.Elapsed }}</td>
-                    </tr>
-                    {{ end }}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>From now</th>
-                        <th>Name</th>
-                        <th>Started</th>
-                        <!-- <th>Ended</th> -->
-                        <th>Took</th>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="table-container">
+                <table class="table is-fullwidth is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>From now</th>
+                            <th>Name</th>
+                            <th>Started</th>
+                            <!-- <th>Ended</th> -->
+                            <th>Took</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range $i, $event := .Events }}
+                        <tr>
+                            <th>-{{ Since $event.StartTime }}</th>
+                            <td><b>{{ $event.Name }}</b></td>
+                            <td>{{ DisplayTechTime $event.StartTime }}</td>
+                            <!-- <td>{{ DisplayTechTime $event.EndTime }}</td> -->
+                            <td>{{ $event.Elapsed }}</td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>From now</th>
+                            <th>Name</th>
+                            <th>Started</th>
+                            <!-- <th>Ended</th> -->
+                            <th>Took</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
             {{ end }}
         </div>
     </section>
