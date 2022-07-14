@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"html/template"
-	"log"
 
 	"github.com/jfyne/live"
 )
@@ -31,13 +30,10 @@ func (h *Handler) NewNotFoundInstance(s live.Socket) *NotFoundInstance {
 }
 
 func (h *Handler) NotFound() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.404.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START

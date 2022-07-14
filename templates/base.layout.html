@@ -445,3 +445,13 @@ is-success
 is-info
 {{ end }}
 {{ end }}
+
+{{ define "locale-selector" }}
+<p class="title is-5 is-size-6-mobile">{{ .UI.Test.SelectLoc }}</p>
+{{ range .Test.AvailableLocales }}
+<a live-patch href="?locale={{ . }}"
+  class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}" title="{{.}}">
+  <p class="title is-3 is-size-4-mobile">{{ LocaleIcon . }}</p>
+</a>
+{{end}}
+{{ end }}

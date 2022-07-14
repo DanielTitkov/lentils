@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"html/template"
-	"log"
 
 	"github.com/google/uuid"
 
@@ -69,13 +68,10 @@ func (h *Handler) NewAdminInstance(s live.Socket) *AdminInstance {
 }
 
 func (h *Handler) Admin() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.admin.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START

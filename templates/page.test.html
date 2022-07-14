@@ -312,16 +312,6 @@
 {{ end }}
 {{ end }}
 
-{{ define "locale-selector" }}
-<p class="title is-5 is-size-6-mobile">{{ .UI.Test.SelectLoc }}</p>
-{{ range .Test.AvailableLocales }}
-<button class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}"
-  live-click="set-locale" live-value-locale="{{.}}" title="{{.}}">
-  <p class="title is-3 is-size-4-mobile">{{ LocaleIcon . }}</p>
-</button>
-{{end}}
-{{ end }}
-
 {{ define "share-result-twitter" }}
 <a target="_blank" class="button is-fullwidth share-twitter-button"
   href="https://twitter.com/intent/tweet?original_referer={{ .Test.Link .Domain }}&amp;text={{ .Test.ResultShareText }}&amp;tw_p=tweet&amp;url={{ .Test.Link .Domain }}&amp;via=dan_tables">

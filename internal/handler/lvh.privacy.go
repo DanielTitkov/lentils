@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"html/template"
-	"log"
 
 	"github.com/jfyne/live"
 )
@@ -31,13 +30,10 @@ func (h *Handler) NewPrivacyInstance(s live.Socket) *PrivacyInstance {
 }
 
 func (h *Handler) Privacy() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.privacy.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START

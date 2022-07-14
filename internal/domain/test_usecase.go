@@ -201,7 +201,12 @@ func (t *CreateTestArgs) ValidateTranslations() error {
 }
 
 func (t *Test) Link(domain string) string {
-	url := fmt.Sprintf("/test/%s", t.Code)
+	fmt.Println("LOC", t.Locale)
+	var params string
+	if t.Locale != DefaultLocale() {
+		params = fmt.Sprintf("?locale=%s", t.Locale)
+	}
+	url := fmt.Sprintf("/test/%s%s", t.Code, params)
 	if domain == "" {
 		return url
 	}

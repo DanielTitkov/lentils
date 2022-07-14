@@ -3,9 +3,12 @@ package handler
 import (
 	"context"
 	"fmt"
+	"html/template"
 	"net/http"
 	"net/url"
+	"time"
 
+	"github.com/bradfitz/iter"
 	"github.com/jfyne/live"
 
 	"github.com/google/uuid"
@@ -34,6 +37,8 @@ const (
 	eventCloseError      = "close-error-notification"
 	eventCloseMessage    = "close-message-notification"
 	eventToggleDark      = "toggle-dark"
+	// params (common)
+	paramLocale = "locale"
 	// context
 	userCtxKeyValue   = "user"
 	localeCtxKeyValue = "locale"
@@ -72,6 +77,60 @@ type (
 
 var userCtxKey = &contextKey{userCtxKeyValue}
 var localeCtxKey = &contextKey{localeCtxKeyValue}
+var funcMap = template.FuncMap{
+	"N":     iter.N,
+	"Plus1": func(i int) int { return i + 1 },
+	"Sum": func(data ...float64) float64 {
+		var res float64
+		for _, n := range data {
+			res += n
+		}
+		return res
+	},
+	"Sub": func(f1, f2 float64) float64 {
+		return f1 - f2
+	},
+	"Mean": func(data ...float64) float64 {
+		if len(data) == 0 {
+			return 0
+		}
+		var sum float64
+		for _, n := range data {
+			sum += n
+		}
+		return sum / float64(len(data))
+	},
+	"LocaleIcon": domain.LocaleIcon,
+	"Perc": func(min, max, v float64) float64 {
+		if max == min {
+			return 0
+		}
+		return (v - min) / (max - min)
+	},
+	"DerefInt": func(i *int) int {
+		if i == nil {
+			return 0
+		}
+		return *i
+	},
+	"DisplayTime": func(t time.Time) string {
+		return t.Format(domain.DefaultDisplayTime)
+	},
+	"CodeInTags": func(code string, tags []*domain.Tag) bool {
+		for _, t := range tags {
+			if t.Code == code {
+				return true
+			}
+		}
+		return false
+	},
+	"DisplayTechTime": func(t time.Time) string {
+		return t.Format("2006-01-02 15:04:05.000 MST")
+	},
+	"Since": func(t time.Time) time.Duration {
+		return time.Since(t)
+	},
+}
 
 func NewHandler(
 	app *app.App,
@@ -107,7 +166,7 @@ func (h *Handler) NewCommon(s live.Socket, currentView string) *CommonInstance {
 		CurrentView:     currentView,
 		Version:         h.app.Cfg.App.Version,
 		ui:              h.ui,
-		locale:          domain.DefaultLocale(), // it's private because changing requesed additional logic
+		locale:          domain.DefaultLocale(), // it's private because changing requires additional logic
 	}
 
 	c.SetLocale(c.locale)

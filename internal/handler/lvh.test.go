@@ -6,12 +6,10 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"time"
 
 	"github.com/DanielTitkov/orrery/internal/util"
 
 	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/bradfitz/iter"
 
 	"github.com/gorilla/mux"
 	"github.com/jfyne/live"
@@ -38,52 +36,12 @@ const (
 	// params values
 )
 
-var testFuncMap = template.FuncMap{
-	"N":     iter.N,
-	"Plus1": func(i int) int { return i + 1 },
-	"Sum": func(data ...float64) float64 {
-		var res float64
-		for _, n := range data {
-			res += n
-		}
-		return res
-	},
-	"Sub": func(f1, f2 float64) float64 {
-		return f1 - f2
-	},
-	"Mean": func(data ...float64) float64 {
-		if len(data) == 0 {
-			return 0
-		}
-		var sum float64
-		for _, n := range data {
-			sum += n
-		}
-		return sum / float64(len(data))
-	},
-	"LocaleIcon": domain.LocaleIcon,
-	"Perc": func(min, max, v float64) float64 {
-		if max == min {
-			return 0
-		}
-		return (v - min) / (max - min)
-	},
-	"DerefInt": func(i *int) int {
-		if i == nil {
-			return 0
-		}
-		return *i
-	},
-	"DisplayTime": func(t time.Time) string {
-		return t.Format(domain.DefaultDisplayTime)
-	},
-}
-
 type (
 	TestInstance struct {
 		*CommonInstance
 		Test             *domain.Test
 		CurrentQuestions []*domain.Question
+		TestCode         string
 		TestStep         string
 		Page             int
 		// to have constants in templates
@@ -97,9 +55,32 @@ type (
 	}
 )
 
+// must be present in all instances
 func (ins *TestInstance) withError(err error) *TestInstance {
 	ins.Error = err
 	return ins
+}
+
+// must be present in all instances
+func (ins *TestInstance) updateForLocale(ctx context.Context, s live.Socket, h *Handler) error {
+	r := live.Request(ctx)
+	var err error
+
+	if ins.User == nil {
+		ins.User, err = h.app.GetUserBySession(r, s.Session())
+		if err != nil || ins.User == nil {
+			return fmt.Errorf("user is nil, sid: %s, error: %s", s.Session(), err)
+		}
+	}
+
+	ins.Test, err = h.app.PrepareTest(ctx, ins.TestCode, ins.Locale(), &domain.PrepareTestArgs{
+		UserID:  ins.User.ID,
+		Session: ins.Session,
+	})
+	if err != nil {
+		ins.withError(err)
+	}
+	return nil
 }
 
 func (ins *TestInstance) nextPage() int {
@@ -136,7 +117,7 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 }
 
 func (h *Handler) Test() live.Handler {
-	t := template.Must(template.New("base.layout.html").Funcs(testFuncMap).ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.test.html",
 	))
@@ -188,6 +169,17 @@ func (h *Handler) Test() live.Handler {
 			}
 			return instance, nil
 		})
+
+		// update locale logic
+		lvh.HandleParams(func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+			instance := constructor(s)
+			instance.SetLocale(p.String(paramLocale))
+			err := instance.updateForLocale(ctx, s, h)
+			if err != nil {
+				return nil, err
+			}
+			return instance, nil
+		})
 		// SAFE TO COPY END
 	}
 	// COMMON BLOCK END
@@ -201,41 +193,8 @@ func (h *Handler) Test() live.Handler {
 
 		instance := h.NewTestInstance(s)
 		instance.fromContext(ctx)
-
-		if instance.User == nil {
-			instance.User, err = h.app.GetUserBySession(r, s.Session())
-			if err != nil || instance.User == nil {
-				return nil, fmt.Errorf("user is nil, sid: %s, error: %s", s.Session(), err)
-			}
-		}
-
-		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale(), &domain.PrepareTestArgs{
-			UserID:  instance.User.ID,
-			Session: instance.Session,
-		})
-		if err != nil {
-			return instance.withError(err), nil
-		}
-
-		return instance, nil
-	})
-
-	lvh.HandleEvent(eventSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
-		r := live.Request(ctx)
-		testCode, ok := mux.Vars(r)[paramTestCode]
-		if !ok {
-			return nil, errors.New("test code is required")
-		}
-		instance := h.NewTestInstance(s)
-
-		instance.SetLocale(p.String(paramTestLocale))
-		instance.Test, err = h.app.PrepareTest(ctx, testCode, instance.Locale(), &domain.PrepareTestArgs{
-			UserID:  instance.UserID,
-			Session: instance.Session,
-		})
-		if err != nil {
-			return instance.withError(err), nil
-		}
+		instance.TestCode = testCode
+		instance.updateForLocale(ctx, s, h)
 
 		return instance, nil
 	})

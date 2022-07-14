@@ -5,7 +5,6 @@ import (
 	"html/template"
 
 	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/bradfitz/iter"
 
 	"github.com/jfyne/live"
 )
@@ -17,19 +16,6 @@ const (
 	// params
 	paramHomeTag = "tag"
 )
-
-var homeFuncMap = template.FuncMap{
-	"N":          iter.N,
-	"LocaleIcon": domain.LocaleIcon,
-	"CodeInTags": func(code string, tags []*domain.Tag) bool {
-		for _, t := range tags {
-			if t.Code == code {
-				return true
-			}
-		}
-		return false
-	},
-}
 
 type (
 	HomeInstance struct {
@@ -109,7 +95,7 @@ func (ins *HomeInstance) toggleTag(code string) error {
 }
 
 func (h *Handler) Home() live.Handler {
-	t := template.Must(template.New("base.layout.html").Funcs(homeFuncMap).ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.home.html",
 		h.t+"part.system_summary.html",

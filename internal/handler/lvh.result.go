@@ -5,12 +5,10 @@ import (
 	"errors"
 	"html/template"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 
 	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/bradfitz/iter"
 
 	"github.com/gorilla/mux"
 	"github.com/jfyne/live"
@@ -23,47 +21,6 @@ const (
 	paramTakeID = "takeID"
 	// params values
 )
-
-var resultFuncMap = template.FuncMap{
-	"N":     iter.N,
-	"Plus1": func(i int) int { return i + 1 },
-	"Sum": func(data ...float64) float64 {
-		var res float64
-		for _, n := range data {
-			res += n
-		}
-		return res
-	},
-	"Sub": func(f1, f2 float64) float64 {
-		return f1 - f2
-	},
-	"Mean": func(data ...float64) float64 {
-		if len(data) == 0 {
-			return 0
-		}
-		var sum float64
-		for _, n := range data {
-			sum += n
-		}
-		return sum / float64(len(data))
-	},
-	"LocaleIcon": domain.LocaleIcon,
-	"Perc": func(min, max, v float64) float64 {
-		if max == min {
-			return 0
-		}
-		return (v - min) / (max - min)
-	},
-	"DerefInt": func(i *int) int {
-		if i == nil {
-			return 0
-		}
-		return *i
-	},
-	"DisplayTime": func(t time.Time) string {
-		return t.Format(domain.DefaultDisplayTime)
-	},
-}
 
 type (
 	ResultInstance struct {
@@ -80,9 +37,35 @@ type (
 	}
 )
 
+// must be present in all instances
 func (ins *ResultInstance) withError(err error) *ResultInstance {
 	ins.Error = err
 	return ins
+}
+
+// must be present in all instances
+func (ins *ResultInstance) updateForLocale(ctx context.Context, s live.Socket, h *Handler) error {
+	r := live.Request(ctx)
+	takeIDStr, ok := mux.Vars(r)[paramTakeID]
+	if !ok {
+		return errors.New("take id is required")
+	}
+
+	takeID, err := uuid.Parse(takeIDStr)
+	if err != nil {
+		ins.withError(err)
+	}
+
+	take, err := h.app.GetTake(ctx, takeID)
+	if err != nil {
+		ins.withError(err)
+	}
+
+	ins.Test, err = h.app.PrepareTestResult(ctx, &domain.Test{Take: take}, ins.Locale())
+	if err != nil {
+		ins.withError(err)
+	}
+	return nil
 }
 
 func (h *Handler) NewResultInstance(s live.Socket) *ResultInstance {
@@ -104,7 +87,7 @@ func (h *Handler) NewResultInstance(s live.Socket) *ResultInstance {
 }
 
 func (h *Handler) Result() live.Handler {
-	t := template.Must(template.New("base.layout.html").Funcs(resultFuncMap).ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.test.html",
 	))
@@ -156,47 +139,42 @@ func (h *Handler) Result() live.Handler {
 			}
 			return instance, nil
 		})
+
+		// update locale logic
+		lvh.HandleParams(func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+			instance := constructor(s)
+			instance.SetLocale(p.String(paramLocale))
+			err := instance.updateForLocale(ctx, s, h)
+			if err != nil {
+				return nil, err
+			}
+			return instance, nil
+		})
 		// SAFE TO COPY END
 	}
 	// COMMON BLOCK END
 
 	lvh.HandleMount(func(ctx context.Context, s live.Socket) (i interface{}, err error) {
-		r := live.Request(ctx)
-		takeIDStr, ok := mux.Vars(r)[paramTakeID]
-		if !ok {
-			return nil, errors.New("take id is required")
-		}
 		instance := h.NewResultInstance(s)
-
-		takeID, err := uuid.Parse(takeIDStr)
+		err = instance.updateForLocale(ctx, s, h)
 		if err != nil {
-			return instance.withError(err), nil
-		}
-
-		take, err := h.app.GetTake(ctx, takeID)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-
-		instance.Test, err = h.app.PrepareTestResult(ctx, &domain.Test{Take: take}, instance.Locale())
-		if err != nil {
-			return instance.withError(err), nil
+			return nil, err
 		}
 
 		return instance, nil
 	})
 
-	lvh.HandleEvent(eventResultSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
-		instance := h.NewResultInstance(s)
+	// lvh.HandleEvent(eventResultSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
+	// 	instance := h.NewResultInstance(s)
 
-		instance.SetLocale(p.String(paramTestLocale))
-		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale())
-		if err != nil {
-			return instance.withError(err), nil
-		}
+	// 	instance.SetLocale(p.String(paramTestLocale))
+	// 	instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale())
+	// 	if err != nil {
+	// 		return instance.withError(err), nil
+	// 	}
 
-		return instance, nil
-	})
+	// 	return instance, nil
+	// })
 
 	lvh.HandleEvent(eventToggleShowDetails, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewResultInstance(s)

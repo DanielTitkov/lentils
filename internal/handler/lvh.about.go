@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"html/template"
-	"log"
 
 	"github.com/DanielTitkov/orrery/internal/domain"
 
@@ -34,14 +33,11 @@ func (h *Handler) NewAboutInstance(s live.Socket) *AboutInstance {
 }
 
 func (h *Handler) About() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.about.html",
 		h.t+"part.system_summary.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START

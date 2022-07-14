@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"html/template"
-	"log"
 
 	"github.com/DanielTitkov/orrery/internal/domain"
 	"github.com/google/uuid"
@@ -72,13 +71,10 @@ func (h *Handler) NewProfileInstance(s live.Socket) *ProfileInstance {
 }
 
 func (h *Handler) Profile() live.Handler {
-	t, err := template.ParseFiles(
+	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.profile.html",
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
 	// COMMON BLOCK START

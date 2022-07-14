@@ -679,6 +679,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		AvailableLocales: t.AvailableLocales,
 		Mark:             t.Mark,
 		QuestionCount:    t.QuestionCount,
+		Locale:           locale,
 		Title:            title,
 		Description:      description,
 		Instruction:      template.HTML(instruction),
