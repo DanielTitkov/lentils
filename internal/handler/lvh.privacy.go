@@ -18,6 +18,11 @@ func (ins *PrivacyInstance) withError(err error) *PrivacyInstance {
 	return ins
 }
 
+// must be present in all instances
+func (ins *PrivacyInstance) updateForLocale(ctx context.Context, s live.Socket, h *Handler) error {
+	return nil
+}
+
 func (h *Handler) NewPrivacyInstance(s live.Socket) *PrivacyInstance {
 	m, ok := s.Assigns().(*PrivacyInstance)
 	if !ok {
@@ -79,6 +84,17 @@ func (h *Handler) Privacy() live.Handler {
 			instance.User, err = h.app.UpdateUser(ctx, instance.User)
 			if err != nil {
 				return instance.withError(err), nil
+			}
+			return instance, nil
+		})
+
+		// update locale logic
+		lvh.HandleParams(func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+			instance := constructor(s)
+			instance.SetLocale(p.String(paramLocale))
+			err := instance.updateForLocale(ctx, s, h)
+			if err != nil {
+				return nil, err
 			}
 			return instance, nil
 		})

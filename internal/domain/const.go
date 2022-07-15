@@ -63,6 +63,13 @@ func Locales() []string {
 	}
 }
 
+func UILocales() []string {
+	return []string{
+		LocaleEn,
+		LocaleRu,
+	}
+}
+
 func DefaultLocale() string {
 	return LocaleEn
 }

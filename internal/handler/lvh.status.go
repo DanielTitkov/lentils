@@ -22,6 +22,11 @@ func (ins *StatusInstance) withError(err error) *StatusInstance {
 	return ins
 }
 
+// must be present in all instances
+func (ins *StatusInstance) updateForLocale(ctx context.Context, s live.Socket, h *Handler) error {
+	return nil
+}
+
 func (h *Handler) NewStatusInstance(s live.Socket) *StatusInstance {
 	m, ok := s.Assigns().(*StatusInstance)
 	if !ok {
@@ -85,6 +90,17 @@ func (h *Handler) Status() live.Handler {
 			instance.User, err = h.app.UpdateUser(ctx, instance.User)
 			if err != nil {
 				return instance.withError(err), nil
+			}
+			return instance, nil
+		})
+
+		// update locale logic
+		lvh.HandleParams(func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+			instance := constructor(s)
+			instance.SetLocale(p.String(paramLocale))
+			err := instance.updateForLocale(ctx, s, h)
+			if err != nil {
+				return nil, err
 			}
 			return instance, nil
 		})

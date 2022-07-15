@@ -380,6 +380,12 @@
       {{ end }}
     </div>
   </div> -->
+
+  {{ if ne .CurrentView "test" }}
+  <div class="level-item">
+    {{ template "locale-selector-ui" . }}
+  </div>
+  {{ end }}
 </nav>
 {{ end }}
 
@@ -450,9 +456,18 @@ is-info
 {{ define "locale-selector" }}
 <p class="title is-5 is-size-6-mobile">{{ .UI.Test.SelectLoc }}</p>
 {{ range .Test.AvailableLocales }}
-<a live-patch href="?locale={{ . }}"
+<a live-patch href="{{ LocaleParam . }}"
   class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}" title="{{.}}">
   <p class="title is-3 is-size-4-mobile">{{ LocaleIcon . }}</p>
+</a>
+{{end}}
+{{ end }}
+
+{{ define "locale-selector-ui" }}
+{{ range UILocales }}
+<a live-patch href="{{ LocaleParam . }}"
+  class="m-1 p-2 button is-white {{ if eq . $.Locale }}is-success{{else}}{{ end }}" title="{{.}}">
+  <p class="title is-4 is-size-5-mobile">{{ LocaleIcon . }}</p>
 </a>
 {{end}}
 {{ end }}

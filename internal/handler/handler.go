@@ -130,6 +130,15 @@ var funcMap = template.FuncMap{
 	"Since": func(t time.Time) time.Duration {
 		return time.Since(t)
 	},
+	"UILocales": func() []string {
+		return domain.UILocales()
+	},
+	"LocaleParam": func(locale string) string {
+		if locale == domain.DefaultLocale() {
+			return "/"
+		}
+		return fmt.Sprintf("?locale=%s", locale)
+	},
 }
 
 func NewHandler(

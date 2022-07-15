@@ -45,6 +45,24 @@ func (ins *HomeInstance) withError(err error) *HomeInstance {
 	return ins
 }
 
+// must be present in all instances
+func (ins *HomeInstance) updateForLocale(ctx context.Context, s live.Socket, h *Handler) error {
+	var err error
+	// tags
+	ins.Tags, err = h.app.GetTags(ctx, ins.Locale())
+	if err != nil {
+		ins.withError(err)
+	}
+
+	// tests
+	err = ins.updateTests(ctx, h)
+	if err != nil {
+		ins.withError(err)
+	}
+
+	return nil
+}
+
 func (ins *HomeInstance) updateTests(ctx context.Context, h *Handler) (err error) {
 	// update tests
 	ins.Tests, err = h.app.GetTestsForLocale(ctx, &domain.QueryTestsArgs{
@@ -148,6 +166,17 @@ func (h *Handler) Home() live.Handler {
 			}
 			return instance, nil
 		})
+
+		// update locale logic
+		lvh.HandleParams(func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+			instance := constructor(s)
+			instance.SetLocale(p.String(paramLocale))
+			err := instance.updateForLocale(ctx, s, h)
+			if err != nil {
+				return nil, err
+			}
+			return instance, nil
+		})
 		// SAFE TO COPY END
 	}
 	// COMMON BLOCK END
@@ -157,23 +186,13 @@ func (h *Handler) Home() live.Handler {
 		instance := h.NewHomeInstance(s)
 		instance.fromContext(ctx)
 
-		// tags
-		instance.Tags, err = h.app.GetTags(ctx, instance.Locale())
-		if err != nil {
-			return instance.withError(err), nil
-		}
-
-		// tests
-		err = instance.updateTests(ctx, h)
-		if err != nil {
-			return instance.withError(err), nil
-		}
-
 		// summary
 		instance.Summary, err = h.app.GetSystemSummary(ctx)
 		if err != nil {
 			return instance.withError(err), nil
 		}
+
+		instance.updateForLocale(ctx, s, h)
 
 		return instance.withError(err), nil
 	})

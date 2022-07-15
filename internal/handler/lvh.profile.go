@@ -43,6 +43,11 @@ func (ins *ProfileInstance) withError(err error) *ProfileInstance {
 	return ins
 }
 
+// must be present in all instances
+func (ins *ProfileInstance) updateForLocale(ctx context.Context, s live.Socket, h *Handler) error {
+	return nil
+}
+
 func (ins *ProfileInstance) NextPage() int {
 	if ins.Page >= ins.MaxPage {
 		return ins.Page
@@ -120,6 +125,17 @@ func (h *Handler) Profile() live.Handler {
 			instance.User, err = h.app.UpdateUser(ctx, instance.User)
 			if err != nil {
 				return instance.withError(err), nil
+			}
+			return instance, nil
+		})
+
+		// update locale logic
+		lvh.HandleParams(func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+			instance := constructor(s)
+			instance.SetLocale(p.String(paramLocale))
+			err := instance.updateForLocale(ctx, s, h)
+			if err != nil {
+				return nil, err
 			}
 			return instance, nil
 		})
