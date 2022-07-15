@@ -201,7 +201,6 @@ func (t *CreateTestArgs) ValidateTranslations() error {
 }
 
 func (t *Test) Link(domain string) string {
-	fmt.Println("LOC", t.Locale)
 	var params string
 	if t.Locale != DefaultLocale() {
 		params = fmt.Sprintf("?locale=%s", t.Locale)
