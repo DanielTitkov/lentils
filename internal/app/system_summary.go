@@ -28,9 +28,27 @@ func (a *App) UpdateSystemSummary(ctx context.Context) error {
 		return err
 	}
 
+	testCount, err := a.repo.TestCount(ctx)
+	if err != nil {
+		return err
+	}
+
+	finishedTakeCount, err := a.repo.FinishedTakeCount(ctx)
+	if err != nil {
+		return err
+	}
+
+	responseCount, err := a.repo.ResponseCount(ctx)
+	if err != nil {
+		return err
+	}
+
 	a.systemSummary = &domain.SystemSymmary{
-		Users:      userCount,
-		CreateTime: time.Now(),
+		Users:         userCount,
+		CreateTime:    time.Now(),
+		Tests:         testCount,
+		FinishedTakes: finishedTakeCount,
+		Responses:     responseCount,
 	}
 
 	a.log.Debug("system summary updated", fmt.Sprintf("%+v", a.systemSummary))

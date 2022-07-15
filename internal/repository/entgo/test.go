@@ -36,6 +36,10 @@ import (
 	"github.com/DanielTitkov/orrery/internal/domain"
 )
 
+func (r *EntgoRepository) TestCount(ctx context.Context) (int, error) {
+	return r.client.Test.Query().Count(ctx)
+}
+
 func (r *EntgoRepository) GetTests(ctx context.Context, args *domain.QueryTestsArgs) ([]*domain.Test, error) {
 	query := r.client.Test.Query().
 		WithTranslations(func(q *ent.TestTranslationQuery) {

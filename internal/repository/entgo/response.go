@@ -13,6 +13,10 @@ import (
 	"github.com/google/uuid"
 )
 
+func (r *EntgoRepository) ResponseCount(ctx context.Context) (int, error) {
+	return r.client.Response.Query().Count(ctx)
+}
+
 func (r *EntgoRepository) AddOrUpdateResponse(ctx context.Context, takeID uuid.UUID, itm *domain.Item) (*domain.Response, error) {
 	if takeID == uuid.Nil {
 		return nil, errors.New("take id mustn't be nil")

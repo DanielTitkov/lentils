@@ -12,8 +12,10 @@ import (
 type (
 	StatusInstance struct {
 		*CommonInstance
-		Errors []error
-		Events []domain.Event
+		Errors  []error
+		Events  []domain.Event
+		Version string
+		Summary *domain.SystemSymmary
 	}
 )
 
@@ -44,6 +46,7 @@ func (h *Handler) Status() live.Handler {
 	t := template.Must(template.New("base.layout.html").Funcs(funcMap).ParseFiles(
 		h.t+"base.layout.html",
 		h.t+"page.status.html",
+		h.t+"part.system_summary.html",
 	))
 
 	lvh := live.NewHandler(live.WithTemplateRenderer(t))
@@ -108,12 +111,19 @@ func (h *Handler) Status() live.Handler {
 	}
 	// COMMON BLOCK END
 
-	lvh.HandleMount(func(ctx context.Context, s live.Socket) (interface{}, error) {
+	lvh.HandleMount(func(ctx context.Context, s live.Socket) (i interface{}, err error) {
 		instance := h.NewStatusInstance(s)
 		instance.fromContext(ctx)
 
 		instance.Errors = h.app.Errors
 		instance.Events = h.app.Events
+		instance.Version = h.app.Cfg.App.Version
+
+		// summary
+		instance.Summary, err = h.app.GetSystemSummary(ctx)
+		if err != nil {
+			return instance.withError(err), nil
+		}
 
 		return instance, nil
 	})

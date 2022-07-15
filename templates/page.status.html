@@ -12,9 +12,13 @@
                 <p class="subtitle is-3 is-size-5-mobile">Env</p>
                 <p class="title is-5">{{ .Env }}</p>
             </div>
-            <div class="level_item">
+            <div class="level_item has-text-centered">
                 <p class="subtitle is-3 is-size-5-mobile">Domain</p>
                 <p class="title is-5">{{ .Domain }}</p>
+            </div>
+            <div class="level_item has-text-right">
+                <p class="subtitle is-3 is-size-5-mobile">Version</p>
+                <p class="title is-5">{{ .Version }}</p>
             </div>
         </div>
         <div class="block">
@@ -69,6 +73,11 @@
             </div>
             {{ end }}
         </div>
+        {{ if .Summary }}
+        <div class="section">
+          {{ template "system-summary" .Summary }}
+        </div>
+        {{ end }}
     </section>
 </main>
 {{ end }}

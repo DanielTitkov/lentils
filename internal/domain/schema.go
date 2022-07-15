@@ -203,9 +203,12 @@ type (
 // system types
 type (
 	SystemSymmary struct {
-		ID         int
-		Users      int
-		CreateTime time.Time
+		ID            int
+		Users         int
+		Tests         int
+		FinishedTakes int
+		Responses     int
+		CreateTime    time.Time
 	}
 	Event struct {
 		Name      string

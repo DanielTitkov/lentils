@@ -24,6 +24,13 @@ type (
 	UITransHome struct {
 		Title       string
 		Description string
+		TagThemes   string
+		TagSize     string
+		TagFeatures string
+		TagAll      string
+		TagAny      string
+		TagFilter1  string
+		TagFilter2  string
 	}
 
 	UITransTest struct {
@@ -71,6 +78,13 @@ func newTranslationEn() *UITranslation {
 		Home: &UITransHome{
 			Title:       "Orrery",
 			Description: "Modern psychometrics for fun and science",
+			TagThemes:   "Themes",
+			TagSize:     "Size",
+			TagFeatures: "Features",
+			TagFilter1:  "Tests with",
+			TagAll:      "ALL",
+			TagAny:      "ANY",
+			TagFilter2:  "given tags",
 		},
 		Test: &UITransTest{
 			SelectLoc:         "Select language",
@@ -113,6 +127,13 @@ func newTranslationRu() *UITranslation {
 		Home: &UITransHome{
 			Title:       "Orrery",
 			Description: "Современная психометрика для науки и потехи",
+			TagThemes:   "Темы",
+			TagSize:     "Длина",
+			TagFeatures: "Особенности",
+			TagFilter1:  "Тесты",
+			TagAll:      "со всеми",
+			TagAny:      "с любыми",
+			TagFilter2:  "тегами",
 		},
 		Test: &UITransTest{
 			SelectLoc:         "Выбрать язык",

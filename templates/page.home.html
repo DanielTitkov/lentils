@@ -6,15 +6,15 @@
     <div class="block">
       {{ if gt (len .ActiveTags) 0 }}
       <p class="title is-4 is-size-5-mobile">
-        <span>Tests with </span>
+        <span>{{ .UI.Home.TagFilter1 }} </span>
         <a live-click="toggle-filter-mode">
           {{ if .FilterModeAny }}
-          ANY
+          {{ .UI.Home.TagAny }}
           {{ else }}
-          ALL
+          {{ .UI.Home.TagAll }}
           {{ end }}
         </a>
-        <span> given tags:</span>
+        <span> {{ .UI.Home.TagFilter2 }}:</span>
       </p>
       <div>
         {{ range .ActiveTags }}
@@ -25,7 +25,7 @@
     </div>
     <div class="columns">
       <div class="column is-4">
-        <p class="title is-4 is-size-5-mobile">Themes</p>
+        <p class="title is-4 is-size-5-mobile">{{ .UI.Home.TagThemes }}</p>
         {{ range .Tags }}
         {{ if eq .Type "theme" }}
         {{ if CodeInTags .Code $.ActiveTags }}
@@ -37,7 +37,7 @@
         {{ end }}
       </div>
       <div class="column is-4">
-        <p class="title is-4 is-size-5-mobile">Size</p>
+        <p class="title is-4 is-size-5-mobile">{{ .UI.Home.TagSize }}</p>
         {{ range .Tags }}
         {{ if eq .Type "len" }}
         {{ if CodeInTags .Code $.ActiveTags }}
@@ -49,7 +49,7 @@
         {{ end }}
       </div>
       <div class="column is-4">
-        <p class="title is-4 is-size-5-mobile">Features</p>
+        <p class="title is-4 is-size-5-mobile">{{ .UI.Home.TagFeatures }}</p>
         {{ range .Tags }}
         {{ if eq .Type "feature" }}
         {{ if CodeInTags .Code $.ActiveTags }}
@@ -71,11 +71,11 @@
       {{ end }}
     </div>
   </div>
-  {{ if .Summary }}
+  <!-- {{ if .Summary }}
   <div class="section">
     {{ template "system-summary" .Summary }}
   </div>
-  {{ end }}
+  {{ end }} -->
 </main>
 {{ end }}
 

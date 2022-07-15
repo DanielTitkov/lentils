@@ -1,12 +1,28 @@
 {{define "system-summary"}}
-<!--
-<nav class="level">
-  <div class="level-item has-text-centered">
+<div class="level">
+  <!-- <div class="level-item has-text-centered">
     <div>
       <p class="heading">Участников</p>
       <p class="title is-3 is-size-4-mobile">{{ .Users }}</p>
     </div>
+  </div> -->
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Tests</p>
+      <p class="title is-3 is-size-4-mobile">{{ .Tests }}</p>
+    </div>
   </div>
-</nav>
--->
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Finished tests</p>
+      <p class="title is-3 is-size-4-mobile">{{ .FinishedTakes }}</p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Responses</p>
+      <p class="title is-3 is-size-4-mobile">{{ .Responses }}</p>
+    </div>
+  </div>
+</div>
 {{ end }}

@@ -69,6 +69,9 @@ type (
 
 		// for system summary
 		GetUserCount(ctx context.Context) (int, error)
+		FinishedTakeCount(ctx context.Context) (int, error)
+		TestCount(ctx context.Context) (int, error)
+		ResponseCount(ctx context.Context) (int, error)
 
 		// tag
 		CreateOrUpdateTagFromArgs(ctx context.Context, args *domain.CreateTagArgs) error

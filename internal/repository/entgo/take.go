@@ -11,6 +11,10 @@ import (
 	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
 )
 
+func (r *EntgoRepository) FinishedTakeCount(ctx context.Context) (int, error) {
+	return r.client.Take.Query().Where(take.StatusEQ(take.StatusFinish)).Count(ctx)
+}
+
 func (r *EntgoRepository) GetTake(ctx context.Context, takeID uuid.UUID) (*domain.Take, error) {
 	tk, err := r.client.Take.
 		Query().
