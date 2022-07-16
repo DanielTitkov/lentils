@@ -4,19 +4,19 @@ tags: ["politics"]
 en:  # title, decsriptions, instruction, details, result preambule
   - Political Compass
   - Political coordinates (Orrery version)
-  - Please rate each statement based on how much you agree with in on the scale from 1 to 4,
-    where 1 is completely disagree and 4 - completely agree.
+  - Please rate each statement based on how much you agree with in on the scale from 1 to 6,
+    where 1 is completely disagree and 6 - completely agree.
   - <p>This version on Political Compass was developed by Orrery as an alternative to traditional version 
     which from our perspective has poor psychometric quality.</p>
     <p>While developing this version of Political Compass, our main goal was the unambiguity of scales and questions. 
     We've completely abandoned traditional left-right dichotomy, because that opposition can be construed very differently 
     by different people - as radical/moderate, progressive/traditional, individualistic/collectivistic and so on.</p>
-    <p>Our version of Political Compass has the following dimentions
+    <p>Our version of Political Compass has the following dimensions
       <ul>
         <li><b>Private life regulation / Personal freedom</b></li>
         <li><b>Economic regulation / Economic freedom</b></li>
       </ul>
-      We paid special attention to keeping each question unabigious and consistent with it's scale general sence, while 
+      We paid special attention to keeping each question unambiguous and consistent with respective scale general sense, while 
       the original inventory has lots of questions which can be understood differently depending on the context and 
       respondent's views not mentioned in the question.
     </p>
@@ -24,8 +24,8 @@ en:  # title, decsriptions, instruction, details, result preambule
 ru: # title, decsriptions, instruction, details, result preambule
   - Политический Компас
   - Политические координаты (версия Orrery)
-  - Отметьте, насколько вы согласны с каждым из утверждений по шкале от 1 до 4, 
-    где 1 - полностью не согласны, а 4 - полностью согласны.
+  - Отметьте, насколько вы согласны с каждым из утверждений по шкале от 1 до 6, 
+    где 1 - полностью не согласны, а 6 - полностью согласны.
   - <p>Эта версия политического компаса разработа Orrery как альтернатива традиционной версии, которая, на наш взгляд, 
     выполнена некачественно с психометрической точки зрения.</p>
     <p>При разработке нашей версии основной целью была однозначность шкал и вопросов, а также очевидное соотвествие шкал и вопросов.
@@ -42,26 +42,58 @@ ru: # title, decsriptions, instruction, details, result preambule
     </p>
   - ""
 type: perc
-steps: 4 # item steps
+steps: 6 # item steps
 randomize: true
-intervals: 1 # interpretation intervals
+intervals: 3 # interpretation intervals
 question:
   en: "" # content
   ru: "Насколько вы согласны с этим утверждением?" #content
   page: 1
 scales: 
   personal: 
-    en: ["Personal freedom", "", "PERS"] # title, description, abbreviation
-    ru: ["Личная свобода", "Самовыражение, самоопределение, автономия, свобода слова", "ЛИЧН"] # title, description, abbreviation
+    en: ["Personal freedom", "Self-expression, self-determination, autonomy, freedom of speech, tolerance", "PERS"] # title, description, abbreviation
+    ru: ["Личная свобода", "Самовыражение, самоопределение, автономия, свобода слова, толерантность", "ЛИЧН"] # title, description, abbreviation
     interpretations: 
-      - en: <p>1</p>
-        ru: <p>1</p>
+      - en: <p>You believe that society or the state can restrict the freedom of private life of citizens 
+            to the extent necessary for the prosperity of the society and citizens themselves. 
+            Perhaps you would say that freedom is a heavy burden, and one should not entrust it to everyone.</p>
+        ru: <p>Вы считаете, что общество или государство может ограничивать свободу частной жизни граждан в той мере, 
+            в какой это необходимо для процветания общества и самих граждан. Возможно, вы бы сказали, что свобода - это тяжёлое бремя, 
+            и нельзя необдуманно доверить её всем подряд.</p>
+      - en: <p>You adhere to a moderate position on the issue of regulating the private life of citizens. 
+            Perhaps you would say that people can be trusted with freedom as long as
+            they use it in a reasonable and trustworthy manner.</p>
+        ru: <p>Вы придерживаетесь умеренной позиции в вопросе регуляции личной жизни граждан. Возможно, вы бы сказали, что 
+            людям можно предоставить свободу в той мере, в которой они воспользуются ей разумно и благонадёжно.</p>
+      - en: <p>You belive that people should have maximum freedom to manage their personal lives at their own discretion. 
+            You do not consider it legitimate to restrict even such behavior that you yourself consider irrational. 
+            Rather, you would probably say that freedom and rights are more important than physical well-being, 
+            and people can be fully trusted to make decisions about their lives and be responsible for the consequences.</p>
+        ru: <p>Вы считаете, что людям нужно предоставить максимальную свободу 
+            распоряжаться своей личной жизнью на их собственное усмотрение. Вы не считаете правомерным ограничение даже такого поведения, 
+            которое вам самим кажется нерациональным. Скорее всего, вы бы сказали, что свобода и права важнее, чем физическое благополучие, и 
+            людям в полной мере можно доверить принимать решения по поводу их жизни и нести ответственность за их последствия.</p>
   economic:
-    en: ["Economic freedom", "", "ECON"] # title, description, abbreviation
+    en: ["Economic freedom", "Business, traid, taxation, inheritance", "ECON"] # title, description, abbreviation
     ru: ["Экономическая свобода", "Бизнес, торговля, налоги, наследство", "ЭКОН"] # title, description, abbreviation
     interpretations: 
-      - en: <p>2</p>
-        ru: <p>2</p>
+      - en: <p>You think that the state/society should strictly control the economic activities of its citizens. 
+            Maybe even up to the complete nationalization of some key areas of the economy. 
+            Perhaps you are suspicious of private business and believe that only such an 
+            all-embracing institution as the state can ensure the well-intentioned behavior of such agents.</p>
+        ru: <p>Вы считаете, что государство/общество должно строго контролировать экономическую деятельность своих граждан. Возможно, 
+            вплоть до полной национализации ключевых направлений экономики. Вероятно, вы с подозрением относитесь к частному бизнесу и считаете
+            что лишь такой всеобъемлющий институт как государство может обеспечить благонамеренное поведение таких агентов.</p>
+      - en: <p>You adhere to a moderate position in the matter of economic regulation. 
+            You would accept certain restrictions that you consider reasonable 
+            to ensure social security and stability.</p>
+        ru: <p>Вы придерживаетесь умеренной позиции в вопросах экономического регулирования. Вы согласны на некоторые ограничения, 
+            которые вы сочли бы разумными для обеспечения социальных гарантий и стабильности.</p>
+      - en: <p>You think that the state/society should not interfere in the economic relations of its citizens. 
+            You would probably say that only complete freedom of economic activity can lead to a free and prosperous society.</p>
+        ru: <p>Вы считаете, что государство/общество должно минимально вмешиваться в экономические отношения своих граждан.
+            Вероятно, вы бы сказали, что только полная свобода экономической деятельности 
+            может обеспечить свободное и процветающее общество.</p>
 items:
   - en: "The government has no business looking into people's personal lives" # content
     ru: "Частная жизнь граждан — их личное дело и больше ничьё" # content
@@ -114,7 +146,7 @@ items:
   - en: "If people are having sex in a public place, you should call the police" # content
     ru: "Если люди занимаются сексом в общественном месте - стоит вызвать полицию" # content
     scale: "-personal"
-  - en: "Some ideas and beliefs are harmful and thus should be banned." # content
+  - en: "Some ideas and beliefs are harmful and thus should be banned" # content
     ru: "Некоторые идеи и убеждения вредны, и их необходимо запретить" # content
     scale: "-personal"
   - en: "The use of certain substances should be illegal" # content

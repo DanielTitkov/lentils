@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-17 01:42:10
+# at: 2022-07-17 02:28:40
 # template: ../data/templates/ctt-v1/political-compass.yaml
 code: political-compass
 published: true
@@ -15,7 +15,7 @@ translations:
     title: Политический Компас
     description: Политические координаты (версия Orrery)
     instruction: Отметьте, насколько вы согласны с каждым из утверждений по шкале
-      от 1 до 4, где 1 - полностью не согласны, а 4 - полностью согласны.
+      от 1 до 6, где 1 - полностью не согласны, а 6 - полностью согласны.
     details: <p>Эта версия политического компаса разработа Orrery как альтернатива
       традиционной версии, которая, на наш взгляд, выполнена некачественно с психометрической
       точки зрения.</p> <p>При разработке нашей версии основной целью была однозначность
@@ -34,18 +34,18 @@ translations:
     title: Political Compass
     description: Political coordinates (Orrery version)
     instruction: Please rate each statement based on how much you agree with in on
-      the scale from 1 to 4, where 1 is completely disagree and 4 - completely agree.
+      the scale from 1 to 6, where 1 is completely disagree and 6 - completely agree.
     details: <p>This version on Political Compass was developed by Orrery as an alternative
       to traditional version which from our perspective has poor psychometric quality.</p>
       <p>While developing this version of Political Compass, our main goal was the
       unambiguity of scales and questions. We've completely abandoned traditional
       left-right dichotomy, because that opposition can be construed very differently
       by different people - as radical/moderate, progressive/traditional, individualistic/collectivistic
-      and so on.</p> <p>Our version of Political Compass has the following dimentions
+      and so on.</p> <p>Our version of Political Compass has the following dimensions
       <ul> <li><b>Private life regulation / Personal freedom</b></li> <li><b>Economic
       regulation / Economic freedom</b></li> </ul> We paid special attention to keeping
-      each question unabigious and consistent with it's scale general sence, while
-      the original inventory has lots of questions which can be understood differently
+      each question unambiguous and consistent with respective scale general sense,
+      while the original inventory has lots of questions which can be understood differently
       depending on the context and respondent's views not mentioned in the question.
       </p>
     preambule: ''
@@ -55,24 +55,63 @@ scales:
     translations:
       - locale: ru
         title: Личная свобода
-        description: Самовыражение, самоопределение, автономия, свобода слова
+        description: Самовыражение, самоопределение, автономия, свобода слова, толерантность
         abbreviation: ЛИЧН
       - locale: en
         title: Personal freedom
-        description: ''
+        description: Self-expression, self-determination, autonomy, freedom of speech,
+          tolerance
         abbreviation: PERS
     interpretations:
       - range:
           - 0.0
+          - 33.333333333333336
+        translations:
+          - locale: ru
+            content: <p>Вы считаете, что общество или государство может ограничивать
+              свободу частной жизни граждан в той мере, в какой это необходимо для
+              процветания общества и самих граждан. Возможно, вы бы сказали, что свобода
+              - это тяжёлое бремя, и нельзя необдуманно доверить её всем подряд.</p>
+          - locale: en
+            content: <p>You believe that society or the state can restrict the freedom
+              of private life of citizens to the extent necessary for the prosperity
+              of the society and citizens themselves. Perhaps you would say that freedom
+              is a heavy burden, and one should not entrust it to everyone.</p>
+      - range:
+          - 33.333333333333336
+          - 66.66666666666667
+        translations:
+          - locale: ru
+            content: <p>Вы придерживаетесь умеренной позиции в вопросе регуляции личной
+              жизни граждан. Возможно, вы бы сказали, что людям можно предоставить
+              свободу в той мере, в которой они воспользуются ей разумно и благонадёжно.</p>
+          - locale: en
+            content: <p>You adhere to a moderate position on the issue of regulating
+              the private life of citizens. Perhaps you would say that people can
+              be trusted with freedom as long as they use it in a reasonable and trustworthy
+              manner.</p>
+      - range:
+          - 66.66666666666667
           - 100.0
         translations:
           - locale: ru
-            content: <p>1</p>
+            content: <p>Вы считаете, что людям нужно предоставить максимальную свободу
+              распоряжаться своей личной жизнью на их собственное усмотрение. Вы не
+              считаете правомерным ограничение даже такого поведения, которое вам
+              самим кажется нерациональным. Скорее всего, вы бы сказали, что свобода
+              и права важнее, чем физическое благополучие, и людям в полной мере можно
+              доверить принимать решения по поводу их жизни и нести ответственность
+              за их последствия.</p>
           - locale: en
-            content: <p>1</p>
+            content: <p>You belive that people should have maximum freedom to manage
+              their personal lives at their own discretion. You do not consider it
+              legitimate to restrict even such behavior that you yourself consider
+              irrational. Rather, you would probably say that freedom and rights are
+              more important than physical well-being, and people can be fully trusted
+              to make decisions about their lives and be responsible for the consequences.</p>
     items:
       - code: political-compass-01-personal-001
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -81,7 +120,7 @@ scales:
             content: The government has no business looking into people's personal
               lives
       - code: political-compass-01-personal-002
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -89,7 +128,7 @@ scales:
           - locale: en
             content: Abortion should be legal
       - code: political-compass-01-personal-003
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -97,7 +136,7 @@ scales:
           - locale: en
             content: Prostitution should be legal
       - code: political-compass-01-personal-004
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -105,7 +144,7 @@ scales:
           - locale: en
             content: Cannabis should be legal
       - code: political-compass-01-personal-005
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -113,7 +152,7 @@ scales:
           - locale: en
             content: Pornography should be legal
       - code: political-compass-01-personal-006
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -122,7 +161,7 @@ scales:
             content: No one can be prosecuted for words they say, whatever words that
               may be
       - code: political-compass-01-personal-007
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -130,7 +169,7 @@ scales:
           - locale: en
             content: People have the right to decide how to educate their children
       - code: political-compass-01-personal-008
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -138,7 +177,7 @@ scales:
           - locale: en
             content: Any restriction of freedom of speech is always harmful
       - code: political-compass-01-personal-009
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -147,7 +186,7 @@ scales:
           - locale: en
             content: A person has the right to suicide, including assisted (euthanasia)
       - code: political-compass-01-personal-010
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -157,7 +196,7 @@ scales:
             content: If someone wants to have an irrational and self-destructive lifestyle
               - it's their own business
       - code: political-compass-01-personal-011
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -165,7 +204,7 @@ scales:
           - locale: en
             content: We should not have the absolute freedom of speech
       - code: political-compass-01-personal-012
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -175,7 +214,7 @@ scales:
             content: It's a good thing to enforce laws that will push people towards
               a healthy lifestyle.
       - code: political-compass-01-personal-013
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -183,7 +222,7 @@ scales:
           - locale: en
             content: Legal registration of marriage is useful and necessary
       - code: political-compass-01-personal-014
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -191,7 +230,7 @@ scales:
           - locale: en
             content: Press and television need to be controlled
       - code: political-compass-01-personal-015
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -201,7 +240,7 @@ scales:
             content: Media that spread harmful or misleading information should be
               banned or fined.
       - code: political-compass-01-personal-016
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -209,7 +248,7 @@ scales:
           - locale: en
             content: It is necessary to control how people raise their children
       - code: political-compass-01-personal-017
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -219,15 +258,15 @@ scales:
             content: If people are having sex in a public place, you should call the
               police
       - code: political-compass-01-personal-018
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
             content: Некоторые идеи и убеждения вредны, и их необходимо запретить
           - locale: en
-            content: Some ideas and beliefs are harmful and thus should be banned.
+            content: Some ideas and beliefs are harmful and thus should be banned
       - code: political-compass-01-personal-019
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -235,7 +274,7 @@ scales:
           - locale: en
             content: The use of certain substances should be illegal
       - code: political-compass-01-personal-020
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -253,20 +292,55 @@ scales:
         abbreviation: ЭКОН
       - locale: en
         title: Economic freedom
-        description: ''
+        description: Business, traid, taxation, inheritance
         abbreviation: ECON
     interpretations:
       - range:
           - 0.0
+          - 33.333333333333336
+        translations:
+          - locale: ru
+            content: <p>Вы считаете, что государство/общество должно строго контролировать
+              экономическую деятельность своих граждан. Возможно, вплоть до полной
+              национализации ключевых направлений экономики. Вероятно, вы с подозрением
+              относитесь к частному бизнесу и считаете что лишь такой всеобъемлющий
+              институт как государство может обеспечить благонамеренное поведение
+              таких агентов.</p>
+          - locale: en
+            content: <p>You think that the state/society should strictly control the
+              economic activities of its citizens. Maybe even up to the complete nationalization
+              of some key areas of the economy. Perhaps you are suspicious of private
+              business and believe that only such an all-embracing institution as
+              the state can ensure the well-intentioned behavior of such agents.</p>
+      - range:
+          - 33.333333333333336
+          - 66.66666666666667
+        translations:
+          - locale: ru
+            content: <p>Вы придерживаетесь умеренной позиции в вопросах экономического
+              регулирования. Вы согласны на некоторые ограничения, которые вы сочли
+              бы разумными для обеспечения социальных гарантий и стабильности.</p>
+          - locale: en
+            content: <p>You adhere to a moderate position in the matter of economic
+              regulation. You would accept certain restrictions that you consider
+              reasonable to ensure social security and stability.</p>
+      - range:
+          - 66.66666666666667
           - 100.0
         translations:
           - locale: ru
-            content: <p>2</p>
+            content: <p>Вы считаете, что государство/общество должно минимально вмешиваться
+              в экономические отношения своих граждан. Вероятно, вы бы сказали, что
+              только полная свобода экономической деятельности может обеспечить свободное
+              и процветающее общество.</p>
           - locale: en
-            content: <p>2</p>
+            content: <p>You think that the state/society should not interfere in the
+              economic relations of its citizens. You would probably say that only
+              complete freedom of economic activity can lead to a free and prosperous
+              society.</p>
     items:
       - code: political-compass-02-economic-001
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -274,7 +348,7 @@ scales:
           - locale: en
             content: The government should not regulate the economy at all
       - code: political-compass-02-economic-002
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -284,7 +358,7 @@ scales:
             content: Governmental intervention in the economy almost always makes
               the economy worse
       - code: political-compass-02-economic-003
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -293,7 +367,7 @@ scales:
           - locale: en
             content: There should not be such thing as a minimum wage
       - code: political-compass-02-economic-004
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -303,7 +377,7 @@ scales:
             content: No one should pay a higher percentage of tax on their income
               than another
       - code: political-compass-02-economic-005
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -311,7 +385,7 @@ scales:
           - locale: en
             content: The less taxation, the better
       - code: political-compass-02-economic-006
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -319,7 +393,7 @@ scales:
           - locale: en
             content: It is unjust to tax an inheritance
       - code: political-compass-02-economic-007
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -328,7 +402,7 @@ scales:
           - locale: en
             content: Anyone should have the right to run whatever business they want
       - code: political-compass-02-economic-008
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -338,7 +412,7 @@ scales:
             content: Ideally, there should be no national currency - just let everyone
               use whatever money they want
       - code: political-compass-02-economic-009
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -347,7 +421,7 @@ scales:
           - locale: en
             content: There's nothing wrong with a bank emitting its own money
       - code: political-compass-02-economic-010
-        steps: 4
+        steps: 6
         reverse: false
         translations:
           - locale: ru
@@ -357,7 +431,7 @@ scales:
             content: Regulation does not eliminate crises in the economy, but rather
               exacerbates or provokes them
       - code: political-compass-02-economic-011
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -367,7 +441,7 @@ scales:
             content: Public facilities such as roads and power plants must be in public
               ownership
       - code: political-compass-02-economic-012
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -376,7 +450,7 @@ scales:
           - locale: en
             content: Some businesses, such as postal services, must be state-owned
       - code: political-compass-02-economic-013
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -384,7 +458,7 @@ scales:
           - locale: en
             content: Any economic problem can and should be solved by regulation
       - code: political-compass-02-economic-014
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -392,7 +466,7 @@ scales:
           - locale: en
             content: Progressive taxation is generally a good idea
       - code: political-compass-02-economic-015
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -402,7 +476,7 @@ scales:
             content: We can't just let people run whatever business they want - a
               licensing system or something like that is needed
       - code: political-compass-02-economic-016
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -412,7 +486,7 @@ scales:
             content: Distributors should not be allowed to arbitrarily set prices
               for any goods
       - code: political-compass-02-economic-017
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -422,7 +496,7 @@ scales:
             content: Business needs strict supervision, otherwise problems and abuses
               are inevitable
       - code: political-compass-02-economic-018
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -432,7 +506,7 @@ scales:
             content: It is desirable that people of different professions have approximately
               the same income
       - code: political-compass-02-economic-019
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru
@@ -442,7 +516,7 @@ scales:
             content: Salaries of some top managers are unreasonably high, and it would
               be better to limit them
       - code: political-compass-02-economic-020
-        steps: 4
+        steps: 6
         reverse: true
         translations:
           - locale: ru

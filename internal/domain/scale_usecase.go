@@ -107,6 +107,7 @@ func resolveScalePerc(s *Scale, norm *Norm) (*ScaleResult, error) {
 		Min:      0,
 		Max:      100,
 		Formula:  formula,
+		Unit:     "%",
 	}, nil
 }
 

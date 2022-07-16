@@ -106,6 +106,7 @@ type (
 		Interpretation *Interpretation
 		Formula        string
 		Elaplsed       time.Duration
+		Unit           string
 		Meta           map[string]interface{}
 	}
 
