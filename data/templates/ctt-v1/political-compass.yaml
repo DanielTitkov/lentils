@@ -1,0 +1,185 @@
+code: political-compass
+locales: ["ru", "en"]
+tags: ["politics"]
+en:  # title, decsriptions, instruction, details, result preambule
+  - Political Compass
+  - Political coordinates (Orrery version)
+  - Please rate each statement based on how much you agree with in on the scale from 1 to 4,
+    where 1 is completely disagree and 4 - completely agree.
+  - <p>This version on Political Compass was developed by Orrery as an alternative to traditional version 
+    which from our perspective has poor psychometric quality.</p>
+    <p>While developing this version of Political Compass, our main goal was the unambiguity of scales and questions. 
+    We've completely abandoned traditional left-right dichotomy, because that opposition can be construed very differently 
+    by different people - as radical/moderate, progressive/traditional, individualistic/collectivistic and so on.</p>
+    <p>Our version of Political Compass has the following dimentions
+      <ul>
+        <li><b>Private life regulation / Personal freedom</b></li>
+        <li><b>Economic regulation / Economic freedom</b></li>
+      </ul>
+      We paid special attention to keeping each question unabigious and consistent with it's scale general sence, while 
+      the original inventory has lots of questions which can be understood differently depending on the context and 
+      respondent's views not mentioned in the question.
+    </p>
+  - ""
+ru: # title, decsriptions, instruction, details, result preambule
+  - Политический Компас
+  - Политические координаты (версия Orrery)
+  - Отметьте, насколько вы согласны с каждым из утверждений по шкале от 1 до 4, 
+    где 1 - полностью не согласны, а 4 - полностью согласны.
+  - <p>Эта версия политического компаса разработа Orrery как альтернатива традиционной версии, которая, на наш взгляд, 
+    выполнена некачественно с психометрической точки зрения.</p>
+    <p>При разработке нашей версии основной целью была однозначность шкал и вопросов, а также очевидное соотвествие шкал и вопросов.
+    Мы полностью отказались от терминологии "левый-правый", так как эта дихотомия понимается разными людьми по-разному - 
+    радикальный/умеренный, прогрессивный/консервативный, социальный/индивидуалистический и т.д.</p>
+    <p>Наша версия политического компаса имеет такие измерения
+      <ul>
+        <li><b>Регулирование личной жизни / Личная свобода</b></li>
+        <li><b>Регулирование экономики / Экономическая свобода</b></li>
+      </ul>
+      Мы уделили особое внимание тому, чтобы каждый вопрос был однозначен и касался только своей шкалы и ничего более, 
+      тогда как в оригинальном политическом компасе есть много вопросов, которые могут быть проинтепретированы очень по-разному
+      в зависимости от контекста не затронутых в вопросе убеждений респондентов. 
+    </p>
+  - ""
+type: perc
+steps: 4 # item steps
+randomize: true
+intervals: 1 # interpretation intervals
+question:
+  en: "" # content
+  ru: "Насколько вы согласны с этим утверждением?" #content
+  page: 1
+scales: 
+  personal: 
+    en: ["Personal freedom", "", "PERS"] # title, description, abbreviation
+    ru: ["Личная свобода", "Самовыражение, самоопределение, автономия, свобода слова", "ЛИЧН"] # title, description, abbreviation
+    interpretations: 
+      - en: <p>1</p>
+        ru: <p>1</p>
+  economic:
+    en: ["Economic freedom", "", "ECON"] # title, description, abbreviation
+    ru: ["Экономическая свобода", "Бизнес, торговля, налоги, наследство", "ЭКОН"] # title, description, abbreviation
+    interpretations: 
+      - en: <p>2</p>
+        ru: <p>2</p>
+items:
+  - en: "The government has no business looking into people's personal lives" # content
+    ru: "Частная жизнь граждан — их личное дело и больше ничьё" # content
+    scale: "personal"
+  - en: "Abortion should be legal" # content
+    ru: "Аборты должны быть легальны" # content
+    scale: "personal"
+  - en: "Prostitution should be legal" # content
+    ru: "Проституция должна быть легальной" # content
+    scale: "personal"
+  - en: "Cannabis should be legal" # content
+    ru: "Марихуана должна быть легальной" # content
+    scale: "personal"
+  - en: "Pornography should be legal" # content
+    ru: "Порнография должна быть легальной" # content
+    scale: "personal"
+  - en: "No one can be prosecuted for words they say, whatever words that may be" # content
+    ru: "Нельзя наказывать за слова, какими бы они ни были" # content
+    scale: "personal"
+  - en: "People have the right to decide how to educate their children" # content
+    ru: "Люди вправе сами выбирать, какое образование дать своим детям" # content
+    scale: "personal"
+  - en: "Any restriction of freedom of speech is always harmful" # content
+    ru: "Любое ограничение свободы слова всегда идёт во вред" # content
+    scale: "personal"
+  - en: "A person has the right to suicide, including assisted (euthanasia)" # content
+    ru: "Человек имеет право на самоубийство, в том числе ассистированное (эвтаназию)" # content
+    scale: "personal"
+  - en: "If someone wants to have an irrational and self-destructive lifestyle - it's their own business" # content
+    ru: "Если кто-то хочет вести нерациональный и саморазрушительный образ жизни - это их личное дело" # content
+    scale: "personal"
+  - en: "We should not have the absolute freedom of speech" # content
+    ru: "Мы не должны иметь абсолютную свободу слова" # content
+    scale: "-personal"
+  - en: "It's a good thing to enforce laws that will push people towards a healthy lifestyle." # content
+    ru: "Вводить законы, которые подтолкнут людей к здоровому образу жизни - хорошо и правильно" # content
+    scale: "-personal"
+  - en: "Legal registration of marriage is useful and necessary" # content
+    ru: "Государственная регистрация брака полезна и необходима" # content
+    scale: "-personal"
+  - en: "Press and television need to be controlled" # content
+    ru: "Пресса и телевидение нуждаются в контроле" # content
+    scale: "-personal"
+  - en: "Media that spread harmful or misleading information should be banned or fined." # content
+    ru: "Следует запрещать или штрафовать те СМИ, которые распространяют вредоносную или ложную информацию" # content
+    scale: "-personal"
+  - en: "It is necessary to control how people raise their children" # content
+    ru: "Необходимо сделить за тем, как люди воспитывают своих детей" # content
+    scale: "-personal"
+  - en: "If people are having sex in a public place, you should call the police" # content
+    ru: "Если люди занимаются сексом в общественном месте - стоит вызвать полицию" # content
+    scale: "-personal"
+  - en: "Some ideas and beliefs are harmful and thus should be banned." # content
+    ru: "Некоторые идеи и убеждения вредны, и их необходимо запретить" # content
+    scale: "-personal"
+  - en: "The use of certain substances should be illegal" # content
+    ru: "Употребление некоторых веществ должно быть вне закона" # content
+    scale: "-personal"
+  - en: "We need the laws that will regulate how people communicate with each other" # content
+    ru: "Нужны законы, которые будут регулировать, как люди общаются друг с другом" # content
+    scale: "-personal"
+  - en: "The government should not regulate the economy at all" # content
+    ru: "Государство вообще не должно регулировать экономику" # content
+    scale: "economic"
+  - en: "Governmental intervention in the economy almost always makes the economy worse" # content
+    ru: "Вмешательство государства в экономику почти всегда ослабляет её" # content
+    scale: "economic"
+  - en: "There should not be such thing as a minimum wage" # content
+    ru: "Минимальной зарплаты (минимального размера оплаты труда) не должно существовать" # content
+    scale: "economic"
+  - en: "No one should pay a higher percentage of tax on their income than another" # content
+    ru: "Никто не должен платить больший процент налогов с дохода, чем другие" # content
+    scale: "economic"
+  - en: "The less taxation, the better" # content
+    ru: "Чем меньше налогов, тем лучше" # content
+    scale: "economic"
+  - en: "It is unjust to tax an inheritance" # content
+    ru: "Несправедливо облагать налогами наследство" # content
+    scale: "economic"
+  - en: "Anyone should have the right to run whatever business they want" # content
+    ru: "Кто угодно должен иметь право заниматься любым бизнесом по своему желанию" # content
+    scale: "economic"
+  - en: "Ideally, there should be no national currency - just let everyone use whatever money they want" # content
+    ru: "В идеале никакой национальной валюты быть не должно - пусть все пользуются теми деньгами, какими хотят" # content
+    scale: "economic"
+  - en: "There's nothing wrong with a bank emitting its own money" # content
+    ru: "Нет ничего плохого в том, что какой-нибудь банк начнёт выпускать собственные деньги" # content
+    scale: "economic"
+  - en: "Regulation does not eliminate crises in the economy, but rather exacerbates or provokes them" # content
+    ru: "Регулирование не избавляет от кризисов в экономике, а наоборот - усугубляет или провоцирует их" # content
+    scale: "economic"
+  - en: "Public facilities such as roads and power plants must be in public ownership" # content
+    ru: "Общественные объекты, такие как дороги и электростанции, должны находиться в общественной собственности" # content
+    scale: "-economic"
+  - en: "Some businesses, such as postal services, must be state-owned" # content
+    ru: "Некоторые предприятия, такие как почтовые службы, должны быть государственными" # content
+    scale: "-economic"
+  - en: "Any economic problem can and should be solved by regulation" # content
+    ru: "Любые экономические проблемы могут и должны быть решены регулированием" # content
+    scale: "-economic"
+  - en: "Progressive taxation is generally a good idea" # content
+    ru: "Прогрессивная шкала налогообложения - это хорошая идея" # content
+    scale: "-economic"
+  - en: "We can't just let people run whatever business they want - a licensing system or something like that is needed" # content
+    ru: "Нельзя просто позволить людям вести какой угодно бизнес - нужна система лицензий или что-то подобное" # content
+    scale: "-economic"
+  - en: "Distributors should not be allowed to arbitrarily set prices for any goods" # content
+    ru: "Нельзя позволить продавцам произвольно устаналивать цены на любые товары" # content
+    scale: "-economic"
+  - en: "Business needs strict supervision, otherwise problems and abuses are inevitable" # content
+    ru: "Бизнес нуждается в строгом надзоре, иначе неизбежны проблемы и злоупотребления" # content
+    scale: "-economic"
+  - en: "It is desirable that people of different professions have approximately the same income" # content
+    ru: "Желательно, чтобы люди разных профессий имели примерно одинаковый доход" # content
+    scale: "-economic"
+  - en: "Salaries of some top managers are unreasonably high, and it would be better to limit them" # content
+    ru: "Зарплаты некоторых топ-менеджеров неоправданно высоки, и лучше бы их ограничить" # content
+    scale: "-economic"
+  - en: "Exporting and importing need to be carefully controlled" # content
+    ru: "Нужно тщательно контролировать экспорт и импорт" # content
+    scale: "-economic"

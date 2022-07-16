@@ -1,0 +1,855 @@
+# generated, try not to edit
+# by: CTT-v1
+# at: 2022-07-17 01:42:10
+# template: ../data/templates/ctt-v1/political-compass.yaml
+code: political-compass
+published: true
+availableLocales:
+  - ru
+  - en
+tags:
+  - politics
+forceUpdate: true
+translations:
+  - locale: ru
+    title: Политический Компас
+    description: Политические координаты (версия Orrery)
+    instruction: Отметьте, насколько вы согласны с каждым из утверждений по шкале
+      от 1 до 4, где 1 - полностью не согласны, а 4 - полностью согласны.
+    details: <p>Эта версия политического компаса разработа Orrery как альтернатива
+      традиционной версии, которая, на наш взгляд, выполнена некачественно с психометрической
+      точки зрения.</p> <p>При разработке нашей версии основной целью была однозначность
+      шкал и вопросов, а также очевидное соотвествие шкал и вопросов. Мы полностью
+      отказались от терминологии "левый-правый", так как эта дихотомия понимается
+      разными людьми по-разному - радикальный/умеренный, прогрессивный/консервативный,
+      социальный/индивидуалистический и т.д.</p> <p>Наша версия политического компаса
+      имеет такие измерения <ul> <li><b>Регулирование личной жизни / Личная свобода</b></li>
+      <li><b>Регулирование экономики / Экономическая свобода</b></li> </ul> Мы уделили
+      особое внимание тому, чтобы каждый вопрос был однозначен и касался только своей
+      шкалы и ничего более, тогда как в оригинальном политическом компасе есть много
+      вопросов, которые могут быть проинтепретированы очень по-разному в зависимости
+      от контекста не затронутых в вопросе убеждений респондентов. </p>
+    preambule: ''
+  - locale: en
+    title: Political Compass
+    description: Political coordinates (Orrery version)
+    instruction: Please rate each statement based on how much you agree with in on
+      the scale from 1 to 4, where 1 is completely disagree and 4 - completely agree.
+    details: <p>This version on Political Compass was developed by Orrery as an alternative
+      to traditional version which from our perspective has poor psychometric quality.</p>
+      <p>While developing this version of Political Compass, our main goal was the
+      unambiguity of scales and questions. We've completely abandoned traditional
+      left-right dichotomy, because that opposition can be construed very differently
+      by different people - as radical/moderate, progressive/traditional, individualistic/collectivistic
+      and so on.</p> <p>Our version of Political Compass has the following dimentions
+      <ul> <li><b>Private life regulation / Personal freedom</b></li> <li><b>Economic
+      regulation / Economic freedom</b></li> </ul> We paid special attention to keeping
+      each question unabigious and consistent with it's scale general sence, while
+      the original inventory has lots of questions which can be understood differently
+      depending on the context and respondent's views not mentioned in the question.
+      </p>
+    preambule: ''
+scales:
+  - code: political-compass-01-personal
+    type: perc
+    translations:
+      - locale: ru
+        title: Личная свобода
+        description: Самовыражение, самоопределение, автономия, свобода слова
+        abbreviation: ЛИЧН
+      - locale: en
+        title: Personal freedom
+        description: ''
+        abbreviation: PERS
+    interpretations:
+      - range:
+          - 0.0
+          - 100.0
+        translations:
+          - locale: ru
+            content: <p>1</p>
+          - locale: en
+            content: <p>1</p>
+    items:
+      - code: political-compass-01-personal-001
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Частная жизнь граждан — их личное дело и больше ничьё
+          - locale: en
+            content: The government has no business looking into people's personal
+              lives
+      - code: political-compass-01-personal-002
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Аборты должны быть легальны
+          - locale: en
+            content: Abortion should be legal
+      - code: political-compass-01-personal-003
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Проституция должна быть легальной
+          - locale: en
+            content: Prostitution should be legal
+      - code: political-compass-01-personal-004
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Марихуана должна быть легальной
+          - locale: en
+            content: Cannabis should be legal
+      - code: political-compass-01-personal-005
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Порнография должна быть легальной
+          - locale: en
+            content: Pornography should be legal
+      - code: political-compass-01-personal-006
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Нельзя наказывать за слова, какими бы они ни были
+          - locale: en
+            content: No one can be prosecuted for words they say, whatever words that
+              may be
+      - code: political-compass-01-personal-007
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Люди вправе сами выбирать, какое образование дать своим детям
+          - locale: en
+            content: People have the right to decide how to educate their children
+      - code: political-compass-01-personal-008
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Любое ограничение свободы слова всегда идёт во вред
+          - locale: en
+            content: Any restriction of freedom of speech is always harmful
+      - code: political-compass-01-personal-009
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Человек имеет право на самоубийство, в том числе ассистированное
+              (эвтаназию)
+          - locale: en
+            content: A person has the right to suicide, including assisted (euthanasia)
+      - code: political-compass-01-personal-010
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Если кто-то хочет вести нерациональный и саморазрушительный образ
+              жизни - это их личное дело
+          - locale: en
+            content: If someone wants to have an irrational and self-destructive lifestyle
+              - it's their own business
+      - code: political-compass-01-personal-011
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Мы не должны иметь абсолютную свободу слова
+          - locale: en
+            content: We should not have the absolute freedom of speech
+      - code: political-compass-01-personal-012
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Вводить законы, которые подтолкнут людей к здоровому образу жизни
+              - хорошо и правильно
+          - locale: en
+            content: It's a good thing to enforce laws that will push people towards
+              a healthy lifestyle.
+      - code: political-compass-01-personal-013
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Государственная регистрация брака полезна и необходима
+          - locale: en
+            content: Legal registration of marriage is useful and necessary
+      - code: political-compass-01-personal-014
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Пресса и телевидение нуждаются в контроле
+          - locale: en
+            content: Press and television need to be controlled
+      - code: political-compass-01-personal-015
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Следует запрещать или штрафовать те СМИ, которые распространяют
+              вредоносную или ложную информацию
+          - locale: en
+            content: Media that spread harmful or misleading information should be
+              banned or fined.
+      - code: political-compass-01-personal-016
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Необходимо сделить за тем, как люди воспитывают своих детей
+          - locale: en
+            content: It is necessary to control how people raise their children
+      - code: political-compass-01-personal-017
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Если люди занимаются сексом в общественном месте - стоит вызвать
+              полицию
+          - locale: en
+            content: If people are having sex in a public place, you should call the
+              police
+      - code: political-compass-01-personal-018
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Некоторые идеи и убеждения вредны, и их необходимо запретить
+          - locale: en
+            content: Some ideas and beliefs are harmful and thus should be banned.
+      - code: political-compass-01-personal-019
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Употребление некоторых веществ должно быть вне закона
+          - locale: en
+            content: The use of certain substances should be illegal
+      - code: political-compass-01-personal-020
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Нужны законы, которые будут регулировать, как люди общаются друг
+              с другом
+          - locale: en
+            content: We need the laws that will regulate how people communicate with
+              each other
+  - code: political-compass-02-economic
+    type: perc
+    translations:
+      - locale: ru
+        title: Экономическая свобода
+        description: Бизнес, торговля, налоги, наследство
+        abbreviation: ЭКОН
+      - locale: en
+        title: Economic freedom
+        description: ''
+        abbreviation: ECON
+    interpretations:
+      - range:
+          - 0.0
+          - 100.0
+        translations:
+          - locale: ru
+            content: <p>2</p>
+          - locale: en
+            content: <p>2</p>
+    items:
+      - code: political-compass-02-economic-001
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Государство вообще не должно регулировать экономику
+          - locale: en
+            content: The government should not regulate the economy at all
+      - code: political-compass-02-economic-002
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Вмешательство государства в экономику почти всегда ослабляет
+              её
+          - locale: en
+            content: Governmental intervention in the economy almost always makes
+              the economy worse
+      - code: political-compass-02-economic-003
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Минимальной зарплаты (минимального размера оплаты труда) не должно
+              существовать
+          - locale: en
+            content: There should not be such thing as a minimum wage
+      - code: political-compass-02-economic-004
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Никто не должен платить больший процент налогов с дохода, чем
+              другие
+          - locale: en
+            content: No one should pay a higher percentage of tax on their income
+              than another
+      - code: political-compass-02-economic-005
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Чем меньше налогов, тем лучше
+          - locale: en
+            content: The less taxation, the better
+      - code: political-compass-02-economic-006
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Несправедливо облагать налогами наследство
+          - locale: en
+            content: It is unjust to tax an inheritance
+      - code: political-compass-02-economic-007
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Кто угодно должен иметь право заниматься любым бизнесом по своему
+              желанию
+          - locale: en
+            content: Anyone should have the right to run whatever business they want
+      - code: political-compass-02-economic-008
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: В идеале никакой национальной валюты быть не должно - пусть все
+              пользуются теми деньгами, какими хотят
+          - locale: en
+            content: Ideally, there should be no national currency - just let everyone
+              use whatever money they want
+      - code: political-compass-02-economic-009
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Нет ничего плохого в том, что какой-нибудь банк начнёт выпускать
+              собственные деньги
+          - locale: en
+            content: There's nothing wrong with a bank emitting its own money
+      - code: political-compass-02-economic-010
+        steps: 4
+        reverse: false
+        translations:
+          - locale: ru
+            content: Регулирование не избавляет от кризисов в экономике, а наоборот
+              - усугубляет или провоцирует их
+          - locale: en
+            content: Regulation does not eliminate crises in the economy, but rather
+              exacerbates or provokes them
+      - code: political-compass-02-economic-011
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Общественные объекты, такие как дороги и электростанции, должны
+              находиться в общественной собственности
+          - locale: en
+            content: Public facilities such as roads and power plants must be in public
+              ownership
+      - code: political-compass-02-economic-012
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Некоторые предприятия, такие как почтовые службы, должны быть
+              государственными
+          - locale: en
+            content: Some businesses, such as postal services, must be state-owned
+      - code: political-compass-02-economic-013
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Любые экономические проблемы могут и должны быть решены регулированием
+          - locale: en
+            content: Any economic problem can and should be solved by regulation
+      - code: political-compass-02-economic-014
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Прогрессивная шкала налогообложения - это хорошая идея
+          - locale: en
+            content: Progressive taxation is generally a good idea
+      - code: political-compass-02-economic-015
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Нельзя просто позволить людям вести какой угодно бизнес - нужна
+              система лицензий или что-то подобное
+          - locale: en
+            content: We can't just let people run whatever business they want - a
+              licensing system or something like that is needed
+      - code: political-compass-02-economic-016
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Нельзя позволить продавцам произвольно устаналивать цены на любые
+              товары
+          - locale: en
+            content: Distributors should not be allowed to arbitrarily set prices
+              for any goods
+      - code: political-compass-02-economic-017
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Бизнес нуждается в строгом надзоре, иначе неизбежны проблемы
+              и злоупотребления
+          - locale: en
+            content: Business needs strict supervision, otherwise problems and abuses
+              are inevitable
+      - code: political-compass-02-economic-018
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Желательно, чтобы люди разных профессий имели примерно одинаковый
+              доход
+          - locale: en
+            content: It is desirable that people of different professions have approximately
+              the same income
+      - code: political-compass-02-economic-019
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Зарплаты некоторых топ-менеджеров неоправданно высоки, и лучше
+              бы их ограничить
+          - locale: en
+            content: Salaries of some top managers are unreasonably high, and it would
+              be better to limit them
+      - code: political-compass-02-economic-020
+        steps: 4
+        reverse: true
+        translations:
+          - locale: ru
+            content: Нужно тщательно контролировать экспорт и импорт
+          - locale: en
+            content: Exporting and importing need to be carefully controlled
+questions:
+  - code: political-compass-001
+    order: 10
+    type: simple
+    items:
+      - code: political-compass-01-personal-001
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-002
+    order: 20
+    type: simple
+    items:
+      - code: political-compass-01-personal-002
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-003
+    order: 30
+    type: simple
+    items:
+      - code: political-compass-01-personal-003
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-004
+    order: 40
+    type: simple
+    items:
+      - code: political-compass-01-personal-004
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-005
+    order: 50
+    type: simple
+    items:
+      - code: political-compass-01-personal-005
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-006
+    order: 60
+    type: simple
+    items:
+      - code: political-compass-01-personal-006
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-007
+    order: 70
+    type: simple
+    items:
+      - code: political-compass-01-personal-007
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-008
+    order: 80
+    type: simple
+    items:
+      - code: political-compass-01-personal-008
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-009
+    order: 90
+    type: simple
+    items:
+      - code: political-compass-01-personal-009
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-010
+    order: 100
+    type: simple
+    items:
+      - code: political-compass-01-personal-010
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-011
+    order: 110
+    type: simple
+    items:
+      - code: political-compass-01-personal-011
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-012
+    order: 120
+    type: simple
+    items:
+      - code: political-compass-01-personal-012
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-013
+    order: 130
+    type: simple
+    items:
+      - code: political-compass-01-personal-013
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-014
+    order: 140
+    type: simple
+    items:
+      - code: political-compass-01-personal-014
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-015
+    order: 150
+    type: simple
+    items:
+      - code: political-compass-01-personal-015
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-016
+    order: 160
+    type: simple
+    items:
+      - code: political-compass-01-personal-016
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-017
+    order: 170
+    type: simple
+    items:
+      - code: political-compass-01-personal-017
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-018
+    order: 180
+    type: simple
+    items:
+      - code: political-compass-01-personal-018
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-019
+    order: 190
+    type: simple
+    items:
+      - code: political-compass-01-personal-019
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-020
+    order: 200
+    type: simple
+    items:
+      - code: political-compass-01-personal-020
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-021
+    order: 210
+    type: simple
+    items:
+      - code: political-compass-02-economic-001
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-022
+    order: 220
+    type: simple
+    items:
+      - code: political-compass-02-economic-002
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-023
+    order: 230
+    type: simple
+    items:
+      - code: political-compass-02-economic-003
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-024
+    order: 240
+    type: simple
+    items:
+      - code: political-compass-02-economic-004
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-025
+    order: 250
+    type: simple
+    items:
+      - code: political-compass-02-economic-005
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-026
+    order: 260
+    type: simple
+    items:
+      - code: political-compass-02-economic-006
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-027
+    order: 270
+    type: simple
+    items:
+      - code: political-compass-02-economic-007
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-028
+    order: 280
+    type: simple
+    items:
+      - code: political-compass-02-economic-008
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-029
+    order: 290
+    type: simple
+    items:
+      - code: political-compass-02-economic-009
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-030
+    order: 300
+    type: simple
+    items:
+      - code: political-compass-02-economic-010
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-031
+    order: 310
+    type: simple
+    items:
+      - code: political-compass-02-economic-011
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-032
+    order: 320
+    type: simple
+    items:
+      - code: political-compass-02-economic-012
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-033
+    order: 330
+    type: simple
+    items:
+      - code: political-compass-02-economic-013
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-034
+    order: 340
+    type: simple
+    items:
+      - code: political-compass-02-economic-014
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-035
+    order: 350
+    type: simple
+    items:
+      - code: political-compass-02-economic-015
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-036
+    order: 360
+    type: simple
+    items:
+      - code: political-compass-02-economic-016
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-037
+    order: 370
+    type: simple
+    items:
+      - code: political-compass-02-economic-017
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-038
+    order: 380
+    type: simple
+    items:
+      - code: political-compass-02-economic-018
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-039
+    order: 390
+    type: simple
+    items:
+      - code: political-compass-02-economic-019
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+  - code: political-compass-040
+    order: 400
+    type: simple
+    items:
+      - code: political-compass-02-economic-020
+    translations:
+      - locale: ru
+        content: Насколько вы согласны с этим утверждением?
+      - locale: en
+        content: ''
+display:
+  questionsPerPage: 1
+  randomizeOrder: true
