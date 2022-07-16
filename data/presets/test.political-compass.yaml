@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-17 02:28:40
+# at: 2022-07-17 02:30:51
 # template: ../data/templates/ctt-v1/political-compass.yaml
 code: political-compass
 published: true
@@ -292,7 +292,7 @@ scales:
         abbreviation: ЭКОН
       - locale: en
         title: Economic freedom
-        description: Business, traid, taxation, inheritance
+        description: Business, trade, taxation, inheritance
         abbreviation: ECON
     interpretations:
       - range:

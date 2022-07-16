@@ -74,7 +74,7 @@ scales:
             которое вам самим кажется нерациональным. Скорее всего, вы бы сказали, что свобода и права важнее, чем физическое благополучие, и 
             людям в полной мере можно доверить принимать решения по поводу их жизни и нести ответственность за их последствия.</p>
   economic:
-    en: ["Economic freedom", "Business, traid, taxation, inheritance", "ECON"] # title, description, abbreviation
+    en: ["Economic freedom", "Business, trade, taxation, inheritance", "ECON"] # title, description, abbreviation
     ru: ["Экономическая свобода", "Бизнес, торговля, налоги, наследство", "ЭКОН"] # title, description, abbreviation
     interpretations: 
       - en: <p>You think that the state/society should strictly control the economic activities of its citizens. 
