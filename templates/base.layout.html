@@ -4,11 +4,11 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
-  <title>{{ template "title" . }} | Orrery</title>
-  <meta name="description" content='{{ template "description" . }}'>
+  <title>{{ template "title" .Assigns }} | Orrery</title>
+  <meta name="description" content='{{ template "description" .Assigns }}'>
 
-  {{ if .User }}
-  {{ if .User.UseDarkTheme }}
+  {{ if .Assigns.User }}
+  {{ if .Assigns.User.UseDarkTheme }}
   <link rel="stylesheet" href="/static/css/styles-dark.css" />
   {{ else }}
   <link rel="stylesheet" href="/static/css/styles.css" />
@@ -20,8 +20,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
 
-  {{ if .Env }}
-  {{ if ne .Env "dev" }}
+  {{ if .Assigns.Env }}
+  {{ if ne .Assigns.Env "dev" }}
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <!-- FIXME probably need to move id to config  -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3CZLMS4YNP"></script>
@@ -41,35 +41,35 @@
   </div>
 
   <!-- debug start -->
-  {{ if .Env }}
-  {{ if eq .Env "dev1" }}
+  {{ if .Assigns.Env }}
+  {{ if eq .Assigns.Env "dev1" }}
   <div class="box">
     <p class="heading">Debug info</p>
-    <p><b>Session: </b>{{ .Session }}</p>
-    <p><b>Error: </b>{{ .Error }}</p>
-    <p><b>User: </b>{{ .User }}</p>
+    <p><b>Session: </b>{{ .Assigns.Session }}</p>
+    <p><b>Error: </b>{{ .Assigns.Error }}</p>
+    <p><b>User: </b>{{ .Assigns.User }}</p>
   </div>
   {{ end }}
   {{ end }}
   <!-- debug end -->
-  {{ if and (ne .CurrentView "test") (ne .CurrentView "result") }}
-  {{ template "navigation" . }}
-  {{ template "navigation-mobile" . }}
+  {{ if and (ne .Assigns.CurrentView "test") (ne .Assigns.CurrentView "result") }}
+  {{ template "navigation" .Assigns }}
+  {{ template "navigation-mobile" .Assigns }}
   {{ end }}
   <div class="planet planet1"></div>
   <section class="section">
-    {{ if .Error }}
-    {{ template "alert-warning" .Error }}
+    {{ if .Assigns.Error }}
+    {{ template "alert-warning" .Assigns.Error }}
     {{ end }}
-    {{ if .Message }}
-    {{ template "alert-success" .Message }}
+    {{ if .Assigns.Message }}
+    {{ template "alert-success" .Assigns.Message }}
     {{ end }}
     <div id="main-view-content" class="container">
-      {{ template "view" . }}
+      {{ template "view" .Assigns }}
       <script type="text/javascript" src="/live.js"></script>
     </div>
-    {{ if eq .CurrentView "fakeview" }}
-    {{ if not .User }}
+    {{ if eq .Assigns.CurrentView "fakeview" }}
+    {{ if not .Assigns.User }}
     <div class="container box">
       <h3 class="title is-3 is-size-5-mobile has-text-centered">Войдите, чтобы оставлять прогнозы</h3>
       {{ template "login-block" }}
@@ -77,12 +77,12 @@
     {{ end }}
     {{ end }}
   </section>
-  {{ template "footer" . }}
-  {{ if .ShowLoginModal }}
-  {{ template "login-modal" . }}
+  {{ template "footer" .Assigns }}
+  {{ if .Assigns.ShowLoginModal }}
+  {{ template "login-modal" .Assigns }}
   {{ end }}
-  {{ if .ShowLogoutModal }}
-  {{ template "logout-modal" . }}
+  {{ if .Assigns.ShowLogoutModal }}
+  {{ template "logout-modal" .Assigns }}
   {{ end }}
 </body>
 
