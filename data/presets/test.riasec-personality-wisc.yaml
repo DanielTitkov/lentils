@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - career
-forceUpdate: true
+forceUpdate: false
 translations:
   - locale: en
     title: RIASEC (personality)

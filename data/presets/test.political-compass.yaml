@@ -9,7 +9,7 @@ availableLocales:
   - en
 tags:
   - politics
-forceUpdate: true
+forceUpdate: false
 translations:
   - locale: ru
     title: Политический Компас

@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - short
-forceUpdate: true
+forceUpdate: false
 translations:
   - locale: en
     title: TIPI
