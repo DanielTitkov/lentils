@@ -708,6 +708,11 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		}
 	}
 
+	var duration time.Duration
+	if t.Duration != nil {
+		duration = *t.Duration
+	}
+
 	return &domain.Test{
 		ID:               t.ID,
 		Code:             t.Code,
@@ -715,7 +720,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		AvailableLocales: t.AvailableLocales,
 		Mark:             t.Mark,
 		QuestionCount:    t.QuestionCount,
-		Duration:         *t.Duration,
+		Duration:         duration,
 		Locale:           locale,
 		Title:            title,
 		Description:      description,

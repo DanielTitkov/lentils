@@ -14,6 +14,8 @@ app:
   updateNormsTimeout: 35000 # milliseconds
   updateMarksSchedule: "50 1 * * *"
   updateMarksTimeout: 35000 # milliseconds
+  updateDurationsSchedule: "55 1 * * *"
+  updateDurationsTimeout: 35000
   defaultTimeLayout: "2006-01-02"
   version: {{version}}
 debug:
