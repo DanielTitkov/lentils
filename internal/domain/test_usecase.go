@@ -244,7 +244,7 @@ func (t *Test) ResultShareText() string {
 		if s.Result == nil {
 			continue
 		}
-		if utf8.RuneCountInString(res) > 220 {
+		if utf8.RuneCountInString(res) > 215 {
 			// otherwise it won't fit in a tweet
 			res += "\n..."
 			break

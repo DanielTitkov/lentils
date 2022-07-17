@@ -198,9 +198,11 @@ func (s *Scale) ResultShareText() string {
 	shareRes := s.Result.Score / s.Result.Max * ShareScaleLen
 
 	return fmt.Sprintf(
-		"%s: %s%s\n",
+		"%s: %s%s (%.1f%s)\n",
 		s.Abbreviation,
 		strings.Repeat(ShareScaleUnit, int(math.Round(shareRes))),
 		strings.Repeat(ShareScaleUnitEmpty, ShareScaleLen-int(math.Round(shareRes))),
+		s.Result.Score,
+		s.Result.Unit,
 	)
 }
