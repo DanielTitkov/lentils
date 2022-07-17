@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/tinygodsdev/orrery/internal/configs"
-	"github.com/tinygodsdev/orrery/internal/handler"
 	"github.com/gorilla/mux"
 	"github.com/jfyne/live"
+	"github.com/tinygodsdev/orrery/internal/configs"
+	"github.com/tinygodsdev/orrery/internal/handler"
 )
 
 func Mux(cfg configs.Config, store live.HttpSessionStore, h *handler.Handler) *mux.Router {

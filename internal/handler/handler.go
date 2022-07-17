@@ -187,6 +187,13 @@ func (h *Handler) url404() *url.URL {
 	return u
 }
 
+func (h *Handler) HandleError(ctx context.Context, err error) {
+	h.log.Error("got bad request", err)
+	w := live.Writer(ctx)
+	w.WriteHeader(http.StatusBadRequest)
+	w.Write([]byte("bad request: " + err.Error()))
+}
+
 func (h *Handler) NotFoundRedirect(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, h.url404().String(), http.StatusTemporaryRedirect)
 }

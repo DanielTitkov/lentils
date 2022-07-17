@@ -136,6 +136,10 @@ func (h *Handler) Admin() live.Handler {
 			}
 			return instance, nil
 		})
+
+		lvh.HandleError(func(ctx context.Context, err error) {
+			h.HandleError(ctx, err)
+		})
 		// SAFE TO COPY END
 	}
 	// COMMON BLOCK END

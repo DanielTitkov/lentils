@@ -4,8 +4,8 @@ import (
 	"context"
 	"html/template"
 
-	"github.com/tinygodsdev/orrery/internal/domain"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/domain"
 
 	"github.com/jfyne/live"
 )
@@ -138,6 +138,10 @@ func (h *Handler) Profile() live.Handler {
 				return nil, err
 			}
 			return instance, nil
+		})
+
+		lvh.HandleError(func(ctx context.Context, err error) {
+			h.HandleError(ctx, err)
 		})
 		// SAFE TO COPY END
 	}

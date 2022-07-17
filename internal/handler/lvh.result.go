@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"html/template"
-	"net/http"
 
 	"github.com/google/uuid"
 
@@ -150,6 +149,10 @@ func (h *Handler) Result() live.Handler {
 			}
 			return instance, nil
 		})
+
+		lvh.HandleError(func(ctx context.Context, err error) {
+			h.HandleError(ctx, err)
+		})
 		// SAFE TO COPY END
 	}
 	// COMMON BLOCK END
@@ -186,12 +189,6 @@ func (h *Handler) Result() live.Handler {
 		instance := h.NewResultInstance(s)
 		instance.ShowInstruction = !instance.ShowInstruction
 		return instance, nil
-	})
-
-	lvh.HandleError(func(ctx context.Context, err error) {
-		w := live.Writer(ctx)
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("bad request: " + err.Error()))
 	})
 
 	return lvh

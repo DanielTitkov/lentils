@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"net/http"
 
 	"github.com/tinygodsdev/orrery/internal/util"
 
@@ -180,6 +179,10 @@ func (h *Handler) Test() live.Handler {
 			}
 			return instance, nil
 		})
+
+		lvh.HandleError(func(ctx context.Context, err error) {
+			h.HandleError(ctx, err)
+		})
 		// SAFE TO COPY END
 	}
 	// COMMON BLOCK END
@@ -276,12 +279,6 @@ func (h *Handler) Test() live.Handler {
 		instance.CurrentQuestions = instance.Test.QuestionsForPage(instance.Page)
 
 		return instance, nil
-	})
-
-	lvh.HandleError(func(ctx context.Context, err error) {
-		w := live.Writer(ctx)
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("this is a bad request: " + err.Error()))
 	})
 
 	lvh.HandleEvent(eventResponseUpdate, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
