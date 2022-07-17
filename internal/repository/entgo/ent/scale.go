@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
 )
 
 // Scale is the model entity for the Scale schema.

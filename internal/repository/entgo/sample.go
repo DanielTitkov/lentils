@@ -3,9 +3,9 @@ package entgo
 import (
 	"context"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/sample"
+	"github.com/tinygodsdev/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/sample"
 )
 
 func (r *EntgoRepository) GetSamples(ctx context.Context) ([]*domain.Sample, error) {

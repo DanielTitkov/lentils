@@ -11,12 +11,12 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/question"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/questiontranslation"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/item"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/question"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/questiontranslation"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/test"
 )
 
 // QuestionQuery is the builder for querying Question entities.

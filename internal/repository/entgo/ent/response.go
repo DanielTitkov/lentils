@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/response"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/item"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/response"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/take"
 )
 
 // Response is the model entity for the Response schema.

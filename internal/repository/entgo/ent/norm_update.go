@@ -11,11 +11,11 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/norm"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/sample"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/norm"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/sample"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
 )
 
 // NormUpdate is the builder for updating Norm entities.

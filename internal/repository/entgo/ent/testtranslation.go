@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/testtranslation"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/test"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/testtranslation"
 )
 
 // TestTranslation is the model entity for the TestTranslation schema.

@@ -7,7 +7,7 @@ import (
 	"github.com/markbates/goth"
 	"github.com/sethvargo/go-password/password"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 	"golang.org/x/crypto/bcrypt"
 )
 

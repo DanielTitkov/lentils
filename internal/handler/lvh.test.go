@@ -7,9 +7,9 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/DanielTitkov/orrery/internal/util"
+	"github.com/tinygodsdev/orrery/internal/util"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 
 	"github.com/gorilla/mux"
 	"github.com/jfyne/live"

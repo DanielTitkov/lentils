@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 	"github.com/google/uuid"
 )
 

@@ -9,10 +9,10 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scaleitem"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/item"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scaleitem"
 )
 
 // ScaleItemCreate is the builder for creating a ScaleItem entity.

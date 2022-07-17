@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/result"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/result"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/take"
 )
 
 // Result is the model entity for the Result schema.

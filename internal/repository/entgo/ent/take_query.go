@@ -11,13 +11,13 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/response"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/result"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/user"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/response"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/result"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/take"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/test"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/user"
 )
 
 // TakeQuery is the builder for querying Take entities.

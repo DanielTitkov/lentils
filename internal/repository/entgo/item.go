@@ -1,8 +1,8 @@
 package entgo
 
 import (
-	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
 	"github.com/google/uuid"
 )
 

@@ -1,4 +1,4 @@
-module github.com/DanielTitkov/orrery
+module github.com/tinygodsdev/orrery
 
 go 1.16
 

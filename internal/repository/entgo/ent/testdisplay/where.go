@@ -5,8 +5,8 @@ package testdisplay
 import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.

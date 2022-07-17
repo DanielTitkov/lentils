@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/DanielTitkov/orrery/internal/configs"
+	"github.com/tinygodsdev/orrery/internal/configs"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 	"github.com/jfyne/live"
 )
 

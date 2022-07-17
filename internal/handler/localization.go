@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 )
 
 type (

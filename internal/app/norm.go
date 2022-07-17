@@ -7,9 +7,9 @@ import (
 
 	"go.uber.org/multierr"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 
-	"github.com/DanielTitkov/orrery/internal/util"
+	"github.com/tinygodsdev/orrery/internal/util"
 	"github.com/montanaflynn/stats"
 )
 

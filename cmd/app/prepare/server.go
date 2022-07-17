@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/DanielTitkov/orrery/internal/configs"
-	"github.com/DanielTitkov/orrery/internal/handler"
+	"github.com/tinygodsdev/orrery/internal/configs"
+	"github.com/tinygodsdev/orrery/internal/handler"
 	"github.com/gorilla/mux"
 	"github.com/jfyne/live"
 )

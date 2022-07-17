@@ -3,12 +3,12 @@ package entgo
 import (
 	"context"
 
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/take"
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
 )
 
 func (r *EntgoRepository) FinishedTakeCount(ctx context.Context) (int, error) {

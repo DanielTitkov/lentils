@@ -10,10 +10,10 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/response"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/item"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/response"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/take"
 )
 
 // ResponseCreate is the builder for creating a Response entity.

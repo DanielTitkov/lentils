@@ -8,8 +8,8 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scaleitem"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scaleitem"
 )
 
 // ScaleItemDelete is the builder for deleting a ScaleItem entity.

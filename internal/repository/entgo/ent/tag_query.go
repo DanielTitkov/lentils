@@ -11,11 +11,11 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tag"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tagtranslation"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/tag"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/tagtranslation"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/test"
 )
 
 // TagQuery is the builder for querying Tag entities.

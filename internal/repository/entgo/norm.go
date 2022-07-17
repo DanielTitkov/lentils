@@ -5,12 +5,12 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/sample"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/sample"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/norm"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
+	"github.com/tinygodsdev/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/norm"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
 )
 
 func (r *EntgoRepository) GetScaleNorms(ctx context.Context, scaleID uuid.UUID, sampleIDs []uuid.UUID) ([]*domain.Norm, error) {

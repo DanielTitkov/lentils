@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/DanielTitkov/orrery/internal/util"
+	"github.com/tinygodsdev/orrery/internal/util"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 	"gopkg.in/yaml.v2"
 )
 

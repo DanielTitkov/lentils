@@ -10,10 +10,10 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/testdisplay"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/test"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/testdisplay"
 )
 
 // TestDisplayUpdate is the builder for updating TestDisplay entities.

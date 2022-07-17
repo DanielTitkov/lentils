@@ -3,7 +3,7 @@ package prepare
 import (
 	"net/http"
 
-	"github.com/DanielTitkov/orrery/internal/configs"
+	"github.com/tinygodsdev/orrery/internal/configs"
 	"github.com/jfyne/live"
 )
 

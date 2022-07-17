@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/DanielTitkov/orrery/internal/util"
+	"github.com/tinygodsdev/orrery/internal/util"
 
-	"github.com/DanielTitkov/orrery/internal/configs"
-	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/DanielTitkov/orrery/internal/logger"
+	"github.com/tinygodsdev/orrery/internal/configs"
+	"github.com/tinygodsdev/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/logger"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 )

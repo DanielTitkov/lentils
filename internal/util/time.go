@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/DanielTitkov/orrery/internal/logger"
+	"github.com/tinygodsdev/orrery/internal/logger"
 )
 
 func InfoExecutionTime(start time.Time, name string, logger *logger.Logger) {

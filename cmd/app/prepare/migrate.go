@@ -3,8 +3,8 @@ package prepare
 import (
 	"context"
 
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/migrate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/migrate"
 )
 
 func Migrate(ctx context.Context, client *ent.Client) error {

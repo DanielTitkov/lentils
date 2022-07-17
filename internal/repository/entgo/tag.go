@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tag"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tagtranslation"
+	"github.com/tinygodsdev/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/tag"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/tagtranslation"
 	"github.com/google/uuid"
 )
 

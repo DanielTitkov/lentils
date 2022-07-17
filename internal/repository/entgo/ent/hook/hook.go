@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
 )
 
 // The InterpretationFunc type is an adapter to allow the use of ordinary

@@ -5,8 +5,8 @@ package scaleitem
 import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
 )
 
 // Reverse applies equality check predicate on the "reverse" field. It's identical to ReverseEQ.

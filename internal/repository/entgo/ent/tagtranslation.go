@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tag"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/tagtranslation"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/tag"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/tagtranslation"
 )
 
 // TagTranslation is the model entity for the TagTranslation schema.

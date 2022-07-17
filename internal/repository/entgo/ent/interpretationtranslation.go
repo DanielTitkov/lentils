@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/interpretation"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/interpretationtranslation"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/interpretation"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/interpretationtranslation"
 )
 
 // InterpretationTranslation is the model entity for the InterpretationTranslation schema.

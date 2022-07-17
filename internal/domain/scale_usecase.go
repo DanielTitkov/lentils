@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/DanielTitkov/orrery/internal/util"
+	"github.com/tinygodsdev/orrery/internal/util"
 )
 
 type scaleResolveFunc func(*Scale, *Norm) (*ScaleResult, error)

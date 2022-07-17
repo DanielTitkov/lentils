@@ -5,9 +5,9 @@ import (
 
 	"go.uber.org/multierr"
 
-	"github.com/DanielTitkov/orrery/internal/app"
-	"github.com/DanielTitkov/orrery/internal/configs"
-	"github.com/DanielTitkov/orrery/internal/logger"
+	"github.com/tinygodsdev/orrery/internal/app"
+	"github.com/tinygodsdev/orrery/internal/configs"
+	"github.com/tinygodsdev/orrery/internal/logger"
 	"github.com/go-co-op/gocron"
 )
 

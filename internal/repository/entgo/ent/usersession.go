@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/user"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/usersession"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/user"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/usersession"
 )
 
 // UserSession is the model entity for the UserSession schema.

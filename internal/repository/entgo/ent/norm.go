@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/norm"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/sample"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/norm"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/sample"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
 )
 
 // Norm is the model entity for the Norm schema.

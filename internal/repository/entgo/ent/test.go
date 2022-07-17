@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/testdisplay"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/test"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/testdisplay"
 )
 
 // Test is the model entity for the Test schema.

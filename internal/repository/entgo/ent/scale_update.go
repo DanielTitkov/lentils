@@ -11,15 +11,15 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/interpretation"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/norm"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/predicate"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/result"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scaletranslation"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/test"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/interpretation"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/item"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/norm"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/predicate"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/result"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scaletranslation"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/test"
 )
 
 // ScaleUpdate is the builder for updating Scale entities.

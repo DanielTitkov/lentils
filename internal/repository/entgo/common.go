@@ -3,7 +3,7 @@ package entgo
 import (
 	"fmt"
 
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
 )
 
 // rollback calls to tx.Rollback and wraps the given error

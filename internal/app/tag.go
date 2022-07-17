@@ -7,7 +7,7 @@ import (
 
 	"go.uber.org/multierr"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 	"gopkg.in/yaml.v2"
 )
 

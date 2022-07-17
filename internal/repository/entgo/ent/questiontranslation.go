@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/question"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/questiontranslation"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/question"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/questiontranslation"
 )
 
 // QuestionTranslation is the model entity for the QuestionTranslation schema.

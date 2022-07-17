@@ -6,7 +6,7 @@ import (
 
 	"go.uber.org/multierr"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 )
 
 func (a *App) initSamples() error {

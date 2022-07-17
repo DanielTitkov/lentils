@@ -3,11 +3,11 @@ package entgo
 import (
 	"context"
 
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/result"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/take"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/result"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/take"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent"
+	"github.com/tinygodsdev/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
 )
 
 // GetDataForNormCalculation return data for 1 norm for all scales

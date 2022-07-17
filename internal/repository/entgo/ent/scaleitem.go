@@ -7,10 +7,10 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/item"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scale"
-	"github.com/DanielTitkov/orrery/internal/repository/entgo/ent/scaleitem"
 	"github.com/google/uuid"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/item"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scale"
+	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/scaleitem"
 )
 
 // ScaleItem is the model entity for the ScaleItem schema.

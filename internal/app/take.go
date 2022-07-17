@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 
-	"github.com/DanielTitkov/orrery/internal/domain"
+	"github.com/tinygodsdev/orrery/internal/domain"
 	"github.com/google/uuid"
 )
 
