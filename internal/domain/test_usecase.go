@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"reflect"
 	"sort"
+	"time"
 	"unicode/utf8"
 
 	"github.com/montanaflynn/stats"
@@ -111,6 +112,27 @@ func (t *Test) CalculateResult() error {
 	}
 
 	return nil
+}
+
+func (t *Test) DefaultDuration() time.Duration {
+	return (time.Duration(len(t.Questions)) * time.Second * 4).Truncate(5 * time.Second)
+}
+
+func (t *Test) CalculateDuration() time.Duration {
+	if len(t.Takes) < NormMinBase {
+		return t.DefaultDuration()
+	}
+
+	var vals []float64
+	for _, take := range t.Takes {
+		vals = append(vals, float64(take.Elapsed()))
+	}
+	duration, err := stats.Median(vals)
+	if err != nil {
+		return t.DefaultDuration()
+	}
+
+	return time.Duration(duration).Truncate(5 * time.Second)
 }
 
 func (t *Test) CalculateMark() float64 {

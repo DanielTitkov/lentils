@@ -31,6 +31,8 @@ type Test struct {
 	AvailableLocales []string `json:"available_locales,omitempty"`
 	// Mark holds the value of the "mark" field.
 	Mark float64 `json:"mark,omitempty"`
+	// Duration holds the value of the "duration" field.
+	Duration *time.Duration `json:"duration,omitempty"`
 	// QuestionCount holds the value of the "question_count" field.
 	QuestionCount int `json:"question_count,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -127,7 +129,7 @@ func (*Test) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case test.FieldMark:
 			values[i] = new(sql.NullFloat64)
-		case test.FieldQuestionCount:
+		case test.FieldDuration, test.FieldQuestionCount:
 			values[i] = new(sql.NullInt64)
 		case test.FieldCode:
 			values[i] = new(sql.NullString)
@@ -193,6 +195,13 @@ func (t *Test) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field mark", values[i])
 			} else if value.Valid {
 				t.Mark = value.Float64
+			}
+		case test.FieldDuration:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field duration", values[i])
+			} else if value.Valid {
+				t.Duration = new(time.Duration)
+				*t.Duration = time.Duration(value.Int64)
 			}
 		case test.FieldQuestionCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -275,6 +284,11 @@ func (t *Test) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("mark=")
 	builder.WriteString(fmt.Sprintf("%v", t.Mark))
+	builder.WriteString(", ")
+	if v := t.Duration; v != nil {
+		builder.WriteString("duration=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("question_count=")
 	builder.WriteString(fmt.Sprintf("%v", t.QuestionCount))

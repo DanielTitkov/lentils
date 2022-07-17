@@ -232,6 +232,33 @@ func (a *App) loadTestPresets() (errs error) {
 	return errs
 }
 
+func (a *App) UpdateTestDurations(ctx context.Context) error {
+	tests, err := a.repo.GetDataForDurationCalculation(ctx)
+	if err != nil {
+		return err
+	}
+
+	var errs error
+	for _, test := range tests {
+		if len(test.Takes) == 0 {
+			continue
+		}
+
+		err := a.repo.UpdateTestDuration(ctx, test.ID, test.CalculateDuration())
+		if err != nil {
+			a.log.Error("failed to update test duration", err)
+			if a.IsDev() {
+				return err
+			} else {
+				errs = multierr.Append(errs, err)
+				continue
+			}
+		}
+	}
+
+	return errs
+}
+
 func (a *App) UpdateTestMarks(ctx context.Context) error {
 	tests, err := a.repo.GetDataForMarkCalculation(ctx)
 	if err != nil {

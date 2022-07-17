@@ -6,11 +6,11 @@ import (
 
 	"github.com/tinygodsdev/orrery/internal/util"
 
+	"github.com/google/uuid"
+	"github.com/gorilla/sessions"
 	"github.com/tinygodsdev/orrery/internal/configs"
 	"github.com/tinygodsdev/orrery/internal/domain"
 	"github.com/tinygodsdev/orrery/internal/logger"
-	"github.com/google/uuid"
-	"github.com/gorilla/sessions"
 )
 
 type (
@@ -44,7 +44,9 @@ type (
 		GetTestByCode(ctx context.Context, code string, locale string) (*domain.Test, error)
 		GetTakeData(ctx context.Context, take *domain.Take, locale string) (*domain.Test, error)
 		GetDataForMarkCalculation(ctx context.Context) ([]*domain.Test, error)
+		GetDataForDurationCalculation(ctx context.Context) ([]*domain.Test, error)
 		UpdateTestMark(ctx context.Context, testID uuid.UUID, mark float64) error
+		UpdateTestDuration(ctx context.Context, testID uuid.UUID, duration time.Duration) error
 
 		// take
 		GetTake(ctx context.Context, takeID uuid.UUID) (*domain.Take, error)

@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
@@ -22,6 +24,7 @@ func (Test) Fields() []ent.Field {
 		field.Bool("published").Default(true),
 		field.Strings("available_locales").Optional(),
 		field.Float("mark").Default(3),
+		field.Int64("duration").Optional().Nillable().GoType(time.Duration(0)),
 		field.Int("question_count").NonNegative().Default(1),
 	}
 }

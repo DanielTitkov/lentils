@@ -5,10 +5,10 @@ import (
 
 	"go.uber.org/multierr"
 
+	"github.com/go-co-op/gocron"
 	"github.com/tinygodsdev/orrery/internal/app"
 	"github.com/tinygodsdev/orrery/internal/configs"
 	"github.com/tinygodsdev/orrery/internal/logger"
-	"github.com/go-co-op/gocron"
 )
 
 type Job struct {
@@ -60,6 +60,11 @@ func (j *Job) scheduleTasks() (errs error) {
 	}
 	// update test marks
 	_, err = j.scheduler.Cron(j.cfg.App.UpdateMarksSchedule).Tag("marks").Do(j.UpdateMarks)
+	if err != nil {
+		errs = multierr.Append(errs, err)
+	}
+	// update durations
+	_, err = j.scheduler.Cron(j.cfg.App.UpdateDurationsSchedule).Tag("durations").Do(j.UpdateDurations)
 	if err != nil {
 		errs = multierr.Append(errs, err)
 	}

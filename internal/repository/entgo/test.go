@@ -20,6 +20,7 @@ import (
 
 	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/response"
 
+	"github.com/google/uuid"
 	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent"
 	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/item"
 	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/itemtranslation"
@@ -31,7 +32,6 @@ import (
 	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/testdisplay"
 	"github.com/tinygodsdev/orrery/internal/repository/entgo/ent/testtranslation"
 	"github.com/tinygodsdev/orrery/internal/util"
-	"github.com/google/uuid"
 
 	"github.com/tinygodsdev/orrery/internal/domain"
 )
@@ -593,6 +593,29 @@ func (r *EntgoRepository) invalidateNorms(tx *ent.Tx, ctx context.Context, scale
 	return nil
 }
 
+func (r *EntgoRepository) GetDataForDurationCalculation(ctx context.Context) ([]*domain.Test, error) {
+	tests, err := r.client.Test.Query().
+		WithTakes(func(q *ent.TakeQuery) {
+			q.Where(take.And(
+				take.StartTimeNotNil(),
+				take.EndTimeNotNil(),
+				take.SuspiciousEQ(false),
+			))
+		}).
+		WithQuestions().
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []*domain.Test
+	for _, t := range tests {
+		res = append(res, entToDomainTest(t, domain.DefaultLocale()))
+	}
+
+	return res, nil
+}
+
 func (r *EntgoRepository) GetDataForMarkCalculation(ctx context.Context) ([]*domain.Test, error) {
 	tests, err := r.client.Test.Query().
 		WithTakes(func(q *ent.TakeQuery) {
@@ -613,6 +636,15 @@ func (r *EntgoRepository) GetDataForMarkCalculation(ctx context.Context) ([]*dom
 
 func (r *EntgoRepository) UpdateTestMark(ctx context.Context, testID uuid.UUID, mark float64) error {
 	_, err := r.client.Test.UpdateOneID(testID).SetMark(mark).Save(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *EntgoRepository) UpdateTestDuration(ctx context.Context, testID uuid.UUID, duration time.Duration) error {
+	_, err := r.client.Test.UpdateOneID(testID).SetDuration(duration).Save(ctx)
 	if err != nil {
 		return err
 	}
@@ -683,6 +715,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		AvailableLocales: t.AvailableLocales,
 		Mark:             t.Mark,
 		QuestionCount:    t.QuestionCount,
+		Duration:         *t.Duration,
 		Locale:           locale,
 		Title:            title,
 		Description:      description,

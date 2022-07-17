@@ -26,6 +26,7 @@ type (
 		Tags              []*Tag
 		Display           TestDisplay
 		Mark              float64
+		Duration          time.Duration
 		QuestionCount     int     // for display (and less joins in requests)
 		Take              *Take   // for use in handler
 		Takes             []*Take // for calculations

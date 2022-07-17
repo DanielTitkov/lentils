@@ -25,6 +25,8 @@ const (
 	FieldAvailableLocales = "available_locales"
 	// FieldMark holds the string denoting the mark field in the database.
 	FieldMark = "mark"
+	// FieldDuration holds the string denoting the duration field in the database.
+	FieldDuration = "duration"
 	// FieldQuestionCount holds the string denoting the question_count field in the database.
 	FieldQuestionCount = "question_count"
 	// EdgeTakes holds the string denoting the takes edge name in mutations.
@@ -88,6 +90,7 @@ var Columns = []string{
 	FieldPublished,
 	FieldAvailableLocales,
 	FieldMark,
+	FieldDuration,
 	FieldQuestionCount,
 }
 

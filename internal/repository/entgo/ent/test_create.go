@@ -95,6 +95,20 @@ func (tc *TestCreate) SetNillableMark(f *float64) *TestCreate {
 	return tc
 }
 
+// SetDuration sets the "duration" field.
+func (tc *TestCreate) SetDuration(t time.Duration) *TestCreate {
+	tc.mutation.SetDuration(t)
+	return tc
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (tc *TestCreate) SetNillableDuration(t *time.Duration) *TestCreate {
+	if t != nil {
+		tc.SetDuration(*t)
+	}
+	return tc
+}
+
 // SetQuestionCount sets the "question_count" field.
 func (tc *TestCreate) SetQuestionCount(i int) *TestCreate {
 	tc.mutation.SetQuestionCount(i)
@@ -433,6 +447,14 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 			Column: test.FieldMark,
 		})
 		_node.Mark = value
+	}
+	if value, ok := tc.mutation.Duration(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: test.FieldDuration,
+		})
+		_node.Duration = &value
 	}
 	if value, ok := tc.mutation.QuestionCount(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

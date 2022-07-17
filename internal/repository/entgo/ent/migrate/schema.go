@@ -435,6 +435,7 @@ var (
 		{Name: "published", Type: field.TypeBool, Default: true},
 		{Name: "available_locales", Type: field.TypeJSON, Nullable: true},
 		{Name: "mark", Type: field.TypeFloat64, Default: 3},
+		{Name: "duration", Type: field.TypeInt64, Nullable: true},
 		{Name: "question_count", Type: field.TypeInt, Default: 1},
 	}
 	// TestsTable holds the schema information for the "tests" table.

@@ -11326,6 +11326,8 @@ type TestMutation struct {
 	available_locales   *[]string
 	mark                *float64
 	addmark             *float64
+	duration            *time.Duration
+	addduration         *time.Duration
 	question_count      *int
 	addquestion_count   *int
 	clearedFields       map[string]struct{}
@@ -11702,6 +11704,76 @@ func (m *TestMutation) AddedMark() (r float64, exists bool) {
 func (m *TestMutation) ResetMark() {
 	m.mark = nil
 	m.addmark = nil
+}
+
+// SetDuration sets the "duration" field.
+func (m *TestMutation) SetDuration(t time.Duration) {
+	m.duration = &t
+	m.addduration = nil
+}
+
+// Duration returns the value of the "duration" field in the mutation.
+func (m *TestMutation) Duration() (r time.Duration, exists bool) {
+	v := m.duration
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDuration returns the old "duration" field's value of the Test entity.
+// If the Test object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestMutation) OldDuration(ctx context.Context) (v *time.Duration, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDuration is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDuration requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDuration: %w", err)
+	}
+	return oldValue.Duration, nil
+}
+
+// AddDuration adds t to the "duration" field.
+func (m *TestMutation) AddDuration(t time.Duration) {
+	if m.addduration != nil {
+		*m.addduration += t
+	} else {
+		m.addduration = &t
+	}
+}
+
+// AddedDuration returns the value that was added to the "duration" field in this mutation.
+func (m *TestMutation) AddedDuration() (r time.Duration, exists bool) {
+	v := m.addduration
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDuration clears the value of the "duration" field.
+func (m *TestMutation) ClearDuration() {
+	m.duration = nil
+	m.addduration = nil
+	m.clearedFields[test.FieldDuration] = struct{}{}
+}
+
+// DurationCleared returns if the "duration" field was cleared in this mutation.
+func (m *TestMutation) DurationCleared() bool {
+	_, ok := m.clearedFields[test.FieldDuration]
+	return ok
+}
+
+// ResetDuration resets all changes to the "duration" field.
+func (m *TestMutation) ResetDuration() {
+	m.duration = nil
+	m.addduration = nil
+	delete(m.clearedFields, test.FieldDuration)
 }
 
 // SetQuestionCount sets the "question_count" field.
@@ -12088,7 +12160,7 @@ func (m *TestMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 8)
 	if m.create_time != nil {
 		fields = append(fields, test.FieldCreateTime)
 	}
@@ -12106,6 +12178,9 @@ func (m *TestMutation) Fields() []string {
 	}
 	if m.mark != nil {
 		fields = append(fields, test.FieldMark)
+	}
+	if m.duration != nil {
+		fields = append(fields, test.FieldDuration)
 	}
 	if m.question_count != nil {
 		fields = append(fields, test.FieldQuestionCount)
@@ -12130,6 +12205,8 @@ func (m *TestMutation) Field(name string) (ent.Value, bool) {
 		return m.AvailableLocales()
 	case test.FieldMark:
 		return m.Mark()
+	case test.FieldDuration:
+		return m.Duration()
 	case test.FieldQuestionCount:
 		return m.QuestionCount()
 	}
@@ -12153,6 +12230,8 @@ func (m *TestMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldAvailableLocales(ctx)
 	case test.FieldMark:
 		return m.OldMark(ctx)
+	case test.FieldDuration:
+		return m.OldDuration(ctx)
 	case test.FieldQuestionCount:
 		return m.OldQuestionCount(ctx)
 	}
@@ -12206,6 +12285,13 @@ func (m *TestMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMark(v)
 		return nil
+	case test.FieldDuration:
+		v, ok := value.(time.Duration)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDuration(v)
+		return nil
 	case test.FieldQuestionCount:
 		v, ok := value.(int)
 		if !ok {
@@ -12224,6 +12310,9 @@ func (m *TestMutation) AddedFields() []string {
 	if m.addmark != nil {
 		fields = append(fields, test.FieldMark)
 	}
+	if m.addduration != nil {
+		fields = append(fields, test.FieldDuration)
+	}
 	if m.addquestion_count != nil {
 		fields = append(fields, test.FieldQuestionCount)
 	}
@@ -12237,6 +12326,8 @@ func (m *TestMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case test.FieldMark:
 		return m.AddedMark()
+	case test.FieldDuration:
+		return m.AddedDuration()
 	case test.FieldQuestionCount:
 		return m.AddedQuestionCount()
 	}
@@ -12254,6 +12345,13 @@ func (m *TestMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddMark(v)
+		return nil
+	case test.FieldDuration:
+		v, ok := value.(time.Duration)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDuration(v)
 		return nil
 	case test.FieldQuestionCount:
 		v, ok := value.(int)
@@ -12273,6 +12371,9 @@ func (m *TestMutation) ClearedFields() []string {
 	if m.FieldCleared(test.FieldAvailableLocales) {
 		fields = append(fields, test.FieldAvailableLocales)
 	}
+	if m.FieldCleared(test.FieldDuration) {
+		fields = append(fields, test.FieldDuration)
+	}
 	return fields
 }
 
@@ -12289,6 +12390,9 @@ func (m *TestMutation) ClearField(name string) error {
 	switch name {
 	case test.FieldAvailableLocales:
 		m.ClearAvailableLocales()
+		return nil
+	case test.FieldDuration:
+		m.ClearDuration()
 		return nil
 	}
 	return fmt.Errorf("unknown Test nullable field %s", name)
@@ -12315,6 +12419,9 @@ func (m *TestMutation) ResetField(name string) error {
 		return nil
 	case test.FieldMark:
 		m.ResetMark()
+		return nil
+	case test.FieldDuration:
+		m.ResetDuration()
 		return nil
 	case test.FieldQuestionCount:
 		m.ResetQuestionCount()

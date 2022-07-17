@@ -88,6 +88,33 @@ func (tu *TestUpdate) AddMark(f float64) *TestUpdate {
 	return tu
 }
 
+// SetDuration sets the "duration" field.
+func (tu *TestUpdate) SetDuration(t time.Duration) *TestUpdate {
+	tu.mutation.ResetDuration()
+	tu.mutation.SetDuration(t)
+	return tu
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (tu *TestUpdate) SetNillableDuration(t *time.Duration) *TestUpdate {
+	if t != nil {
+		tu.SetDuration(*t)
+	}
+	return tu
+}
+
+// AddDuration adds t to the "duration" field.
+func (tu *TestUpdate) AddDuration(t time.Duration) *TestUpdate {
+	tu.mutation.AddDuration(t)
+	return tu
+}
+
+// ClearDuration clears the value of the "duration" field.
+func (tu *TestUpdate) ClearDuration() *TestUpdate {
+	tu.mutation.ClearDuration()
+	return tu
+}
+
 // SetQuestionCount sets the "question_count" field.
 func (tu *TestUpdate) SetQuestionCount(i int) *TestUpdate {
 	tu.mutation.ResetQuestionCount()
@@ -455,6 +482,26 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: test.FieldMark,
+		})
+	}
+	if value, ok := tu.mutation.Duration(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: test.FieldDuration,
+		})
+	}
+	if value, ok := tu.mutation.AddedDuration(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: test.FieldDuration,
+		})
+	}
+	if tu.mutation.DurationCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Column: test.FieldDuration,
 		})
 	}
 	if value, ok := tu.mutation.QuestionCount(); ok {
@@ -845,6 +892,33 @@ func (tuo *TestUpdateOne) SetNillableMark(f *float64) *TestUpdateOne {
 // AddMark adds f to the "mark" field.
 func (tuo *TestUpdateOne) AddMark(f float64) *TestUpdateOne {
 	tuo.mutation.AddMark(f)
+	return tuo
+}
+
+// SetDuration sets the "duration" field.
+func (tuo *TestUpdateOne) SetDuration(t time.Duration) *TestUpdateOne {
+	tuo.mutation.ResetDuration()
+	tuo.mutation.SetDuration(t)
+	return tuo
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (tuo *TestUpdateOne) SetNillableDuration(t *time.Duration) *TestUpdateOne {
+	if t != nil {
+		tuo.SetDuration(*t)
+	}
+	return tuo
+}
+
+// AddDuration adds t to the "duration" field.
+func (tuo *TestUpdateOne) AddDuration(t time.Duration) *TestUpdateOne {
+	tuo.mutation.AddDuration(t)
+	return tuo
+}
+
+// ClearDuration clears the value of the "duration" field.
+func (tuo *TestUpdateOne) ClearDuration() *TestUpdateOne {
+	tuo.mutation.ClearDuration()
 	return tuo
 }
 
@@ -1245,6 +1319,26 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: test.FieldMark,
+		})
+	}
+	if value, ok := tuo.mutation.Duration(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: test.FieldDuration,
+		})
+	}
+	if value, ok := tuo.mutation.AddedDuration(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: test.FieldDuration,
+		})
+	}
+	if tuo.mutation.DurationCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Column: test.FieldDuration,
 		})
 	}
 	if value, ok := tuo.mutation.QuestionCount(); ok {
