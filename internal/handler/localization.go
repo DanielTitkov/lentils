@@ -111,10 +111,10 @@ func newTranslationEn() *UITranslation {
 			ExploreButton:   "Explore other tests",
 			DetailedReport:  "Detailed report",
 			Disclaimer: `The results of this online quiz (personality test) 
-			are provided "as-is" only for educational purporses and should not be construed 
+			are provided "as-is" only for educational purposes and should not be construed 
 			as providing professional or certified advice of any kind.`,
 			NormsInfo: `Orrery uses dynamic standardization, 
-			so results may change (probably insignicantly) with time, 
+			so results may change (probably insignificantly) with time, 
 			as we gather more data and recalculate norms.`,
 			TestMark: "Please rate how useful/interesting was this test for you?",
 		},

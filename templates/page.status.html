@@ -7,16 +7,16 @@
         <h1 class="title is-1 has-text-centered">
             Orrery System Status
         </h1>
-        <div class="level">
-            <div class="level_item">
+        <div class="columns">
+            <div class="column">
                 <p class="subtitle is-3 is-size-5-mobile">Env</p>
                 <p class="title is-5">{{ .Env }}</p>
             </div>
-            <div class="level_item has-text-centered">
+            <div class="column has-text-centered has-text-left-mobile">
                 <p class="subtitle is-3 is-size-5-mobile">Domain</p>
                 <p class="title is-5">{{ .Domain }}</p>
             </div>
-            <div class="level_item has-text-right">
+            <div class="column has-text-right has-text-left-mobile">
                 <p class="subtitle is-3 is-size-5-mobile">Version</p>
                 <p class="title is-5">{{ .Version }}</p>
             </div>
@@ -75,7 +75,7 @@
         </div>
         {{ if .Summary }}
         <div class="section">
-          {{ template "system-summary" .Summary }}
+            {{ template "system-summary" .Summary }}
         </div>
         {{ end }}
     </section>
