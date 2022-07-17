@@ -21,7 +21,7 @@ type (
 	HomeInstance struct {
 		*CommonInstance
 		Tests         []*domain.Test
-		Summary       *domain.SystemSymmary
+		Summary       *domain.SystemSummary
 		Tags          []*domain.Tag
 		ActiveTags    []*domain.Tag
 		FilterModeAny bool

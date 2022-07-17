@@ -8,7 +8,7 @@ import (
 	"github.com/DanielTitkov/orrery/internal/domain"
 )
 
-func (a *App) GetSystemSummary(ctx context.Context) (*domain.SystemSymmary, error) {
+func (a *App) GetSystemSummary(ctx context.Context) (*domain.SystemSummary, error) {
 	if a.systemSummary == nil {
 		a.log.Debug("system summary requested but not found, gathering...", "")
 		err := a.UpdateSystemSummary(ctx)
@@ -43,7 +43,7 @@ func (a *App) UpdateSystemSummary(ctx context.Context) error {
 		return err
 	}
 
-	a.systemSummary = &domain.SystemSymmary{
+	a.systemSummary = &domain.SystemSummary{
 		Users:         userCount,
 		CreateTime:    time.Now(),
 		Tests:         testCount,

@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-17 02:30:51
+# at: 2022-07-17 13:38:55
 # template: ../data/templates/ctt-v1/political-compass.yaml
 code: political-compass
 published: true
@@ -16,10 +16,10 @@ translations:
     description: Политические координаты (версия Orrery)
     instruction: Отметьте, насколько вы согласны с каждым из утверждений по шкале
       от 1 до 6, где 1 - полностью не согласны, а 6 - полностью согласны.
-    details: <p>Эта версия политического компаса разработа Orrery как альтернатива
+    details: <p>Эта версия политического компаса разработана Orrery как альтернатива
       традиционной версии, которая, на наш взгляд, выполнена некачественно с психометрической
       точки зрения.</p> <p>При разработке нашей версии основной целью была однозначность
-      шкал и вопросов, а также очевидное соотвествие шкал и вопросов. Мы полностью
+      шкал и вопросов, а также очевидное соответствие шкал и вопросов. Мы полностью
       отказались от терминологии "левый-правый", так как эта дихотомия понимается
       разными людьми по-разному - радикальный/умеренный, прогрессивный/консервативный,
       социальный/индивидуалистический и т.д.</p> <p>Наша версия политического компаса
@@ -27,7 +27,7 @@ translations:
       <li><b>Регулирование экономики / Экономическая свобода</b></li> </ul> Мы уделили
       особое внимание тому, чтобы каждый вопрос был однозначен и касался только своей
       шкалы и ничего более, тогда как в оригинальном политическом компасе есть много
-      вопросов, которые могут быть проинтепретированы очень по-разному в зависимости
+      вопросов, которые могут быть интерпретированы очень по-разному в зависимости
       от контекста не затронутых в вопросе убеждений респондентов. </p>
     preambule: ''
   - locale: en
@@ -103,7 +103,7 @@ scales:
               доверить принимать решения по поводу их жизни и нести ответственность
               за их последствия.</p>
           - locale: en
-            content: <p>You belive that people should have maximum freedom to manage
+            content: <p>You believe that people should have maximum freedom to manage
               their personal lives at their own discretion. You do not consider it
               legitimate to restrict even such behavior that you yourself consider
               irrational. Rather, you would probably say that freedom and rights are
@@ -244,7 +244,7 @@ scales:
         reverse: true
         translations:
           - locale: ru
-            content: Необходимо сделить за тем, как люди воспитывают своих детей
+            content: Необходимо следить за тем, как люди воспитывают своих детей
           - locale: en
             content: It is necessary to control how people raise their children
       - code: political-compass-01-personal-017
@@ -480,8 +480,8 @@ scales:
         reverse: true
         translations:
           - locale: ru
-            content: Нельзя позволить продавцам произвольно устаналивать цены на любые
-              товары
+            content: Нельзя позволить продавцам произвольно устанавливать цены на
+              любые товары
           - locale: en
             content: Distributors should not be allowed to arbitrarily set prices
               for any goods

@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-10 23:37:14
+# at: 2022-07-17 13:38:55
 # template: ../data/templates/ctt-v1/tipi.yaml
 code: tipi
 published: true
@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - short
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: TIPI
@@ -166,7 +166,7 @@ scales:
         abbreviation: CONS
       - locale: ru
         title: Сознательность
-        description: Шкала сознательнольсти
+        description: Шкала сознательности
         abbreviation: СОЗН
     interpretations:
       - range:
@@ -333,7 +333,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-002
     order: 20
     type: simple
@@ -343,7 +343,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-003
     order: 30
     type: simple
@@ -353,7 +353,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-004
     order: 40
     type: simple
@@ -363,7 +363,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-005
     order: 50
     type: simple
@@ -373,7 +373,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-006
     order: 60
     type: simple
@@ -383,7 +383,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-007
     order: 70
     type: simple
@@ -393,7 +393,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-008
     order: 80
     type: simple
@@ -403,7 +403,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-009
     order: 90
     type: simple
@@ -413,7 +413,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
   - code: tipi-010
     order: 100
     type: simple
@@ -423,7 +423,7 @@ questions:
       - locale: en
         content: I see myself as...
       - locale: ru
-        content: На мой взгляд я...
+        content: На мой взгляд я человек...
 display:
   questionsPerPage: 1
   randomizeOrder: false

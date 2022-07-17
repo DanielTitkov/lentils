@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-10 23:37:14
+# at: 2022-07-17 13:38:55
 # template: ../data/templates/ctt-v1/hexaco.yaml
 code: hexaco
 published: true
@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - long
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: HEXACO
@@ -677,7 +677,7 @@ scales:
               avoid creative pursuits, and feel little attraction toward ideas that
               may seem radical or unconventional.</p>
           - locale: ru
-            content: <p>Люди с очень высоким показалетем по шкале Открытости новому
+            content: <p>Люди с очень высоким показателем по шкале Открытости новому
               опыту склонны погружаться в красоту природы и искусства, проявляют любознательность
               в различных областях знания, часто пользуются воображением в повседневной
               жизни, интересуются необычными идеями и людьми.</p> <p>Напротив, люди

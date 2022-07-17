@@ -18,7 +18,7 @@ type (
 		Cfg           configs.Config
 		log           *logger.Logger
 		repo          Repository
-		systemSummary *domain.SystemSymmary
+		systemSummary *domain.SystemSummary
 		Store         sessions.Store
 		locales       []string // locale count is not very big so no need to have map
 		Errors        []error

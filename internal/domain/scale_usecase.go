@@ -27,7 +27,7 @@ func (s *Scale) CalculateResult() error {
 
 	meta := util.NewMeta()
 	meta["timestamp"] = time.Now().UnixNano()
-	res.Elaplsed = time.Since(start)
+	res.Elapsed = time.Since(start)
 	res.Meta = meta
 	res.Interpretation = s.chooseInterpretation(res.Score)
 

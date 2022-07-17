@@ -12,7 +12,7 @@ import (
 type (
 	AboutInstance struct {
 		*CommonInstance
-		Summary *domain.SystemSymmary
+		Summary *domain.SystemSummary
 	}
 )
 

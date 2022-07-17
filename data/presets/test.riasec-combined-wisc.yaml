@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-10 23:37:14
+# at: 2022-07-17 13:38:55
 # template: ../data/templates/ctt-v1/riasec-combined-wisc.yaml
 code: riasec-combined-wisc
 published: true
@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - career
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: RIASEC (combined)
@@ -21,7 +21,7 @@ translations:
     details: <p>RIASEC (Holland Codes) is a set of personality types developed by
       psychologist John L. Holland in the 1970s. Dr. Holland. Widely used to discover
       ones career and occupation preferences. </p> <p>This version of Holland test
-      consists of questions about your personality and prefered activities. There
+      consists of questions about your personality and preferred activities. There
       are also other versions of the test you can find an Orrery. <a href="/test/riasec-personality-wisc"
       target="_blank">Personality version</a>, <a href="/test/riasec-activity-wisc"
       target="_blank">Activities version</a>. Combined version is the most precised,
@@ -55,7 +55,7 @@ translations:
       и мир - сложнее чем можно охватить тестом. Если результаты теста показались
       вам полезными и интересными, используйте их как опору для своего выбора. Если
       же вам кажется, что с ними что-то не так, что чего-то не хватает, что рекомендации
-      не соотвествуют вашему самоощущению, не бойтесь полностью или частично проигнорировать
+      не соответствуют вашему самоощущению, не бойтесь полностью или частично проигнорировать
       их. Не стоит отказываться от своей мечты только потому, что кто-то вам так сказал.
 scales:
   - code: riasec-combined-wisc-01-realistic
@@ -194,7 +194,7 @@ scales:
           - locale: en
             content: You are good with tools and machinery
           - locale: ru
-            content: Вы умелы в обращении с интрументами и техникой
+            content: Вы умелы в обращении с инструментами и техникой
   - code: riasec-combined-wisc-02-investigative
     type: sten
     translations:
@@ -491,8 +491,8 @@ scales:
             content: <p>Социальный тип личности — им подойдут любые профессии, которые
               связаны с социальной средой - обучение, воспитание, лечение, обслуживание,
               консультирование, уход, помощь.</p> <p><b>Ключевые навыки</b></p> <p>Письменное
-              и устное общение, забота и поддержка, обучение, помощь, преподаване,
-              донесение информации, интервьюриование, коучинг.</p> <p><b>Примеры возможных
+              и устное общение, забота и поддержка, обучение, помощь, преподавание,
+              донесение информации, интервьюирование, коучинг.</p> <p><b>Примеры возможных
               профессий</b><p> <p>Консультирование, терапия, реклама, общественные
               отношения, образование, медицина.</p>
     items:
@@ -756,7 +756,7 @@ scales:
             content: <p>Офисный (конвенциальный) тип личности — тесно связан с обработкой
               и систематизацией информации в виде чисел, формул, текста, а также ведением
               документации.</p> <p><b>Ключевые навыки</b></p> <p>Работа за компьютером,
-              оффисное программное обеспечение, ведение записей и документации, внимание
+              офисное программное обеспечение, ведение записей и документации, внимание
               к деталям, корпоративный стиль, работа с числами, обращение с деньгами,
               приведение в порядок, систематизация.</p> <p><b>Примеры возможных профессий</b><p>
               <p>Бухгалтерия, финансы, судопроизводство, страхование, администрирование,
@@ -850,7 +850,7 @@ scales:
           - locale: en
             content: You are conscientious
           - locale: ru
-            content: Вы отвественны
+            content: Вы ответственны
       - code: riasec-combined-wisc-06-conventional-012
         steps: 5
         reverse: false

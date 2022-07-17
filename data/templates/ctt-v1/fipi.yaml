@@ -1,17 +1,17 @@
 code: fipi
 locales: ["en", "ru"]
 tags: ["psychology", "short", "debug"]
-en: # title, decsriptions, instruction, details, result preambule
+en: # title, descriptions, instruction, details, result preambule
   - FIPI
   - Five-Item Personality Inventory (for debug only)
   - Answer all the questions (there's only 5 of them!)
-  - This is a fake test created by Orrery for debug purspose only.
+  - This is a fake test created by Orrery for debug purpose only.
     It's results mean nothing. If you want to take a real test like this, 
     please consider <a href="/test/tipi">TIPI</a> instead.
-  - This is a fake test created by Orrery for debug purspose only.
+  - This is a fake test created by Orrery for debug purpose only.
     It's results mean probably nothing. If you want to take a real test like this, 
     please consider <a href="/test/tipi">TIPI</a> instead.
-ru: # title, decsriptions, instruction, details, result preambule
+ru: # title, descriptions, instruction, details, result preambule
   - ПИПИ
   - Краткий тест личности (for debug only)
   - Ответьте на все вопросы (их всего 5!)
@@ -34,7 +34,7 @@ question:
 scales: 
   extraversion: 
     en: ["Extraversion", "Extraversion scale", "EXT"] # title, description, abbreviation
-    ru: ["Экстраверсия", "Шкала экстраверсии", "ЭКСТ"] # title, description, abbreviation
+    ru: ["Экстраверсия", "Шкала экстраверсии", "ЭКСT"] # title, description, abbreviation
     interpretations: 
       - en: <p>Extraversion indicates how outgoing and social a person is. 
             A person who scores high in extraversion on a personality test is the life of the party. 
@@ -82,7 +82,7 @@ scales:
             Такие люди склонные держаться на некотором удалении от других.</p>
   conscientiousness:
     en: ["Conscientiousness", "Conscientiousness scale", "CONS"] # title, description, abbreviation
-    ru: ["Сознательность", "Шкала сознательнольсти", "СОЗН"] # title, description, abbreviation
+    ru: ["Сознательность", "Шкала сознательности", "СОЗН"] # title, description, abbreviation
     interpretations: 
       - en: <p>Conscientiousness is a tendency to show self-discipline, act dutifully, 
             and aim for achievement against measures or outside expectations. 

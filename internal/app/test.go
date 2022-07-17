@@ -268,7 +268,7 @@ func (a *App) SaveTestResults(ctx context.Context, test *domain.Test) error {
 
 		meta := util.NewMeta()
 		meta["formula"] = s.Result.Formula
-		meta["calculation_took"] = s.Result.Elaplsed
+		meta["calculation_took"] = s.Result.Elapsed
 
 		_, err := a.repo.CreateOrUpdateResult(ctx, &domain.Result{
 			TakeID:     test.Take.ID,

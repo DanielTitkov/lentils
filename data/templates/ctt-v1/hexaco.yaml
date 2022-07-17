@@ -1,7 +1,7 @@
 code: hexaco
 locales: ["en", "ru"]
 tags: ["psychology", "long"]
-en:  # title, decsriptions, instruction, details, result preambule
+en:  # title, descriptions, instruction, details, result preambule
   - HEXACO
   - Six-factor personality inventory (Kibeom Lee, Ph.D., & Michael C. Ashton, Ph.D.)
   - <p>On the following pages you will find a series of statements about you. 
@@ -16,7 +16,7 @@ en:  # title, decsriptions, instruction, details, result preambule
     <br>
     <a href="https://hexaco.org/" target="_black">Authors' website</a>
   - ""
-ru: # title, decsriptions, instruction, details, result preambule
+ru: # title, descriptions, instruction, details, result preambule
   - HEXACO
   - Шестифакторный опросник личностных черт (Kibeom Lee, Ph.D., & Michael C. Ashton, Ph.D.)
   - <p>Вам будет предложен ряд утверждений. 
@@ -131,7 +131,7 @@ scales:
             <p>Conversely, persons with very low scores on this scale are rather unimpressed by most works of art, 
             feel little intellectual curiosity, avoid creative pursuits, 
             and feel little attraction toward ideas that may seem radical or unconventional.</p>
-        ru: <p>Люди с очень высоким показалетем по шкале Открытости новому опыту склонны погружаться в красоту природы и искусства,
+        ru: <p>Люди с очень высоким показателем по шкале Открытости новому опыту склонны погружаться в красоту природы и искусства,
             проявляют любознательность в различных областях знания, часто пользуются воображением в повседневной жизни,
             интересуются необычными идеями и людьми.</p>
             <p>Напротив, люди с очень низким показателем по этой шкале редко впечатляются искусством,

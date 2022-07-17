@@ -43,7 +43,7 @@ type (
 		QuestionID uuid.UUID
 		Code       string
 		Content    string // translatable
-		Steps      int    // number of stepes in response scale
+		Steps      int    // number of steps in response scale
 		Reverse    bool
 		// Type       string
 		Response *Response // for use in handler, not for saving
@@ -105,7 +105,7 @@ type (
 		Max            float64
 		Interpretation *Interpretation
 		Formula        string
-		Elaplsed       time.Duration
+		Elapsed        time.Duration
 		Unit           string
 		Meta           map[string]interface{}
 	}
@@ -203,7 +203,7 @@ type (
 
 // system types
 type (
-	SystemSymmary struct {
+	SystemSummary struct {
 		ID            int
 		Users         int
 		Tests         int

@@ -31,7 +31,7 @@ const (
 type (
 	ProfileInstance struct {
 		*CommonInstance
-		Summary    *domain.SystemSymmary
+		Summary    *domain.SystemSummary
 		Page       int
 		MaxPage    int
 		TimeLayout string

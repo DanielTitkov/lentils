@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-10 23:37:14
+# at: 2022-07-17 13:38:55
 # template: ../data/templates/ctt-v1/fipi.yaml
 code: fipi
 published: true
@@ -11,16 +11,16 @@ tags:
   - psychology
   - short
   - debug
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: FIPI
     description: Five-Item Personality Inventory (for debug only)
     instruction: Answer all the questions (there's only 5 of them!)
-    details: This is a fake test created by Orrery for debug purspose only. It's results
+    details: This is a fake test created by Orrery for debug purpose only. It's results
       mean nothing. If you want to take a real test like this, please consider <a
       href="/test/tipi">TIPI</a> instead.
-    preambule: This is a fake test created by Orrery for debug purspose only. It's
+    preambule: This is a fake test created by Orrery for debug purpose only. It's
       results mean probably nothing. If you want to take a real test like this, please
       consider <a href="/test/tipi">TIPI</a> instead.
   - locale: ru
@@ -44,7 +44,7 @@ scales:
       - locale: ru
         title: Экстраверсия
         description: Шкала экстраверсии
-        abbreviation: ЭКСТ
+        abbreviation: ЭКСT
     interpretations:
       - range:
           - 1.0
@@ -142,7 +142,7 @@ scales:
         abbreviation: CONS
       - locale: ru
         title: Сознательность
-        description: Шкала сознательнольсти
+        description: Шкала сознательности
         abbreviation: СОЗН
     interpretations:
       - range:

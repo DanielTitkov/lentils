@@ -15,7 +15,7 @@ type (
 		Errors  []error
 		Events  []domain.Event
 		Version string
-		Summary *domain.SystemSymmary
+		Summary *domain.SystemSummary
 	}
 )
 

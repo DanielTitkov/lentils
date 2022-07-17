@@ -1,7 +1,7 @@
 code: political-compass
 locales: ["ru", "en"]
 tags: ["politics"]
-en:  # title, decsriptions, instruction, details, result preambule
+en:  # title, descriptions, instruction, details, result preambule
   - Political Compass
   - Political coordinates (Orrery version)
   - Please rate each statement based on how much you agree with in on the scale from 1 to 6,
@@ -21,14 +21,14 @@ en:  # title, decsriptions, instruction, details, result preambule
       respondent's views not mentioned in the question.
     </p>
   - ""
-ru: # title, decsriptions, instruction, details, result preambule
+ru: # title, descriptions, instruction, details, result preambule
   - Политический Компас
   - Политические координаты (версия Orrery)
   - Отметьте, насколько вы согласны с каждым из утверждений по шкале от 1 до 6, 
     где 1 - полностью не согласны, а 6 - полностью согласны.
-  - <p>Эта версия политического компаса разработа Orrery как альтернатива традиционной версии, которая, на наш взгляд, 
+  - <p>Эта версия политического компаса разработана Orrery как альтернатива традиционной версии, которая, на наш взгляд, 
     выполнена некачественно с психометрической точки зрения.</p>
-    <p>При разработке нашей версии основной целью была однозначность шкал и вопросов, а также очевидное соотвествие шкал и вопросов.
+    <p>При разработке нашей версии основной целью была однозначность шкал и вопросов, а также очевидное соответствие шкал и вопросов.
     Мы полностью отказались от терминологии "левый-правый", так как эта дихотомия понимается разными людьми по-разному - 
     радикальный/умеренный, прогрессивный/консервативный, социальный/индивидуалистический и т.д.</p>
     <p>Наша версия политического компаса имеет такие измерения
@@ -37,7 +37,7 @@ ru: # title, decsriptions, instruction, details, result preambule
         <li><b>Регулирование экономики / Экономическая свобода</b></li>
       </ul>
       Мы уделили особое внимание тому, чтобы каждый вопрос был однозначен и касался только своей шкалы и ничего более, 
-      тогда как в оригинальном политическом компасе есть много вопросов, которые могут быть проинтепретированы очень по-разному
+      тогда как в оригинальном политическом компасе есть много вопросов, которые могут быть интерпретированы очень по-разному
       в зависимости от контекста не затронутых в вопросе убеждений респондентов. 
     </p>
   - ""
@@ -65,7 +65,7 @@ scales:
             they use it in a reasonable and trustworthy manner.</p>
         ru: <p>Вы придерживаетесь умеренной позиции в вопросе регуляции личной жизни граждан. Возможно, вы бы сказали, что 
             людям можно предоставить свободу в той мере, в которой они воспользуются ей разумно и благонадёжно.</p>
-      - en: <p>You belive that people should have maximum freedom to manage their personal lives at their own discretion. 
+      - en: <p>You believe that people should have maximum freedom to manage their personal lives at their own discretion. 
             You do not consider it legitimate to restrict even such behavior that you yourself consider irrational. 
             Rather, you would probably say that freedom and rights are more important than physical well-being, 
             and people can be fully trusted to make decisions about their lives and be responsible for the consequences.</p>
@@ -81,9 +81,10 @@ scales:
             Maybe even up to the complete nationalization of some key areas of the economy. 
             Perhaps you are suspicious of private business and believe that only such an 
             all-embracing institution as the state can ensure the well-intentioned behavior of such agents.</p>
-        ru: <p>Вы считаете, что государство/общество должно строго контролировать экономическую деятельность своих граждан. Возможно, 
-            вплоть до полной национализации ключевых направлений экономики. Вероятно, вы с подозрением относитесь к частному бизнесу и считаете
-            что лишь такой всеобъемлющий институт как государство может обеспечить благонамеренное поведение таких агентов.</p>
+        ru: <p>Вы считаете, что государство/общество должно строго контролировать экономическую деятельность своих граждан. 
+            Возможно, вплоть до полной национализации ключевых направлений экономики. 
+            Вероятно, вы с подозрением относитесь к частному бизнесу и считаете что лишь 
+            такой всеобъемлющий институт как государство может обеспечить благонамеренное поведение таких агентов.</p>
       - en: <p>You adhere to a moderate position in the matter of economic regulation. 
             You would accept certain restrictions that you consider reasonable 
             to ensure social security and stability.</p>
@@ -141,7 +142,7 @@ items:
     ru: "Следует запрещать или штрафовать те СМИ, которые распространяют вредоносную или ложную информацию" # content
     scale: "-personal"
   - en: "It is necessary to control how people raise their children" # content
-    ru: "Необходимо сделить за тем, как люди воспитывают своих детей" # content
+    ru: "Необходимо следить за тем, как люди воспитывают своих детей" # content
     scale: "-personal"
   - en: "If people are having sex in a public place, you should call the police" # content
     ru: "Если люди занимаются сексом в общественном месте - стоит вызвать полицию" # content
@@ -201,7 +202,7 @@ items:
     ru: "Нельзя просто позволить людям вести какой угодно бизнес - нужна система лицензий или что-то подобное" # content
     scale: "-economic"
   - en: "Distributors should not be allowed to arbitrarily set prices for any goods" # content
-    ru: "Нельзя позволить продавцам произвольно устаналивать цены на любые товары" # content
+    ru: "Нельзя позволить продавцам произвольно устанавливать цены на любые товары" # content
     scale: "-economic"
   - en: "Business needs strict supervision, otherwise problems and abuses are inevitable" # content
     ru: "Бизнес нуждается в строгом надзоре, иначе неизбежны проблемы и злоупотребления" # content

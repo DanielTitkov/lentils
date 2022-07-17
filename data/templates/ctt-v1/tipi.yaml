@@ -1,7 +1,7 @@
 code: tipi
 locales: ["en", "ru"]
 tags: ["psychology", "short"]
-en:  # title, decsriptions, instruction, details, result preambule
+en:  # title, descriptions, instruction, details, result preambule
   - TIPI
   - Ten-Item Personality Inventory by Gosling, Rentfrow and Swan (2003)
   - <p>You'll see a number of personality traits that may or may not apply to you. 
@@ -14,7 +14,7 @@ en:  # title, decsriptions, instruction, details, result preambule
     S. D. Gosling, P. J. Rentfrow, W. B. Swann. A Very Brief Measure of the Big Five Personality Domains // Journal of Research in Personality, 2003. 37
     </a>
   - ""
-ru: # title, decsriptions, instruction, details, result preambule
+ru: # title, descriptions, instruction, details, result preambule
   - ТИПИ
   - Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
   - <p>Вы увидите разные черты личности, которые могу подходить или не подходить вам.
@@ -33,7 +33,7 @@ randomize: false
 intervals: 1 # interpretation intervals
 question:
   en: "I see myself as..." # content
-  ru: "На мой взгляд я..." #content
+  ru: "На мой взгляд я человек..." # content
   page: 1
 scales: 
   extraversion: 
@@ -86,7 +86,7 @@ scales:
             Такие люди склонные держаться на некотором удалении от других.</p>
   conscientiousness:
     en: ["Conscientiousness", "Conscientiousness scale", "CONS"] # title, description, abbreviation
-    ru: ["Сознательность", "Шкала сознательнольсти", "СОЗН"] # title, description, abbreviation
+    ru: ["Сознательность", "Шкала сознательности", "СОЗН"] # title, description, abbreviation
     interpretations: 
       - en: <p>Conscientiousness is a tendency to show self-discipline, act dutifully, 
             and aim for achievement against measures or outside expectations. 
