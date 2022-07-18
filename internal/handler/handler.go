@@ -70,6 +70,18 @@ type (
 		locale          string
 	}
 
+	Constants struct {
+		// to have constants in templates
+		IntroStatus     string
+		QuestionsStatus string
+		FinishStatus    string
+		ResultStatus    string
+		MethodSten      string
+		MethodPerc      string
+		MethodMean      string
+		MethodSum       string
+	}
+
 	contextKey struct {
 		name string
 	}
@@ -150,17 +162,30 @@ func NewHandler(
 		app: app,
 		log: logger,
 		t:   t,
-		ui:  initTraslationMap(),
+		ui:  initTranslationMap(),
 	}
 }
 
-func initTraslationMap() map[string]*UITranslation {
+func initTranslationMap() map[string]*UITranslation {
 	m := make(map[string]*UITranslation)
 	for _, l := range domain.Locales() {
 		m[l] = newUITranslation(l)
 	}
 
 	return m
+}
+
+func (h *Handler) NewConstants() *Constants {
+	return &Constants{
+		IntroStatus:     domain.TestStepIntro,
+		QuestionsStatus: domain.TestStepQuestions,
+		FinishStatus:    domain.TestStepFinish,
+		ResultStatus:    domain.TestStepResult,
+		MethodSten:      domain.ScaleTypeSten,
+		MethodPerc:      domain.ScaleTypePerc,
+		MethodMean:      domain.ScaleTypeMean,
+		MethodSum:       domain.ScaleTypeSum,
+	}
 }
 
 func (h *Handler) NewCommon(s live.Socket, currentView string) *CommonInstance {

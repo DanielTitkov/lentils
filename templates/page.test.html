@@ -157,6 +157,7 @@
         </div>
       </div>
     </div>
+    {{ template "advanced-settings" . }}
     <div class="columns">
       <div class="column is-6">
         <p class="heading">
@@ -196,7 +197,8 @@
             <p class="subtitle is-5 is-size-6-mobile">{{ $scale.Description }}</p>
           </div>
           <div class="column is-narrow">
-            <p class="title is-3 is-size-5-mobile has-text-primary">{{printf "%.1f" $scale.Result.Score }}{{ $scale.Result.Unit }}</p>
+            <p class="title is-3 is-size-5-mobile has-text-primary">{{printf "%.1f" $scale.Result.Score }}{{
+              $scale.Result.Unit }}</p>
           </div>
         </div>
         <p class="heading">{{ $scale.Result.Formula }}</p>
@@ -333,4 +335,55 @@
   </span>
   <span>Share on Facebook</span>
 </a>
+{{ end }}
+
+{{ define "advanced-settings" }}
+<div class="columns">
+  <div class="column is-narrow">
+    <button class="button is-light is-medium is-rounded" live-click="toggle-show-advanced"
+      title="{{ .UI.Result.AdvancedSettings }}">
+      <span class="icon has-text-grey">
+        <i class="bi bi-gear-fill"></i>
+      </span>
+    </button>
+  </div>
+  {{ if .ShowAdvancedSettings }}
+  <div class="column">
+    <p class="title is-5 is-size-6-mobile">{{ .UI.Result.AdvancedSettings }}</p>
+    <p class="mb-1">
+      {{ .UI.Result.ResultsAreShown }}
+      {{ if .OverrideMethod }}
+      {{ if eq .OverrideMethod .MethodSten }}
+      <b>{{ .UI.Result.InStandartScale }}</b>.
+      {{ end }}
+      {{ if eq .OverrideMethod .MethodPerc }}
+      <b>{{ .UI.Result.InPercentageScale }}</b>.
+      {{ end }}
+      {{ else }}
+      <b>{{ .UI.Result.InDefaultScale }}</b>.
+      {{ end }}
+      {{ .UI.Result.Recalculate }}:
+    </p>
+    <div class="columns is-gapless">
+      <div class="column is-narrow">
+        <button live-click="set-method" live-value-method="{{ .MethodSten }}"
+          class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InStandartScale }}</button>
+      </div>
+      <div class="column is-narrow">
+        <button live-click="set-method" live-value-method="{{ .MethodPerc }}"
+          class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InPercentageScale }}</button>
+      </div>
+      <div class="column is-narrow">
+        <button live-click="set-method" live-value-method="" class="m-1 button is-rounded is-small">
+          {{ .UI.Result.Discard }}
+        </button>
+      </div>
+    </div>
+    <p class="heading">
+      {{ .UI.Result.SetMethodDescription }}
+    </p>
+    <hr>
+  </div>
+  {{ end }}
+</div>
 {{ end }}

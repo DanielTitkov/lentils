@@ -12,8 +12,12 @@ import (
 
 type scaleResolveFunc func(*Scale, *Norm) (*ScaleResult, error)
 
-func (s *Scale) CalculateResult() error {
-	resolveFunc, err := getScaleResolveFunc(s.Type)
+func (s *Scale) CalculateResult(overrideMethod string) error {
+	method := s.Type
+	if overrideMethod != "" {
+		method = overrideMethod
+	}
+	resolveFunc, err := getScaleResolveFunc(method)
 	if err != nil {
 		return err
 	}

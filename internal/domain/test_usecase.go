@@ -103,9 +103,9 @@ func (t *Test) IsNotDone() bool {
 	return !t.IsDone()
 }
 
-func (t *Test) CalculateResult() error {
+func (t *Test) CalculateResult(overrideMethod string) error {
 	for _, s := range t.Scales {
-		err := s.CalculateResult()
+		err := s.CalculateResult(overrideMethod)
 		if err != nil {
 			return err
 		}

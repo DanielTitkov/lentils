@@ -15,7 +15,6 @@ import (
 
 const (
 	// events
-	eventResultSetLocale = "set-locale"
 	// params
 	paramTakeID = "takeID"
 	// params values
@@ -24,15 +23,13 @@ const (
 type (
 	ResultInstance struct {
 		*CommonInstance
-		Test     *domain.Test
-		TestStep string
-		// to have constants in templates
-		IntroStatus     string
-		QuestionsStatus string
-		FinishStatus    string
-		ResultStatus    string
-		ShowDetails     bool
-		ShowInstruction bool
+		*Constants
+		Test                 *domain.Test
+		TestStep             string
+		ShowDetails          bool
+		ShowInstruction      bool
+		ShowAdvancedSettings bool
+		OverrideMethod       string
 	}
 )
 
@@ -60,7 +57,7 @@ func (ins *ResultInstance) updateForLocale(ctx context.Context, s live.Socket, h
 		ins.withError(err)
 	}
 
-	ins.Test, err = h.app.PrepareTestResult(ctx, &domain.Test{Take: take}, ins.Locale())
+	ins.Test, err = h.app.PrepareTestResult(ctx, &domain.Test{Take: take}, ins.Locale(), ins.OverrideMethod)
 	if err != nil {
 		ins.withError(err)
 	}
@@ -72,11 +69,8 @@ func (h *Handler) NewResultInstance(s live.Socket) *ResultInstance {
 	if !ok {
 		return &ResultInstance{
 			CommonInstance:  h.NewCommon(s, viewResult),
+			Constants:       h.NewConstants(),
 			TestStep:        domain.TestStepIntro,
-			IntroStatus:     domain.TestStepIntro,
-			QuestionsStatus: domain.TestStepQuestions,
-			FinishStatus:    domain.TestStepFinish,
-			ResultStatus:    domain.TestStepResult,
 			ShowDetails:     false,
 			ShowInstruction: false,
 		}
@@ -167,18 +161,6 @@ func (h *Handler) Result() live.Handler {
 		return instance, nil
 	})
 
-	// lvh.HandleEvent(eventResultSetLocale, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
-	// 	instance := h.NewResultInstance(s)
-
-	// 	instance.SetLocale(p.String(paramTestLocale))
-	// 	instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale())
-	// 	if err != nil {
-	// 		return instance.withError(err), nil
-	// 	}
-
-	// 	return instance, nil
-	// })
-
 	lvh.HandleEvent(eventToggleShowDetails, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewResultInstance(s)
 		instance.ShowDetails = !instance.ShowDetails
@@ -188,6 +170,22 @@ func (h *Handler) Result() live.Handler {
 	lvh.HandleEvent(eventToggleShowInstruction, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewResultInstance(s)
 		instance.ShowInstruction = !instance.ShowInstruction
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventTestToggleShowAdvanced, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewResultInstance(s)
+		instance.ShowAdvancedSettings = !instance.ShowAdvancedSettings
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventTestSetMethod, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
+		instance := h.NewResultInstance(s)
+		instance.OverrideMethod = p.String(paramTestMethod)
+		err = instance.updateForLocale(ctx, s, h)
+		if err != nil {
+			return nil, err
+		}
 		return instance, nil
 	})
 

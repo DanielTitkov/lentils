@@ -6,9 +6,10 @@ import (
 
 type (
 	UITranslation struct {
-		Base *UITransBase
-		Home *UITransHome
-		Test *UITransTest
+		Base   *UITransBase
+		Home   *UITransHome
+		Test   *UITransTest
+		Result *UITransResult
 		// 404
 		// about
 		// profile
@@ -19,6 +20,17 @@ type (
 	}
 
 	UITransBase struct {
+	}
+
+	UITransResult struct {
+		AdvancedSettings     string
+		ResultsAreShown      string
+		SetMethodDescription string
+		Recalculate          string
+		InStandartScale      string
+		InPercentageScale    string
+		InDefaultScale       string
+		Discard              string
 	}
 
 	UITransHome struct {
@@ -118,6 +130,19 @@ func newTranslationEn() *UITranslation {
 			as we gather more data and recalculate norms.`,
 			TestMark: "Please rate how useful/interesting was this test for you?",
 		},
+		Result: &UITransResult{
+			AdvancedSettings: "Advanced settings",
+			ResultsAreShown:  "Currently results are shown",
+			SetMethodDescription: `By default Orrery calculates results with the method
+			that makes most sense for the current test. 
+			You can ask the system to recalculate results using different method.
+			Use with at your own discretion.`,
+			Recalculate:       "Recalculate",
+			InStandartScale:   "in standart scale",
+			InPercentageScale: "in maximum percentage",
+			InDefaultScale:    "in default scale",
+			Discard:           "discard",
+		},
 	}
 }
 
@@ -167,6 +192,19 @@ func newTranslationRu() *UITranslation {
 			поэтому в будущем результаты могут меняться (скорее всего незначительно), 
 			по мере того как мы собираем больше данных и обновляем нормы.`,
 			TestMark: "Насколько полезным/интересным оказался для вас этот тест?",
+		},
+		Result: &UITransResult{
+			AdvancedSettings: "Профессиональные опции",
+			ResultsAreShown:  "Сейчас результаты отображаются",
+			SetMethodDescription: `По умолчанию Orrery рассчитывает результаты тем методом, 
+			который имеет больше всего смысла для данного теста.
+			Вы можете попросить систему пересчитать результаты, используя другой метод.
+			Пользуйтесь этим на своё усмотрение.`,
+			Recalculate:       "Пересчитать",
+			InStandartScale:   "в стандартной шкале",
+			InPercentageScale: "в процентах от максимума",
+			InDefaultScale:    "в шкале по умолчанию",
+			Discard:           "сбросить",
 		},
 	}
 }

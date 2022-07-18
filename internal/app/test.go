@@ -87,7 +87,7 @@ func (a *App) GetTestByCode(ctx context.Context, code string, locale string) (*d
 	return a.repo.GetTestByCode(ctx, code, locale)
 }
 
-func (a *App) PrepareTestResult(ctx context.Context, test *domain.Test, locale string) (*domain.Test, error) {
+func (a *App) PrepareTestResult(ctx context.Context, test *domain.Test, locale string, overrideMethod string) (*domain.Test, error) {
 	test, err := a.repo.GetTakeData(ctx, test.Take, locale)
 	if err != nil {
 		a.log.Error("prepare test results failed (get data)", err)
@@ -124,7 +124,7 @@ func (a *App) PrepareTestResult(ctx context.Context, test *domain.Test, locale s
 		}
 	}
 
-	if err := test.CalculateResult(); err != nil {
+	if err := test.CalculateResult(overrideMethod); err != nil {
 		a.log.Error("prepare test results failed (calculate)", err)
 		return nil, err
 	}

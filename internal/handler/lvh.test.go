@@ -16,41 +16,42 @@ import (
 
 const (
 	// events
-	eventBeginTest             = "begin-test"
-	eventEndTest               = "end-test"
-	eventNextPage              = "next-page"
-	eventPrevPage              = "prev-page"
-	eventResponseUpdate        = "response-update"
-	eventSetLocale             = "set-locale"
-	eventToggleAutoNext        = "toggle-auto-next"
-	eventToggleShowDetails     = "toggle-show-details"
-	eventToggleShowInstruction = "toggle-show-instruction"
-	eventTestMarkUpdate        = "test-mark-update"
+	eventBeginTest              = "begin-test"
+	eventEndTest                = "end-test"
+	eventNextPage               = "next-page"
+	eventPrevPage               = "prev-page"
+	eventResponseUpdate         = "response-update"
+	eventSetLocale              = "set-locale"
+	eventToggleAutoNext         = "toggle-auto-next"
+	eventToggleShowDetails      = "toggle-show-details"
+	eventToggleShowInstruction  = "toggle-show-instruction"
+	eventTestToggleShowAdvanced = "toggle-show-advanced"
+	eventTestMarkUpdate         = "test-mark-update"
+	eventTestSetMethod          = "set-method"
 	// params
 	paramTestCode      = "testCode"
 	paramTestItem      = "item"
 	paramTestItemValue = "val"
 	paramTestLocale    = "locale"
 	paramTestMarkValue = "val"
+	paramTestMethod    = "method"
 	// params values
 )
 
 type (
 	TestInstance struct {
 		*CommonInstance
-		Test             *domain.Test
-		CurrentQuestions []*domain.Question
-		TestCode         string
-		TestStep         string
-		Page             int
-		// to have constants in templates
-		IntroStatus     string
-		QuestionsStatus string
-		FinishStatus    string
-		ResultStatus    string
-		AutoNext        bool
-		ShowDetails     bool
-		ShowInstruction bool
+		*Constants
+		Test                 *domain.Test
+		CurrentQuestions     []*domain.Question
+		TestCode             string
+		TestStep             string
+		Page                 int
+		AutoNext             bool
+		ShowDetails          bool
+		ShowInstruction      bool
+		ShowAdvancedSettings bool
+		OverrideMethod       string
 	}
 )
 
@@ -101,14 +102,12 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 	if !ok {
 		return &TestInstance{
 			CommonInstance:  h.NewCommon(s, viewTest),
+			Constants:       h.NewConstants(),
 			TestStep:        domain.TestStepIntro,
-			IntroStatus:     domain.TestStepIntro,
-			QuestionsStatus: domain.TestStepQuestions,
-			FinishStatus:    domain.TestStepFinish,
-			ResultStatus:    domain.TestStepResult,
 			AutoNext:        false,
 			ShowDetails:     false,
 			ShowInstruction: false,
+			OverrideMethod:  "",
 		}
 	}
 
@@ -228,7 +227,7 @@ func (h *Handler) Test() live.Handler {
 		}
 
 		// load all test data from the db and calculate result
-		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale())
+		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale(), instance.OverrideMethod)
 		if err != nil {
 			return instance.withError(err), nil
 		}
@@ -251,6 +250,12 @@ func (h *Handler) Test() live.Handler {
 	lvh.HandleEvent(eventToggleShowInstruction, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
 		instance := h.NewTestInstance(s)
 		instance.ShowInstruction = !instance.ShowInstruction
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventTestToggleShowAdvanced, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
+		instance := h.NewTestInstance(s)
+		instance.ShowAdvancedSettings = !instance.ShowAdvancedSettings
 		return instance, nil
 	})
 
@@ -327,6 +332,17 @@ func (h *Handler) Test() live.Handler {
 			if err != nil {
 				return instance.withError(err), nil
 			}
+		}
+		return instance, nil
+	})
+
+	lvh.HandleEvent(eventTestSetMethod, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
+		instance := h.NewTestInstance(s)
+		instance.OverrideMethod = p.String(paramTestMethod)
+		// load all test data from the db and calculate result
+		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale(), instance.OverrideMethod)
+		if err != nil {
+			return instance.withError(err), nil
 		}
 		return instance, nil
 	})
