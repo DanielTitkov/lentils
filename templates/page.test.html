@@ -161,12 +161,12 @@
     <div class="columns">
       <div class="column is-6">
         <p class="heading">
-          {{ .UI.Test.NormsInfo }}
+          <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.NormsInfo }}
         </p>
       </div>
       <div class="column is-6">
         <p class="heading">
-          {{ .UI.Test.Disclaimer }}
+          <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.Disclaimer }}
         </p>
       </div>
     </div>
@@ -350,38 +350,44 @@
   {{ if .ShowAdvancedSettings }}
   <div class="column">
     <p class="title is-5 is-size-6-mobile">{{ .UI.Result.AdvancedSettings }}</p>
-    <p class="mb-1">
-      {{ .UI.Result.ResultsAreShown }}
-      {{ if .OverrideMethod }}
-      {{ if eq .OverrideMethod .MethodSten }}
-      <b>{{ .UI.Result.InStandartScale }}</b>.
-      {{ end }}
-      {{ if eq .OverrideMethod .MethodPerc }}
-      <b>{{ .UI.Result.InPercentageScale }}</b>.
-      {{ end }}
-      {{ else }}
-      <b>{{ .UI.Result.InDefaultScale }}</b>.
-      {{ end }}
-      {{ .UI.Result.Recalculate }}:
-    </p>
-    <div class="columns is-gapless">
-      <div class="column is-narrow">
-        <button live-click="set-method" live-value-method="{{ .MethodSten }}"
-          class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InStandartScale }}</button>
+    <div class="columns">
+      <div class="column">
+        <p class="mb-1">
+          {{ .UI.Result.ResultsAreShown }}
+          {{ if .OverrideMethod }}
+          {{ if eq .OverrideMethod .MethodSten }}
+          <b>{{ .UI.Result.InStandartScale }}</b>.
+          {{ end }}
+          {{ if eq .OverrideMethod .MethodPerc }}
+          <b>{{ .UI.Result.InPercentageScale }}</b>.
+          {{ end }}
+          {{ else }}
+          <b>{{ .UI.Result.InDefaultScale }}</b>.
+          {{ end }}
+          {{ .UI.Result.Recalculate }}:
+        </p>
+        <div class="columns is-gapless">
+          <div class="column is-narrow">
+            <button live-click="set-method" live-value-method="{{ .MethodSten }}"
+              class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InStandartScale }}</button>
+          </div>
+          <div class="column is-narrow">
+            <button live-click="set-method" live-value-method="{{ .MethodPerc }}"
+              class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InPercentageScale }}</button>
+          </div>
+          <div class="column is-narrow">
+            <button live-click="set-method" live-value-method="" class="m-1 button is-rounded is-small">
+              {{ .UI.Result.Discard }}
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="column is-narrow">
-        <button live-click="set-method" live-value-method="{{ .MethodPerc }}"
-          class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InPercentageScale }}</button>
-      </div>
-      <div class="column is-narrow">
-        <button live-click="set-method" live-value-method="" class="m-1 button is-rounded is-small">
-          {{ .UI.Result.Discard }}
-        </button>
+      <div class="column is-5">
+        <p class="heading">
+          <i class="bi bi-question-circle"></i> {{ .UI.Result.SetMethodDescription }}
+        </p>
       </div>
     </div>
-    <p class="heading">
-      {{ .UI.Result.SetMethodDescription }}
-    </p>
     <hr>
   </div>
   {{ end }}

@@ -136,7 +136,7 @@ func newTranslationEn() *UITranslation {
 			SetMethodDescription: `By default Orrery calculates results with the method
 			that makes most sense for the current test. 
 			You can ask the system to recalculate results using different method.
-			Use with at your own discretion.`,
+			Use this at your own discretion.`,
 			Recalculate:       "Recalculate",
 			InStandartScale:   "in standart scale",
 			InPercentageScale: "in maximum percentage",
