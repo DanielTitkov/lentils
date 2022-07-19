@@ -10,20 +10,8 @@ import (
 )
 
 const (
-	// events
-	eventAdminUpdatePage        = "challenge-list-update-page"
-	eventAdminSelectPending     = "select-pending"
-	eventAdminSelectUnpublished = "select-unpublished"
-	eventAdminCreateNew         = "create-new"
-	eventAdminCreateNewSubmit   = "create-new-submit"
-	eventAdminCreateNewValidate = "create-new-validate"
-	// params
-	paramAdminPage                 = "page"
-	paramAdminCreateNewContent     = "content"
-	paramAdminCreateNewDescription = "description"
-	paramAdminCreateNewStartTime   = "start-time"
-	paramAdminCreateNewEndTime     = "end-time"
-	paramAdminCreateNewPublished   = "published"
+// events
+// params
 )
 
 type (
@@ -152,14 +140,6 @@ func (h *Handler) Admin() live.Handler {
 			s.Redirect(h.url404())
 			return nil, nil
 		}
-
-		return instance, nil
-	})
-
-	lvh.HandleEvent(eventAdminUpdatePage, func(ctx context.Context, s live.Socket, p live.Params) (interface{}, error) {
-		page := p.Int(paramAdminPage)
-		instance := h.NewAdminInstance(s)
-		instance.Page = page
 
 		return instance, nil
 	})

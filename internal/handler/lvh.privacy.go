@@ -27,7 +27,7 @@ func (h *Handler) NewPrivacyInstance(s live.Socket) *PrivacyInstance {
 	m, ok := s.Assigns().(*PrivacyInstance)
 	if !ok {
 		return &PrivacyInstance{
-			CommonInstance: h.NewCommon(s, view404),
+			CommonInstance: h.NewCommon(s, viewPrivacy),
 		}
 	}
 

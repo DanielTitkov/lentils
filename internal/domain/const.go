@@ -50,7 +50,7 @@ const (
 	// time
 	DefaultDisplayTime = time.RFC822
 	// app
-	AppMaxEvents        = 20
+	AppMaxEvents        = 30
 	ShareScaleLen       = 5
 	ShareScaleUnit      = "🟩"
 	ShareScaleUnitEmpty = "⬜️"

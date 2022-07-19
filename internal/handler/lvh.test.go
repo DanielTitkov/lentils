@@ -21,7 +21,6 @@ const (
 	eventNextPage               = "next-page"
 	eventPrevPage               = "prev-page"
 	eventResponseUpdate         = "response-update"
-	eventSetLocale              = "set-locale"
 	eventToggleAutoNext         = "toggle-auto-next"
 	eventToggleShowDetails      = "toggle-show-details"
 	eventToggleShowInstruction  = "toggle-show-instruction"
@@ -32,7 +31,6 @@ const (
 	paramTestCode      = "testCode"
 	paramTestItem      = "item"
 	paramTestItemValue = "val"
-	paramTestLocale    = "locale"
 	paramTestMarkValue = "val"
 	paramTestMethod    = "method"
 	// params values

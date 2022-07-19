@@ -12,19 +12,9 @@ import (
 
 const (
 	// events
-	eventUserProfileUpdatePage    = "challenge-list-update-page"
-	eventProfileSelectOngoing     = "select-ongoing"
-	eventProfileSelectFinished    = "select-finished"
-	eventProfileSelectMine        = "select-mine"
-	eventProfileCreateNew         = "create-new"
-	eventProfileCreateNewSubmit   = "create-new-submit"
-	eventProfileCreateNewValidate = "create-new-validate"
+	eventUserProfileUpdatePage = "challenge-list-update-page"
 	// params
-	paramUserProfilePage             = "page"
-	paramProfileCreateNewContent     = "content"
-	paramProfileCreateNewDescription = "description"
-	paramProfileCreateNewStartTime   = "start-time"
-	paramProfileCreateNewEndTime     = "end-time"
+	paramUserProfilePage = "page"
 	// params value
 )
 
