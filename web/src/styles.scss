@@ -16,6 +16,7 @@ $green: #03D930;
 $green2: #AAE23B;
 $purple: #8A6FDF;
 $blue: #287aff;
+// $blue: #7b2ce2;
 
 // for gradient in items
 
@@ -24,7 +25,7 @@ $right: lighten($green2, 5%);
 
 // Update Bulma's global variables
 $family-sans-serif: "Source Sans Pro", sans-serif; 
-$radius-large: 55px;
+$radius-large: 25px;
 // $grey-dark: $brown;
 // $grey-light: $beige-light;
 $primary: $blue;
@@ -34,18 +35,19 @@ $danger: $red;
 $warning: $yellow;
 $info: $purple;
 
-$body-back: #fafafa;
+$body-back: #f2f2f2;
 // $widescreen-enabled: false;
 // $fullhd-enabled: false;
+$transparent-bg: rgba(0,0,0,0.07);
 
 // Update some of Bulma's component variables
 $body-background-color: $body-back;
 // box
 $box-radius: $radius-large;
-$box-padding: 1.5rem;
-$box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+$box-padding: 1.3rem;
+$box-shadow: none;
 // notification
-$ntf-padding-size: 2.5rem 2.5rem 2.5rem 2.5rem;
+$ntf-padding-size: 2rem 2rem 2rem 2rem;
 $notification-radius: $radius-large;
 $notification-padding: $ntf-padding-size;
 $notification-padding-ltr: $ntf-padding-size;
@@ -64,8 +66,30 @@ $hr-background-color: #ededed;
 $section-padding: 1.5rem 1rem; // for mobile
 // footer
 $footer-padding: 1.5rem 1.5rem 3rem;
+$footer-background-color: #f9f9f9;
+// navbar
+$navbar-breakpoint: 1px;
 
 @import "~bulma/bulma";
+
+// update bulma classes 
+
+.box {
+	border: 1px solid #e5e5e5;
+	transition: all .3s;
+}
+
+.column {
+	height: 100%;
+}
+
+.navbar-item:hover {
+	background-color: $transparent-bg;
+}
+
+.navbar-item.is-active {
+	background-color: $transparent-bg;
+}
 
 // custom styles
 
@@ -75,75 +99,23 @@ $footer-padding: 1.5rem 1.5rem 3rem;
 	100%{background-position:0% 50%}
   }
 
-.bg11 {
-	background-size: 300% 300%;
+.animated-gradient-bg {
+	background-size: 120% 120%;
 	background-image: linear-gradient(
 		-45deg, 
-		#287aff 0%, 
-		#03D930 25%, 
-		#287aff 51%, 
-		#8A6FDF 100%
+		$primary 0%, 
+		$green 99%,
 	);  
-	animation: AnimateBG 20s ease infinite;
-
-	position: absolute;
-	width: 100%;
-    padding: 5rem;
-    height: 12rem;
-	z-index: -3;
-
-    // clip-path: polygon(100% 0, 100% 57%, 54% 100%, 0 100%, 0 0); 
-	// clip-path: polygon(59% 75%, 34% 82%, 15% 70%, 16% 71%, 15% 27%, 15% 27%, 76% 51%, 73% 24%, 43% 11%);
-}
-
-.planet {
-	background-size: 300% 300%;
-	background-image: linear-gradient(
-		-45deg, 
-		#287aff 0%, 
-		#03D930 25%, 
-		#287aff 51%, 
-		#8A6FDF 100%
-	);  
-	animation: AnimateBG 20s ease infinite;
-	clip-path: circle(50% at 50% 50%);
-	position: absolute;
-	right: 3rem;
-	top: 2rem;
-	width: 2rem;
-    height: 2rem;
-	z-index: -1;
-}
-
-.planet1 {
-	right: 10vw;
-	top: 10vw;
-	width: 10vw;
-    height: 10vw;
-	min-width: 2rem;
-	min-height: 2rem;
-}
-
-.planet2 {
-	right: 2.5rem;
-	top: 6rem;
-	width: 2rem;
-    height: 2rem;
-}
-
-body::after {
-    content: '';
-    border-top-left-radius: 30% 40%;
-    border-top-right-radius: 25% 70%;
-    position: absolute;
-    top: 0rem;
-    z-index: -2;
-    width: 100%;
-    background-color: $body-back;
-    height: 12rem;
+	animation: AnimateBG 8s ease infinite;
 }
 
 // custom classes
+
+.is-elevated {
+	-webkit-box-shadow: 0 14px 26px -12px rgba($primary,.42),0 4px 23px 0px rgba(0,0,0,.12),0 8px 10px -5px rgba($primary,.2);
+	box-shadow: 0 14px 26px -12px rgba($primary,.42),0 4px 23px 0px rgba(0,0,0,.12),0 8px 10px -5px rgba($primary,.2);
+	border: 0;
+}
 
 .question-done {
 	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$green+0,4df297+99 */
@@ -269,27 +241,4 @@ meter {
 		}
 	}
 	@include animate(fadein, 0.1s, linear, 1);
-}
-
-
-
-.bg-decoration {
-	position: absolute;
-	top: 0;
-	left: 0;
-	pointer-events: none;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
-
-.bg-decoration__svg {
-	position: absolute;
-	top: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 134%;
-	min-width: 1280px;
-	max-width: 1920px;
-	height: auto;
 }

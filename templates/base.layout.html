@@ -37,9 +37,6 @@
 </head>
 
 <body has-navbar-fixed-bottom>
-  <div class="bg11">
-  </div>
-
   <!-- debug start -->
   {{ if .Assigns.Env }}
   {{ if eq .Assigns.Env "dev1" }}
@@ -56,8 +53,7 @@
   {{ template "navigation" .Assigns }}
   {{ template "navigation-mobile" .Assigns }}
   {{ end }}
-  <div class="planet planet1"></div>
-  <section class="section">
+  <div class="mb-5">
     {{ if .Assigns.Error }}
     {{ template "alert-warning" .Assigns.Error }}
     {{ end }}
@@ -76,7 +72,7 @@
     </div>
     {{ end }}
     {{ end }}
-  </section>
+  </div>
   {{ template "footer" .Assigns }}
   {{ if .Assigns.ShowLoginModal }}
   {{ template "login-modal" .Assigns }}
@@ -207,77 +203,57 @@
 {{ end }}
 
 {{ define "navigation" }}
-<nav class="level is-mobile is-centered p-5 is-size-3-mobile is-size-2-tablet is-hidden-mobile">
-  <div class="level-item">
-    <div class="mx-5">
-      <a href="/" class='{{ if eq .CurrentView "home"}}has-text-dark{{ end }}' title="Home">
-        <i class="bi bi-house-fill"></i>
+<nav class="navbar is-mobile is-primary animated-gradient-bg is-hidden-mobile" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <div>
+        <h1 class="title is-3 has-text-white">💫 Orrery</h1>
+      </div>
+    </a>
+  </div>
+  
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+
+    </div>
+
+    <div class='navbar-item p-0 {{ if eq .CurrentView "home"}}is-active{{ end }}'>
+      <a href="/" class='px-5 py-4' title="Home">
+        <p class="title is-3 has-text-white-ter"><i class="bi bi-house-fill"></i></p>
       </a>
     </div>
 
-    <div class="mx-5" title="About">
-      <a href="/about" class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}'>
-        <i class="bi bi-question"></i>
+    <div class='navbar-item p-0 {{ if eq .CurrentView "about"}}is-active{{ end }}'>
+      <a href="/about" class='px-5 py-4' title="About">
+        <p class="title is-3 has-text-white-ter"><i class="bi bi-question"></i></p>
       </a>
     </div>
 
-    <!-- {{ if .User }}
-    <div class="mx-5" title="Dark theme">
-      <a live-click="toggle-dark" class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}'>
-        {{ if .User.UseDarkTheme }}
-        <i class="bi bi-star-half"></i>
-        {{ else }}
-        <i class="bi bi-star-fill"></i>
-        {{ end}}
-      </a>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        {{ if ne .CurrentView "test" }}
+        {{ template "locale-selector-ui" . }}
+        {{ end }}
+      </div>
     </div>
-    {{ end }} -->
-
-    {{ if .User }}
-    <!-- <div class="mx-5">
-      <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' href="/profile" title="Profile">
-        <i class="bi bi-person-fill"></i>
-      </a>
-    </div> -->
-    {{ end }}
-
-    {{ if .User }}
-    {{ if .User.Admin }}
-    <!-- <div class="mx-5">
-      <a href="/admin" class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel">
-        <i class="bi bi-radioactive"></i>
-      </a>
-    </div> -->
-    {{ end }}
-    {{ end }}
-
-    <!-- <div class="mx-5">
-      {{ if .User }}
-      <a live-click="open-logout-modal" title="Logout">
-        <i class="bi bi-box-arrow-right"></i>
-      </a>
-      {{ else }}
-      <a live-click="open-login-modal" title="Login">
-        <i class="bi bi-box-arrow-in-right"></i>
-      </a>
-      {{ end }}
-    </div> -->
   </div>
 </nav>
 {{ end }}
 
 
 {{ define "navigation-mobile" }}
-<nav class="navbar is-mobile is-centered px-2 py-4 is-size-3-mobile is-size-2-tablet is-hidden-tablet is-fixed-bottom">
+<nav
+  class="navbar is-mobile is-centered px-2 py-4 is-size-3-mobile is-hidden-tablet is-fixed-bottom animated-gradient-bg">
   <div class="level is-mobile">
     <div class="level-item">
-      <a class='{{ if eq .CurrentView "home"}}has-text-dark{{ end }}' href="/" title="Home">
+      <a class='has-text-white {{ if eq .CurrentView "home"}}has-text-black{{ end }}' href="/" title="Home">
         <i class="bi bi-house-fill"></i>
       </a>
     </div>
 
     <div class="level-item">
-      <a class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}' title="About" href="/about">
+      <a class='has-text-white {{ if eq .CurrentView "about"}}has-text-black{{ end }}' title="About" href="/about">
         <i class="bi bi-question"></i>
       </a>
     </div>
@@ -466,7 +442,7 @@ is-info
 {{ define "locale-selector-ui" }}
 {{ range UILocales }}
 <a live-patch href="{{ LocaleParam . }}"
-  class="m-1 p-2 button is-white {{ if eq . $.Locale }}is-success{{else}}{{ end }}" title="{{.}}">
+  class="m-1 p-2 button is-white {{ if eq . $.Locale }}is-primary{{else}}{{ end }}" title="{{.}}">
   <p class="title is-4 is-size-5-mobile">{{ LocaleIcon . }}</p>
 </a>
 {{end}}
