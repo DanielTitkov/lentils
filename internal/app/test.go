@@ -240,10 +240,6 @@ func (a *App) UpdateTestDurations(ctx context.Context) error {
 
 	var errs error
 	for _, test := range tests {
-		if len(test.Takes) == 0 {
-			continue
-		}
-
 		err := a.repo.UpdateTestDuration(ctx, test.ID, test.CalculateDuration())
 		if err != nil {
 			a.log.Error("failed to update test duration", err)

@@ -8,13 +8,13 @@ server:
   host: "0.0.0.0"
   domain: {{domain}}
 app:
-  systemSummarySchedule: "30 1 * * *"
-  systemSummaryTimeout: 5000 # milliseconds
-  updateNormsSchedule: "35 1 * * *"
+  systemSummarySchedule: "30 */3 * * *"
+  systemSummaryTimeout: 15000 # milliseconds
+  updateNormsSchedule: "35 */3 * * *"
   updateNormsTimeout: 55000 # milliseconds
-  updateMarksSchedule: "50 1 * * *"
+  updateMarksSchedule: "50 */3 * * *"
   updateMarksTimeout: 55000 # milliseconds
-  updateDurationsSchedule: "55 1 * * *"
+  updateDurationsSchedule: "55 */3 * * *"
   updateDurationsTimeout: 55000
   defaultTimeLayout: "2006-01-02"
   version: {{version}}
