@@ -15,8 +15,11 @@ $yellow: #FFC527;
 $green: #03D930;
 $green2: #AAE23B;
 $purple: #8A6FDF;
-$blue: #287aff;
+// $blue: #287aff;
 // $blue: #7b2ce2;
+$blue: #8600FF;
+
+$base: #8600FF;
 
 // for gradient in items
 
@@ -28,14 +31,15 @@ $family-sans-serif: "Source Sans Pro", sans-serif;
 $radius-large: 25px;
 // $grey-dark: $brown;
 // $grey-light: $beige-light;
-$primary: $blue;
+$primary: $base;
 $link: $primary;
 $success: $green;
 $danger: $red;
 $warning: $yellow;
 $info: $purple;
 
-$body-back: #f2f2f2;
+// $body-back: #f2f2f2;
+$body-back: #F5F6FA;
 // $widescreen-enabled: false;
 // $fullhd-enabled: false;
 $transparent-bg: rgba(0,0,0,0.07);
@@ -46,6 +50,10 @@ $body-background-color: $body-back;
 $box-radius: $radius-large;
 $box-padding: 1.3rem;
 $box-shadow: none;
+// card
+$card-radius: $radius-large;
+$card-shadow: none;
+$card-header-shadow: none;
 // notification
 $ntf-padding-size: 2rem 2rem 2rem 2rem;
 $notification-radius: $radius-large;
@@ -69,14 +77,25 @@ $footer-padding: 1.5rem 1.5rem 3rem;
 $footer-background-color: #f9f9f9;
 // navbar
 $navbar-breakpoint: 1px;
+// table
+$table-background-color: $transparent-bg;
 
 @import "~bulma/bulma";
 
 // update bulma classes 
 
 .box {
-	border: 1px solid #e5e5e5;
+	// border: 1px solid #e5e5e5;
 	transition: all .3s;
+}
+
+.card {
+	// border: 1px solid #e5e5e5;
+	transition: all .3s;
+}
+
+.button {
+	transition: all .2s;
 }
 
 .navbar-item:hover {
@@ -87,6 +106,17 @@ $navbar-breakpoint: 1px;
 	background-color: $transparent-bg;
 }
 
+body {
+	background-size: 100% 100%;
+	background-image: linear-gradient(
+		180deg, 
+		lighten($body-back, 2%) 0%,
+		$body-back 20%, 
+		darken($body-back, 5%) 100%,
+	);  
+}
+
+
 // custom styles
 
 @keyframes AnimateBG { 
@@ -96,17 +126,26 @@ $navbar-breakpoint: 1px;
   }
 
 .animated-gradient-bg {
-	background-size: 120% 120%;
+	background-size: 110% 110%;
 	background-image: linear-gradient(
 		-45deg, 
-		$primary 0%, 
-		$green 99%,
+		tint($primary, 35%) 10%,
+		$primary 70%, 
+		darken($primary, 7%) 100%,
 	);  
 	animation: AnimateBG 8s ease infinite;
 }
 
 
 // custom classes
+
+.is-dotted {
+	border-bottom: 2px dotted;
+}
+
+.card-header-title {
+	font-size: 1.4em;
+}
 
 .has-equal-height {
 	display: flex;

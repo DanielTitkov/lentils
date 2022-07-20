@@ -52,7 +52,8 @@
     {{ if .Assigns.Message }}
     {{ template "alert-success" .Assigns.Message }}
     {{ end }}
-    <div id="main-view-content" class="container">
+    {{ template "top-hero" .Assigns }}
+    <div id="main-view-content" class="container mt-5">
       {{ template "view" .Assigns }}
       <script type="text/javascript" src="/live.js"></script>
     </div>
@@ -195,7 +196,7 @@
 {{ end }}
 
 {{ define "navigation" }}
-<nav class="navbar is-mobile is-primary animated-gradient-bg is-hidden-mobile" role="navigation"
+<nav class="navbar is-mobile is-primary animated-gradient-bg is-hidden-mobile is-elevated" role="navigation"
   aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
@@ -426,7 +427,7 @@ is-info
 <p class="title is-5 is-size-6-mobile">{{ .UI.Test.SelectLoc }}</p>
 {{ range .Test.AvailableLocales }}
 <a live-patch href="{{ LocaleParam . }}"
-  class="m-2 p-3 button is-outlined is-large {{ if eq . $.Locale }}is-success{{else}}{{ end }}" title="{{.}}">
+  class="m-2 p-3 button is-white is-large {{ if eq . $.Locale }}is-primary{{else}}{{ end }}" title="{{.}}">
   <p class="title is-3 is-size-4-mobile">{{ LocaleIcon . }}</p>
 </a>
 {{end}}
@@ -439,4 +440,8 @@ is-info
   <p class="title is-4 is-size-5-mobile">{{ LocaleIcon . }}</p>
 </a>
 {{end}}
+{{ end }}
+
+{{ define "top-hero" }}
+<!-- no hero for this page -->
 {{ end }}

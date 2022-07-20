@@ -1,11 +1,30 @@
 {{ define "title" }} {{ .Test.Title }} {{ end }}
 {{ define "description" }} {{ .Test.Description }} {{ end }}
-{{ define "view" }}
-<main>
-  <div class="section">
+
+{{ define "top-hero" }}
+<section class="hero is-primary animated-gradient-bg">
+  <div class="hero-body">
     <div class="columns">
       <div class="column">
-        <h1 class="title is-1 is-size-3-mobile">{{ .Test.Title }}</h1>
+        <h1 class="title is-1 is-size-3-mobile">
+          {{ .Test.Title }}
+          <span class="title is-2 is-size-3-mobile is-clickable" live-click="toggle-show-details">
+            {{ if .ShowDetails }}
+            <i class="bi bi-info-circle"></i>
+            {{ else }}
+            <i class="bi bi-info-circle-fill"></i>
+            {{ end }}
+          </span>
+          {{ if eq .Test.Take.Status .QuestionsStatus }}
+          <span class="title is-2 is-size-3-mobile is-clickable ml-2" live-click="toggle-show-instruction">
+            {{ if .ShowInstruction }}
+            <i class="bi bi-question-circle"></i>
+            {{ else }}
+            <i class="bi bi-question-circle-fill"></i>
+            {{ end }}
+          </span>
+          {{ end }}
+        </h1>
         <h3 class="subtitle is-3 is-size-5-mobile">{{ .Test.Description }}</h3>
         {{ if .Test.Take }}
         <span class="heading">
@@ -25,13 +44,15 @@
       {{ end }}
     </div>
     {{ template "show-details-block" . }}
-    {{ if eq .Test.Take.Status .QuestionsStatus }}
     {{ template "show-instruction-block" . }}
-    {{ end }}
   </div>
+</section>
+{{ end }}
 
+{{ define "view" }}
+<main>
   {{ if eq .Test.Take.Status .IntroStatus }}
-  <div class="section">
+  <div class="section pt-2">
     <div class="columns">
       <div class="column is-6">
         {{ template "locale-selector" . }}
@@ -47,7 +68,7 @@
       <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
     </div>
   </div>
-  <div class="section">
+  <div class="section pt-3">
     <p class="block is-size-5 is-size-6-mobile has-text-centered">{{ .UI.Test.BeginLabel }}</p>
     <div class="level">
       <div class="level-item has-text-centered">
@@ -65,7 +86,7 @@
   {{ if eq .Test.Take.Status .QuestionsStatus }}
   <div class="section">
     <div class="block">
-      <progress class="progress is-normal is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
+      <progress class="progress is-normal is-primary" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
         .Page }}%</progress>
       <p class="header">{{ .UI.Test.Page }} {{ .Page }} {{ .UI.Test.Of }} {{ .Test.PageCount }}</p>
     </div>
@@ -100,16 +121,16 @@
     <div class="level-item has-text-centered">
       <div class="block">
         {{ if ge .Page .Test.PageCount }}
-        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="end-test" {{ if
+        <button class="button is-large is-rounded is-primary is-hidden-mobile" live-click="end-test" {{ if
           .Test.IsNotDone }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
-        <button class="button is-rounded is-success is-hidden-tablet" live-click="end-test" {{ if .Test.IsNotDone
+        <button class="button is-rounded is-primary is-hidden-tablet" live-click="end-test" {{ if .Test.IsNotDone
           }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
         {{ else }}
-        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="next-page" {{ if ge .Page
+        <button class="button is-large is-rounded is-primary is-hidden-mobile" live-click="next-page" {{ if ge .Page
           .Test.PageCount }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
           {{ .UI.Test.NextButton }}
         </button>
-        <button class="button is-rounded is-success is-hidden-tablet" live-click="next-page" {{ if ge .Page
+        <button class="button is-rounded is-primary is-hidden-tablet" live-click="next-page" {{ if ge .Page
           .Test.PageCount }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
           {{ .UI.Test.NextButton }}
         </button>
@@ -197,8 +218,11 @@
             <p class="subtitle is-5 is-size-6-mobile">{{ $scale.Description }}</p>
           </div>
           <div class="column is-narrow">
-            <p class="title is-3 is-size-5-mobile has-text-primary">{{printf "%.1f" $scale.Result.Score }}{{
-              $scale.Result.Unit }}</p>
+            <div class="notification is-primary is-elevated p-4">
+              <p class="title is-3 is-size-5-mobile has-text-white">
+                {{printf "%.1f" $scale.Result.Score }}{{$scale.Result.Unit }}
+              </p>
+            </div>
           </div>
         </div>
         <p class="heading">{{ $scale.Result.Formula }}</p>
@@ -212,7 +236,7 @@
             <div class="level-item">{{ $scale.Result.Max }}</div>
           </div>
         </div>
-        <progress class="progress is-large is-success"
+        <progress class="progress is-medium is-primary"
           value="{{ Perc $scale.Result.Min $scale.Result.Max $scale.Result.Score }}"
           max="{{ Perc $scale.Result.Min $scale.Result.Max $scale.Result.Max }}">
           {{ $scale.Result.Score }}
@@ -266,29 +290,51 @@
 {{ end }}
 
 {{ define "show-details-block" }}
-<div class="block">
-  <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-details">
-    {{ if .ShowDetails }}
-    {{ .UI.Test.HideDetails }}
-    <i class="bi bi-caret-up-fill"></i>
-    {{ else }}
-    {{ .UI.Test.ShowDetails }}
-    <i class="bi bi-caret-down-fill"></i>
-    {{ end }}
-  </p>
-</div>
 {{ if .ShowDetails }}
-<div class="box has-background-grey-lighter">
-  {{ template "test-tags" .Test }}
-  <div class="columns">
-    <div class="column">
-      <div class="content is-medium is-hidden-mobile">{{ .Test.Details }}</div>
-      <div class="content is-normal is-hidden-tablet">{{ .Test.Details }}</div>
+<div class="card is-elevated">
+  <header class="card-header">
+    <p class="card-header-title">
+      {{ .UI.Test.About }}
+    </p>
+    <button class="card-header-icon" aria-label="hide" live-click="toggle-show-details">
+      <span class="icon">
+        <i class="bi bi-eye-slash"></i>
+      </span>
+    </button>
+  </header>
+  <div class="card-content">
+    <div class="columns">
+      <div class="column">
+        <div class="content is-medium is-hidden-mobile">{{ .Test.Details }}</div>
+        <div class="content is-normal is-hidden-tablet">{{ .Test.Details }}</div>
+      </div>
+      <div class="column is-narrow">
+        <div class="box has-background-grey-lighter">
+          <div class="table-container">
+            <table class="table is-fullwidth">
+              <tbody>
+                <tr>
+                  <td>Scales</td>
+                  <th class="has-text-right">{{ len .Test.Scales }}</th>
+                </tr>
+                <tr>
+                  <td>Questions</td>
+                  <th class="has-text-right">{{ .Test.QuestionCount }}</th>
+                </tr>
+                <tr>
+                  <td>Average time</td>
+                  <th class="has-text-right">{{ FormatDuration .Test.Duration }}</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="column is-narrow">
-      <p><b>Scales:</b> {{ len .Test.Scales }}</p>
-      <p><b>Questions:</b> {{ .Test.QuestionCount }}</p>
-      <p><b>Average time:</b> {{ .Test.Duration }}</p>
+  </div>
+  <div class="card-footer">
+    <div class="card-footer-item">
+      {{ template "test-tags" .Test }}
     </div>
   </div>
 </div>
@@ -296,22 +342,22 @@
 {{ end }}
 
 {{ define "show-instruction-block" }}
-<div class="block">
-  <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-instruction">
-    {{ if .ShowInstruction }}
-    {{ .UI.Test.HideInstruction }}
-    <i class="bi bi-caret-up-fill"></i>
-    {{ else }}
-    {{ .UI.Test.ShowInstruction }}
-    <i class="bi bi-caret-down-fill"></i>
-    {{ end }}
-  </p>
-</div>
 {{ if .ShowInstruction }}
-<div class="box has-background-grey-lighter">
-  <p class="title is-3 is-size-5-mobile">{{ .UI.Test.Instructions }}</p>
-  <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
-  <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
+<div class="card mt-5 is-elevated">
+  <header class="card-header">
+    <p class="card-header-title">
+      {{ .UI.Test.Instructions }}
+    </p>
+    <button class="card-header-icon" aria-label="hide" live-click="toggle-show-instruction">
+      <span class="icon">
+        <i class="bi bi-eye-slash"></i>
+      </span>
+    </button>
+  </header>
+  <div class="card-content">
+    <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
+    <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
+  </div>
 </div>
 {{ end }}
 {{ end }}

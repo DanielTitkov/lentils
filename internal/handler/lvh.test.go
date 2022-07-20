@@ -103,7 +103,7 @@ func (h *Handler) NewTestInstance(s live.Socket) *TestInstance {
 			Constants:       h.NewConstants(),
 			TestStep:        domain.TestStepIntro,
 			AutoNext:        false,
-			ShowDetails:     false,
+			ShowDetails:     true,
 			ShowInstruction: false,
 			OverrideMethod:  "",
 		}
