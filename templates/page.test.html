@@ -45,6 +45,9 @@
     </div>
     {{ template "show-details-block" . }}
     {{ template "show-instruction-block" . }}
+    {{ if eq .Test.Take.Status .FinishStatus }}
+    {{ template "main-result-block" . }}
+    {{ end }}
   </div>
 </section>
 {{ end }}
@@ -145,67 +148,7 @@
   <!-- end questions status -->
 
   {{ if eq .Test.Take.Status .FinishStatus }}
-  <div class="box">
-    <div class="columns">
-      <div class="column is-6">
-        <table class="charts-css column show-labels show-5-secondary-axes show-primary-axis show-data-axes"
-          id="basic-chart">
-          <tbody>
-            {{ range $i, $scale := .Test.Scales }}
-            <tr>
-              <th scope="row">
-                {{ $scale.Abbreviation }}
-              </th>
-              <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">
-                <span class="data"> {{printf "%.1f" $scale.Result.Score}} </span>
-                <span class="tooltip"> {{ $scale.Title }} </span>
-              </td>
-            </tr>
-            {{ end }}
-          </tbody>
-        </table>
-      </div>
-      <div class="column is-6">
-        <div class="content is-normal is-hidden-tablet">{{ .Test.ResultPreambule }}</div>
-        <div class="content is-medium is-hidden-mobile">{{ .Test.ResultPreambule }}</div>
-        <div class="level">
-          <div class="level-item">
-            {{ template "share-result-facebook" . }}
-          </div>
-          <div class="level-item">
-            {{ template "share-result-twitter" . }}
-          </div>
-        </div>
-      </div>
-    </div>
-    {{ template "advanced-settings" . }}
-    <div class="columns">
-      <div class="column is-6">
-        <p class="heading">
-          <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.NormsInfo }}
-        </p>
-      </div>
-      <div class="column is-6">
-        <p class="heading">
-          <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.Disclaimer }}
-        </p>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
-        <p>{{ .UI.Test.ResultLinkInfo }}</p>
-      </div>
-      <div class="column is-narrow">
-        {{ if eq .CurrentView "result" }}
-        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2 mt-1" target="_blank">{{
-          .UI.Test.TakeThisButton }}</a>
-        {{ end }}
-        <a href="/" class="button is-rounded is-primary mt-1" target="_blank">{{ .UI.Test.ExploreButton }}</a>
-      </div>
-    </div>
-  </div>
-  <div class="section">
+  <div class="section pt-3">
     <p class="subtitle is-2 is-size-4-mobile has-text-centered">{{ .UI.Test.DetailedReport }}</p>
   </div>
   <div class="columns is-multiline">
@@ -437,5 +380,68 @@
     <hr>
   </div>
   {{ end }}
+</div>
+{{ end }}
+
+{{ define "main-result-block" }}
+<div class="box mt-5 is-elevated">
+  <div class="columns">
+    <div class="column is-6">
+      <table class="charts-css column show-labels show-5-secondary-axes show-primary-axis show-data-axes"
+        id="basic-chart">
+        <tbody>
+          {{ range $i, $scale := .Test.Scales }}
+          <tr>
+            <th scope="row">
+              {{ $scale.Abbreviation }}
+            </th>
+            <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">
+              <span class="data"> {{printf "%.1f" $scale.Result.Score}} </span>
+              <span class="tooltip"> {{ $scale.Title }} </span>
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+    <div class="column is-6">
+      <div class="content is-normal is-hidden-tablet">{{ .Test.ResultPreambule }}</div>
+      <div class="content is-medium is-hidden-mobile">{{ .Test.ResultPreambule }}</div>
+      <div class="level">
+        <div class="level-item">
+          {{ template "share-result-facebook" . }}
+        </div>
+        <div class="level-item">
+          {{ template "share-result-twitter" . }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ template "advanced-settings" . }}
+  <div class="columns">
+    <div class="column is-6">
+      <p class="heading">
+        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.NormsInfo }}
+      </p>
+    </div>
+    <div class="column is-6">
+      <p class="heading">
+        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.Disclaimer }}
+      </p>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column">
+      <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
+      <p>{{ .UI.Test.ResultLinkInfo }}</p>
+    </div>
+    <div class="column is-narrow">
+      {{ if eq .CurrentView "result" }}
+      <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2 mt-1" target="_blank">{{
+        .UI.Test.TakeThisButton }}</a>
+      {{ end }}
+      <a href="/" class="button is-rounded is-primary mt-1" target="_blank">{{ .UI.Test.ExploreButton }}</a>
+    </div>
+  </div>
 </div>
 {{ end }}
