@@ -7,15 +7,7 @@
   <title>{{ template "title" .Assigns }} | Orrery</title>
   <meta name="description" content='{{ template "description" .Assigns }}'>
 
-  {{ if .Assigns.User }}
-  {{ if .Assigns.User.UseDarkTheme }}
-  <link rel="stylesheet" href="/static/css/styles-dark.css" />
-  {{ else }}
   <link rel="stylesheet" href="/static/css/styles.css" />
-  {{ end }}
-  {{ else }}
-  <link rel="stylesheet" href="/static/css/styles.css" />
-  {{ end }}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
@@ -203,7 +195,8 @@
 {{ end }}
 
 {{ define "navigation" }}
-<nav class="navbar is-mobile is-primary animated-gradient-bg is-hidden-mobile" role="navigation" aria-label="main navigation">
+<nav class="navbar is-mobile is-primary animated-gradient-bg is-hidden-mobile" role="navigation"
+  aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
       <div>
@@ -211,7 +204,7 @@
       </div>
     </a>
   </div>
-  
+
 
   <div class="navbar-menu">
     <div class="navbar-start">

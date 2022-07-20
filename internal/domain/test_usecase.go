@@ -115,7 +115,7 @@ func (t *Test) CalculateResult(overrideMethod string) error {
 }
 
 func (t *Test) DefaultDuration() time.Duration {
-	return (time.Duration(len(t.Questions)) * time.Second * 4).Truncate(5 * time.Second)
+	return (time.Duration(len(t.Questions)) * time.Second * 4)
 }
 
 func (t *Test) CalculateDuration() time.Duration {
@@ -132,7 +132,7 @@ func (t *Test) CalculateDuration() time.Duration {
 		return t.DefaultDuration()
 	}
 
-	return time.Duration(duration).Truncate(5 * time.Second)
+	return time.Duration(duration)
 }
 
 func (t *Test) CalculateMark() float64 {

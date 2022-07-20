@@ -79,10 +79,6 @@ $navbar-breakpoint: 1px;
 	transition: all .3s;
 }
 
-.column {
-	height: 100%;
-}
-
 .navbar-item:hover {
 	background-color: $transparent-bg;
 }
@@ -109,7 +105,18 @@ $navbar-breakpoint: 1px;
 	animation: AnimateBG 8s ease infinite;
 }
 
+
 // custom classes
+
+.has-equal-height {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+  }
+
+.has-equal-height .card-footer {
+	margin-top: auto;
+}
 
 .is-elevated {
 	-webkit-box-shadow: 0 14px 26px -12px rgba($primary,.42),0 4px 23px 0px rgba(0,0,0,.12),0 8px 10px -5px rgba($primary,.2);
