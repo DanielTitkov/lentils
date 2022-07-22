@@ -163,22 +163,20 @@
             <p class="subtitle is-5 is-size-6-mobile">{{ $scale.Description }}</p>
           </div>
           <div class="column is-narrow">
-            <div class="notification is-primary is-elevated p-4 has-text-centered">
+            <div class="notification is-primary is-elevated p-4 has-text-centered" title="{{ $scale.Result.Formula }}">
               <p class="title is-3 is-size-5-mobile has-text-white">
                 {{printf "%.1f" $scale.Result.Score }}{{$scale.Result.Unit }}
               </p>
             </div>
           </div>
         </div>
-        <p class="heading">{{ $scale.Result.Formula }}</p>
-        <hr>
-        <div class="level is-mobile">
+        <div class="level is-mobile mb-2">
           <div class="level-left">
-            <div class="level-item">{{ $scale.Result.Min }}</div>
+            <div class="level-item">[{{ $scale.Result.Min }}</div>
           </div>
           <div class="level-item has-text-centered">{{ Mean $scale.Result.Min $scale.Result.Max }}</div>
           <div class="level-right">
-            <div class="level-item">{{ $scale.Result.Max }}</div>
+            <div class="level-item">{{ $scale.Result.Max }}]</div>
           </div>
         </div>
         <progress class="progress is-medium is-primary"
@@ -271,15 +269,18 @@
             <table class="table is-fullwidth">
               <tbody>
                 <tr>
+                  <td><span class="icon"><i class="bi bi-bar-chart"></i></span></td>
                   <td>Scales</td>
                   <th class="has-text-right">{{ len .Test.Scales }}</th>
                 </tr>
                 <tr>
+                  <td><span class="icon"><i class="bi bi-ui-checks"></i></span></td>
                   <td>Questions</td>
                   <th class="has-text-right">{{ .Test.QuestionCount }}</th>
                 </tr>
                 <tr>
-                  <td>Average time</td>
+                  <td><span class="icon"><i class="bi bi-clock"></i></span></td>
+                  <td>Avg. time</td>
                   <th class="has-text-right">{{ FormatDuration .Test.Duration }}</th>
                 </tr>
               </tbody>
@@ -393,7 +394,7 @@
         {{ template "main-result-chart" . }}
       </div>
       <div class="column is-6">
-        <div class="content is-normal">{{ .Test.ResultPreambule }}</div>
+        <div class="content is-normal is-bordered">{{ .Test.ResultPreambule }}</div>
         <div class="level">
           <div class="level-item">
             {{ template "share-result-facebook" . }}

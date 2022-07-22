@@ -113,12 +113,19 @@
     <div class="has-text-centered is-size-6">
       <p>
         <span class="has-text-grey mx-3">Orrery</span>
+        <a class="mx-3" href="https://twitter.com/OrreryLab" target="_blank">
+          <span class="icon is-small has-text-grey-lighter">
+            <i class="bi bi-twitter"></i>
+          </span>
+        </a>
         <a class="has-text-grey-light is-underlined mx-3" href="/terms" target="_blank">Terms and conditions</a>
         <a class="has-text-grey-light is-underlined mx-3" href="/privacy" target="_blank">Privacy policy</a>
         <span class="has-text-grey mx-3">{{ .Version }}</span>
       </p>
     </div>
-  </div>
+    <div class="has-text-centered is-size-6">
+
+    </div>
   </div>
 </footer>
 {{ end }}
@@ -301,7 +308,8 @@
 <nav class="level is-centered">
   <div class="level-item">
     <div class="mx-3">
-      <a href="/" class='{{ if eq .CurrentView "home"}}has-text-white-ter{{ end }}' title="Home">
+      <a href="/" class='{{ if eq .CurrentView "home"}}has-text-white-ter{{else}}has-text-grey-light{{ end }}'
+        title="Home">
         Home
       </a>
     </div>
@@ -309,7 +317,7 @@
 
   <div class="level-item">
     <div class="mx-3" title="About">
-      <a class='{{ if eq .CurrentView "about"}}has-text-white-ter{{ end }}' href="/about">
+      <a class='{{ if eq .CurrentView "about"}}has-text-white-ter{{else}}has-text-grey-light{{ end }}' href="/about">
         About
       </a>
     </div>

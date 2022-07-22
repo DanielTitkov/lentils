@@ -52,7 +52,7 @@ const (
 	// app
 	AppMaxEvents        = 30
 	ShareScaleLen       = 5
-	ShareScaleUnit      = "🟩"
+	ShareScaleUnit      = "🟪"
 	ShareScaleUnitEmpty = "⬜️"
 )
 
