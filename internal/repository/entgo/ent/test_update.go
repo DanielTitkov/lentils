@@ -136,6 +136,26 @@ func (tu *TestUpdate) AddQuestionCount(i int) *TestUpdate {
 	return tu
 }
 
+// SetImage sets the "image" field.
+func (tu *TestUpdate) SetImage(s string) *TestUpdate {
+	tu.mutation.SetImage(s)
+	return tu
+}
+
+// SetNillableImage sets the "image" field if the given value is not nil.
+func (tu *TestUpdate) SetNillableImage(s *string) *TestUpdate {
+	if s != nil {
+		tu.SetImage(*s)
+	}
+	return tu
+}
+
+// ClearImage clears the value of the "image" field.
+func (tu *TestUpdate) ClearImage() *TestUpdate {
+	tu.mutation.ClearImage()
+	return tu
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by IDs.
 func (tu *TestUpdate) AddTakeIDs(ids ...uuid.UUID) *TestUpdate {
 	tu.mutation.AddTakeIDs(ids...)
@@ -516,6 +536,19 @@ func (tu *TestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: test.FieldQuestionCount,
+		})
+	}
+	if value, ok := tu.mutation.Image(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: test.FieldImage,
+		})
+	}
+	if tu.mutation.ImageCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: test.FieldImage,
 		})
 	}
 	if tu.mutation.TakesCleared() {
@@ -943,6 +976,26 @@ func (tuo *TestUpdateOne) AddQuestionCount(i int) *TestUpdateOne {
 	return tuo
 }
 
+// SetImage sets the "image" field.
+func (tuo *TestUpdateOne) SetImage(s string) *TestUpdateOne {
+	tuo.mutation.SetImage(s)
+	return tuo
+}
+
+// SetNillableImage sets the "image" field if the given value is not nil.
+func (tuo *TestUpdateOne) SetNillableImage(s *string) *TestUpdateOne {
+	if s != nil {
+		tuo.SetImage(*s)
+	}
+	return tuo
+}
+
+// ClearImage clears the value of the "image" field.
+func (tuo *TestUpdateOne) ClearImage() *TestUpdateOne {
+	tuo.mutation.ClearImage()
+	return tuo
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by IDs.
 func (tuo *TestUpdateOne) AddTakeIDs(ids ...uuid.UUID) *TestUpdateOne {
 	tuo.mutation.AddTakeIDs(ids...)
@@ -1353,6 +1406,19 @@ func (tuo *TestUpdateOne) sqlSave(ctx context.Context) (_node *Test, err error) 
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: test.FieldQuestionCount,
+		})
+	}
+	if value, ok := tuo.mutation.Image(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: test.FieldImage,
+		})
+	}
+	if tuo.mutation.ImageCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: test.FieldImage,
 		})
 	}
 	if tuo.mutation.TakesCleared() {

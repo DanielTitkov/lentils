@@ -301,7 +301,7 @@
 <nav class="level is-centered">
   <div class="level-item">
     <div class="mx-3">
-      <a href="/" class='{{ if eq .CurrentView "home"}}has-text-dark{{ end }}' title="Home">
+      <a href="/" class='{{ if eq .CurrentView "home"}}has-text-white-ter{{ end }}' title="Home">
         Home
       </a>
     </div>
@@ -309,7 +309,7 @@
 
   <div class="level-item">
     <div class="mx-3" title="About">
-      <a class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}' href="/about">
+      <a class='{{ if eq .CurrentView "about"}}has-text-white-ter{{ end }}' href="/about">
         About
       </a>
     </div>
@@ -360,17 +360,15 @@
 {{ end }}
 
 {{define "alert-warning"}}
-<div class="container">
-  <div class="notification is-warning">
-    <button live-click="close-error-notification" class="delete"></button>
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <i class="bi-exclamation-triangle-fill" style="font-size: 1.5rem;"></i>
-        </div>
-        <div class="level-item">
-          <span><strong>{{.}}</strong></span>
-        </div>
+<div class="notification is-danger system-notification p-5 m-3">
+  <button live-click="close-error-notification" class="delete"></button>
+  <div class="level">
+    <div class="level-left">
+      <div class="level-item">
+        <i class="bi-exclamation-triangle-fill" style="font-size: 1rem;"></i>
+      </div>
+      <div class="level-item">
+        <span>{{.}}</span>
       </div>
     </div>
   </div>
@@ -378,17 +376,15 @@
 {{end}}
 
 {{define "alert-success"}}
-<div class="container">
-  <div class="notification is-success">
-    <button live-click="close-message-notification" class="delete"></button>
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <i class="bi-exclamation-triangle-fill" style="font-size: 1.5rem;"></i>
-        </div>
-        <div class="level-item">
-          <span><strong>{{.}}</strong></span>
-        </div>
+<div class="notification is-success system-notification">
+  <button live-click="close-message-notification" class="delete"></button>
+  <div class="level">
+    <div class="level-left">
+      <div class="level-item">
+        <i class="bi-exclamation-triangle-fill" style="font-size: 1.5rem;"></i>
+      </div>
+      <div class="level-item">
+        <span><strong>{{.}}</strong></span>
       </div>
     </div>
   </div>

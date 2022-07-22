@@ -1,6 +1,7 @@
 code: fipi
 locales: ["en", "ru"]
 tags: ["psychology", "short", "debug"]
+image: https://orrery.ams3.digitaloceanspaces.com/fipi-image.jpg
 en: # title, descriptions, instruction, details, result preambule
   - FIPI
   - Five-Item Personality Inventory (for debug only)

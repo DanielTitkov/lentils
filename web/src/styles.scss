@@ -2,6 +2,8 @@
 
 // Import a Google Font
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap');
 @function tint($color, $percentage) {
 	@return mix(white, $color, $percentage);
 }
@@ -10,25 +12,27 @@
 // https://coolors.co/palette/ffadad-ffd6a5-fdffb6-caffbf-9bf6ff-a0c4ff-bdb2ff-ffc6ff-fffffc
 
 // brand colors
-$red: #FF5765;
-$yellow: #FFC527;
-$green: #03D930;
+$red: #ee4266;
+$yellow: #FFBF00;
+$orange: #FF7F11;
+// $green: #6dcc1b;
+$green: #0cca4a;
+// $green: #61e786;
 $green2: #AAE23B;
-$purple: #8A6FDF;
-$blue: #287aff;
+$blue: #2191FB;
+$azure: #3B28CC;
 
-$base: #8600FF;
+$base: #7c00e8;
 // $base: #5f00ba;
-// $base: #00CCCB;
 
-// for gradient in items
+// for gradient in items 
 
-$left: tint($green, 60%);
+$left: tint($green, 40%);
 $right: lighten($green2, 5%);
 
 // Update Bulma's global variables
 $family-sans-serif: "Source Sans Pro", sans-serif; 
-// $family-sans-serif: "Ubuntu", sans-serif; 
+// $family-sans-serif: "Roboto", sans-serif; 
 $radius-large: 25px;
 // $grey-dark: $brown;
 // $grey-light: $beige-light;
@@ -70,12 +74,13 @@ $modal-card-head-padding: 30px;
 // tags
 $tag-radius: $radius-large;
 // hr
-$hr-background-color: #ededed;
+$hr-background-color: $transparent-bg;
 // section
 $section-padding: 1.5rem 1rem; // for mobile
 // footer
 $footer-padding: 1.5rem 1.5rem 3rem;
-$footer-background-color: #f9f9f9;
+// $footer-background-color: #312D55;
+$footer-background-color: #131224;
 // navbar
 $navbar-breakpoint: 1px;
 // table
@@ -107,8 +112,26 @@ $table-background-color: $transparent-bg;
 	background-color: $transparent-bg;
 }
 
+.content {
+	font-family: 'Roboto Slab', serif;
+	// padding-left: 22px;
+	padding-right: 22px;
+	// padding: 25px;
+	// border-radius: $radius-large;
+}
+
+.content a {
+	color: $link;
+}
+
+.hero.is-primary a:not(.button):not(.dropdown-item):not(.tag):not(.pagination-link.is-current) {
+	color: $link;
+	text-decoration: underline;
+}
+
 body {
 	background-size: 100% 100%;
+	background-color: $body-back;
 	background-image: linear-gradient(
 		180deg, 
 		lighten($body-back, 2%) 0%,
@@ -120,13 +143,14 @@ body {
 
 // custom styles
 
+
 @keyframes AnimateBG { 
 	0%{background-position:0% 50%}
 	50%{background-position:100% 50%}
 	100%{background-position:0% 50%}
-  }
+}
 
-.animated-gradient-bg {
+@mixin gradient-bg-mixin {
 	background-size: 110% 110%;
 	background-image: linear-gradient(
 		-45deg, 
@@ -137,16 +161,88 @@ body {
 	animation: AnimateBG 8s ease infinite;
 }
 
+@mixin half-transparent-gradient-mixin {
+	background-size: 120% 120%;
+	background-image: linear-gradient(
+		180deg, 
+		rgba(tint($primary, 35%), 0.7) 10%,
+		rgba($primary, 0.8) 70%, 
+		rgba(darken($primary, 7%), 1) 100%,
+	);  
+	animation: AnimateBG 8s ease infinite;
+}
+
+.animated-gradient-bg {
+	@include gradient-bg-mixin();
+}
+
 
 // custom classes
+
+.test-hero {
+	-webkit-mask:
+		linear-gradient(red 0 0) top/100% calc(100% - 60px) no-repeat,
+		radial-gradient(circle farthest-side,#000 98%,#0000) bottom/calc(1.85*60px) 140px repeat-x;
+	mask:
+		linear-gradient(red 0 0) top/100% calc(100% - 60px) no-repeat,
+		radial-gradient(circle farthest-side,#000 98%,#0000) bottom/calc(1.85*60px) 140px repeat-x;
+}
+
+.test-hero-bg {
+	position: relative;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	animation: AnimateBG 35s ease infinite;
+	// animation: none;
+}
+
+.test-hero-bg::after {
+    content: ""; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @include half-transparent-gradient-mixin();
+	z-index: 1;
+}
+
+.test-hero > * {
+    z-index: 100;
+}
+
+.system-notification {
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+	z-index: 10;
+	border-radius: 5px;
+}
+
+.system-notification div {
+	overflow: scroll;
+}
 
 .is-dotted {
 	border-bottom: 2px dotted;
 }
 
+.is-bordered {
+	// border: 3px solid darken($body-back, 5%);
+	border-radius: $radius-large;
+	background-color: #e6e6e6;
+	padding: 25px;
+}
+
 .card-header-title {
 	font-size: 1.4em;
+	padding-left: 24px;
 }
+
+// .card-footer {
+// 	@include gradient-bg-mixin();
+// }
 
 .has-equal-height {
 	display: flex;
@@ -183,11 +279,15 @@ body {
 .share-twitter-button {
 	background-color: #1d9bf1;
 	color: #fff;
+	border: 0;
+	margin: 0 1px;
 }
 
 .share-facebook-button {
 	background-color: #1B74E8;
 	color: #fff;
+	border: 0;
+	margin: 0 1px;
 }
 
 
@@ -209,18 +309,91 @@ input[type="checkbox"]:disabled {
 	background: white;
 }
 
+/* Advanced settings */
+
+.advanced-settings-block {
+	background-color: rgba($footer-background-color, $alpha: 0.7);
+	position: fixed;
+	right: 0;
+	top: 50%;
+	z-index: 990;
+	padding: 7px;
+	border-top-left-radius: $radius-large;
+	border-bottom-left-radius: $radius-large;
+}
+
 /* Chart */
 
 #basic-chart.column {
 	height: 300px;
 	margin: 0;
+	border-radius: $radius-large;
 }
- 
+
+
 #basic-chart.bar {
 	height: 300px;
 	margin: 0;
 }
 
+#basic-chart tr:first-child {
+	border-top-left-radius: $radius-large;
+}
+
+#basic-chart tr:last-child {
+	border-top-right-radius: $radius-large;
+}
+
+@function chart-gradient-tint($color) {
+	@return linear-gradient(-15deg, tint($color, 30%), $color);;
+  }
+
+#basic-chart td {
+	transition-duration: 0.3s !important;
+	// border-radius: $radius-large;
+	border-top-left-radius: $radius-large;
+	border-top-right-radius: $radius-large;
+
+	// border-radius: 8px;
+}
+
+#basic-chart td:hover {
+	opacity: 1;
+	background-color: $green !important;
+	background: chart-gradient-tint($green) !important;
+}
+
+#basic-chart span.data {
+	color: whitesmoke;
+	font-weight: bold;
+}
+  
+
+/* Multiple Datasets */
+#basic-chart.multiple tbody tr td:nth-of-type(1n + 1) {
+	background-color: $base;
+}
+
+
+/* Single Dataset */
+#basic-chart:not(.multiple) tbody tr:nth-of-type(1n + 1) td {
+	background-color: $base;
+	background: chart-gradient-tint($base);
+	transition-duration: 0.3s !important;
+}
+// #basic-chart:not(.multiple) tbody tr:nth-of-type(4n + 2) td {
+// 	background-color: $azure;
+// 	background: chart-gradient-tint($azure);
+// }
+// #basic-chart:not(.multiple) tbody tr:nth-of-type(4n + 3) td {
+// 	background-color: $blue;
+// 	background: chart-gradient-tint($blue);
+// }
+// #basic-chart:not(.multiple) tbody tr:nth-of-type(4n + 4) td {
+// 	background-color: $green;
+// 	background: chart-gradient-tint($green);
+// }
+  
 
 /* Meter */
 
@@ -248,8 +421,6 @@ meter {
 .live-blur-loading,
 .live-keydown-loading,
 .live-keyup-loading {
-	// color: $azur-darker !important;
-	// font-family: "Flow Circular", cursive !important;
 	@include keyframes(movi) {
 		0%,
 		20% {

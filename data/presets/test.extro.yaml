@@ -1,8 +1,9 @@
 code: extro
 published: true
 availableLocales: ["en", "ru"]
-forceUpdate: false
+forceUpdate: true
 tags: ["psychology", "short", "debug"]
+image: https://orrery.ams3.digitaloceanspaces.com/extro-image.jpg
 translations:
   - locale: en
     title: EXTRO

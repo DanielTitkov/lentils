@@ -2,8 +2,9 @@
 {{ define "description" }} {{ .Test.Description }} {{ end }}
 
 {{ define "top-hero" }}
-<section class="hero is-primary animated-gradient-bg">
-  <div class="hero-body">
+<section class='hero is-primary animated-gradient-bg test-hero {{ if ne .Test.Image "" }}test-hero-bg{{end}}' {{
+  template "test-image-bg" .Test }}>
+  <div class="hero-body mb-5">
     <div class="columns">
       <div class="column">
         <h1 class="title is-1 is-size-3-mobile">
@@ -68,7 +69,7 @@
     <div class="notification is-primary is-elevated">
       <p class="title is-3 is-size-5-mobile">{{ .UI.Test.Instructions }}</p>
       <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
-      <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
+      <div class="content is-normal is-hidden-tablet p-2">{{ .Test.Instruction }}</div>
     </div>
   </div>
   <div class="section pt-3">
@@ -148,6 +149,7 @@
   <!-- end questions status -->
 
   {{ if eq .Test.Take.Status .FinishStatus }}
+  {{ template "advanced-settings" . }}
   <div class="section pt-3">
     <p class="subtitle is-2 is-size-4-mobile has-text-centered">{{ .UI.Test.DetailedReport }}</p>
   </div>
@@ -161,7 +163,7 @@
             <p class="subtitle is-5 is-size-6-mobile">{{ $scale.Description }}</p>
           </div>
           <div class="column is-narrow">
-            <div class="notification is-primary is-elevated p-4">
+            <div class="notification is-primary is-elevated p-4 has-text-centered">
               <p class="title is-3 is-size-5-mobile has-text-white">
                 {{printf "%.1f" $scale.Result.Score }}{{$scale.Result.Unit }}
               </p>
@@ -184,7 +186,7 @@
           max="{{ Perc $scale.Result.Min $scale.Result.Max $scale.Result.Max }}">
           {{ $scale.Result.Score }}
         </progress>
-        <div class="content is-normal">
+        <div class="content is-normal is-bordered">
           {{ if $scale.Result.Interpretation }}
           {{ $scale.Result.Interpretation.Content }}
           {{ else }}
@@ -209,6 +211,18 @@
   </div>
   {{ end }}
   <!-- mark block end -->
+  <div class="columns p-4">
+    <div class="column is-6">
+      <p class="heading">
+        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.Disclaimer }}
+      </p>
+    </div>
+    <div class="column is-6">
+      <p class="heading">
+        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.NormsInfo }}
+      </p>
+    </div>
+  </div>
   {{ end }}
 </main>
 {{ end }}
@@ -249,7 +263,7 @@
     <div class="columns">
       <div class="column">
         <div class="content is-medium is-hidden-mobile">{{ .Test.Details }}</div>
-        <div class="content is-normal is-hidden-tablet">{{ .Test.Details }}</div>
+        <div class="content is-normal is-hidden-tablet p-2">{{ .Test.Details }}</div>
       </div>
       <div class="column is-narrow">
         <div class="box has-background-grey-lighter">
@@ -299,7 +313,7 @@
   </header>
   <div class="card-content">
     <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
-    <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
+    <div class="content is-normal is-hidden-tablet p-2">{{ .Test.Instruction }}</div>
   </div>
 </div>
 {{ end }}
@@ -327,121 +341,109 @@
 {{ end }}
 
 {{ define "advanced-settings" }}
-<div class="columns">
-  <div class="column is-narrow">
-    <button class="button is-light is-medium is-rounded" live-click="toggle-show-advanced"
-      title="{{ .UI.Result.AdvancedSettings }}">
-      <span class="icon has-text-grey">
-        <i class="bi bi-gear-fill"></i>
+{{ if .ShowAdvancedSettings }}
+<div class="advanced-settings-block">
+  <p class="is-size-5 is-size-6-mobile has-text-centered has-text-white-ter"
+    title="{{ .UI.Result.SetMethodDescription }}">
+    <i class="bi bi-question-circle"></i>
+  </p>
+  <p>
+    <button live-click="set-method" live-value-method="{{ .MethodSten }}" class="m-1 button is-rounded is-small is-info"
+      title="{{ .UI.Result.InStandartScale }}">
+      <span class="icon">
+        <i class="bi bi-soundwave"></i>
       </span>
     </button>
-  </div>
-  {{ if .ShowAdvancedSettings }}
-  <div class="column">
-    <p class="title is-5 is-size-6-mobile">{{ .UI.Result.AdvancedSettings }}</p>
-    <div class="columns">
-      <div class="column">
-        <p class="mb-1">
-          {{ .UI.Result.ResultsAreShown }}
-          {{ if .OverrideMethod }}
-          {{ if eq .OverrideMethod .MethodSten }}
-          <b>{{ .UI.Result.InStandartScale }}</b>.
-          {{ end }}
-          {{ if eq .OverrideMethod .MethodPerc }}
-          <b>{{ .UI.Result.InPercentageScale }}</b>.
-          {{ end }}
-          {{ else }}
-          <b>{{ .UI.Result.InDefaultScale }}</b>.
-          {{ end }}
-          {{ .UI.Result.Recalculate }}:
-        </p>
-        <div class="columns is-gapless">
-          <div class="column is-narrow">
-            <button live-click="set-method" live-value-method="{{ .MethodSten }}"
-              class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InStandartScale }}</button>
-          </div>
-          <div class="column is-narrow">
-            <button live-click="set-method" live-value-method="{{ .MethodPerc }}"
-              class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InPercentageScale }}</button>
-          </div>
-          <div class="column is-narrow">
-            <button live-click="set-method" live-value-method="" class="m-1 button is-rounded is-small">
-              {{ .UI.Result.Discard }}
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="column is-5">
-        <p class="heading">
-          <i class="bi bi-question-circle"></i> {{ .UI.Result.SetMethodDescription }}
-        </p>
-      </div>
-    </div>
-    <hr>
-  </div>
-  {{ end }}
+  </p>
+  <p>
+    <button live-click="set-method" live-value-method="{{ .MethodPerc }}" class="m-1 button is-rounded is-small is-info"
+      title="{{ .UI.Result.InPercentageScale }}">
+      <span class="icon">
+        <i class="bi bi-percent"></i>
+      </span>
+    </button>
+  </p>
+  <p>
+    <button live-click="set-method" live-value-method="" class="m-1 button is-rounded is-small"
+      title="{{ .UI.Result.Discard }}">
+      <span class="icon">
+        <i class="bi bi-x"></i>
+      </span>
+    </button>
+  </p>
 </div>
+{{ end }}
 {{ end }}
 
 {{ define "main-result-block" }}
-<div class="box mt-5 is-elevated">
-  <div class="columns">
-    <div class="column is-6">
-      <table class="charts-css column show-labels show-5-secondary-axes show-primary-axis show-data-axes"
-        id="basic-chart">
-        <tbody>
-          {{ range $i, $scale := .Test.Scales }}
-          <tr>
-            <th scope="row">
-              {{ $scale.Abbreviation }}
-            </th>
-            <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">
-              <span class="data"> {{printf "%.1f" $scale.Result.Score}} </span>
-              <span class="tooltip"> {{ $scale.Title }} </span>
-            </td>
-          </tr>
-          {{ end }}
-        </tbody>
-      </table>
-    </div>
-    <div class="column is-6">
-      <div class="content is-normal is-hidden-tablet">{{ .Test.ResultPreambule }}</div>
-      <div class="content is-medium is-hidden-mobile">{{ .Test.ResultPreambule }}</div>
-      <div class="level">
-        <div class="level-item">
-          {{ template "share-result-facebook" . }}
-        </div>
-        <div class="level-item">
-          {{ template "share-result-twitter" . }}
+<section class="card mt-5 is-elevated">
+  <header class="card-header">
+    <p class="card-header-title has-text-white">
+    </p>
+    <button class="card-header-icon" aria-label="advanced-settings" live-click="toggle-show-advanced"
+      title="{{ .UI.Result.AdvancedSettings }}">
+      <span class="icon">
+        <i class="bi bi-gear-fill"></i>
+      </span>
+    </button>
+  </header>
+  <div class="card-content">
+    <div class="columns">
+      <div class="column is-6">
+        {{ template "main-result-chart" . }}
+      </div>
+      <div class="column is-6">
+        <div class="content is-normal">{{ .Test.ResultPreambule }}</div>
+        <div class="level">
+          <div class="level-item">
+            {{ template "share-result-facebook" . }}
+          </div>
+          <div class="level-item">
+            {{ template "share-result-twitter" . }}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  {{ template "advanced-settings" . }}
-  <div class="columns">
-    <div class="column is-6">
-      <p class="heading">
-        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.NormsInfo }}
-      </p>
-    </div>
-    <div class="column is-6">
-      <p class="heading">
-        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.Disclaimer }}
-      </p>
-    </div>
-  </div>
-  <div class="columns">
-    <div class="column">
-      <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
-      <p>{{ .UI.Test.ResultLinkInfo }}</p>
-    </div>
-    <div class="column is-narrow">
-      {{ if eq .CurrentView "result" }}
-      <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2 mt-1" target="_blank">{{
-        .UI.Test.TakeThisButton }}</a>
-      {{ end }}
-      <a href="/" class="button is-rounded is-primary mt-1" target="_blank">{{ .UI.Test.ExploreButton }}</a>
+    <div class="columns">
+      <div class="column">
+        <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
+        <p>{{ .UI.Test.ResultLinkInfo }}</p>
+      </div>
+      <div class="column is-narrow">
+        {{ if eq .CurrentView "result" }}
+        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2 mt-1" target="_blank">
+          <b>{{ .UI.Test.TakeThisButton }}</b>
+        </a>
+        {{ end }}
+        <a href="/" class="button is-rounded is-primary mt-1" target="_blank"><b>{{ .UI.Test.ExploreButton }}</b></a>
+      </div>
     </div>
   </div>
-</div>
+</section>
+{{ end }}
+
+{{ define "test-image-bg" }}
+{{ if . }}
+{{ if .Image }}
+style='background-image: url("{{ .Image }}");'
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "main-result-chart" }}
+<table class="charts-css column show-labels show-5-secondary-axes data-spacing-5 has-equal-height" id="basic-chart">
+  <tbody class="has-equal-height">
+    {{ range $i, $scale := .Test.Scales }}
+    <tr>
+      <th scope="row">
+        {{ $scale.Abbreviation }}
+      </th>
+      <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">
+        <span class="data"> {{printf "%.1f" $scale.Result.Score}} </span>
+        <span class="tooltip"> {{ $scale.Title }} </span>
+      </td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>
 {{ end }}

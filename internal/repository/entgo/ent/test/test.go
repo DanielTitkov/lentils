@@ -29,6 +29,8 @@ const (
 	FieldDuration = "duration"
 	// FieldQuestionCount holds the string denoting the question_count field in the database.
 	FieldQuestionCount = "question_count"
+	// FieldImage holds the string denoting the image field in the database.
+	FieldImage = "image"
 	// EdgeTakes holds the string denoting the takes edge name in mutations.
 	EdgeTakes = "takes"
 	// EdgeQuestions holds the string denoting the questions edge name in mutations.
@@ -92,6 +94,7 @@ var Columns = []string{
 	FieldMark,
 	FieldDuration,
 	FieldQuestionCount,
+	FieldImage,
 }
 
 var (

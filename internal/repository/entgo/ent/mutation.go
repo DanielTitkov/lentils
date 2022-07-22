@@ -11330,6 +11330,7 @@ type TestMutation struct {
 	addduration         *time.Duration
 	question_count      *int
 	addquestion_count   *int
+	image               *string
 	clearedFields       map[string]struct{}
 	takes               map[uuid.UUID]struct{}
 	removedtakes        map[uuid.UUID]struct{}
@@ -11832,6 +11833,55 @@ func (m *TestMutation) ResetQuestionCount() {
 	m.addquestion_count = nil
 }
 
+// SetImage sets the "image" field.
+func (m *TestMutation) SetImage(s string) {
+	m.image = &s
+}
+
+// Image returns the value of the "image" field in the mutation.
+func (m *TestMutation) Image() (r string, exists bool) {
+	v := m.image
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldImage returns the old "image" field's value of the Test entity.
+// If the Test object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestMutation) OldImage(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldImage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldImage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldImage: %w", err)
+	}
+	return oldValue.Image, nil
+}
+
+// ClearImage clears the value of the "image" field.
+func (m *TestMutation) ClearImage() {
+	m.image = nil
+	m.clearedFields[test.FieldImage] = struct{}{}
+}
+
+// ImageCleared returns if the "image" field was cleared in this mutation.
+func (m *TestMutation) ImageCleared() bool {
+	_, ok := m.clearedFields[test.FieldImage]
+	return ok
+}
+
+// ResetImage resets all changes to the "image" field.
+func (m *TestMutation) ResetImage() {
+	m.image = nil
+	delete(m.clearedFields, test.FieldImage)
+}
+
 // AddTakeIDs adds the "takes" edge to the Take entity by ids.
 func (m *TestMutation) AddTakeIDs(ids ...uuid.UUID) {
 	if m.takes == nil {
@@ -12160,7 +12210,7 @@ func (m *TestMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
 	if m.create_time != nil {
 		fields = append(fields, test.FieldCreateTime)
 	}
@@ -12184,6 +12234,9 @@ func (m *TestMutation) Fields() []string {
 	}
 	if m.question_count != nil {
 		fields = append(fields, test.FieldQuestionCount)
+	}
+	if m.image != nil {
+		fields = append(fields, test.FieldImage)
 	}
 	return fields
 }
@@ -12209,6 +12262,8 @@ func (m *TestMutation) Field(name string) (ent.Value, bool) {
 		return m.Duration()
 	case test.FieldQuestionCount:
 		return m.QuestionCount()
+	case test.FieldImage:
+		return m.Image()
 	}
 	return nil, false
 }
@@ -12234,6 +12289,8 @@ func (m *TestMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldDuration(ctx)
 	case test.FieldQuestionCount:
 		return m.OldQuestionCount(ctx)
+	case test.FieldImage:
+		return m.OldImage(ctx)
 	}
 	return nil, fmt.Errorf("unknown Test field %s", name)
 }
@@ -12298,6 +12355,13 @@ func (m *TestMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetQuestionCount(v)
+		return nil
+	case test.FieldImage:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetImage(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)
@@ -12374,6 +12438,9 @@ func (m *TestMutation) ClearedFields() []string {
 	if m.FieldCleared(test.FieldDuration) {
 		fields = append(fields, test.FieldDuration)
 	}
+	if m.FieldCleared(test.FieldImage) {
+		fields = append(fields, test.FieldImage)
+	}
 	return fields
 }
 
@@ -12393,6 +12460,9 @@ func (m *TestMutation) ClearField(name string) error {
 		return nil
 	case test.FieldDuration:
 		m.ClearDuration()
+		return nil
+	case test.FieldImage:
+		m.ClearImage()
 		return nil
 	}
 	return fmt.Errorf("unknown Test nullable field %s", name)
@@ -12425,6 +12495,9 @@ func (m *TestMutation) ResetField(name string) error {
 		return nil
 	case test.FieldQuestionCount:
 		m.ResetQuestionCount()
+		return nil
+	case test.FieldImage:
+		m.ResetImage()
 		return nil
 	}
 	return fmt.Errorf("unknown Test field %s", name)

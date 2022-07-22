@@ -337,6 +337,9 @@ func (h *Handler) Test() live.Handler {
 	lvh.HandleEvent(eventTestSetMethod, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
 		instance := h.NewTestInstance(s)
 		instance.OverrideMethod = p.String(paramTestMethod)
+		if p.String(paramTestMethod) == "" {
+			instance.ShowAdvancedSettings = false
+		}
 		// load all test data from the db and calculate result
 		instance.Test, err = h.app.PrepareTestResult(ctx, instance.Test, instance.Locale(), instance.OverrideMethod)
 		if err != nil {

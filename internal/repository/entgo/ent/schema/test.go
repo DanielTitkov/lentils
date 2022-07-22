@@ -26,6 +26,7 @@ func (Test) Fields() []ent.Field {
 		field.Float("mark").Default(3),
 		field.Int64("duration").Optional().Nillable().GoType(time.Duration(0)),
 		field.Int("question_count").NonNegative().Default(1),
+		field.String("image").Optional(),
 	}
 }
 

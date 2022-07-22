@@ -35,6 +35,8 @@ type Test struct {
 	Duration *time.Duration `json:"duration,omitempty"`
 	// QuestionCount holds the value of the "question_count" field.
 	QuestionCount int `json:"question_count,omitempty"`
+	// Image holds the value of the "image" field.
+	Image string `json:"image,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TestQuery when eager-loading is set.
 	Edges TestEdges `json:"edges"`
@@ -131,7 +133,7 @@ func (*Test) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullFloat64)
 		case test.FieldDuration, test.FieldQuestionCount:
 			values[i] = new(sql.NullInt64)
-		case test.FieldCode:
+		case test.FieldCode, test.FieldImage:
 			values[i] = new(sql.NullString)
 		case test.FieldCreateTime, test.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
@@ -208,6 +210,12 @@ func (t *Test) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field question_count", values[i])
 			} else if value.Valid {
 				t.QuestionCount = int(value.Int64)
+			}
+		case test.FieldImage:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field image", values[i])
+			} else if value.Valid {
+				t.Image = value.String
 			}
 		}
 	}
@@ -292,6 +300,9 @@ func (t *Test) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("question_count=")
 	builder.WriteString(fmt.Sprintf("%v", t.QuestionCount))
+	builder.WriteString(", ")
+	builder.WriteString("image=")
+	builder.WriteString(t.Image)
 	builder.WriteByte(')')
 	return builder.String()
 }

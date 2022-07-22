@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-17 13:38:55
+# at: 2022-07-22 17:34:26
 # template: ../data/templates/ctt-v1/riasec-combined-wisc.yaml
 code: riasec-combined-wisc
 published: true
@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - career
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: RIASEC (combined)

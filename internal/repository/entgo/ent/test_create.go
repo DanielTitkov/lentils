@@ -123,6 +123,20 @@ func (tc *TestCreate) SetNillableQuestionCount(i *int) *TestCreate {
 	return tc
 }
 
+// SetImage sets the "image" field.
+func (tc *TestCreate) SetImage(s string) *TestCreate {
+	tc.mutation.SetImage(s)
+	return tc
+}
+
+// SetNillableImage sets the "image" field if the given value is not nil.
+func (tc *TestCreate) SetNillableImage(s *string) *TestCreate {
+	if s != nil {
+		tc.SetImage(*s)
+	}
+	return tc
+}
+
 // SetID sets the "id" field.
 func (tc *TestCreate) SetID(u uuid.UUID) *TestCreate {
 	tc.mutation.SetID(u)
@@ -463,6 +477,14 @@ func (tc *TestCreate) createSpec() (*Test, *sqlgraph.CreateSpec) {
 			Column: test.FieldQuestionCount,
 		})
 		_node.QuestionCount = value
+	}
+	if value, ok := tc.mutation.Image(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: test.FieldImage,
+		})
+		_node.Image = value
 	}
 	if nodes := tc.mutation.TakesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
