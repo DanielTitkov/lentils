@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-17 13:38:55
+# at: 2022-07-23 01:57:34
 # template: ../data/templates/ctt-v1/fipi.yaml
 code: fipi
 published: true
@@ -11,7 +11,7 @@ tags:
   - psychology
   - short
   - debug
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: FIPI
@@ -329,3 +329,4 @@ questions:
 display:
   questionsPerPage: 2
   randomizeOrder: false
+image: https://orrery.ams3.digitaloceanspaces.com/fipi-image.jpg

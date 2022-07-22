@@ -437,6 +437,7 @@ var (
 		{Name: "mark", Type: field.TypeFloat64, Default: 3},
 		{Name: "duration", Type: field.TypeInt64, Nullable: true},
 		{Name: "question_count", Type: field.TypeInt, Default: 1},
+		{Name: "image", Type: field.TypeString, Nullable: true},
 	}
 	// TestsTable holds the schema information for the "tests" table.
 	TestsTable = &schema.Table{

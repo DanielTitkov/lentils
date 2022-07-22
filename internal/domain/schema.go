@@ -24,6 +24,7 @@ type (
 		Questions         []*Question
 		Scales            []*Scale
 		Tags              []*Tag
+		Image             string
 		Display           TestDisplay
 		Mark              float64
 		Duration          time.Duration

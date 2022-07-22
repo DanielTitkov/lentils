@@ -1,11 +1,31 @@
 {{ define "title" }} {{ .Test.Title }} {{ end }}
 {{ define "description" }} {{ .Test.Description }} {{ end }}
-{{ define "view" }}
-<main>
-  <div class="section">
+
+{{ define "top-hero" }}
+<section class='hero is-primary animated-gradient-bg test-hero {{ if ne .Test.Image "" }}test-hero-bg{{end}}' {{
+  template "test-image-bg" .Test }}>
+  <div class="hero-body mb-5">
     <div class="columns">
       <div class="column">
-        <h1 class="title is-1 is-size-3-mobile">{{ .Test.Title }}</h1>
+        <h1 class="title is-1 is-size-3-mobile">
+          {{ .Test.Title }}
+          <span class="title is-2 is-size-3-mobile is-clickable" live-click="toggle-show-details">
+            {{ if .ShowDetails }}
+            <i class="bi bi-info-circle"></i>
+            {{ else }}
+            <i class="bi bi-info-circle-fill"></i>
+            {{ end }}
+          </span>
+          {{ if eq .Test.Take.Status .QuestionsStatus }}
+          <span class="title is-2 is-size-3-mobile is-clickable ml-2" live-click="toggle-show-instruction">
+            {{ if .ShowInstruction }}
+            <i class="bi bi-question-circle"></i>
+            {{ else }}
+            <i class="bi bi-question-circle-fill"></i>
+            {{ end }}
+          </span>
+          {{ end }}
+        </h1>
         <h3 class="subtitle is-3 is-size-5-mobile">{{ .Test.Description }}</h3>
         {{ if .Test.Take }}
         <span class="heading">
@@ -25,13 +45,18 @@
       {{ end }}
     </div>
     {{ template "show-details-block" . }}
-    {{ if eq .Test.Take.Status .QuestionsStatus }}
     {{ template "show-instruction-block" . }}
+    {{ if eq .Test.Take.Status .FinishStatus }}
+    {{ template "main-result-block" . }}
     {{ end }}
   </div>
+</section>
+{{ end }}
 
+{{ define "view" }}
+<main>
   {{ if eq .Test.Take.Status .IntroStatus }}
-  <div class="section">
+  <div class="section pt-2">
     <div class="columns">
       <div class="column is-6">
         {{ template "locale-selector" . }}
@@ -41,18 +66,18 @@
         {{ template "test-controls-info" . }}
       </div>
     </div>
-    <div class="notification box">
+    <div class="notification is-primary is-elevated">
       <p class="title is-3 is-size-5-mobile">{{ .UI.Test.Instructions }}</p>
       <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
-      <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
+      <div class="content is-normal is-hidden-tablet p-2">{{ .Test.Instruction }}</div>
     </div>
   </div>
-  <div class="section">
+  <div class="section pt-3">
     <p class="block is-size-5 is-size-6-mobile has-text-centered">{{ .UI.Test.BeginLabel }}</p>
     <div class="level">
       <div class="level-item has-text-centered">
         <div class="block">
-          <button class="button is-large is-primary is-rounded is-hidden-mobile" live-click="begin-test">{{
+          <button class="button is-large is-primary is-rounded is-hidden-mobile is-elevated" live-click="begin-test">{{
             .UI.Test.BeginButton }}</button>
           <button class="button is-primary is-rounded is-hidden-tablet" live-click="begin-test">{{ .UI.Test.BeginButton
             }}</button>
@@ -65,12 +90,12 @@
   {{ if eq .Test.Take.Status .QuestionsStatus }}
   <div class="section">
     <div class="block">
-      <progress class="progress is-normal is-success" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
+      <progress class="progress is-normal is-primary" value="{{ .Page }}" max="{{ .Test.PageCount }}">{{
         .Page }}%</progress>
       <p class="header">{{ .UI.Test.Page }} {{ .Page }} {{ .UI.Test.Of }} {{ .Test.PageCount }}</p>
     </div>
     {{ range .CurrentQuestions }}
-    <div class="notification box {{ if .IsDone }}question-done{{end}}">
+    <div class="box {{ if .IsDone }}question-done{{end}} is-elevated">
       <p class="title is-5 is-size-6-mobile">{{ .Content }}</p>
       <div>
         {{ range $i, $item := .Items }}
@@ -100,16 +125,16 @@
     <div class="level-item has-text-centered">
       <div class="block">
         {{ if ge .Page .Test.PageCount }}
-        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="end-test" {{ if
+        <button class="button is-large is-rounded is-primary is-hidden-mobile" live-click="end-test" {{ if
           .Test.IsNotDone }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
-        <button class="button is-rounded is-success is-hidden-tablet" live-click="end-test" {{ if .Test.IsNotDone
+        <button class="button is-rounded is-primary is-hidden-tablet" live-click="end-test" {{ if .Test.IsNotDone
           }}disabled{{end}}>{{ .UI.Test.FinishButton }}</button>
         {{ else }}
-        <button class="button is-large is-rounded is-success is-hidden-mobile" live-click="next-page" {{ if ge .Page
+        <button class="button is-large is-rounded is-primary is-hidden-mobile" live-click="next-page" {{ if ge .Page
           .Test.PageCount }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
           {{ .UI.Test.NextButton }}
         </button>
-        <button class="button is-rounded is-success is-hidden-tablet" live-click="next-page" {{ if ge .Page
+        <button class="button is-rounded is-primary is-hidden-tablet" live-click="next-page" {{ if ge .Page
           .Test.PageCount }}disabled{{end}} {{ if .Test.IsPageNotDone .Page }}disabled{{end}}>
           {{ .UI.Test.NextButton }}
         </button>
@@ -124,100 +149,42 @@
   <!-- end questions status -->
 
   {{ if eq .Test.Take.Status .FinishStatus }}
-  <div class="notification box">
-    <div class="columns">
-      <div class="column is-6">
-        <table class="charts-css column show-labels show-5-secondary-axes show-primary-axis show-data-axes"
-          id="basic-chart">
-          <tbody>
-            {{ range $i, $scale := .Test.Scales }}
-            <tr>
-              <th scope="row">
-                {{ $scale.Abbreviation }}
-              </th>
-              <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">
-                <span class="data"> {{printf "%.1f" $scale.Result.Score}} </span>
-                <span class="tooltip"> {{ $scale.Title }} </span>
-              </td>
-            </tr>
-            {{ end }}
-          </tbody>
-        </table>
-      </div>
-      <div class="column is-6">
-        <div class="content is-normal is-hidden-tablet">{{ .Test.ResultPreambule }}</div>
-        <div class="content is-medium is-hidden-mobile">{{ .Test.ResultPreambule }}</div>
-        <div class="level">
-          <div class="level-item">
-            {{ template "share-result-facebook" . }}
-          </div>
-          <div class="level-item">
-            {{ template "share-result-twitter" . }}
-          </div>
-        </div>
-      </div>
-    </div>
-    {{ template "advanced-settings" . }}
-    <div class="columns">
-      <div class="column is-6">
-        <p class="heading">
-          <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.NormsInfo }}
-        </p>
-      </div>
-      <div class="column is-6">
-        <p class="heading">
-          <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.Disclaimer }}
-        </p>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
-        <p>{{ .UI.Test.ResultLinkInfo }}</p>
-      </div>
-      <div class="column is-narrow">
-        {{ if eq .CurrentView "result" }}
-        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2 mt-1" target="_blank">{{
-          .UI.Test.TakeThisButton }}</a>
-        {{ end }}
-        <a href="/" class="button is-rounded is-primary mt-1" target="_blank">{{ .UI.Test.ExploreButton }}</a>
-      </div>
-    </div>
-  </div>
-  <div class="section">
+  {{ template "advanced-settings" . }}
+  <div class="section pt-3">
     <p class="subtitle is-2 is-size-4-mobile has-text-centered">{{ .UI.Test.DetailedReport }}</p>
   </div>
   <div class="columns is-multiline">
     {{ range $i, $scale := .Test.Scales }}
     <div class="column is-6">
-      <div class="notification box">
+      <div class="box has-equal-height">
         <div class="columns">
           <div class="column">
             <p class="title is-3 is-size-5-mobile">{{ $scale.Title }}</p>
             <p class="subtitle is-5 is-size-6-mobile">{{ $scale.Description }}</p>
           </div>
           <div class="column is-narrow">
-            <p class="title is-3 is-size-5-mobile has-text-primary">{{printf "%.1f" $scale.Result.Score }}{{
-              $scale.Result.Unit }}</p>
+            <div class="notification is-primary is-elevated p-4 has-text-centered" title="{{ $scale.Result.Formula }}">
+              <p class="title is-3 is-size-5-mobile has-text-white">
+                {{printf "%.1f" $scale.Result.Score }}{{$scale.Result.Unit }}
+              </p>
+            </div>
           </div>
         </div>
-        <p class="heading">{{ $scale.Result.Formula }}</p>
-        <hr>
-        <div class="level is-mobile">
+        <div class="level is-mobile mb-2">
           <div class="level-left">
-            <div class="level-item">{{ $scale.Result.Min }}</div>
+            <div class="level-item">[{{ $scale.Result.Min }}</div>
           </div>
           <div class="level-item has-text-centered">{{ Mean $scale.Result.Min $scale.Result.Max }}</div>
           <div class="level-right">
-            <div class="level-item">{{ $scale.Result.Max }}</div>
+            <div class="level-item">{{ $scale.Result.Max }}]</div>
           </div>
         </div>
-        <progress class="progress is-large is-success"
+        <progress class="progress is-medium is-primary"
           value="{{ Perc $scale.Result.Min $scale.Result.Max $scale.Result.Score }}"
           max="{{ Perc $scale.Result.Min $scale.Result.Max $scale.Result.Max }}">
           {{ $scale.Result.Score }}
         </progress>
-        <div class="content is-normal">
+        <div class="content is-normal is-bordered">
           {{ if $scale.Result.Interpretation }}
           {{ $scale.Result.Interpretation.Content }}
           {{ else }}
@@ -242,12 +209,24 @@
   </div>
   {{ end }}
   <!-- mark block end -->
+  <div class="columns p-4">
+    <div class="column is-6">
+      <p class="heading">
+        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.Disclaimer }}
+      </p>
+    </div>
+    <div class="column is-6">
+      <p class="heading">
+        <i class="bi bi-exclamation-triangle"></i> {{ .UI.Test.NormsInfo }}
+      </p>
+    </div>
+  </div>
   {{ end }}
 </main>
 {{ end }}
 
 {{ define "test-controls-info" }}
-<div class="notification has-background-grey-lighter">
+<div class="box has-background-grey-lighter">
   <div class="columns">
     <div class="column is-narrow">
       <p>
@@ -266,29 +245,54 @@
 {{ end }}
 
 {{ define "show-details-block" }}
-<div class="block">
-  <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-details">
-    {{ if .ShowDetails }}
-    {{ .UI.Test.HideDetails }}
-    <i class="bi bi-caret-up-fill"></i>
-    {{ else }}
-    {{ .UI.Test.ShowDetails }}
-    <i class="bi bi-caret-down-fill"></i>
-    {{ end }}
-  </p>
-</div>
 {{ if .ShowDetails }}
-<div class="notification has-background-grey-lighter">
-  {{ template "test-tags" .Test }}
-  <div class="columns">
-    <div class="column">
-      <div class="content is-medium is-hidden-mobile">{{ .Test.Details }}</div>
-      <div class="content is-normal is-hidden-tablet">{{ .Test.Details }}</div>
+<div class="card is-elevated">
+  <header class="card-header">
+    <p class="card-header-title">
+      {{ .UI.Test.About }}
+    </p>
+    <button class="card-header-icon" aria-label="hide" live-click="toggle-show-details">
+      <span class="icon">
+        <i class="bi bi-eye-slash"></i>
+      </span>
+    </button>
+  </header>
+  <div class="card-content">
+    <div class="columns">
+      <div class="column">
+        <div class="content is-medium is-hidden-mobile">{{ .Test.Details }}</div>
+        <div class="content is-normal is-hidden-tablet p-2">{{ .Test.Details }}</div>
+      </div>
+      <div class="column is-narrow">
+        <div class="box has-background-grey-lighter">
+          <div class="table-container">
+            <table class="table is-fullwidth">
+              <tbody>
+                <tr>
+                  <td><span class="icon"><i class="bi bi-bar-chart"></i></span></td>
+                  <td>Scales</td>
+                  <th class="has-text-right">{{ len .Test.Scales }}</th>
+                </tr>
+                <tr>
+                  <td><span class="icon"><i class="bi bi-ui-checks"></i></span></td>
+                  <td>Questions</td>
+                  <th class="has-text-right">{{ .Test.QuestionCount }}</th>
+                </tr>
+                <tr>
+                  <td><span class="icon"><i class="bi bi-clock"></i></span></td>
+                  <td>Avg. time</td>
+                  <th class="has-text-right">{{ FormatDuration .Test.Duration }}</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="column is-narrow">
-      <p><b>Scales:</b> {{ len .Test.Scales }}</p>
-      <p><b>Questions:</b> {{ .Test.QuestionCount }}</p>
-      <p><b>Average time:</b> {{ .Test.Duration }}</p>
+  </div>
+  <div class="card-footer">
+    <div class="card-footer-item">
+      {{ template "test-tags" .Test }}
     </div>
   </div>
 </div>
@@ -296,22 +300,22 @@
 {{ end }}
 
 {{ define "show-instruction-block" }}
-<div class="block">
-  <p class="is-clickable subtitle is-6 is-size-6-mobile has-text-grey" live-click="toggle-show-instruction">
-    {{ if .ShowInstruction }}
-    {{ .UI.Test.HideInstruction }}
-    <i class="bi bi-caret-up-fill"></i>
-    {{ else }}
-    {{ .UI.Test.ShowInstruction }}
-    <i class="bi bi-caret-down-fill"></i>
-    {{ end }}
-  </p>
-</div>
 {{ if .ShowInstruction }}
-<div class="notification has-background-grey-lighter">
-  <p class="title is-3 is-size-5-mobile">{{ .UI.Test.Instructions }}</p>
-  <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
-  <div class="content is-normal is-hidden-tablet">{{ .Test.Instruction }}</div>
+<div class="card mt-5 is-elevated">
+  <header class="card-header">
+    <p class="card-header-title">
+      {{ .UI.Test.Instructions }}
+    </p>
+    <button class="card-header-icon" aria-label="hide" live-click="toggle-show-instruction">
+      <span class="icon">
+        <i class="bi bi-eye-slash"></i>
+      </span>
+    </button>
+  </header>
+  <div class="card-content">
+    <div class="content is-medium is-hidden-mobile">{{ .Test.Instruction }}</div>
+    <div class="content is-normal is-hidden-tablet p-2">{{ .Test.Instruction }}</div>
+  </div>
 </div>
 {{ end }}
 {{ end }}
@@ -338,58 +342,109 @@
 {{ end }}
 
 {{ define "advanced-settings" }}
-<div class="columns">
-  <div class="column is-narrow">
-    <button class="button is-light is-medium is-rounded" live-click="toggle-show-advanced"
+{{ if .ShowAdvancedSettings }}
+<div class="advanced-settings-block">
+  <p class="is-size-5 is-size-6-mobile has-text-centered has-text-white-ter"
+    title="{{ .UI.Result.SetMethodDescription }}">
+    <i class="bi bi-question-circle"></i>
+  </p>
+  <p>
+    <button live-click="set-method" live-value-method="{{ .MethodSten }}" class="m-1 button is-rounded is-small is-info"
+      title="{{ .UI.Result.InStandartScale }}">
+      <span class="icon">
+        <i class="bi bi-soundwave"></i>
+      </span>
+    </button>
+  </p>
+  <p>
+    <button live-click="set-method" live-value-method="{{ .MethodPerc }}" class="m-1 button is-rounded is-small is-info"
+      title="{{ .UI.Result.InPercentageScale }}">
+      <span class="icon">
+        <i class="bi bi-percent"></i>
+      </span>
+    </button>
+  </p>
+  <p>
+    <button live-click="set-method" live-value-method="" class="m-1 button is-rounded is-small"
+      title="{{ .UI.Result.Discard }}">
+      <span class="icon">
+        <i class="bi bi-x"></i>
+      </span>
+    </button>
+  </p>
+</div>
+{{ end }}
+{{ end }}
+
+{{ define "main-result-block" }}
+<section class="card mt-5 is-elevated">
+  <header class="card-header">
+    <p class="card-header-title has-text-white">
+    </p>
+    <button class="card-header-icon" aria-label="advanced-settings" live-click="toggle-show-advanced"
       title="{{ .UI.Result.AdvancedSettings }}">
-      <span class="icon has-text-grey">
+      <span class="icon">
         <i class="bi bi-gear-fill"></i>
       </span>
     </button>
-  </div>
-  {{ if .ShowAdvancedSettings }}
-  <div class="column">
-    <p class="title is-5 is-size-6-mobile">{{ .UI.Result.AdvancedSettings }}</p>
+  </header>
+  <div class="card-content">
     <div class="columns">
-      <div class="column">
-        <p class="mb-1">
-          {{ .UI.Result.ResultsAreShown }}
-          {{ if .OverrideMethod }}
-          {{ if eq .OverrideMethod .MethodSten }}
-          <b>{{ .UI.Result.InStandartScale }}</b>.
-          {{ end }}
-          {{ if eq .OverrideMethod .MethodPerc }}
-          <b>{{ .UI.Result.InPercentageScale }}</b>.
-          {{ end }}
-          {{ else }}
-          <b>{{ .UI.Result.InDefaultScale }}</b>.
-          {{ end }}
-          {{ .UI.Result.Recalculate }}:
-        </p>
-        <div class="columns is-gapless">
-          <div class="column is-narrow">
-            <button live-click="set-method" live-value-method="{{ .MethodSten }}"
-              class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InStandartScale }}</button>
+      <div class="column is-6">
+        {{ template "main-result-chart" . }}
+      </div>
+      <div class="column is-6">
+        <div class="content is-normal is-bordered">{{ .Test.ResultPreambule }}</div>
+        <div class="level">
+          <div class="level-item">
+            {{ template "share-result-facebook" . }}
           </div>
-          <div class="column is-narrow">
-            <button live-click="set-method" live-value-method="{{ .MethodPerc }}"
-              class="m-1 button is-rounded is-small is-info">{{ .UI.Result.InPercentageScale }}</button>
-          </div>
-          <div class="column is-narrow">
-            <button live-click="set-method" live-value-method="" class="m-1 button is-rounded is-small">
-              {{ .UI.Result.Discard }}
-            </button>
+          <div class="level-item">
+            {{ template "share-result-twitter" . }}
           </div>
         </div>
       </div>
-      <div class="column is-5">
-        <p class="heading">
-          <i class="bi bi-question-circle"></i> {{ .UI.Result.SetMethodDescription }}
-        </p>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <p><a href="/result/{{ .Test.Take.ID }}" target="_blank">{{ .UI.Test.ResultLinkLabel }}</a></p>
+        <p>{{ .UI.Test.ResultLinkInfo }}</p>
+      </div>
+      <div class="column is-narrow">
+        {{ if eq .CurrentView "result" }}
+        <a href="/test/{{ .Test.Code }}" class="button is-rounded is-success mr-2 mt-1" target="_blank">
+          <b>{{ .UI.Test.TakeThisButton }}</b>
+        </a>
+        {{ end }}
+        <a href="/" class="button is-rounded is-primary mt-1" target="_blank"><b>{{ .UI.Test.ExploreButton }}</b></a>
       </div>
     </div>
-    <hr>
   </div>
-  {{ end }}
-</div>
+</section>
+{{ end }}
+
+{{ define "test-image-bg" }}
+{{ if . }}
+{{ if .Image }}
+style='background-image: url("{{ .Image }}");'
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "main-result-chart" }}
+<table class="charts-css column show-labels show-5-secondary-axes data-spacing-5 has-equal-height" id="basic-chart">
+  <tbody class="has-equal-height">
+    {{ range $i, $scale := .Test.Scales }}
+    <tr>
+      <th scope="row">
+        {{ $scale.Abbreviation }}
+      </th>
+      <td style="--size: calc({{ $scale.Result.Score }} / {{ $scale.Result.Max }} )">
+        <span class="data"> {{printf "%.1f" $scale.Result.Score}} </span>
+        <span class="tooltip"> {{ $scale.Title }} </span>
+      </td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>
 {{ end }}

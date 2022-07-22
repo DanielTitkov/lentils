@@ -151,6 +151,10 @@ var funcMap = template.FuncMap{
 		}
 		return fmt.Sprintf("?locale=%s", locale)
 	},
+	"FormatDuration": func(d time.Duration) string {
+		z := time.Unix(0, 0).UTC()
+		return z.Add(d).Format("4:05")
+	},
 }
 
 func NewHandler(

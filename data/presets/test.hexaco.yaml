@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-17 13:38:55
+# at: 2022-07-23 01:57:33
 # template: ../data/templates/ctt-v1/hexaco.yaml
 code: hexaco
 published: true
@@ -10,7 +10,7 @@ availableLocales:
 tags:
   - psychology
   - long
-forceUpdate: false
+forceUpdate: true
 translations:
   - locale: en
     title: HEXACO

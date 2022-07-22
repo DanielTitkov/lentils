@@ -182,6 +182,9 @@ func (h *Handler) Result() live.Handler {
 	lvh.HandleEvent(eventTestSetMethod, func(ctx context.Context, s live.Socket, p live.Params) (i interface{}, err error) {
 		instance := h.NewResultInstance(s)
 		instance.OverrideMethod = p.String(paramTestMethod)
+		if p.String(paramTestMethod) == "" {
+			instance.ShowAdvancedSettings = false
+		}
 		err = instance.updateForLocale(ctx, s, h)
 		if err != nil {
 			return nil, err

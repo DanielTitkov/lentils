@@ -200,6 +200,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		tst, err = tx.Test.Create().
 			SetCode(args.Code).
 			SetPublished(args.Published).
+			SetImage(args.Image).
 			SetQuestionCount(len(args.Questions)).
 			SetAvailableLocales(args.AvailableLocales).
 			Save(ctx)
@@ -215,6 +216,7 @@ func (r *EntgoRepository) CreateOrUpdateTestFromArgs(ctx context.Context, args *
 		// update is on, update test
 		tst, err = tst.Update().
 			SetPublished(args.Published).
+			SetImage(args.Image).
 			SetAvailableLocales(args.AvailableLocales).
 			SetQuestionCount(len(args.Questions)).
 			// clear edges
@@ -720,6 +722,7 @@ func entToDomainTest(t *ent.Test, locale string) *domain.Test {
 		AvailableLocales: t.AvailableLocales,
 		Mark:             t.Mark,
 		QuestionCount:    t.QuestionCount,
+		Image:            t.Image,
 		Duration:         duration,
 		Locale:           locale,
 		Title:            title,

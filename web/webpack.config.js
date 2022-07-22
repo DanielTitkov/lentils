@@ -32,34 +32,34 @@ module.exports = [
       }),
     ]
   },
-  {
-    entry: './src/styles-dark.scss',
-    output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'js/bundle.js'
-    },
-    module: {
-      rules: [{
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-              // options...
-            }
-          }
-        ]
-      }]
-    },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: "css/styles-dark.css",
-      }),
-    ]
-  },
+  // {
+  //   entry: './src/styles-dark.scss',
+  //   output: {
+  //     path: path.resolve(__dirname, 'dist'),
+  //     filename: 'js/bundle.js'
+  //   },
+  //   module: {
+  //     rules: [{
+  //       test: /\.scss$/,
+  //       use: [
+  //         MiniCssExtractPlugin.loader,
+  //         {
+  //           loader: 'css-loader'
+  //         },
+  //         {
+  //           loader: 'sass-loader',
+  //           options: {
+  //             sourceMap: true,
+  //             // options...
+  //           }
+  //         }
+  //       ]
+  //     }]
+  //   },
+  //   plugins: [
+  //     new MiniCssExtractPlugin({
+  //       filename: "css/styles-dark.css",
+  //     }),
+  //   ]
+  // },
 ];

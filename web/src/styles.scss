@@ -1,7 +1,9 @@
 @charset "utf-8";
 
 // Import a Google Font
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap");
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap');
 @function tint($color, $percentage) {
 	@return mix(white, $color, $percentage);
 }
@@ -10,42 +12,58 @@
 // https://coolors.co/palette/ffadad-ffd6a5-fdffb6-caffbf-9bf6ff-a0c4ff-bdb2ff-ffc6ff-fffffc
 
 // brand colors
-$red: #FF5765;
-$yellow: #FFC527;
-$green: #03D930;
-$green2: #AAE23B;
-$purple: #8A6FDF;
-$blue: #287aff;
+$red: #ee4266;
+$yellow: #ffbf00;
+$orange: #ff7f11;
+// $green: #6dcc1b;
+$green: #0cca4a;
+// $green: #61e786;
+$green2: #aae23b;
+$blue: #2191fb;
+$azure: #3b28cc;
+
+$base: #7c00e8;
+// $base: #5f00ba;
 
 // for gradient in items
 
-$left: tint($green, 60%);
+$left: tint($green, 40%);
 $right: lighten($green2, 5%);
 
 // Update Bulma's global variables
-$family-sans-serif: "Source Sans Pro", sans-serif; 
-$radius-large: 55px;
+$family-sans-serif: "Source Sans Pro", sans-serif;
+// $family-sans-serif: "Roboto", sans-serif;
+$radius-large: 25px;
 // $grey-dark: $brown;
 // $grey-light: $beige-light;
-$primary: $blue;
+$primary: $base;
 $link: $primary;
 $success: $green;
 $danger: $red;
 $warning: $yellow;
-$info: $purple;
+$info: $blue;
+$very-light: #e6e6ef;
 
-$body-back: #fafafa;
+// $body-back: #f2f2f2;
+$body-back: #f5f6fa;
 // $widescreen-enabled: false;
 // $fullhd-enabled: false;
+$transparent-bg: rgba(0, 0, 0, 0.07);
 
 // Update some of Bulma's component variables
 $body-background-color: $body-back;
+$grey-lighter: #d8d8e6;
+
 // box
 $box-radius: $radius-large;
-$box-padding: 1.5rem;
-$box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+$box-padding: 1.3rem;
+$box-shadow: none;
+// card
+$card-radius: $radius-large;
+$card-shadow: none;
+$card-header-shadow: none;
 // notification
-$ntf-padding-size: 2.5rem 2.5rem 2.5rem 2.5rem;
+$ntf-padding-size: 2rem 2rem 2rem 2rem;
 $notification-radius: $radius-large;
 $notification-padding: $ntf-padding-size;
 $notification-padding-ltr: $ntf-padding-size;
@@ -59,91 +77,188 @@ $modal-card-head-padding: 30px;
 // tags
 $tag-radius: $radius-large;
 // hr
-$hr-background-color: #ededed;
+$hr-background-color: $transparent-bg;
 // section
 $section-padding: 1.5rem 1rem; // for mobile
 // footer
 $footer-padding: 1.5rem 1.5rem 3rem;
+// $footer-background-color: #312D55;
+$footer-background-color: #1d1c37;
+// navbar
+$navbar-breakpoint: 1px;
+// table
+$table-background-color: $transparent-bg;
 
 @import "~bulma/bulma";
 
+// update bulma classes
+
+.box {
+	// border: 1px solid #e5e5e5;
+	transition: all 0.3s;
+}
+
+.progress {
+	background-color: $very-light;
+}
+
+.card {
+	// border: 1px solid #e5e5e5;
+	transition: all 0.3s;
+}
+
+.button {
+	transition: all 0.2s;
+}
+
+.navbar-item:hover {
+	background-color: $transparent-bg;
+}
+
+.navbar-item.is-active {
+	background-color: $transparent-bg;
+}
+
+.content {
+	font-family: "Roboto Slab", serif;
+	// padding-left: 22px;
+	padding-right: 22px;
+	// padding: 25px;
+	// border-radius: $radius-large;
+}
+
+.content a {
+	color: $link;
+}
+
+.hero.is-primary a:not(.button):not(.dropdown-item):not(.tag):not(.pagination-link.is-current) {
+	color: $link;
+	text-decoration: underline;
+}
+
+body {
+	background-size: 100% 100%;
+	background-color: $body-back;
+	background-image: linear-gradient(180deg, lighten($body-back, 2%) 0%, $body-back 20%, darken($body-back, 5%) 100%);
+}
+
 // custom styles
 
-@keyframes AnimateBG { 
-	0%{background-position:0% 50%}
-	50%{background-position:100% 50%}
-	100%{background-position:0% 50%}
-  }
+@keyframes AnimateBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
 
-.bg11 {
-	background-size: 300% 300%;
+@mixin gradient-bg-mixin {
+	background-size: 110% 110%;
+	background-image: linear-gradient(-45deg, tint($primary, 35%) 10%, $primary 70%, darken($primary, 7%) 100%);
+	animation: AnimateBG 8s ease infinite;
+}
+
+@mixin half-transparent-gradient-mixin {
+	background-size: 120% 120%;
 	background-image: linear-gradient(
-		-45deg, 
-		#287aff 0%, 
-		#03D930 25%, 
-		#287aff 51%, 
-		#8A6FDF 100%
-	);  
-	animation: AnimateBG 20s ease infinite;
-
-	position: absolute;
-	width: 100%;
-    padding: 5rem;
-    height: 12rem;
-	z-index: -3;
-
-    // clip-path: polygon(100% 0, 100% 57%, 54% 100%, 0 100%, 0 0); 
-	// clip-path: polygon(59% 75%, 34% 82%, 15% 70%, 16% 71%, 15% 27%, 15% 27%, 76% 51%, 73% 24%, 43% 11%);
+		180deg,
+		rgba(tint($primary, 35%), 0.7) 10%,
+		rgba($primary, 0.8) 70%,
+		rgba(darken($primary, 7%), 1) 100%
+	);
+	animation: AnimateBG 8s ease infinite;
 }
 
-.planet {
-	background-size: 300% 300%;
-	background-image: linear-gradient(
-		-45deg, 
-		#287aff 0%, 
-		#03D930 25%, 
-		#287aff 51%, 
-		#8A6FDF 100%
-	);  
-	animation: AnimateBG 20s ease infinite;
-	clip-path: circle(50% at 50% 50%);
-	position: absolute;
-	right: 3rem;
-	top: 2rem;
-	width: 2rem;
-    height: 2rem;
-	z-index: -1;
-}
-
-.planet1 {
-	right: 10vw;
-	top: 10vw;
-	width: 10vw;
-    height: 10vw;
-	min-width: 2rem;
-	min-height: 2rem;
-}
-
-.planet2 {
-	right: 2.5rem;
-	top: 6rem;
-	width: 2rem;
-    height: 2rem;
-}
-
-body::after {
-    content: '';
-    border-top-left-radius: 30% 40%;
-    border-top-right-radius: 25% 70%;
-    position: absolute;
-    top: 0rem;
-    z-index: -2;
-    width: 100%;
-    background-color: $body-back;
-    height: 12rem;
+.animated-gradient-bg {
+	@include gradient-bg-mixin();
 }
 
 // custom classes
+
+.test-hero {
+	-webkit-mask: linear-gradient(red 0 0) top/100% calc(100% - 60px) no-repeat,
+		radial-gradient(circle farthest-side, #000 98%, #0000) bottom/calc(1.85 * 60px) 140px repeat-x;
+	mask: linear-gradient(red 0 0) top/100% calc(100% - 60px) no-repeat,
+		radial-gradient(circle farthest-side, #000 98%, #0000) bottom/calc(1.85 * 60px) 140px repeat-x;
+}
+
+.test-hero-bg {
+	position: relative;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	animation: AnimateBG 35s ease infinite;
+	// animation: none;
+}
+
+.test-hero-bg::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	@include half-transparent-gradient-mixin();
+	z-index: 1;
+}
+
+.test-hero > * {
+	z-index: 100;
+}
+
+.system-notification {
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+	z-index: 10;
+	border-radius: 5px;
+}
+
+.system-notification div {
+	overflow: scroll;
+}
+
+.is-dotted {
+	border-bottom: 2px dotted;
+}
+
+.is-bordered {
+	// border: 3px solid darken($body-back, 5%);
+	border-radius: $radius-large;
+	background-color: $very-light;
+	padding: 25px;
+}
+
+.card-header-title {
+	font-size: 1.4em;
+	padding-left: 24px;
+}
+
+// .card-footer {
+// 	@include gradient-bg-mixin();
+// }
+
+.has-equal-height {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.has-equal-height .card-footer {
+	margin-top: auto;
+}
+
+.is-elevated {
+	-webkit-box-shadow: 0 14px 26px -12px rgba($primary, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
+		0 8px 10px -5px rgba($primary, 0.2);
+	box-shadow: 0 14px 26px -12px rgba($primary, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
+		0 8px 10px -5px rgba($primary, 0.2);
+	border: 0;
+}
 
 .question-done {
 	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$green+0,4df297+99 */
@@ -164,13 +279,16 @@ body::after {
 .share-twitter-button {
 	background-color: #1d9bf1;
 	color: #fff;
+	border: 0;
+	margin: 0 1px;
 }
 
 .share-facebook-button {
-	background-color: #1B74E8;
+	background-color: #1b74e8;
 	color: #fff;
+	border: 0;
+	margin: 0 1px;
 }
-
 
 input[type="checkbox"] {
 	-webkit-appearance: none;
@@ -190,25 +308,87 @@ input[type="checkbox"]:disabled {
 	background: white;
 }
 
+/* Advanced settings */
+
+.advanced-settings-block {
+	background-color: rgba($footer-background-color, $alpha: 0.7);
+	position: fixed;
+	right: 0;
+	top: 50%;
+	z-index: 990;
+	padding: 7px;
+	border-top-left-radius: $radius-large;
+	border-bottom-left-radius: $radius-large;
+}
+
 /* Chart */
 
 #basic-chart.column {
 	height: 300px;
 	margin: 0;
+	border-radius: $radius-large;
 }
- 
+
 #basic-chart.bar {
 	height: 300px;
 	margin: 0;
 }
 
-
-/* Meter */
-
-meter {
-	background-color: $progress-bar-background-color;
-	border-radius: $progress-border-radius;
+#basic-chart tr:first-child {
+	border-top-left-radius: $radius-large;
 }
+
+#basic-chart tr:last-child {
+	border-top-right-radius: $radius-large;
+}
+
+@function chart-gradient-tint($color) {
+	@return linear-gradient(-15deg, tint($color, 30%), $color);
+}
+
+#basic-chart td {
+	transition-duration: 0.3s !important;
+	// border-radius: $radius-large;
+	border-top-left-radius: $radius-large;
+	border-top-right-radius: $radius-large;
+
+	// border-radius: 8px;
+}
+
+#basic-chart td:hover {
+	opacity: 1;
+	background-color: $green !important;
+	background: chart-gradient-tint($green) !important;
+}
+
+#basic-chart span.data {
+	color: whitesmoke;
+	font-weight: bold;
+}
+
+/* Multiple Datasets */
+#basic-chart.multiple tbody tr td:nth-of-type(1n + 1) {
+	background-color: $base;
+}
+
+/* Single Dataset */
+#basic-chart:not(.multiple) tbody tr:nth-of-type(1n + 1) td {
+	background-color: $base;
+	background: chart-gradient-tint($base);
+	transition-duration: 0.3s !important;
+}
+// #basic-chart:not(.multiple) tbody tr:nth-of-type(4n + 2) td {
+// 	background-color: $azure;
+// 	background: chart-gradient-tint($azure);
+// }
+// #basic-chart:not(.multiple) tbody tr:nth-of-type(4n + 3) td {
+// 	background-color: $blue;
+// 	background: chart-gradient-tint($blue);
+// }
+// #basic-chart:not(.multiple) tbody tr:nth-of-type(4n + 4) td {
+// 	background-color: $green;
+// 	background: chart-gradient-tint($green);
+// }
 
 /* Loading */
 
@@ -229,8 +409,6 @@ meter {
 .live-blur-loading,
 .live-keydown-loading,
 .live-keyup-loading {
-	// color: $azur-darker !important;
-	// font-family: "Flow Circular", cursive !important;
 	@include keyframes(movi) {
 		0%,
 		20% {
@@ -271,25 +449,10 @@ meter {
 	@include animate(fadein, 0.1s, linear, 1);
 }
 
+// link hover
 
-
-.bg-decoration {
-	position: absolute;
-	top: 0;
-	left: 0;
-	pointer-events: none;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+a:not(.button) {
+	transition: 0.25s;
 }
 
-.bg-decoration__svg {
-	position: absolute;
-	top: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 134%;
-	min-width: 1280px;
-	max-width: 1920px;
-	height: auto;
-}
+// tables

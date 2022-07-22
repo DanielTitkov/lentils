@@ -49,6 +49,7 @@ type (
 		SelectLoc         string
 		InterfaceSettings string
 		Instructions      string
+		About             string
 		BeginLabel        string
 		BeginButton       string
 		ShowDetails       string
@@ -102,6 +103,7 @@ func newTranslationEn() *UITranslation {
 			SelectLoc:         "Select language",
 			InterfaceSettings: "Interface settings",
 			Instructions:      "Instructions",
+			About:             "About this test",
 			BeginLabel:        "When you are happy please continue to the next step.",
 			BeginButton:       "Begin",
 			ShowDetails:       "Show test details",
@@ -164,6 +166,7 @@ func newTranslationRu() *UITranslation {
 			SelectLoc:         "Выбрать язык",
 			InterfaceSettings: "Настройки интерфейса",
 			Instructions:      "Инструкция",
+			About:             "Информация о тесте",
 			BeginLabel:        "Когда будете готовы, нажмите, чтобы продолжить.",
 			BeginButton:       "Начать",
 			ShowDetails:       "Показать информацию о тесте",

@@ -12,6 +12,7 @@ type (
 		AvailableLocales []string `yaml:"availableLocales"`
 		ForceUpdate      bool     `yaml:"forceUpdate"`
 		Generate         GenerateQuestionsArgs
+		Image            string
 		Tags             []string
 		Translations     []TestTranslation
 		Questions        []CreateQuestionArgs
