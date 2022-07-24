@@ -15,7 +15,7 @@ en:  # title, descriptions, instruction, details, result preambule
   - Revised inventory with better factor validity than the well-known Big Five.
     <br>
     <a href="https://hexaco.org/" target="_black">Authors' website</a>
-  - ""
+  - HEXACO is a general personality traits model, alternative to Big Five and featuring better factor validity.
 ru: # title, descriptions, instruction, details, result preambule
   - HEXACO
   - Шестифакторный опросник личностных черт (Kibeom Lee, Ph.D., & Michael C. Ashton, Ph.D.)
@@ -30,7 +30,8 @@ ru: # title, descriptions, instruction, details, result preambule
   - Личностный тест с лучшей факторной валидностью, чем широко известная Большая Пятерка.
     <br>
     <a href="https://hexaco.org/" target="_black">Сайт авторов</a>
-  - ""
+  - HEXACO - модель наиболее общих личностных черт, выдвинутая как альтернатива Большой Пятёрке и
+    имеющая лучшую факторную валидность, нежели последняя. 
 type: sten
 steps: 5 # item steps
 randomize: false

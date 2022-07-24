@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-23 01:57:34
+# at: 2022-07-24 23:05:25
 # template: ../data/templates/ctt-v1/political-compass.yaml
 code: political-compass
 published: true
@@ -29,7 +29,9 @@ translations:
       шкалы и ничего более, тогда как в оригинальном политическом компасе есть много
       вопросов, которые могут быть интерпретированы очень по-разному в зависимости
       от контекста не затронутых в вопросе убеждений респондентов. </p>
-    preambule: ''
+    preambule: Результаты "политического компаса" представлены в шкалах личной свободы
+      / экономической свободы. В традиционной терминологии максимальная экономическая
+      свобода считается "правой" ориентацией, тогда как ограниченная - "левой".
   - locale: en
     title: Political Compass
     description: Political coordinates (Orrery version)
@@ -48,7 +50,9 @@ translations:
       while the original inventory has lots of questions which can be understood differently
       depending on the context and respondent's views not mentioned in the question.
       </p>
-    preambule: ''
+    preambule: Results of "Political compass" presented in terms of personal freedom
+      / economic freedom. Traditionally, high scores on economic freedom considered
+      as "right" orientation whilst economic restrictions as "left".
 scales:
   - code: political-compass-01-personal
     type: perc
@@ -533,7 +537,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-002
     order: 20
     type: simple
@@ -543,7 +547,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-003
     order: 30
     type: simple
@@ -553,7 +557,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-004
     order: 40
     type: simple
@@ -563,7 +567,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-005
     order: 50
     type: simple
@@ -573,7 +577,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-006
     order: 60
     type: simple
@@ -583,7 +587,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-007
     order: 70
     type: simple
@@ -593,7 +597,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-008
     order: 80
     type: simple
@@ -603,7 +607,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-009
     order: 90
     type: simple
@@ -613,7 +617,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-010
     order: 100
     type: simple
@@ -623,7 +627,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-011
     order: 110
     type: simple
@@ -633,7 +637,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-012
     order: 120
     type: simple
@@ -643,7 +647,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-013
     order: 130
     type: simple
@@ -653,7 +657,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-014
     order: 140
     type: simple
@@ -663,7 +667,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-015
     order: 150
     type: simple
@@ -673,7 +677,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-016
     order: 160
     type: simple
@@ -683,7 +687,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-017
     order: 170
     type: simple
@@ -693,7 +697,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-018
     order: 180
     type: simple
@@ -703,7 +707,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-019
     order: 190
     type: simple
@@ -713,7 +717,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-020
     order: 200
     type: simple
@@ -723,7 +727,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-021
     order: 210
     type: simple
@@ -733,7 +737,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-022
     order: 220
     type: simple
@@ -743,7 +747,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-023
     order: 230
     type: simple
@@ -753,7 +757,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-024
     order: 240
     type: simple
@@ -763,7 +767,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-025
     order: 250
     type: simple
@@ -773,7 +777,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-026
     order: 260
     type: simple
@@ -783,7 +787,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-027
     order: 270
     type: simple
@@ -793,7 +797,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-028
     order: 280
     type: simple
@@ -803,7 +807,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-029
     order: 290
     type: simple
@@ -813,7 +817,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-030
     order: 300
     type: simple
@@ -823,7 +827,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-031
     order: 310
     type: simple
@@ -833,7 +837,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-032
     order: 320
     type: simple
@@ -843,7 +847,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-033
     order: 330
     type: simple
@@ -853,7 +857,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-034
     order: 340
     type: simple
@@ -863,7 +867,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-035
     order: 350
     type: simple
@@ -873,7 +877,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-036
     order: 360
     type: simple
@@ -883,7 +887,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-037
     order: 370
     type: simple
@@ -893,7 +897,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-038
     order: 380
     type: simple
@@ -903,7 +907,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-039
     order: 390
     type: simple
@@ -913,7 +917,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
   - code: political-compass-040
     order: 400
     type: simple
@@ -923,7 +927,7 @@ questions:
       - locale: ru
         content: Насколько вы согласны с этим утверждением?
       - locale: en
-        content: ''
+        content: Please rate how much do you agree with the following statement
 display:
   questionsPerPage: 1
   randomizeOrder: true

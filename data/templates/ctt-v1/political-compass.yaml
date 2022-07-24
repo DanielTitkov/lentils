@@ -20,7 +20,8 @@ en:  # title, descriptions, instruction, details, result preambule
       the original inventory has lots of questions which can be understood differently depending on the context and 
       respondent's views not mentioned in the question.
     </p>
-  - ""
+  - Results of "Political compass" presented in terms of personal freedom / economic freedom.
+    Traditionally, high scores on economic freedom considered as "right" orientation whilst economic restrictions as "left". 
 ru: # title, descriptions, instruction, details, result preambule
   - Политический Компас
   - Политические координаты (версия Orrery)
@@ -40,13 +41,15 @@ ru: # title, descriptions, instruction, details, result preambule
       тогда как в оригинальном политическом компасе есть много вопросов, которые могут быть интерпретированы очень по-разному
       в зависимости от контекста не затронутых в вопросе убеждений респондентов. 
     </p>
-  - ""
+  - Результаты "политического компаса" представлены в шкалах личной свободы / экономической свободы. 
+    В традиционной терминологии максимальная экономическая свобода считается "правой" ориентацией, 
+    тогда как ограниченная - "левой". 
 type: perc
 steps: 6 # item steps
 randomize: true
 intervals: 3 # interpretation intervals
 question:
-  en: "" # content
+  en: Please rate how much do you agree with the following statement # content
   ru: "Насколько вы согласны с этим утверждением?" #content
   page: 1
 scales: 

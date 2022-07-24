@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-23 01:57:33
+# at: 2022-07-24 23:05:25
 # template: ../data/templates/ctt-v1/hexaco.yaml
 code: hexaco
 published: true
@@ -23,7 +23,8 @@ translations:
       <br> 2 = disagree <br> 1 = strongly disagree</p>
     details: Revised inventory with better factor validity than the well-known Big
       Five. <br> <a href="https://hexaco.org/" target="_black">Authors' website</a>
-    preambule: ''
+    preambule: HEXACO is a general personality traits model, alternative to Big Five
+      and featuring better factor validity.
   - locale: ru
     title: HEXACO
     description: Шестифакторный опросник личностных черт (Kibeom Lee, Ph.D., & Michael
@@ -35,7 +36,8 @@ translations:
       согласен <br> 1 = полностью не согласен </p>
     details: Личностный тест с лучшей факторной валидностью, чем широко известная
       Большая Пятерка. <br> <a href="https://hexaco.org/" target="_black">Сайт авторов</a>
-    preambule: ''
+    preambule: HEXACO - модель наиболее общих личностных черт, выдвинутая как альтернатива
+      Большой Пятёрке и имеющая лучшую факторную валидность, нежели последняя.
 scales:
   - code: hexaco-01-honesty
     type: sten
