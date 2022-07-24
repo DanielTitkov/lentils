@@ -244,62 +244,32 @@
 
 
 {{ define "navigation-mobile" }}
-<nav
-  class="navbar is-mobile is-centered px-2 py-4 is-size-3-mobile is-hidden-tablet is-fixed-bottom animated-gradient-bg">
-  <div class="level is-mobile">
-    <div class="level-item">
-      <a class='has-text-white {{ if eq .CurrentView "home"}}has-text-black{{ end }}' href="/" title="Home">
-        <i class="bi bi-house-fill"></i>
+<nav class="navbar is-mobile is-primary is-centered is-size-3-mobile is-hidden-tablet is-fixed-bottom animated-gradient-bg is-elevated" role="navigation"
+  aria-label="main navigation">
+  <div class="navbar-menu">
+    <div class="navbar-start">
+
+    </div>
+
+    <div class='navbar-item p-0 {{ if eq .CurrentView "home"}}is-active{{ end }}'>
+      <a href="/" class='px-5 py-4' title="Home">
+        <p class="title is-3 has-text-white-ter"><i class="bi bi-house-fill"></i></p>
       </a>
     </div>
 
-    <div class="level-item">
-      <a class='has-text-white {{ if eq .CurrentView "about"}}has-text-black{{ end }}' title="About" href="/about">
-        <i class="bi bi-question"></i>
+    <div class='navbar-item p-0 {{ if eq .CurrentView "about"}}is-active{{ end }}'>
+      <a href="/about" class='px-5 py-4' title="About">
+        <p class="title is-3 has-text-white-ter"><i class="bi bi-question"></i></p>
       </a>
     </div>
 
-    <!-- {{ if .User }}
-    <div class="level-item">
-      <a title="Dark Theme" live-click="toggle-dark" class='{{ if eq .CurrentView "about"}}has-text-dark{{ end }}'>
-        {{ if .User.UseDarkTheme }}
-        <i class="bi bi-star-half"></i>
-        {{ else }}
-        <i class="bi bi-star-fill"></i>
-        {{ end}}
-      </a>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        {{ if ne .CurrentView "test" }}
+        {{ template "locale-selector-ui" . }}
+        {{ end }}
+      </div>
     </div>
-    {{ end }} -->
-
-    {{ if .User }}
-    <!-- <div class="level-item">
-      <a class='{{ if eq .CurrentView "profile"}}has-text-dark{{ end }}' title="Profile" href="/profile">
-        <i class="bi bi-person-fill"></i>
-      </a>
-    </div> -->
-    {{ end }}
-
-    {{ if .User }}
-    {{ if .User.Admin }}
-    <!-- <div class="level-item">
-      <a class='{{ if eq .CurrentView "admin"}}has-text-dark{{ end }}' title="Admin panel" href="/admin">
-        <i class="bi bi-radioactive"></i>
-      </a>
-    </div> -->
-    {{ end }}
-    {{ end }}
-
-    <!-- <div class="level-item">
-      {{ if .User }}
-      <a live-click="open-logout-modal" title="Logout">
-        <i class="bi bi-box-arrow-right"></i>
-      </a>
-      {{ else }}
-      <a live-click="open-login-modal" title="Login">
-        <i class="bi bi-box-arrow-in-right"></i>
-      </a>
-      {{ end }}
-    </div> -->
   </div>
 </nav>
 {{ end }}

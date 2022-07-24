@@ -5,50 +5,52 @@
 <section class='hero is-primary animated-gradient-bg test-hero {{ if ne .Test.Image "" }}test-hero-bg{{end}}' {{
   template "test-image-bg" .Test }}>
   <div class="hero-body mb-5">
-    <div class="columns">
-      <div class="column">
-        <h1 class="title is-1 is-size-3-mobile">
-          {{ .Test.Title }}
-          <span class="title is-2 is-size-3-mobile is-clickable" live-click="toggle-show-details">
-            {{ if .ShowDetails }}
-            <i class="bi bi-info-circle"></i>
-            {{ else }}
-            <i class="bi bi-info-circle-fill"></i>
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="title is-1 is-size-3-mobile">
+            {{ .Test.Title }}
+            <span class="title is-2 is-size-3-mobile is-clickable" live-click="toggle-show-details">
+              {{ if .ShowDetails }}
+              <i class="bi bi-info-circle"></i>
+              {{ else }}
+              <i class="bi bi-info-circle-fill"></i>
+              {{ end }}
+            </span>
+            {{ if eq .Test.Take.Status .QuestionsStatus }}
+            <span class="title is-2 is-size-3-mobile is-clickable ml-2" live-click="toggle-show-instruction">
+              {{ if .ShowInstruction }}
+              <i class="bi bi-question-circle"></i>
+              {{ else }}
+              <i class="bi bi-question-circle-fill"></i>
+              {{ end }}
+            </span>
+            {{ end }}
+          </h1>
+          <h3 class="subtitle is-3 is-size-5-mobile">{{ .Test.Description }}</h3>
+          {{ if .Test.Take }}
+          <span class="heading">
+            {{ if .Test.Take.StartTime }}
+            <span>Started at: <b>{{ DisplayTime .Test.Take.StartTime }}</b></span>
+            {{ end }}
+            {{ if .Test.Take.EndTime }}
+            <span> - Finished at: <b>{{ DisplayTime .Test.Take.EndTime }}</b> in {{ .Test.Take.Elapsed }}</span>
             {{ end }}
           </span>
-          {{ if eq .Test.Take.Status .QuestionsStatus }}
-          <span class="title is-2 is-size-3-mobile is-clickable ml-2" live-click="toggle-show-instruction">
-            {{ if .ShowInstruction }}
-            <i class="bi bi-question-circle"></i>
-            {{ else }}
-            <i class="bi bi-question-circle-fill"></i>
-            {{ end }}
-          </span>
           {{ end }}
-        </h1>
-        <h3 class="subtitle is-3 is-size-5-mobile">{{ .Test.Description }}</h3>
-        {{ if .Test.Take }}
-        <span class="heading">
-          {{ if .Test.Take.StartTime }}
-          <span>Started at: <b>{{ DisplayTime .Test.Take.StartTime }}</b></span>
-          {{ end }}
-          {{ if .Test.Take.EndTime }}
-          <span> - Finished at: <b>{{ DisplayTime .Test.Take.EndTime }}</b> in {{ .Test.Take.Elapsed }}</span>
-          {{ end }}
-        </span>
+        </div>
+        {{ if eq .CurrentView "result" }}
+        <div class="column is-narrow">
+          {{ template "locale-selector" . }}
+        </div>
         {{ end }}
       </div>
-      {{ if eq .CurrentView "result" }}
-      <div class="column is-narrow">
-        {{ template "locale-selector" . }}
-      </div>
+      {{ template "show-details-block" . }}
+      {{ template "show-instruction-block" . }}
+      {{ if eq .Test.Take.Status .FinishStatus }}
+      {{ template "main-result-block" . }}
       {{ end }}
     </div>
-    {{ template "show-details-block" . }}
-    {{ template "show-instruction-block" . }}
-    {{ if eq .Test.Take.Status .FinishStatus }}
-    {{ template "main-result-block" . }}
-    {{ end }}
   </div>
 </section>
 {{ end }}
