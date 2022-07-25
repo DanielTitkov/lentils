@@ -13,7 +13,7 @@ en:  # title, descriptions, instruction, details, result preambule
     <a href="http://gosling.psy.utexas.edu/wp-content/uploads/2014/09/JRP-03-tipi.pdf" target="_blank">
     S. D. Gosling, P. J. Rentfrow, W. B. Swann. A Very Brief Measure of the Big Five Personality Domains // Journal of Research in Personality, 2003. 37
     </a>
-  - ""
+  - Here you see personality inventory results in classic Big Five of personality traits scales. 
 ru: # title, descriptions, instruction, details, result preambule
   - ТИПИ
   - Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
@@ -26,7 +26,7 @@ ru: # title, descriptions, instruction, details, result preambule
     <a href="http://gosling.psy.utexas.edu/wp-content/uploads/2014/09/JRP-03-tipi.pdf" target="_blank">
     S. D. Gosling, P. J. Rentfrow, W. B. Swann. A Very Brief Measure of the Big Five Personality Domains // Journal of Research in Personality, 2003. 37
     </a>
-  - ""
+  - Перед вами результаты краткого теста личности в классических шкалах Большой Пятёрки личностных черт.
 type: sten
 steps: 7 # item steps
 randomize: false

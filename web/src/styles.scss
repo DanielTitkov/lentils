@@ -21,7 +21,7 @@ $green: #51cb20;
 $green2: #aae23b;
 $blue: #2191fb;
 $purple: #5d66b7;
-$purple: #5842e4;
+$purple: #914df7;
 
 $base: #5d66b7;
 $base: #448cbf; 
@@ -43,7 +43,7 @@ $link: $primary;
 $success: $green;
 $danger: $red;
 $warning: $yellow;
-$info: $blue;
+$info: $purple;
 $very-light: #e6e6ef;
 
 // $body-back: #f2f2f2;
@@ -109,9 +109,16 @@ $table-background-color: $transparent-bg;
 
 @mixin gradient-bg-mixin {
 	background-size: 110% 110%;
-	background-image: linear-gradient(-30deg, tint($purple, 5%) 0%, $primary 80%);
+	background-image: linear-gradient(-30deg, $purple 0%, $primary 100%);
 	animation: AnimateBG 8s ease infinite;
 }
+
+@mixin gradient-bg-reverse-mixin {
+	background-size: 110% 110%;
+	background-image: linear-gradient(210deg, $purple 0%, $primary 100%);
+	animation: AnimateBG 8s ease infinite;
+}
+
 
 // update bulma classes
 
@@ -188,7 +195,7 @@ body {
 @mixin half-transparent-gradient-mixin {
 	background-size: 120% 120%;
 	background-image: linear-gradient(
-		180deg,
+		240deg,
 		rgba(tint($primary, 35%), 0.7) 10%,
 		rgba($primary, 0.8) 70%,
 		rgba(darken($primary, 7%), 1) 100%
@@ -198,6 +205,10 @@ body {
 
 .animated-gradient-bg {
 	@include gradient-bg-mixin();
+}
+
+.animated-gradient-reverse-bg {
+	@include gradient-bg-reverse-mixin();
 }
 
 // custom classes
@@ -276,10 +287,10 @@ body {
 }
 
 .is-elevated {
-	-webkit-box-shadow: 0 14px 26px -12px rgba($primary, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-		0 8px 10px -5px rgba($primary, 0.2);
-	box-shadow: 0 14px 26px -12px rgba($primary, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-		0 8px 10px -5px rgba($primary, 0.2);
+	-webkit-box-shadow: 0 14px 26px -12px rgba(darken($footer-background-color, 0%), 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
+		0 8px 10px -5px rgba(darken($footer-background-color, 0%), 0.2);
+	box-shadow: 0 14px 26px -12px rgba(darken($footer-background-color, 0%), 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
+		0 8px 10px -5px rgba(darken($footer-background-color, 0%), 0.2);
 	border: 0;
 }
 
