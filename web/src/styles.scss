@@ -20,10 +20,12 @@ $green: #51cb20;
 // $green: #61e786;
 $green2: #aae23b;
 $blue: #2191fb;
-$azure: #3b28cc;
+$purple: #5d66b7;
+$purple: #5842e4;
 
+$base: #5d66b7;
+$base: #448cbf; 
 $base: #0884dc;  // lazor2 // good
-$base: #5842e4;
 
 // for gradient in items
 
@@ -91,6 +93,26 @@ $table-background-color: $transparent-bg;
 
 @import "~bulma/bulma";
 
+// mixin 
+
+@keyframes AnimateBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+@mixin gradient-bg-mixin {
+	background-size: 110% 110%;
+	background-image: linear-gradient(-30deg, tint($purple, 5%) 0%, $primary 80%);
+	animation: AnimateBG 8s ease infinite;
+}
+
 // update bulma classes
 
 .box {
@@ -111,12 +133,31 @@ $table-background-color: $transparent-bg;
 	transition: all 0.2s;
 }
 
-.navbar-item:hover {
-	background-color: $transparent-bg;
+.navbar {
+	background-color: $body-background-color;
 }
 
-.navbar-item.is-active {
-	background-color: $transparent-bg;
+.navbar-item.main-item {
+	transition: all 0.3s;
+	border-radius: 15px;
+}
+
+.navbar-item.main-item:hover {
+	@include gradient-bg-mixin();
+	color: $white !important;
+}
+
+.navbar-item.main-item.is-active {
+	@include gradient-bg-mixin();
+	color: $white;
+}
+
+.navbar-item.main-item.is-active .title {
+	color: $white;
+}
+
+.navbar-item.main-item.is-active:hover .title {
+	color: $white;
 }
 
 .content {
@@ -139,28 +180,10 @@ $table-background-color: $transparent-bg;
 body {
 	background-size: 100% 100%;
 	background-color: $body-back;
-	background-image: linear-gradient(180deg, lighten($body-back, 2%) 0%, $body-back 20%, darken($body-back, 5%) 100%);
+	background-image: linear-gradient(180deg, $body-back 0%, $body-back 20%, darken($body-back, 5%) 100%);
 }
 
 // custom styles
-
-@keyframes AnimateBG {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
-@mixin gradient-bg-mixin {
-	background-size: 110% 110%;
-	background-image: linear-gradient(-45deg, tint($primary, 35%) 10%, $primary 70%, darken($primary, 7%) 100%);
-	animation: AnimateBG 8s ease infinite;
-}
 
 @mixin half-transparent-gradient-mixin {
 	background-size: 120% 120%;

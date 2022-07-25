@@ -6,7 +6,46 @@
   <div class="section">
     <h1 class="title is-1 is-size-3-mobile">Orrery</h1>
     <h3 class="title is-3 is-size-5-mobile">Psychometrics for fun and science</h3>
-    <p>Why not if actually yes.</p>
+    <div class="columns">
+      <div class="column is-3 has-text-centered">
+        <figure class="image">
+          <img class="is-rounded" src="https://orrery.ams3.digitaloceanspaces.com/planets-7161443_640.png">
+        </figure>
+      </div>
+      <div class="column is-6">
+        <p class="subtitle is-4 is-size-5-mobile">
+          Orrery is private psychometric lab, focused on developing useful inventories with 
+          high psychometric qualities. 
+        </p>
+      </div>
+    </div>
+    <div class="section">
+      <p class="subtitle is-3 is-size-4-mobile has-text-centered">
+        We strive to fulfil the needs of both researchers and end-users
+      </p>
+    </div>
+    <div class="columns">
+      <div class="column is-6">
+        <div class="notification has-equal-height is-success">
+          <p class="is-size-3 is-size-5-mobile">
+            For end-users we provide shareable detailed reports and friendly interpretations
+          </p>
+        </div>
+      </div>
+      <div class="column is-6">
+        <div class="notification has-equal-height is-primary">
+          <p class="is-size-3 is-size-5-mobile">
+            For researchers we aim to provide instruments of conduction researches, 
+            flexible standardizations and analysis tools (currently under development).
+          </p>
+        </div>
+      </div>
+    </div>
+    {{ if .Summary }}
+    <div class="section">
+        {{ template "system-summary" .Summary }}
+    </div>
+    {{ end }}
   </div>
 </main>
 
