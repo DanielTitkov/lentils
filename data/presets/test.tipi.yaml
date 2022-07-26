@@ -1,6 +1,6 @@
 # generated, try not to edit
 # by: CTT-v1
-# at: 2022-07-24 23:05:25
+# at: 2022-07-27 00:13:02
 # template: ../data/templates/ctt-v1/tipi.yaml
 code: tipi
 published: true
@@ -26,7 +26,8 @@ translations:
       target="_blank"> S. D. Gosling, P. J. Rentfrow, W. B. Swann. A Very Brief Measure
       of the Big Five Personality Domains // Journal of Research in Personality, 2003.
       37 </a>
-    preambule: ''
+    preambule: Here you see personality inventory results in classic Big Five of personality
+      traits scales.
   - locale: ru
     title: ТИПИ
     description: Краткий тест личности (Gosling, Rentfrow, Swan, 2003)
@@ -40,7 +41,8 @@ translations:
       target="_blank"> S. D. Gosling, P. J. Rentfrow, W. B. Swann. A Very Brief Measure
       of the Big Five Personality Domains // Journal of Research in Personality, 2003.
       37 </a>
-    preambule: ''
+    preambule: Перед вами результаты краткого теста личности в классических шкалах
+      Большой Пятёрки личностных черт.
 scales:
   - code: tipi-01-extraversion
     type: sten
