@@ -24,6 +24,6 @@ COPY --from=build /opt/${NAME}/web/media ./web/media
 COPY --from=build /opt/${NAME}/web/dist ./web/dist
 # COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # EXPOSE 443
-EXPOSE 80
+EXPOSE 8666
 # VOLUME ["/certs"]
 CMD ./${NAME} ${CONFIG_PATH}

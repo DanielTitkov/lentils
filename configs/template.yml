@@ -4,7 +4,7 @@ db:
   uri: "host={{db_host}} port={{db_port}} user={{db_user}} dbname={{db_name}} password={{db_password}} sslmode=require"
   driver: postgres
 server:
-  port: 80
+  port: 8666
   host: "0.0.0.0"
   domain: {{domain}}
 app:
